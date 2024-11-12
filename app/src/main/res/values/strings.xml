@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">EventHopper</string>
-    <string name="eventhopper">EventHopper</string>
     <string name="splash_screen_image_description">Splash Screen Logo</string>
 </resources>
