@@ -1,0 +1,147 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/theme_blue"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="674dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:paddingBottom="10dp"
+            android:src="@drawable/logo" />
+
+        <!--Role -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/organizer"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteHeaderText" />
+
+        <!--Provide info -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/provide_personal_info"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteRegularText" />
+
+
+        <!--Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_email"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white"
+            app:helperText="@string/password_rule">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_password"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--Password again -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_password_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_password_again"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_name"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_surname"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_btn"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/md_theme_primary"
+            android:text="@string/next"
+
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</RelativeLayout>

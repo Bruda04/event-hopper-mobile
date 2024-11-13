@@ -1,8 +1,17 @@
 <resources>
+    <string name="pup">Product/Service provider</string>
+    <string name="organizer">Organizer</string>
+    <string name="upload_profile_picture">Upload profile picture (Optional)</string>
+    <string name="provide_company_info">Please provide us with information about your company/agency/store/organization.</string>
+    <string name="provide_personal_info">Please provide us with some of your personal information</string>
+    <string name="registration_text">I wish to be a...</string>
+
     <string name="app_name">EventHopper</string>
     <string name="splash_screen_image_description">Splash Screen Logo</string>
     <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
     <string name="login_btn_text">Login</string>
+    <string name="next">Next ></string>
+
 
     <string name="input_password">Password</string>
     <string name="input_password_again">Password (Again)</string>
@@ -15,5 +24,8 @@
 
     <string name="register_dont_have_account">You don\'t have an account?</string>
     <string name="register_create_one">Create one</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

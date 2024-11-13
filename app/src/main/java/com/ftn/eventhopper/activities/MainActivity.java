@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRegisterClick(View view) {
         Log.d("MainActivity", "Register link clicked");
 
-        Intent intent = new Intent(MainActivity.this, Registration.class);
+        Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
         startActivity(intent);
     }
 }
