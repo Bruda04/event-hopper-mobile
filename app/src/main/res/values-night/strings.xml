@@ -20,4 +20,8 @@
     <string name="all_events_title">Explore all events</string>
     <string name="searchbar_hint">Search events</string>
     <string name="filterButton">filter button</string>
+    <string name="backArrowButton">button for going back</string>
+    <string name="forwardArrowButton">button for going forward</string>
+    <string name="pageLabel">1/10</string>
+    <string name="commentsbutton">floating button for comments</string>
 </resources>

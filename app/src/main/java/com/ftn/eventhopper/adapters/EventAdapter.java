@@ -47,6 +47,7 @@ public class EventAdapter extends CardSliderAdapter<EventAdapter.EventViewHolder
 
     }
 
+
     @Override
     public void bindVH(EventViewHolder holder, int position) {
         Event event = events.get(position);

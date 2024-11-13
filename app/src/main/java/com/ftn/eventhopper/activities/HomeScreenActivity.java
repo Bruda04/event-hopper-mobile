@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
@@ -56,6 +57,21 @@ public class HomeScreenActivity extends AppCompatActivity {
         services.add(service);
         CardSliderViewPager cardSliderViewPager2 = (CardSliderViewPager) findViewById(R.id.viewPager2);
         cardSliderViewPager2.setAdapter(new ServiceAdapter(services));
+
+        ArrayList<Event> allEvents = new ArrayList<Event>();
+        allEvents.add(event);
+        allEvents.add(event2);
+        allEvents.add(event);
+        allEvents.add(event2);
+//        allEvents.add(event);
+//        allEvents.add(event2);
+//        allEvents.add(event);
+//        allEvents.add(event2);
+//        allEvents.add(event);
+//        allEvents.add(event2);
+//        RecyclerView recyclerView = findViewById(R.id.recyclerView_allevents);
+//        recyclerView.setAdapter(new EventAdapter(allEvents));
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
