@@ -120,18 +120,21 @@
 
 
 
-        <!--Register btn-->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/register_btn"
-            android:layout_width="159dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:backgroundTint="@color/md_theme_primary"
-            android:text="@string/register"
-
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
-
     </LinearLayout>
+
+
+    <!--Register btn-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/register_btn"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="40dp"
+        android:backgroundTint="@color/md_theme_primary"
+        android:text="@string/register"
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
+
 
 </RelativeLayout>

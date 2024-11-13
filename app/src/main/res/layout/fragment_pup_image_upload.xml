@@ -1,23 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:gravity="center"
-    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:background="@color/theme_blue"
-    tools:context=".activities.MainActivity">
+    android:padding="16dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="668dp"
+        android:layout_width="wrap_content"
+        android:layout_height="674dp"
         android:layout_centerInParent="true"
-        android:gravity="center"
         android:orientation="vertical"
-        android:padding="28dp"
-        android:layout_marginTop="-80dp"
-        >
+        android:padding="28dp">
+
 
         <!-- Logo -->
         <ImageView
@@ -25,8 +20,8 @@
             android:layout_height="74dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null"
-            android:src="@drawable/logo"
-            android:layout_marginBottom="20dp"/>
+            android:paddingBottom="10dp"
+            android:src="@drawable/logo" />
 
         <!-- Welcome text -->
         <TextView
@@ -51,17 +46,20 @@
             android:textAppearance="@style/WhiteRegularText"
             android:textColor="@color/white" />
 
-        <!--Next btn-->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_btn"
-            android:layout_width="159dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:backgroundTint="@color/md_theme_primary"
-            android:text="@string/next"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
-
 
     </LinearLayout>
+
+    <!--Next btn-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_btn"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="40dp"
+        android:backgroundTint="@color/md_theme_primary"
+        android:text="@string/next"
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
+
 </RelativeLayout>
