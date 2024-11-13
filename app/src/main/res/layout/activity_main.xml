@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="536dp"
+        android:layout_height="605dp"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:padding="28dp">
@@ -67,11 +67,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_password"
+                android:inputType="textPassword"
                 android:textAppearance="@style/WhiteRegularText"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:inputType="textPassword"/>
+                android:textColorHint="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Error-->
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text=""
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/md_theme_error" />
 
 
         <!-- Login -->
@@ -90,8 +100,8 @@
             android:id="@+id/register_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="@string/register_dont_have_account"
             android:textAppearance="@style/WhiteRegularText"
             android:textColor="@color/white" />
@@ -101,17 +111,16 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:text="@string/register_create_one"
-            android:textAppearance="@style/DarkBoldText"
-            android:textSize="16sp"
-            android:paddingTop="10dp"
-            android:textStyle="bold"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onRegisterClick"
+            android:paddingTop="10dp"
+            android:text="@string/register_create_one"
+            android:textAppearance="@style/DarkBoldText"
+            android:textSize="16sp"
+            android:textStyle="bold"
 
             />
-
 
 
     </LinearLayout>
