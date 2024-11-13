@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">EventHopper</string>
     <string name="splash_screen_image_description">Splash Screen Logo</string>
+    <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
+    <string name="login_btn_text">Login</string>
+
+    <string name="input_password">Password</string>
+    <string name="input_password_again">Password (Again)</string>
+    <string name="input_email">Email</string>
+    <string name="input_name">Name</string>
+    <string name="input_surname">Surname</string>
+    <string name="input_city">City</string>
+    <string name="input_address">Address</string>
+    <string name="password_rule">Password must be 8+ characters, include at least one uppercase and lowercase</string>
+
+    <string name="register_dont_have_account">You don\'t have an account?</string>
+    <string name="register_create_one">Create one</string>
+
 </resources>
