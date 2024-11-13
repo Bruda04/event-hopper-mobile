@@ -96,26 +96,48 @@
 
 
         <!-- Register link -->
-        <TextView
-            android:id="@+id/register_text"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="@string/register_dont_have_account"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
+            android:orientation="horizontal">
+
+            <!-- Register Text -->
+            <TextView
+                android:id="@+id/register_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_dont_have_account"
+                android:textAppearance="@style/WhiteRegularText"
+                android:textColor="@color/white" />
+
+            <!-- Register Link -->
+            <TextView
+                android:id="@+id/register_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onRegisterClick"
+                android:padding="10dp"
+                android:text="@string/register_create_one"
+                android:textAppearance="@style/DarkBoldText"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/register_link"
+            android:id="@+id/continue_without"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="52dp"
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onRegisterClick"
-            android:paddingTop="10dp"
-            android:text="@string/register_create_one"
+            android:onClick="backToHomepage"
+            android:padding="10dp"
+            android:paddingBottom="20dp"
+            android:text="@string/continue_without_an_account"
             android:textAppearance="@style/DarkBoldText"
             android:textSize="16sp"
             android:textStyle="bold"
