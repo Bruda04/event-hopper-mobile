@@ -41,6 +41,8 @@
             android:paddingRight="20dp"
             android:text="@string/top_events_header1"
             android:textSize="40sp"
+            android:textColor="@color/md_theme_secondaryFixedDim_highContrast"
+
             android:fontFamily="@font/poppins_regular"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +71,7 @@
         <com.github.islamkhsh.CardSliderViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:auto_slide_time="3"
             app:cardSlider_indicator="@id/indicator"
             app:cardSlider_otherPagesWidth="24dp"
@@ -104,6 +106,7 @@
             android:paddingRight="20dp"
             android:text="@string/top_services_header1"
             android:textSize="40sp"
+            android:textColor="@color/md_theme_secondaryFixedDim_highContrast"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,11 +129,10 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4"
             app:layout_constraintVertical_bias="0.03" />
 
-
         <com.github.islamkhsh.CardSliderViewPager
             android:id="@+id/viewPager2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:auto_slide_time="3"
             app:cardSlider_indicator="@id/indicator2"
             app:cardSlider_otherPagesWidth="24dp"
@@ -153,6 +155,70 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewPager2"
             />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/all_events"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/indicator2"
+            >
+
+            <TextView
+                android:id="@+id/all_events_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/all_events"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/all_events_title"
+                android:textColor="@color/ic_launcher_background"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="24sp"
+                />
+
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/filterButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/all_events_title"
+                android:hint="@string/searchbar_hint"
+                android:backgroundTint="@color/md_theme_tertiaryFixed"
+                />
+
+            <com.google.android.material.search.SearchView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/searchbar_hint"
+                app:layout_anchor="@id/search_bar"
+
+                >
+
+
+                <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
+            </com.google.android.material.search.SearchView>
+
+            <Button
+                android:id="@+id/filterButton"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/filterButton"
+                app:icon="@drawable/icons8_slider_96"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.938"
+                app:layout_constraintStart_toEndOf="@id/search_bar"
+                app:layout_constraintTop_toBottomOf="@id/all_events_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout >

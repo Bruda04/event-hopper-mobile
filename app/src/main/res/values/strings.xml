@@ -17,4 +17,7 @@
     <string name="catering_title">Catering “Food Hoppers”</string>
     <string name="catering_secondary">City St Johnsons, Bristol</string>
     <string name="catering_description">Enjoy the most incredible food prepared by the finest of chefs! Have your event be known for the incredible local as well as foreign..</string>
+    <string name="all_events_title">Explore all events</string>
+    <string name="searchbar_hint">Search events</string>
+    <string name="filterButton">filter button</string>
 </resources>
