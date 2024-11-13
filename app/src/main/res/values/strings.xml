@@ -2,6 +2,10 @@
     <string name="pup">Product/Service provider</string>
     <string name="organizer">Organizer</string>
     <string name="upload_profile_picture">Upload profile picture (Optional)</string>
+    <string name="upload_pictures">Upload images (Optional)</string>
+    <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
+
+
     <string name="provide_company_info">Please provide us with information about your company/agency/store/organization.</string>
     <string name="provide_personal_info">Please provide us with some of your personal information</string>
     <string name="registration_text">I wish to be a...</string>
@@ -11,15 +15,25 @@
     <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
     <string name="login_btn_text">Login</string>
     <string name="next">Next ></string>
+    <string name="register">Register</string>
+    <string name="confirm_email">A verification email has been sent to the provided address. It may take a few minutes to arrive.
+    Make sure to check you spam and junk folder!
+    \n\n\n
+    Once you’ve received the email, click on the link, log in and enjoy the great benefits of your new account!
+    </string>
+    <string name="back_to_homepage">Back to homepage</string>
 
 
     <string name="input_password">Password</string>
     <string name="input_password_again">Password (Again)</string>
+    <string name="input_phone_number">Phone number</string>
     <string name="input_email">Email</string>
     <string name="input_name">Name</string>
     <string name="input_surname">Surname</string>
     <string name="input_city">City</string>
     <string name="input_address">Address</string>
+    <string name="input_description">Description</string>
+
     <string name="password_rule">Password must be 8+ characters, include at least one uppercase and lowercase</string>
 
     <string name="register_dont_have_account">You don\'t have an account?</string>

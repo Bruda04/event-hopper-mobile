@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/pup"
+            android:text="@string/organizer"
             android:textAlignment="center"
             android:textAppearance="@style/WhiteHeaderText" />
 
@@ -37,11 +37,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/provide_company_info"
+            android:text="@string/provide_personal_info"
             android:textAlignment="center"
             android:textAppearance="@style/WhiteRegularText" />
 
-        <!--Name-->
+
+        <!--City -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,34 +52,15 @@
             app:boxStrokeColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_name"
+                android:id="@+id/register_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/input_name"
+                android:hint="@string/input_city"
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
-        <!--Email -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
-            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_email"
-                android:textAppearance="@style/WhiteRegularText" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!--Password -->
+        <!--Address -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,38 +68,17 @@
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:helperText="@string/password_rule">
-
+            >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_password"
+                android:id="@+id/register_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/input_password"
-                android:inputType="textPassword"
+                android:hint="@string/input_address"
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <!--Password again -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
-            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_password_again"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_password_again"
-                android:inputType="textPassword"
-                android:textAppearance="@style/WhiteRegularText" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!--Phone number-->
+        <!--Phone number -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,13 +96,38 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+
+
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_btn"
+            android:id="@+id/upload_profile_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_primary"
+            android:text="@string/upload_profile_picture"
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+
+        <!--Error-->
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text=""
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/md_theme_error" />
+
+
+
+        <!--Register btn-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/register_btn"
             android:layout_width="159dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:backgroundTint="@color/md_theme_primary"
-            android:text="@string/next"
+            android:text="@string/register"
 
             android:textAppearance="@style/WhiteRegularText"
             android:textColor="@color/white" />

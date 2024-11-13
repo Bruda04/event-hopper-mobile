@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_blue"
+    tools:context=".activities.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="668dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:layout_marginTop="-80dp"
+        >
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:src="@drawable/logo"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Welcome text -->
+        <TextView
+            android:layout_width="321dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="24dp"
+            android:text="@string/upload_pictures_text"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteRegularText" />
+
+        <!-- Upload images -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_images_btn"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="22dp"
+            android:backgroundTint="@color/md_theme_primary"
+            android:padding="5dp"
+            android:text="@string/upload_pictures"
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+        <!--Next btn-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_btn"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/md_theme_primary"
+            android:text="@string/next"
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+</RelativeLayout>
