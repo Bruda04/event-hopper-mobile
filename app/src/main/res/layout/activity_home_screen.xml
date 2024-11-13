@@ -185,7 +185,7 @@
                 app:layout_constraintTop_toTopOf="@id/all_events" />
 
             <com.google.android.material.search.SearchBar
-                android:id="@+id/search_bar"
+                android:id="@+id/search_bar_events"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/md_theme_tertiaryFixed"
@@ -198,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/searchbar_hint"
-                app:layout_anchor="@id/search_bar"
+                app:layout_anchor="@id/search_bar_events"
 
                 >
 
@@ -217,7 +217,7 @@
                 app:icon="@drawable/icons8_slider_96"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.938"
-                app:layout_constraintStart_toEndOf="@id/search_bar"
+                app:layout_constraintStart_toEndOf="@id/search_bar_events"
                 app:layout_constraintTop_toBottomOf="@id/all_events_title" />
 
 <!--            <LinearLayout-->
@@ -252,64 +252,43 @@
 
                 >
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
                 <include
-                    layout="@layout/card_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_margin="25dp"
+                    layout="@layout/wedding"
+
                 />
 
 
@@ -351,6 +330,177 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/pager"
                 app:layout_constraintTop_toBottomOf="@id/recyclerView_allevents" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/all_solutions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/all_events">
+
+            <TextView
+                android:id="@+id/all_solutions_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/all_solutions_title"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/all_solutions" />
+
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar_solutions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/md_theme_tertiaryFixed"
+                    android:hint="@string/searchbar_hint"
+                    app:layout_constraintEnd_toStartOf="@id/filterButtonSolution"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/all_solutions_title" />
+
+                <com.google.android.material.search.SearchView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/searchbar_hint"
+                    app:layout_anchor="@id/search_bar_solutions"
+                >
+
+            </com.google.android.material.search.SearchView>
+
+            <Button
+                android:id="@+id/filterButtonSolution"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/filterButton"
+                app:icon="@drawable/icons8_slider_96"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.938"
+                app:layout_constraintStart_toEndOf="@id/search_bar_solutions"
+                app:layout_constraintTop_toBottomOf="@id/all_solutions_title" />
+
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/ll_all_events"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="vertical"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/filterButton"-->
+            <!--                >-->
+
+            <!--                <androidx.recyclerview.widget.RecyclerView-->
+            <!--                    android:id="@+id/recyclerView_allevents"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_margin="25dp"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    tools:itemCount="10"-->
+            <!--                    tools:listitem="@layout/card_list_item"-->
+            <!--                    />-->
+            <!--            </LinearLayout>-->
+
+
+            <LinearLayout
+                android:id="@+id/recyclerView_allsolutions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/filterButtonSolution"
+
+                >
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+
+                    />
+                <include
+                    layout="@layout/catering"
+                    
+                    />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/back_arrow_button_solutions"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/backArrowButton"
+                android:text=""
+                app:icon="@drawable/back_arrow"
+                app:iconGravity="textStart"
+                app:layout_constraintEnd_toStartOf="@id/pager_solutions"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView_allsolutions" />
+
+            <TextView
+                android:id="@+id/pager_solutions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/pageLabel"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toStartOf="@id/forward_arrow_button_solutions"
+                app:layout_constraintStart_toEndOf="@id/back_arrow_button_solutions"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView_allsolutions" />
+
+            <Button
+                android:id="@+id/forward_arrow_button_solutions"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/forwardArrowButton"
+                android:text=""
+                app:icon="@drawable/forward_arrow"
+                app:iconGravity="textEnd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/pager_solutions"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView_allsolutions" />
 
 
 

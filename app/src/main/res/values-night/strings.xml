@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="eventhopper">EventHopper</string>
     <string name="EventHopper">EventHopper</string>
     <string name="todo">TODO</string>
     <string name="view_more">View more</string>
@@ -18,10 +17,11 @@
     <string name="catering_secondary">City St Johnsons, Bristol</string>
     <string name="catering_description">Enjoy the most incredible food prepared by the finest of chefs! Have your event be known for the incredible local as well as foreign..</string>
     <string name="all_events_title">Explore all events</string>
-    <string name="searchbar_hint">Search events</string>
+    <string name="searchbar_hint">Search </string>
     <string name="filterButton">filter button</string>
     <string name="backArrowButton">button for going back</string>
     <string name="forwardArrowButton">button for going forward</string>
     <string name="pageLabel">1/10</string>
     <string name="commentsbutton">floating button for comments</string>
+    <string name="all_solutions_title">Explore all services/products</string>
 </resources>
