@@ -58,9 +58,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onRegisterClick(View view) {
-        Log.d("MainActivity", "Register link clicked");
+        Log.d("Login", "Register link clicked");
 
-        Intent intent = new Intent(MainActivity.this, Registration.class);
+        Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
         startActivity(intent);
     }
+
+    public void backToHomepage(View view){
+        Log.d("Login", "Continue without account clicked");
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        startActivity(intent);
+
+    }
+
 }
