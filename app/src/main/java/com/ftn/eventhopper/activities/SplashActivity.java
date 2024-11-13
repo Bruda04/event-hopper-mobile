@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                Intent intent = new Intent(SplashActivity.this, HomeScreenActivity.class);
+                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
 
                 startActivity(intent);
 

@@ -13,7 +13,7 @@
         android:theme="@style/Theme.EventHopper"
         tools:targetApi="31">
         <activity
-            android:name=".activities.HomeScreenActivity"
+            android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
@@ -19,15 +18,9 @@ import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home_screen);
-
+    private ArrayList<Event> loadTop5Events(){
         ArrayList<Event> events = new ArrayList<Event>();
 
         Event event = new Event(
@@ -44,9 +37,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         );
         events.add(event);
         events.add(event2);
-        CardSliderViewPager cardSliderViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
-        cardSliderViewPager.setAdapter(new EventAdapter(events));
 
+        return events;
+    }
+
+    private ArrayList<Service> loadTop5Services(){
         ArrayList<Service> services= new ArrayList<Service>();
         Service service = new Service(
                 ContextCompat.getDrawable(this, R.drawable.slani_ketering_2022_postavka),
@@ -55,22 +50,20 @@ public class HomeScreenActivity extends AppCompatActivity {
                 this.getString(R.string.catering_description)
         );
         services.add(service);
-        CardSliderViewPager cardSliderViewPager2 = (CardSliderViewPager) findViewById(R.id.viewPager2);
-        cardSliderViewPager2.setAdapter(new ServiceAdapter(services));
+        return services;
+    }
 
-        ArrayList<Event> allEvents = new ArrayList<Event>();
-        allEvents.add(event);
-        allEvents.add(event2);
-        allEvents.add(event);
-        allEvents.add(event2);
-//        allEvents.add(event);
-//        allEvents.add(event2);
-//        allEvents.add(event);
-//        allEvents.add(event2);
-//        allEvents.add(event);
-//        allEvents.add(event2);
-//        RecyclerView recyclerView = findViewById(R.id.recyclerView_allevents);
-//        recyclerView.setAdapter(new EventAdapter(allEvents));
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_home);
+
+        CardSliderViewPager cardSliderViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
+        cardSliderViewPager.setAdapter(new EventAdapter(loadTop5Events()));
+
+        CardSliderViewPager cardSliderViewPager2 = (CardSliderViewPager) findViewById(R.id.viewPager2);
+        cardSliderViewPager2.setAdapter(new ServiceAdapter(loadTop5Services()));
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -79,7 +72,20 @@ public class HomeScreenActivity extends AppCompatActivity {
             return insets;
         });
 
-
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
