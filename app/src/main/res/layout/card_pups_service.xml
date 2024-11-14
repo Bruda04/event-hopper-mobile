@@ -1,0 +1,103 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/pups_service_card_image"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:contentDescription="@string/service_card_image"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/pups_service_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/md_theme_scrim" />
+
+            <TextView
+                android:id="@+id/pups_service_card_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <TextView
+                android:id="@+id/pups_service_card_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?android:attr/textColorSecondary" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Delete Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?attr/materialIconButtonStyle"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/md_theme_error"
+                app:icon="@drawable/delete"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Edit Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_button"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                app:icon="@drawable/edit"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:backgroundTint="@color/md_theme_secondary"
+                app:layout_constraintStart_toEndOf="@+id/delete_button" />
+
+            <!-- View More Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pups_service_card_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/view_more"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

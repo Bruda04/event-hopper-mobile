@@ -24,4 +24,5 @@
     <string name="pageLabel">1/10</string>
     <string name="commentsbutton">floating button for comments</string>
     <string name="all_solutions_title">Explore all services/products</string>
+    <string name="service_card_image">service card image</string>
 </resources>
