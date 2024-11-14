@@ -1,0 +1,140 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/theme_blue"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="674dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:paddingBottom="10dp"
+            android:src="@drawable/logo" />
+
+        <!--Role -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/organizer"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteHeaderText" />
+
+        <!--Provide info -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/provide_personal_info"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteRegularText" />
+
+
+        <!--City -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_city"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--Address -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_address"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--Phone number -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_phone_number"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_profile_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_primary"
+            android:text="@string/upload_profile_picture"
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+
+        <!--Error-->
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text=""
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/md_theme_error" />
+
+
+
+    </LinearLayout>
+
+
+    <!--Register btn-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/register_btn"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="40dp"
+        android:backgroundTint="@color/md_theme_primary"
+        android:text="@string/register"
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>

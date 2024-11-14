@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/theme_blue"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="674dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:paddingBottom="10dp"
+            android:src="@drawable/logo" />
+
+        <!-- Welcome text -->
+        <TextView
+            android:layout_width="321dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="24dp"
+            android:text="@string/upload_pictures_text"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteRegularText" />
+
+        <!-- Upload images -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_images_btn"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="22dp"
+            android:backgroundTint="@color/md_theme_primary"
+            android:padding="5dp"
+            android:text="@string/upload_pictures"
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+    <!--Next btn-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_btn"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="40dp"
+        android:backgroundTint="@color/md_theme_primary"
+        android:text="@string/next"
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
+
+</RelativeLayout>
