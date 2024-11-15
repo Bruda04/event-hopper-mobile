@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.PupServicesAdapter;
 import com.ftn.eventhopper.fragments.filters.BottomSheetPupServicesFilterSort;
 import com.ftn.eventhopper.models.Service;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,16 @@ public class PupsServicesActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton AddButton = findViewById(R.id.floating_add_button);
+
+        AddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PupsServicesActivity.this, ServiceCreationActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ArrayList<Service> services = new ArrayList<Service>();
 
         services.add(new Service(getDrawable(R.drawable.concert), "Service 1", "$10", "Description for Service 1"));
@@ -55,7 +67,7 @@ public class PupsServicesActivity extends AppCompatActivity {
         services.add(new Service(getDrawable(R.drawable.wedding), "Service 5", "$50", "Description for Service 5"));
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_services);
-        PupServicesAdapter adapter = new PupServicesAdapter(services);
+        PupServicesAdapter adapter = new PupServicesAdapter(this, services);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

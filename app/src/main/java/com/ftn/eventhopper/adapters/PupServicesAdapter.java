@@ -1,24 +1,32 @@
 package com.ftn.eventhopper.adapters;
 
+import android.content.Context;
+import android.content.Intent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.activities.ServiceCreationActivity;
 import com.ftn.eventhopper.models.Service;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
 public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.PupsServiceViewHolder> {
     ArrayList<Service> services;
+    Context context;
 
-    public PupServicesAdapter(ArrayList<Service> services) {
+    public PupServicesAdapter(Context context, ArrayList<Service> services) {
         this.services = services;
+        this.context = context;
     }
 
     @NonNull
@@ -33,6 +41,19 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         holder.serviceDescription.setText(services.get(position).getDescription());
         holder.servicePrice.setText("Price: " + services.get(position).getSecondary());
         holder.serviceImage.setImageDrawable(services.get(position).getImage());
+
+        holder.deleteButton.setOnClickListener(v -> {
+            services.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, services.size());
+            Toast.makeText(v.getContext(), "Service deleted", Toast.LENGTH_SHORT).show();
+        });
+
+        holder.editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ServiceCreationActivity.class);
+            context.startActivity(intent);
+        });
+
     }
 
     @Override
@@ -45,6 +66,8 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         private final TextView serviceDescription;
         private final TextView servicePrice;
         private final ImageView serviceImage;
+        public MaterialButton deleteButton;
+        public MaterialButton editButton;
 
         public PupsServiceViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,6 +75,8 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             this.serviceDescription = itemView.findViewById(R.id.pups_service_card_description);
             this.servicePrice = itemView.findViewById(R.id.pups_service_card_secondary);
             this.serviceImage = itemView.findViewById(R.id.pups_service_card_image);
+            this.deleteButton = itemView.findViewById(R.id.pups_service_card_delete_button);
+            this.editButton = itemView.findViewById(R.id.pups_service_card_edit_button);
         }
     }
 }
