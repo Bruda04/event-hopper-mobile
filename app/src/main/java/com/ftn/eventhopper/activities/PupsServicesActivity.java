@@ -1,18 +1,22 @@
 package com.ftn.eventhopper.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.PupServicesAdapter;
+import com.ftn.eventhopper.fragments.filters.BottomSheetPupServicesFilterSort;
 import com.ftn.eventhopper.models.Service;
 
 import java.util.ArrayList;
@@ -28,6 +32,18 @@ public class PupsServicesActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        Button filterButton_events = findViewById(R.id.filterButtonSolution);
+
+        // Set up the click listener to show the bottom sheet
+        filterButton_events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                BottomSheetPupServicesFilterSort bottomSheet = new BottomSheetPupServicesFilterSort();
+                bottomSheet.show(fragmentManager, "BottomSheetPupServicesFilterSort");
+            }
         });
 
         ArrayList<Service> services = new ArrayList<Service>();
