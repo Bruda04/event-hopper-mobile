@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="simple_items" />
+    <array name="initial_pup_service_filter_price_slider_values">
+        <item>0</item>
+        <item>100</item>
+    </array>
+    <array name="solution_filter_price">
+        <item>0</item>
+        <item>100</item>
+    </array>
+    <string-array name="locations">Novi Sad, Belgrade, Budapest, Zagreb</string-array>
+    <string-array name="event_types">Wedding, Birthday, Anniversary</string-array>
+    <string-array name="categories">Catering, Decoration, Music</string-array>
 </resources>

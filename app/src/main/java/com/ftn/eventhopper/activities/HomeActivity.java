@@ -16,7 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
 import com.ftn.eventhopper.adapters.ServiceAdapter;
-import com.ftn.eventhopper.fragments.BottomSheetFilterSort;
+import com.ftn.eventhopper.fragments.EventsFilterSort;
+import com.ftn.eventhopper.fragments.SolutionsFilterSort;
 import com.ftn.eventhopper.models.Event;
 import com.ftn.eventhopper.models.Service;
 import com.github.islamkhsh.CardSliderViewPager;
@@ -80,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                BottomSheetFilterSort bottomSheet = new BottomSheetFilterSort();
+                EventsFilterSort bottomSheet = new EventsFilterSort();
                 bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
             }
         });
@@ -92,10 +93,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                BottomSheetFilterSort bottomSheet = new BottomSheetFilterSort();
+                SolutionsFilterSort bottomSheet = new SolutionsFilterSort();
                 bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
             }
         });
+
+
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

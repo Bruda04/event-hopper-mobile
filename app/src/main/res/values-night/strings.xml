@@ -25,4 +25,6 @@
     <string name="commentsbutton">floating button for comments</string>
     <string name="all_solutions_title">Explore all services/products</string>
     <string name="choose_location">Choose location</string>
+    <string name="choose_eventtype">Choose event type</string>
+    <string name="choose_category">Choose category</string>
 </resources>
