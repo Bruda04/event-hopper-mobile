@@ -13,11 +13,15 @@ import android.widget.Button;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.activities.PupsServicesActivity;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class ServiceCreationData2Fragment extends Fragment {
 
     private Button createButton;
     private Button backButton;
+
+    private TextInputEditText serviceReservationWindowInput, serviceDurationInput, serviceCancellationWindowInput;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,9 @@ public class ServiceCreationData2Fragment extends Fragment {
         // Initialize buttons
         createButton = view.findViewById(R.id.next_button);
         backButton = view.findViewById(R.id.back_button);
+        serviceReservationWindowInput = view.findViewById(R.id.reservation_window);
+        serviceDurationInput = view.findViewById(R.id.duration);
+        serviceCancellationWindowInput = view.findViewById(R.id.cancellation_window);
 
         // Set up button actions
         createButton.setOnClickListener(v -> goToPupsServicesActivity());

@@ -4,4 +4,20 @@
         <item>0</item>
         <item>100</item>
     </array>
+
+    <string-array name="availability">
+        <item>Available</item>
+        <item>Not Available</item>
+    </string-array>
+
+    <string-array name="event_types_dummy">
+        <item>Wedding</item>
+        <item>Party</item>
+        <item>Concert</item>
+    </string-array>
+
+    <string-array name="category_dummy">
+        <item>Cakes</item>
+        <item>Firework</item>
+    </string-array>
 </resources>

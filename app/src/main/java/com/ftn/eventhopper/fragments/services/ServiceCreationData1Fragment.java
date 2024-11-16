@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputEditText;
 public class ServiceCreationData1Fragment extends Fragment {
 
     private EditText serviceNameInput, serviceDescriptionInput;
-    private TextInputEditText serviceReservationWindowInput, serviceDurationInput, serviceCancellationWindowInput;
 
 
     private Button nextButton;
@@ -29,9 +28,7 @@ public class ServiceCreationData1Fragment extends Fragment {
         // Find input fields and the next button
         serviceNameInput = view.findViewById(R.id.service_name);
         serviceDescriptionInput = view.findViewById(R.id.service_description);
-        serviceReservationWindowInput = view.findViewById(R.id.reservation_window);
-        serviceDurationInput = view.findViewById(R.id.duration);
-        serviceCancellationWindowInput = view.findViewById(R.id.cancellation_window);
+
 
         nextButton = view.findViewById(R.id.next_button);
 
@@ -45,18 +42,14 @@ public class ServiceCreationData1Fragment extends Fragment {
         // Capture data from input fields
         String serviceName = serviceNameInput.getText().toString();
         String serviceDescription = serviceDescriptionInput.getText().toString();
-        String serviceReservationWindow = serviceReservationWindowInput.getText().toString();
-        String serviceDuration = serviceDurationInput.getText().toString();
-        String serviceCancellationWindow = serviceCancellationWindowInput.getText().toString();
+
 
 
         // Pass data to the next fragment using Bundle
         Bundle bundle = new Bundle();
         bundle.putString("serviceName", serviceName);
         bundle.putString("serviceDescription", serviceDescription);
-        bundle.putString("serviceReservationWindow", serviceReservationWindow);
-        bundle.putString("serviceDuration", serviceDuration);
-        bundle.putString("serviceCancellationWindow", serviceCancellationWindow);
+
 
 
         // Navigate to the next fragment

@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:id="@+id/category_dropdown"
-            />
+            app:simpleItems="@array/category_dummy"/>
+        />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -47,7 +48,8 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:id="@+id/event_type_dropdown"
-            />
+            app:simpleItems="@array/event_types_dummy"/>
+        />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +65,7 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:id="@+id/availability_dropdown"
-            />
+            app:simpleItems="@array/availability"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

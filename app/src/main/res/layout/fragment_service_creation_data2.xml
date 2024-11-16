@@ -44,6 +44,50 @@
             android:layout_width="match_parent"
             android:layout_height="35dp" />
 
+        <!-- Duration Section -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/duration_minutes">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Reservation Window Section -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/reservation_window_days">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reservation_window"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Cancellation Window Section -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/cancellation_window_days">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cancellation_window"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Spacer -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
         <!-- Upload Images -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/upload_images_btn"

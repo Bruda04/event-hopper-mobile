@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.services.ServiceEditData1Fragment"
-    android:background="@color/material_dynamic_neutral95">
+    android:background="@color/material_dynamic_neutral95"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +56,8 @@
                 android:id="@+id/event_types_combobox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                app:simpleItems="@array/event_types_dummy"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 

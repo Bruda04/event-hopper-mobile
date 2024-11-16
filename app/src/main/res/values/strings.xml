@@ -86,6 +86,8 @@
     <string name="event_type">Event Type</string>
     <string name="availability">Availability</string>
     <string name="apply">Apply</string>
+    <string name="suggest_new_category">Suggest new category</string>
+    <string name="suggested_categroy_name">Suggested categroy name</string>
 
 
 </resources>
