@@ -47,7 +47,7 @@ public class ServiceEditData2Fragment extends Fragment {
     }
 
     private void goBackToData1Fragment() {
-        // Navigate back to ServiceCreationData1Fragment
+        // Navigate back to ServiceEditData1Fragment
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, new ServiceEditData1Fragment());
         transaction.addToBackStack(null);

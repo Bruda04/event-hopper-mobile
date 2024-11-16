@@ -109,7 +109,7 @@
         android:id="@+id/floating_add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="pup create service"
+        android:contentDescription="@string/pup_create_service"
         android:layout_margin="18dp"
         app:layout_constraintBottom_toTopOf="@id/pager"
         app:layout_constraintEnd_toEndOf="parent"

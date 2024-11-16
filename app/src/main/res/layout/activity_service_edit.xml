@@ -13,7 +13,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Service"
+        android:text="@string/edit_service"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
