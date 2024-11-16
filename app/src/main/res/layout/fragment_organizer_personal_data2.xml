@@ -4,11 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/theme_blue"
-    android:padding="16dp">
+    android:padding="0dp">
+
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="674dp"
+        android:layout_height="760dp"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:padding="28dp">
@@ -44,12 +47,11 @@
 
         <!--City -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/register_city_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_city"
@@ -62,12 +64,11 @@
 
         <!--Address -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_address_layout"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
+            app:errorEnabled="true"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_address"
@@ -80,12 +81,13 @@
 
         <!--Phone number -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_phone_number_layout"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true"
+            app:prefixText="+"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_phone_number"
@@ -99,12 +101,13 @@
 
 
         <com.google.android.material.button.MaterialButton
-            style="@style/DarkButton"
             android:id="@+id/upload_profile_picture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_primary"
             android:text="@string/upload_profile_picture"
-             />
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
 
 
         <!--Error-->
@@ -125,14 +128,15 @@
     <!--Register btn-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/register_btn"
-        style="@style/DarkButton"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="25dp"        android:backgroundTint="@color/md_theme_primary"
         android:text="@string/register"
-        />
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
 
 
 </RelativeLayout>

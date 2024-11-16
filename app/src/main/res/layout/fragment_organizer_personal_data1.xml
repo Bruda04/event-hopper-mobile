@@ -4,12 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/theme_blue"
-    android:padding="16dp">
+    android:padding="0dp">
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="674dp"
-        android:layout_centerInParent="true"
+        android:layout_height="690dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:padding="28dp">
 
@@ -42,14 +45,13 @@
             android:textAppearance="@style/WhiteRegularText" />
 
 
-        <!--Email -->
+        <!-- email -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/register_email_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_email"
@@ -62,13 +64,17 @@
 
         <!--Password -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/register_password_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:helperText="@string/password_rule">
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white"
+            app:errorEnabled="true"
+            app:helperText="@string/password_rule"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/WhiteRegularText"
+            app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_password"
@@ -76,18 +82,23 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/input_password"
                 android:inputType="textPassword"
-                android:textAppearance="@style/WhiteRegularText" />
+                android:textAppearance="@style/WhiteRegularText"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:cursorColor="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <!--Password again -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/register_password_again_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white"
+            app:errorEnabled="true"
+            app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_password_again"
@@ -95,17 +106,20 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/input_password_again"
                 android:inputType="textPassword"
-                android:textAppearance="@style/WhiteRegularText" />
+                android:textAppearance="@style/WhiteRegularText"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:cursorColor="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <!--Name-->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/register_name_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_name"
@@ -115,14 +129,14 @@
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!--Surname-->
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/register_surname_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_surname"
@@ -134,18 +148,17 @@
 
 
     </LinearLayout>
-
-
-
     <!--Next btn-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next_btn"
-        style="@style/DarkButton"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@color/md_theme_primary"
         android:text="@string/next"
-         />
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
 </RelativeLayout>

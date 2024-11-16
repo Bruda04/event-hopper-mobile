@@ -20,7 +20,6 @@
             android:layout_height="74dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null"
-            android:paddingBottom="10dp"
             android:src="@drawable/logo" />
 
         <!--Role -->
@@ -44,9 +43,9 @@
 
         <!--City -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_city_layout"
+            app:errorEnabled="true"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white">
@@ -62,12 +61,12 @@
 
         <!--Address -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_address_layout"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
+            app:errorEnabled="true"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_address"
@@ -80,9 +79,9 @@
 
         <!--Description -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_description_layout"
+            app:errorEnabled="true"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white">
@@ -100,11 +99,15 @@
         <!--Upload profile picture-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/upload_profile_picture"
-            style="@style/DarkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_primary"
             android:text="@string/upload_profile_picture"
-             />
+            android:textAppearance="@style/WhiteRegularText"
+            android:textColor="@color/white" />
+
+
+
 
 
 
@@ -126,14 +129,16 @@
     <!--Next btn-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next_btn"
-        style="@style/DarkButton"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@color/md_theme_primary"
         android:text="@string/next"
-         />
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
 
 
 </RelativeLayout>
