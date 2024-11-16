@@ -69,6 +69,8 @@
         app:layout_constraintTop_toBottomOf="@+id/search_bar_layout" />
 
     <Button
+        style="@style/DarkButton"
+
         android:id="@+id/back_arrow_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -94,6 +96,7 @@
         app:layout_constraintStart_toEndOf="@id/back_arrow_button" />
 
     <Button
+        style="@style/DarkButton"
         android:id="@+id/forward_arrow_button"
         android:layout_width="48dp"
         android:layout_height="48dp"

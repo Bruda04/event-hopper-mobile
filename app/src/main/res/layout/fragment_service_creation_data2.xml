@@ -91,15 +91,14 @@
         <!-- Upload Images -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/upload_images_btn"
+            style="@style/DarkButton"
             android:layout_width="305dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="22dp"
-            android:backgroundTint="@color/md_theme_primary"
             android:padding="5dp"
             android:text="@string/upload_pictures"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
+            />
 
         <!-- Spacer -->
         <Space
@@ -115,31 +114,29 @@
 
             <!-- Back Button -->
             <Button
+            style="@style/DarkButton"
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="?attr/colorPrimary"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:text="@string/back"
-            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Next Button -->
             <Button
+            style="@style/DarkButton"
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:layout_marginStart="8dp"
-            android:backgroundTint="?attr/colorPrimary"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:text="@string/create"
-            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

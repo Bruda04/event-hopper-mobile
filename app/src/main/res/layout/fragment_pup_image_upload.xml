@@ -36,30 +36,28 @@
         <!-- Upload images -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/upload_images_btn"
+            style="@style/DarkButton"
             android:layout_width="305dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="22dp"
-            android:backgroundTint="@color/md_theme_primary"
             android:padding="5dp"
             android:text="@string/upload_pictures"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
+           />
 
 
     </LinearLayout>
 
     <!--Next btn-->
     <com.google.android.material.button.MaterialButton
+        style="@style/DarkButton"
         android:id="@+id/next_btn"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="40dp"
-        android:backgroundTint="@color/md_theme_primary"
         android:text="@string/next"
-        android:textAppearance="@style/WhiteRegularText"
-        android:textColor="@color/white" />
+         />
 
 </RelativeLayout>

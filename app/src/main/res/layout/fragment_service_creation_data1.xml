@@ -140,8 +140,8 @@
             android:layout_height="wrap_content"
             android:text="@string/next"
             android:layout_gravity="end"
-            android:backgroundTint="?attr/colorPrimary"
-            android:textColor="@android:color/white"
+            style="@style/DarkButton"
+
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp" />
     </LinearLayout>

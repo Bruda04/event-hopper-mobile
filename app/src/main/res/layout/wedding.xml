@@ -67,6 +67,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                style="@style/DarkButton"
                 android:id="@+id/card_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

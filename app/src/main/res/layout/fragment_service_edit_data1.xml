@@ -140,13 +140,12 @@
 
         <!-- Next Button -->
         <Button
+            style="@style/DarkButton"
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"
             android:layout_gravity="end"
-            android:backgroundTint="?attr/colorPrimary"
-            android:textColor="@android:color/white"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp" />
     </LinearLayout>
