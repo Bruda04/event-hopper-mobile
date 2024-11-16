@@ -43,11 +43,11 @@
 
         <!--Name-->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_name_layout"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:errorEnabled="true"
             app:boxStrokeColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -62,11 +62,11 @@
 
         <!--Email -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_email_layout"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:errorEnabled="true"
             app:boxStrokeColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -80,9 +80,11 @@
 
         <!--Password -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_password_layout"
+            app:errorEnabled="true"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
@@ -100,9 +102,11 @@
 
         <!--Password again -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_password_again_layout"
+            app:errorEnabled="true"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white">
@@ -119,11 +123,12 @@
 
         <!--Phone number-->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_phone_number_layout"
+
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:errorEnabled="true"
             app:boxStrokeColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText

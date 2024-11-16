@@ -44,9 +44,9 @@
 
         <!--City -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_city_layout"
+            app:errorEnabled="true"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white">
@@ -62,12 +62,12 @@
 
         <!--Address -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_address_layout"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
+            app:errorEnabled="true"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_address"
@@ -80,9 +80,9 @@
 
         <!--Description -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_description_layout"
+            app:errorEnabled="true"
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white">
