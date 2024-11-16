@@ -24,4 +24,27 @@
     <string name="pageLabel">1/10</string>
     <string name="commentsbutton">floating button for comments</string>
     <string name="all_solutions_title">Explore all services/products</string>
+    <string name="service_card_image">service card image</string>
+    <string name="pup_create_service">pup create service</string>
+    <string name="create_service">Create Service</string>
+    <string name="edit_service">Edit Service</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="event_types">Event Types</string>
+    <string name="duration_minutes">Duration (Minutes)</string>
+    <string name="reservation_window_days">Reservation Window (days)</string>
+    <string name="cancellation_window_days">Cancellation Window (days)</string>
+    <string name="visible">Visible</string>
+    <string name="available">Available</string>
+    <string name="auto_accept">Auto Accept</string>
+    <string name="price">Price</string>
+    <string name="discount">Discount</string>
+    <string name="back">Back</string>
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="event_type">Event Type</string>
+    <string name="availability">Availability</string>
+    <string name="apply">Apply</string>
+    <string name="suggested_categroy_name">Suggested categroy name</string>
 </resources>

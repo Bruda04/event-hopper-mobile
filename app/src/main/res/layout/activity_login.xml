@@ -90,13 +90,12 @@
 
         <!-- Login -->
         <com.google.android.material.button.MaterialButton
+            style="@style/DarkButton"
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_primary"
             android:text="@string/login_btn_text"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
+             />
 
 
         <!-- Register link -->
