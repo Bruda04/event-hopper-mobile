@@ -98,9 +98,6 @@
             app:endIconMode="password_toggle"
             app:endIconTint="@color/white"
             app:errorEnabled="true"
-            app:helperText="@string/password_rule"
-            app:helperTextEnabled="true"
-            app:helperTextTextAppearance="@style/WhiteRegularText"
             app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
