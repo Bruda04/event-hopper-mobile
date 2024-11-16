@@ -1,8 +1,8 @@
 package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.ServiceCreationActivity;
+import com.ftn.eventhopper.activities.ServiceEditActivity;
 import com.ftn.eventhopper.models.Service;
 import com.google.android.material.button.MaterialButton;
 
@@ -50,7 +50,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         });
 
         holder.editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ServiceCreationActivity.class);
+            Intent intent = new Intent(context, ServiceEditActivity.class);
             context.startActivity(intent);
         });
 
