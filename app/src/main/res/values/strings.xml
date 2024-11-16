@@ -58,7 +58,7 @@
     <string name="input_address">Address</string>
     <string name="input_description">Description</string>
 
-    <string name="password_rule">Password must be 8+ characters, include at least one uppercase and lowercase</string>
+    <string name="password_rule">Password must be 8+ characters, include at least one uppercase, lowercase and number.</string>
 
     <string name="register_dont_have_account">You don\'t have an account?</string>
     <string name="register_create_one">Create one</string>

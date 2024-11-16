@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,36 +23,92 @@ import com.ftn.eventhopper.R;
  */
 public class OrganizerPersonalData2Fragment extends Fragment {
 
-    private EditText phoneInput, cityInput, addressInput;
+    private TextInputEditText phoneField, cityField, addressField;
+    private TextInputLayout phoneLayout, cityLayout, addressLayout;
+    private String phone, city, address;
     private Button registerBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_personal_data2, container, false);
-
-        cityInput = view.findViewById(R.id.register_city);
-        phoneInput = view.findViewById(R.id.register_phone_number);
-        addressInput = view.findViewById(R.id.register_address);
-
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Log.d("OrganizerPersonalData2", "User data: " + bundle.toString());
+        }
         registerBtn = view.findViewById(R.id.register_btn);
 
-        registerBtn.setOnClickListener(v -> handleRegistration(savedInstanceState));
+        retrieveFields(view);
+        registerBtn.setOnClickListener(v -> {
+            retrieveData();
+            if(!validateFields()){
+                handleRegistration(bundle);
+            }
+        });
+
 
         return view;
     }
 
+    private void retrieveFields(View view){
+        cityLayout = view.findViewById(R.id.register_city_layout);
+        phoneLayout = view.findViewById(R.id.register_phone_number_layout);
+        addressLayout = view.findViewById(R.id.register_address_layout);
+
+        cityField = (TextInputEditText) cityLayout.getEditText();
+        phoneField = (TextInputEditText) phoneLayout.getEditText();
+        addressField = (TextInputEditText) addressLayout.getEditText();
+    }
+
+
+    private void retrieveData(){
+        phone = phoneField != null ? phoneField.getText().toString().trim() : "";
+        city = cityField != null ? cityField.getText().toString().trim() : "";
+        address = addressField != null ? addressField.getText().toString().trim() : "";
+    }
+
+    private boolean validateFields(){
+        boolean hasError = false;
+
+        if (city.isEmpty()) {
+            cityLayout.setError("City is required"); // Show error message
+            cityLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            hasError = true;
+        } else {
+            cityLayout.setError(null); // Clear error
+            cityLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
+        }
+
+        // Check password
+        if (phone.isEmpty()) {
+            phoneLayout.setError("Phone number is required. ");
+            phoneLayout.setBoxStrokeColor(getResources().getColor(R.color.red));
+            hasError = true;
+        } else {
+            phoneLayout.setError(null);
+            phoneLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
+        }
+
+        if (address.isEmpty()) {
+            addressLayout.setError("Address is required"); // Show error message
+            addressLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            hasError = true;
+        } else {
+            cityLayout.setError(null); // Clear error
+            cityLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
+        }
+
+        return hasError;
+    }
+
+
+
     private void handleRegistration(Bundle savedInstanceState) {
-        String phone = phoneInput.getText().toString();
-        String city = cityInput.getText().toString();
-        String address = addressInput.getText().toString();
-
-        //savedInstanceState.putString("phone", phone);
-        //savedInstanceState.putString("city", city);
-        //savedInstanceState.putString("address", address);
+        savedInstanceState.putString("phone", phone);
+        savedInstanceState.putString("city", city);
+        savedInstanceState.putString("address", address);
 
 
-        // You can now handle the registration logic with these values
-        //Log.d("Registration", "User: " + savedInstanceState.toString());
+        Log.d("Registration", "User: " + savedInstanceState.toString());
 
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         Fragment fragment = new ConfirmEmailFragment();
