@@ -94,6 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_phone_number"
+                android:inputType="number"
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,15 +127,15 @@
     <!--Register btn-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/register_btn"
+        style="@style/DarkButton"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="25dp"        android:backgroundTint="@color/md_theme_primary"
+        android:layout_marginBottom="25dp"
         android:text="@string/register"
-        android:textAppearance="@style/WhiteRegularText"
-        android:textColor="@color/white" />
+         />
 
 
 </RelativeLayout>

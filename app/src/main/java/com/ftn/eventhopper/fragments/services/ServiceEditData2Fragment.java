@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,31 +34,20 @@ public class ServiceEditData2Fragment extends Fragment {
         backButton = view.findViewById(R.id.back_button);
 
         // Set up button actions
-        saveButton.setOnClickListener(v -> goToPupsServicesActivity());
-        backButton.setOnClickListener(v -> goBackToData1Fragment());
+        saveButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.pup_services); // Navigate to PupsServicesFragment
+
+        });
+        backButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.service_edit); // Navigate to PupsServicesFragment
+
+
+        });
 
         return view;
     }
 
-    private void goToPupsServicesActivity() {
-        PupsServicesFragment pupsServicesFragment = new PupsServicesFragment();
 
-        // Begin the fragment transaction
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-
-        // Optionally, add this transaction to the back stack so that the user can navigate back to the previous fragment
-        transaction.replace(R.id.nav_host_fragment, pupsServicesFragment);  // Replace with your container ID
-        transaction.addToBackStack(null);  // Adds the transaction to the back stack
-
-        // Commit the transaction
-        transaction.commit();
-    }
-
-    private void goBackToData1Fragment() {
-        // Navigate back to ServiceEditData1Fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, new ServiceEditData1Fragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

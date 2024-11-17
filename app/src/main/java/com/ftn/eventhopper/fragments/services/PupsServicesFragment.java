@@ -61,7 +61,8 @@ public class PupsServicesFragment extends Fragment {
 
         // Set up the RecyclerView with an adapter
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_services);
-        PupServicesAdapter adapter = new PupServicesAdapter(getContext(), services);
+
+        PupServicesAdapter adapter = new PupServicesAdapter(getContext(), services, navController, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

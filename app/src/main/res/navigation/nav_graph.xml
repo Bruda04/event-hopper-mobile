@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_to_edit_service"
             app:destination="@id/service_creation1" />
+        <action
+            android:id="@+id/action_to_service_edit_fragment"
+            app:destination="@id/service_edit" />
     </fragment>
 
 
@@ -66,6 +69,12 @@
         app:destination="@id/service_creation1" />
     </fragment>
 
+
+    <fragment
+        android:id="@+id/service_edit"
+        android:name="com.ftn.eventhopper.fragments.services.ServiceEditFragment"
+        android:label="Edit Service"
+        tools:layout="@layout/fragment_service_edit" />
 
 
 </navigation>

@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+
+        >
 
 
 
@@ -41,9 +43,6 @@
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="35dp"/>
 
         <!-- Event Types Combobox -->
         <com.google.android.material.textfield.TextInputLayout
@@ -60,10 +59,6 @@
                 app:simpleItems="@array/event_types_dummy"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="35dp"/>
 
 
         <!-- Duration Section -->
@@ -92,62 +87,21 @@
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Cancellation Window Section -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/cancellation_window_days">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cancellation_window"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
 
 
-        <!-- Checkboxes Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
-
-            <CheckBox
-                android:id="@+id/visibility_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/visible" />
-
-            <CheckBox
-                android:id="@+id/availability_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/available" />
-
-            <CheckBox
-                android:id="@+id/auto_accept_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auto_accept" />
-        </LinearLayout>
-
-        <!-- Spacer -->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <!-- Next Button -->
         <Button
-            style="@style/DarkButton"
             android:id="@+id/next_button"
+            style="@style/DarkButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next"
             android:layout_gravity="end"
+
+
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
+            android:paddingVertical="8dp"
+            android:text="@string/next" />
     </LinearLayout>
 
 </FrameLayout>
