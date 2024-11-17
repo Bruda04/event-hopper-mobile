@@ -124,10 +124,10 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/BlueBackgroundInputField"
             android:id="@+id/register_phone_number_layout"
-
             android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:errorEnabled="true"
+            app:prefixText="+"
             app:boxStrokeColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -135,6 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_phone_number"
+                android:inputType="number"
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -9,20 +9,22 @@
     android:background="@color/material_dynamic_neutral95">
 
     <!-- Title -->
+
+    <!-- Fragment Container -->
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/edit_service"
+        android:textColor="@color/md_theme_primary"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/md_theme_primary"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Fragment Container -->
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="0dp"

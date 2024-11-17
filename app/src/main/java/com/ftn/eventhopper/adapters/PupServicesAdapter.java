@@ -11,10 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.ServiceEditActivity;
 import com.ftn.eventhopper.models.Service;
 import com.google.android.material.button.MaterialButton;
 
@@ -23,10 +24,14 @@ import java.util.ArrayList;
 public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.PupsServiceViewHolder> {
     ArrayList<Service> services;
     Context context;
+    private final NavController navController; // Add NavController or Fragment
+    private final Fragment fragment;
 
-    public PupServicesAdapter(Context context, ArrayList<Service> services) {
+    public PupServicesAdapter(Context context, ArrayList<Service> services, NavController navController, Fragment fragment) {
         this.services = services;
         this.context = context;
+        this.navController = navController; // Initialize NavController
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -50,8 +55,15 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         });
 
         holder.editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ServiceEditActivity.class);
-            context.startActivity(intent);
+            // Navigate to ServiceEditFragment
+            if (navController != null) {
+                // Option 1: Use NavController directly
+                navController.navigate(R.id.action_to_service_edit_fragment);
+            } else if (fragment != null) {
+                // Option 2: Use Fragment to navigate (if no NavController passed)
+                NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
+                navCtrl.navigate(R.id.action_to_service_edit_fragment);
+            }
         });
 
     }

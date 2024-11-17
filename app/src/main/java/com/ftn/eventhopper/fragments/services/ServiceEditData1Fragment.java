@@ -31,7 +31,6 @@ public class ServiceEditData1Fragment extends Fragment {
         serviceDescriptionInput = view.findViewById(R.id.service_description);
         serviceReservationWindowInput = view.findViewById(R.id.reservation_window);
         serviceDurationInput = view.findViewById(R.id.duration);
-        serviceCancellationWindowInput = view.findViewById(R.id.cancellation_window);
 
         nextButton = view.findViewById(R.id.next_button);
 
@@ -47,7 +46,6 @@ public class ServiceEditData1Fragment extends Fragment {
         String serviceDescription = serviceDescriptionInput.getText().toString();
         String serviceReservationWindow = serviceReservationWindowInput.getText().toString();
         String serviceDuration = serviceDurationInput.getText().toString();
-        String serviceCancellationWindow = serviceCancellationWindowInput.getText().toString();
 
 
         // Pass data to the next fragment using Bundle
@@ -56,7 +54,6 @@ public class ServiceEditData1Fragment extends Fragment {
         bundle.putString("serviceDescription", serviceDescription);
         bundle.putString("serviceReservationWindow", serviceReservationWindow);
         bundle.putString("serviceDuration", serviceDuration);
-        bundle.putString("serviceCancellationWindow", serviceCancellationWindow);
 
 
         // Navigate to the next fragment

@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.PupsServicesActivity;
 
 public class ServiceEditData2Fragment extends Fragment {
 
@@ -33,24 +34,20 @@ public class ServiceEditData2Fragment extends Fragment {
         backButton = view.findViewById(R.id.back_button);
 
         // Set up button actions
-        saveButton.setOnClickListener(v -> goToPupsServicesActivity());
-        backButton.setOnClickListener(v -> goBackToData1Fragment());
+        saveButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.pup_services); // Navigate to PupsServicesFragment
+
+        });
+        backButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.service_edit); // Navigate to PupsServicesFragment
+
+
+        });
 
         return view;
     }
 
-    private void goToPupsServicesActivity() {
-        // Navigate to PupsServicesActivity
-        Intent intent = new Intent(getActivity(), PupsServicesActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
 
-    private void goBackToData1Fragment() {
-        // Navigate back to ServiceEditData1Fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new ServiceEditData1Fragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.PupsServicesActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ServiceCreationData2Fragment extends Fragment {
@@ -40,24 +41,17 @@ public class ServiceCreationData2Fragment extends Fragment {
         serviceCancellationWindowInput = view.findViewById(R.id.cancellation_window);
 
         // Set up button actions
-        createButton.setOnClickListener(v -> goToPupsServicesActivity());
-        backButton.setOnClickListener(v -> goBackToData1Fragment());
+        createButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.back_to_pup_services);
+        });
+        backButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.back_to_service_creation1);
+        });
 
         return view;
     }
 
-    private void goToPupsServicesActivity() {
-        // Navigate to PupsServicesActivity
-        Intent intent = new Intent(getActivity(), PupsServicesActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
 
-    private void goBackToData1Fragment() {
-        // Navigate back to ServiceCreationData1Fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new ServiceCreationData1Fragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

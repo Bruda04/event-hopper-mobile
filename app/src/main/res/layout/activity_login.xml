@@ -132,7 +132,7 @@
         <TextView
             android:id="@+id/continue_without"
             android:layout_width="wrap_content"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
