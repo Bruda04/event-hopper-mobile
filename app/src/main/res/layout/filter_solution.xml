@@ -131,6 +131,7 @@
 
     <Button
         android:id="@+id/apply_filters_button"
+        style="@style/DarkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/apply"

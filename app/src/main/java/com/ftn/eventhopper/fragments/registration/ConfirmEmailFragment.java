@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.HomeActivity;
+import com.ftn.eventhopper.activities.HostActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +38,7 @@ public class ConfirmEmailFragment extends Fragment {
     private void handleBackToHomepage() {
         Log.d("Confirm email", "Back to homepage clicked");
 
-        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        Intent intent = new Intent(getActivity(), HostActivity.class);
         startActivity(intent);
     }
 }

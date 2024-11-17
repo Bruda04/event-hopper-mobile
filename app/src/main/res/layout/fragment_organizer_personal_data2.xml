@@ -102,12 +102,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/upload_profile_picture"
+            style="@style/DarkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_primary"
-            android:text="@string/upload_profile_picture"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
+            android:text="@string/upload_profile_picture"/>
 
 
         <!--Error-->

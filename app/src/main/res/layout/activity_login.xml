@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="605dp"
+        android:layout_height="632dp"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:padding="28dp">
@@ -38,9 +38,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_email_layout"
             style="@style/BlueBackgroundInputField"
-            app:errorEnabled="true"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_email_field"
                 android:layout_width="match_parent"
@@ -50,20 +51,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
         <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/BlueBackgroundInputField"
             android:id="@+id/login_password_layout"
+            style="@style/BlueBackgroundInputField"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:hintTextColor="@color/white"
-            app:helperText="@string/password_rule"
-            app:helperTextEnabled="true"
-            app:errorEnabled="true"
             app:endIconMode="password_toggle"
             app:endIconTint="@color/white"
-            app:helperTextTextAppearance="@style/WhiteRegularText">
+            app:errorEnabled="true"
+            app:helperText="@string/password_rule"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/WhiteRegularText"
+            app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_password_field"
@@ -71,10 +71,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/input_password"
                 android:inputType="textPassword"
-                app:cursorColor="@color/white"
                 android:textAppearance="@style/WhiteRegularText"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                app:cursorColor="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--Error-->
@@ -83,19 +83,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text=""
             android:fontFamily="@font/poppins_bold"
+            android:text=""
             android:textColor="@color/md_theme_error" />
 
 
         <!-- Login -->
         <com.google.android.material.button.MaterialButton
-            style="@style/DarkButton"
             android:id="@+id/login_button"
+            style="@style/DarkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_btn_text"
-             />
+            android:text="@string/login_btn_text" />
 
 
         <!-- Register link -->

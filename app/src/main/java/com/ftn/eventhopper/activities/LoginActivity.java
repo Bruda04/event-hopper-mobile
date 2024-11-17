@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("Login", "Email " + email);
                 Log.d("Login", "Password " + password);
 
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                 startActivity(intent);
             }
         });
@@ -112,8 +112,25 @@ public class LoginActivity extends AppCompatActivity {
 
     public void backToHomepage(View view){
         Log.d("Login", "Continue without account clicked");
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        Intent intent = new Intent(LoginActivity.this, HostActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
 }
