@@ -59,7 +59,7 @@ public class HostActivity extends AppCompatActivity {
                 return true;
             }else if (item.getItemId() == R.id.profile){
                 navController.popBackStack(R.id.profile, true); // Clear previous back stack if Profile exists
-                navController.navigate(R.id.profile); // Navigate to Profile
+                navController.navigate(R.id.profile);
                 return true;
             }
             return false;

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.ServiceCreationActivity;
 import com.ftn.eventhopper.adapters.PupServicesAdapter;
 import com.ftn.eventhopper.models.Service;
 import com.ftn.eventhopper.fragments.filters.BottomSheetPupServicesFilterSort;
@@ -36,7 +35,6 @@ public class PupsServicesFragment extends Fragment {
         // Inflate the fragment layout
         View view = inflater.inflate(R.layout.fragment_pups_services, container, false);
 
-        // Set up the filter button to show the BottomSheet
         Button filterButtonEvents = view.findViewById(R.id.filterButtonSolution);
         filterButtonEvents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,14 +47,11 @@ public class PupsServicesFragment extends Fragment {
 
         NavController navController = NavHostFragment.findNavController(this);
 
-        // Set up the FAB to navigate to the Service Creation Activity
         FloatingActionButton addButton = view.findViewById(R.id.floating_add_button);
         addButton.setOnClickListener(v -> {
-            // Navigate using the action defined in the NavGraph
             navController.navigate(R.id.action_to_create_service1);
         });
 
-        // Create a list of services to display
         ArrayList<Service> services = new ArrayList<>();
         services.add(new Service(getResources().getDrawable(R.drawable.concert), "Service 1", "$10", "Description for Service 1"));
         services.add(new Service(getResources().getDrawable(R.drawable.wedding), "Service 2", "$20", "Description for Service 2"));
