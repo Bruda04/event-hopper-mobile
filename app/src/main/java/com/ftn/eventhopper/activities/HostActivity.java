@@ -1,7 +1,10 @@
 package com.ftn.eventhopper.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -31,28 +34,41 @@ public class HostActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize the BottomNavigationView
+        // Set up BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // Get the NavController from the NavHostFragment
+        // Get NavController from the NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
-        if (navHostFragment != null) {
-            navController = navHostFragment.getNavController();
-        }
+        navController = navHostFragment.getNavController();
 
-        // Ensure the NavController is set up correctly
-        if (navController != null) {
-            // Set up the BottomNavigationView with the NavController
-            NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        // Set up the BottomNavigationView with the NavController
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-            // Set the default item for the BottomNavigationView
-            bottomNavigationView.setSelectedItemId(R.id.home);
-        }
+        // Make sure the navigation component starts at the correct destination
+        bottomNavigationView.setSelectedItemId(R.id.home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.home){
+                navController.navigate(R.id.home);
+                navController.navigate(R.id.home);
+                return true;
+            }else if (item.getItemId() == R.id.calendar){
+                navController.popBackStack(R.id.calendar, true);
+                navController.navigate(R.id.calendar);
+                return true;
+            }else if (item.getItemId() == R.id.profile){
+                navController.popBackStack(R.id.profile, true); // Clear previous back stack if Profile exists
+                navController.navigate(R.id.profile); // Navigate to Profile
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        return navController != null && navController.navigateUp() || super.onSupportNavigateUp();
+        // Handle up navigation (when the back button is pressed in the toolbar)
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }

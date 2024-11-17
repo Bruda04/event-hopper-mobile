@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_to_create_service1"
             app:destination="@id/service_creation1" />
+        <action
+            android:id="@+id/action_to_edit_service"
+            app:destination="@id/service_creation1" />
     </fragment>
 
 
