@@ -1,6 +1,13 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="theme_blue">#118AB2</color>
+    <color name="darker_blue">#0D5B75</color>
+    <color name="light_blue">#E5F9FF</color>
+    <color name="background_beige">#FFFDF5</color>
+    <color name="text_dark_blue">#073B4C</color>
+
+
+
     <color name="md_theme_primary">#00465B</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#266A85</color>
@@ -142,4 +149,5 @@
     <color name="md_theme_surfaceContainer_highContrast">#F1EDEA</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#ECE7E5</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#E6E2DF</color>
+    <color name="red">#DC1519</color>
 </resources>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_blue"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,41 +33,45 @@
             android:textAlignment="center"
             android:textAppearance="@style/WhiteHeaderText" />
 
+        <!--style="?attr/textInputFilledStyle" -->
         <!-- email -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_email_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            android:id="@+id/login_email_layout"
+            style="@style/BlueBackgroundInputField"
+            app:errorEnabled="true"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white">
-
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_email_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_email"
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
         <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_password_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textAppearance="@style/WhiteRegularText"
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/login_password_layout"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
+            app:hintTextColor="@color/white"
             app:helperText="@string/password_rule"
             app:helperTextEnabled="true"
+            app:errorEnabled="true"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white"
             app:helperTextTextAppearance="@style/WhiteRegularText">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_password"
                 android:inputType="textPassword"
+                app:cursorColor="@color/white"
                 android:textAppearance="@style/WhiteRegularText"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
@@ -86,13 +90,12 @@
 
         <!-- Login -->
         <com.google.android.material.button.MaterialButton
+            style="@style/DarkButton"
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_primary"
             android:text="@string/login_btn_text"
-            android:textAppearance="@style/WhiteRegularText"
-            android:textColor="@color/white" />
+             />
 
 
         <!-- Register link -->
