@@ -143,6 +143,7 @@
 
     <!--Next btn-->
     <com.google.android.material.button.MaterialButton
+        style="@style/DarkButton"
         android:id="@+id/next_btn"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
@@ -150,9 +151,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="25dp"
-        android:backgroundTint="@color/md_theme_primary"
         android:text="@string/next"
-        android:textAppearance="@style/WhiteRegularText"
-        android:textColor="@color/white" />
+        />
 
 </RelativeLayout>

@@ -93,6 +93,14 @@
     <string name="apply">Apply</string>
     <string name="suggest_new_category">Suggest new category</string>
     <string name="suggested_categroy_name">Suggested categroy name</string>
+    <string name="choose_location">Choose location</string>
+    <string name="choose_eventtype">Choose event type</string>
+    <string name="choose_category">Choose category</string>
+    <string name="filter_by">Filter By</string>
+    <string name="date">Date</string>
+    <string name="sort_by">Sort By</string>
+    <string name="products">Products</string>
+    <string name="services">Services</string>
 
 
 </resources>
