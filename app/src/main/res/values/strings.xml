@@ -50,7 +50,7 @@
     \n\n\n
     Once you’ve received the email, click on the link, log in and enjoy the great benefits of your new account!
     </string>
-    <string name="back_to_homepage">Back to homepage</string>
+    <string name="back_to_login">Back to login</string>
 
 
     <string name="input_password">Password</string>

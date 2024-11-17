@@ -24,6 +24,7 @@
             app:titleTextAppearance="@style/WhiteRegularText"
             app:title="@string/EventHopper">
 
+
             <!-- Notification icon inside the nav -->
             <ImageView
                 android:id="@+id/notificationIcon"
@@ -35,6 +36,21 @@
                 android:src="@drawable/notifications" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NavHostFragment to manage fragment navigation -->
     <androidx.fragment.app.FragmentContainerView
