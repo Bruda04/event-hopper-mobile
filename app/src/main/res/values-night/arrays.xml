@@ -4,11 +4,30 @@
         <item>0</item>
         <item>100</item>
     </array>
+
     <array name="solution_filter_price">
         <item>0</item>
         <item>100</item>
     </array>
-    <string-array name="locations">Novi Sad, Belgrade, Budapest, Zagreb</string-array>
-    <string-array name="event_types">Wedding, Birthday, Anniversary</string-array>
-    <string-array name="categories">Catering, Decoration, Music</string-array>
+
+    <string-array name="location_dummy">
+        <item>Novi Sad</item>
+        <item>Belgrade</item>
+        <item>Budapest</item>
+        <item>Zagreb</item>
+    </string-array>
+
+    <string-array name="event_types_dummy">
+        <item>Wedding</item>
+        <item>Party</item>
+        <item>Concert</item>
+    </string-array>
+
+    <string-array name="category_dummy">
+        <item>Cakes</item>
+        <item>Firework</item>
+        <item>Catering</item>
+        <item>Decoration</item>
+        <item>Music</item>
+    </string-array>
 </resources>

@@ -13,36 +13,36 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
         android:textColor="@color/white"
-        android:textSize="25dp"
-        android:text="Filter By"
+        android:textSize="25sp"
+        android:text="@string/filter_by"
         android:layout_marginTop="16dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/checkbox_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         >
         <CheckBox
             android:id="@+id/checkbox_products"
-            android:layout_width="wrap_content"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/checkbox_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/checkbox_services"
             android:textAppearance="@style/WhiteRegularText"
-            android:text="Products"/>
+            android:textSize="14sp"
+            android:text="@string/products"/>
 
         <CheckBox
             android:id="@+id/checkbox_services"
-            android:layout_width="wrap_content"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/checkbox_container"
-
             app:layout_constraintStart_toEndOf="@id/checkbox_products"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="14sp"
             android:textAppearance="@style/WhiteRegularText"
-            android:text="Services"/>
+            android:text="@string/services"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -61,7 +61,7 @@
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/locations" />
+            app:simpleItems="@array/location_dummy" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +80,7 @@
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/categories" />
+            app:simpleItems="@array/category_dummy" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,7 +88,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Price"
+        android:text="@string/price"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
@@ -104,19 +104,16 @@
         app:values="@array/solution_filter_price"
         />
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
         android:textColor="@color/white"
-        android:textSize="25dp"
-        android:text="Sort By" />
+        android:textSize="25sp"
+        android:text="@string/sort_by" />
 
     <RadioGroup
         android:id="@+id/sort_group"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <RadioButton
@@ -124,24 +121,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:textSize="16dp"
-            android:text="Date" />
+            android:textSize="16sp"
+            android:text="@string/date" />
         <RadioButton
             android:id="@+id/sort_solutions_by_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:textSize="16dp"
-            android:text="Name" />
+            android:textSize="16sp"
+            android:text="@string/name" />
 
     </RadioGroup>
-
 
     <Button
         android:id="@+id/apply_filters_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Apply"
+        android:text="@string/apply"
         android:layout_gravity="end"
         android:layout_marginTop="16dp" />
 </LinearLayout>

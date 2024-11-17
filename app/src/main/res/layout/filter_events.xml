@@ -33,7 +33,7 @@
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/locations" />
+            app:simpleItems="@array/location_dummy" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,7 +52,7 @@
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/event_types" />
+            app:simpleItems="@array/event_types_dummy" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
