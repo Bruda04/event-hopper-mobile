@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                 startActivity(intent);
             }
+
         });
     }
 
@@ -108,6 +109,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
         startActivity(intent);
+
+
     }
 
     public void backToHomepage(View view){
