@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_blue"
+    tools:context=".activities.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="632dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:src="@drawable/logo" />
+
+        <!-- Welcome text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="24dp"
+            android:text="@string/login_welcome"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteHeaderText" />
+
+        <!--style="?attr/textInputFilledStyle" -->
+        <!-- email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_email_layout"
+            style="@style/BlueBackgroundInputField"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_email_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_email"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_password_layout"
+            style="@style/BlueBackgroundInputField"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white"
+            app:errorEnabled="true"
+            app:helperText="@string/password_rule"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/WhiteRegularText"
+            app:hintTextColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_password"
+                android:inputType="textPassword"
+                android:textAppearance="@style/WhiteRegularText"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:cursorColor="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Error-->
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:fontFamily="@font/poppins_bold"
+            android:text=""
+            android:textColor="@color/md_theme_error" />
+
+
+        <!-- Login -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_button"
+            style="@style/DarkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_btn_text" />
+
+
+        <!-- Register link -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <!-- Register Text -->
+            <TextView
+                android:id="@+id/register_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_dont_have_account"
+                android:textAppearance="@style/WhiteRegularText"
+                android:textColor="@color/white" />
+
+            <!-- Register Link -->
+            <TextView
+                android:id="@+id/register_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onRegisterClick"
+                android:padding="10dp"
+                android:text="@string/register_create_one"
+                android:textAppearance="@style/DarkBoldText"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/continue_without"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="backToHomepage"
+            android:padding="10dp"
+            android:paddingBottom="20dp"
+            android:text="@string/continue_without_an_account"
+            android:textAppearance="@style/DarkBoldText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
