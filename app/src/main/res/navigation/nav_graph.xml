@@ -22,5 +22,47 @@
         android:id="@+id/profile"
         android:name="com.ftn.eventhopper.fragments.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_to_pup_services"
+            app:destination="@id/pup_services" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pup_services"
+        android:name="com.ftn.eventhopper.fragments.services.PupsServicesFragment"
+        android:label="Pup services"
+        tools:layout="@layout/fragment_pups_services" >
+        <action
+            android:id="@+id/action_to_create_service1"
+            app:destination="@id/service_creation1" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/service_creation1"
+        android:name="com.ftn.eventhopper.fragments.services.ServiceCreationData1Fragment"
+        android:label="Service creation first window"
+        tools:layout="@layout/fragment_service_creation_data1" >
+        <action
+            android:id="@+id/action_to_create_service2"
+            app:destination="@id/service_creation2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/service_creation2"
+        android:name="com.ftn.eventhopper.fragments.services.ServiceCreationData2Fragment"
+        android:label="Service creation second window"
+        tools:layout="@layout/fragment_service_creation_data2" >
+    <action
+        android:id="@+id/back_to_pup_services"
+        app:destination="@id/pup_services" />
+    <action
+        android:id="@+id/back_to_service_creation1"
+        app:destination="@id/service_creation1" />
+    </fragment>
+
+
+
 </navigation>

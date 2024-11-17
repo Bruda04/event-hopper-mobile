@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,31 +35,23 @@ public class ServiceCreationData1Fragment extends Fragment {
         nextButton = view.findViewById(R.id.next_button);
 
         // Set click listener for the button
-        nextButton.setOnClickListener(v -> goToServiceCreationData2());
+        nextButton.setOnClickListener(v -> {
+            String serviceName = serviceNameInput.getText().toString();
+            String serviceDescription = serviceDescriptionInput.getText().toString();
+
+
+
+            // Pass data to the next fragment using Bundle
+            Bundle bundle = new Bundle();
+            bundle.putString("serviceName", serviceName);
+            bundle.putString("serviceDescription", serviceDescription);
+
+
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_to_create_service2);
+        });
 
         return view;
     }
 
-    private void goToServiceCreationData2() {
-        // Capture data from input fields
-        String serviceName = serviceNameInput.getText().toString();
-        String serviceDescription = serviceDescriptionInput.getText().toString();
-
-
-
-        // Pass data to the next fragment using Bundle
-        Bundle bundle = new Bundle();
-        bundle.putString("serviceName", serviceName);
-        bundle.putString("serviceDescription", serviceDescription);
-
-
-
-        // Navigate to the next fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        Fragment nextFragment = new ServiceCreationData2Fragment();
-        nextFragment.setArguments(bundle); // Set the bundle on the next fragment
-        transaction.replace(R.id.fragment_container, nextFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

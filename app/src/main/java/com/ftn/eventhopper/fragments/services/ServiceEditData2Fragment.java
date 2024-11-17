@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.activities.PupsServicesActivity;
 
 public class ServiceEditData2Fragment extends Fragment {
 
@@ -40,16 +39,23 @@ public class ServiceEditData2Fragment extends Fragment {
     }
 
     private void goToPupsServicesActivity() {
-        // Navigate to PupsServicesActivity
-        Intent intent = new Intent(getActivity(), PupsServicesActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        PupsServicesFragment pupsServicesFragment = new PupsServicesFragment();
+
+        // Begin the fragment transaction
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+
+        // Optionally, add this transaction to the back stack so that the user can navigate back to the previous fragment
+        transaction.replace(R.id.nav_host_fragment, pupsServicesFragment);  // Replace with your container ID
+        transaction.addToBackStack(null);  // Adds the transaction to the back stack
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     private void goBackToData1Fragment() {
         // Navigate back to ServiceEditData1Fragment
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new ServiceEditData1Fragment());
+        transaction.replace(R.id.nav_host_fragment, new ServiceEditData1Fragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }
