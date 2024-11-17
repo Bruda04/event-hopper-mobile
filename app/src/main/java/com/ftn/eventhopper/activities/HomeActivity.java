@@ -1,6 +1,8 @@
 package com.ftn.eventhopper.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,10 +11,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
 import com.ftn.eventhopper.adapters.ServiceAdapter;
+import com.ftn.eventhopper.fragments.EventsFilterSort;
+import com.ftn.eventhopper.fragments.SolutionsFilterSort;
 import com.ftn.eventhopper.models.Event;
 import com.ftn.eventhopper.models.Service;
 import com.github.islamkhsh.CardSliderViewPager;
@@ -21,6 +26,8 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private Button filterButton_events;
+    private Button filterButton_solutions;
     private ArrayList<Event> loadTop5Events(){
         ArrayList<Event> events = new ArrayList<Event>();
 
@@ -66,6 +73,31 @@ public class HomeActivity extends AppCompatActivity {
 
         CardSliderViewPager cardSliderViewPager2 = (CardSliderViewPager) findViewById(R.id.viewPager2);
         cardSliderViewPager2.setAdapter(new ServiceAdapter(loadTop5Services()));
+
+        filterButton_events = findViewById(R.id.filterButton);
+
+        // Set up the click listener to show the bottom sheet
+        filterButton_events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                EventsFilterSort bottomSheet = new EventsFilterSort();
+                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
+            }
+        });
+
+        filterButton_solutions = findViewById(R.id.filterButtonSolution);
+
+        // Set up the click listener to show the bottom sheet
+        filterButton_solutions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                SolutionsFilterSort bottomSheet = new SolutionsFilterSort();
+                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
+            }
+        });
+
 
 
 

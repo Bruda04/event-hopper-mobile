@@ -10,11 +10,6 @@
         <item>100</item>
     </array>
 
-    <string-array name="availability">
-        <item>Available</item>
-        <item>Not Available</item>
-    </string-array>
-
     <string-array name="location_dummy">
         <item>Novi Sad</item>
         <item>Belgrade</item>
