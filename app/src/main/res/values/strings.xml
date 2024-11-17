@@ -6,6 +6,11 @@
     <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
     <string name="continue_without_an_account">Continue without an account</string>
 
+    <string name="edit_profile">Edit profile</string>
+    <string name="my_events">My events</string>
+    <string name="my_products">My products</string>
+    <string name="my_services">My services</string>
+
     <string name="provide_company_info">Please provide us with information about your company/agency/store/organization.</string>
     <string name="provide_personal_info">Please provide us with some of your personal information</string>
     <string name="registration_text">I wish to be a...</string>

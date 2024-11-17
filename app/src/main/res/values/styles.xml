@@ -12,6 +12,12 @@
     <item name="android:textSize">12sp</item>
 </style>
 
+<style name="DarkLargerText">
+    <item name="android:textColor">@color/text_dark_blue</item>
+    <item name="android:fontFamily">@font/poppins_regular</item>
+    <item name="android:textSize">16sp</item>
+</style>
+
 <style name="DarkBoldText">
     <item name="android:textColor">@color/text_dark_blue</item>
     <item name="android:fontFamily">@font/poppins_bold</item>

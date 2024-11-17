@@ -11,9 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.fragments.Fragment1;
 import com.ftn.eventhopper.fragments.Fragment2;
 import com.ftn.eventhopper.fragments.Fragment3;
+import com.ftn.eventhopper.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostActivity extends AppCompatActivity implements BottomNavigationView
@@ -40,7 +40,7 @@ public class HostActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
     }
 
-    Fragment1 firstFragment = new Fragment1();
+    HomeFragment homeFragment = new HomeFragment();
     Fragment2 secondFragment = new Fragment2();
     Fragment3 thirdFragment = new Fragment3();
 
@@ -53,7 +53,7 @@ public class HostActivity extends AppCompatActivity implements BottomNavigationV
         if(item.getItemId() == R.id.home){
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.content, firstFragment)
+                    .replace(R.id.content, homeFragment)
                     .commit();
             return true;
         }else if(item.getItemId() == R.id.calendar){

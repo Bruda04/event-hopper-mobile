@@ -3,7 +3,7 @@
     <color name="theme_blue">#118AB2</color>
     <color name="darker_blue">#0D5B75</color>
     <color name="light_blue">#E5F9FF</color>
-    <color name="background_beige">#FFFDF5</color>
+    <color name="background_beige">@color/material_dynamic_neutral95</color>
     <color name="text_dark_blue">#073B4C</color>
     <color name="accent_yellow">#FFD166</color>
 
