@@ -11,9 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:textColor="@color/white"
-        android:textSize="25dp"
+        style="@style/WhiteHeaderText"
         android:text="Filter By"
         android:layout_marginTop="16dp" />
 
@@ -57,27 +55,23 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-        <Button
-            android:id="@+id/open_date_picker_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Choose date" />
+    <Button
+        android:id="@+id/open_date_picker_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Choose date" />
 
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:textColor="@color/white"
-        android:textSize="25dp"
+        style="@style/WhiteHeaderText"
         android:text="Sort By" />
 
     <RadioGroup
         android:id="@+id/sort_group"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <RadioButton

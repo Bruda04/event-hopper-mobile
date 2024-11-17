@@ -11,9 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:textColor="@color/white"
-        android:textSize="25sp"
+        style="@style/WhiteHeaderText"
         android:text="@string/filter_by"
         android:layout_marginTop="16dp" />
 
@@ -107,9 +105,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:textColor="@color/white"
-        android:textSize="25sp"
+        style="@style/WhiteHeaderText"
         android:text="@string/sort_by" />
 
     <RadioGroup
