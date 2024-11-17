@@ -1,0 +1,26 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/home">
+
+    <!-- Home Fragment -->
+    <fragment
+        android:id="@+id/home"
+        android:name="com.ftn.eventhopper.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <!-- Calendar Fragment -->
+    <fragment
+        android:id="@+id/calendar"
+        android:name="com.ftn.eventhopper.fragments.Fragment2"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_2" />
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.ftn.eventhopper.fragments.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

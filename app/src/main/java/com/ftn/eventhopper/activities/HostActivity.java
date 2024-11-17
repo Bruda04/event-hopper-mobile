@@ -1,78 +1,58 @@
 package com.ftn.eventhopper.activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
-
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.fragments.Fragment2;
-import com.ftn.eventhopper.fragments.Fragment3;
-import com.ftn.eventhopper.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class HostActivity extends AppCompatActivity implements BottomNavigationView
-        .OnNavigationItemSelectedListener{
+public class HostActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_host);
+
+        // Set up edge-to-edge layout to adjust for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
 
-        bottomNavigationView
-                = findViewById(R.id.bottomNavigationView);
+        // Initialize the BottomNavigationView
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        bottomNavigationView
-                .setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.home);
-    }
-
-    HomeFragment homeFragment = new HomeFragment();
-    Fragment2 secondFragment = new Fragment2();
-    Fragment3 thirdFragment = new Fragment3();
-
-
-    @Override
-    public boolean
-    onNavigationItemSelected(@NonNull MenuItem item)
-    {
-
-        if(item.getItemId() == R.id.home){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content, homeFragment)
-                    .commit();
-            return true;
-        }else if(item.getItemId() == R.id.calendar){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content, secondFragment)
-                    .commit();
-            return true;
-        }else if(item.getItemId() == R.id.profile){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content, thirdFragment)
-                    .commit();
-            return true;
+        // Get the NavController from the NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
         }
 
+        // Ensure the NavController is set up correctly
+        if (navController != null) {
+            // Set up the BottomNavigationView with the NavController
+            NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        return false;
+            // Set the default item for the BottomNavigationView
+            bottomNavigationView.setSelectedItemId(R.id.home);
+        }
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController != null && navController.navigateUp() || super.onSupportNavigateUp();
+    }
 }
