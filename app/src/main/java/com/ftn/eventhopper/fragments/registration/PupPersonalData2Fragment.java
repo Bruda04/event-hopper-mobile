@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,27 +25,22 @@ import com.google.android.material.textfield.TextInputLayout;
      */
 public class PupPersonalData2Fragment extends Fragment {
 
+    private NavController navController;
     private TextInputEditText descriptionField, cityField, addressField;
     private TextInputLayout descriptionLayout, cityLayout, addressLayout;
     private String description, city, address;
 
-    private Button nextBtn;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pup_personal_data2, container, false);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            Log.d("OrganizerPersonalData2", "User data: " + bundle.toString());
-        }
+        navController = NavHostFragment.findNavController(this);
 
         retrieveFields(view);
-        nextBtn = view.findViewById(R.id.next_btn);
 
-        nextBtn.setOnClickListener(v -> {
+        view.findViewById(R.id.next_btn).setOnClickListener(v -> {
             retrieveData();
             if(!validateFields()){
-                handleImageUploadRedirection(bundle);
+                navController.navigate(R.id.action_to_pup_image_upload);
             }
         });
         return view;
@@ -102,22 +99,4 @@ public class PupPersonalData2Fragment extends Fragment {
         return hasError;
     }
 
-
-
-    private void handleImageUploadRedirection(Bundle savedInstanceState) {
-        savedInstanceState.putString("description", description);
-        savedInstanceState.putString("city", city);
-        savedInstanceState.putString("address", address);
-
-
-        // You can now handle the registration logic with these values
-        Log.d("Registration", "User: " + savedInstanceState.toString());
-
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        Fragment fragment = new PupImageUploadFragment();
-        fragment.setArguments(savedInstanceState);
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }
