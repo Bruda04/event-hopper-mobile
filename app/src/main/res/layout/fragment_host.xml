@@ -5,7 +5,7 @@
     android:id="@+id/host"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HostActivity">
+    tools:context=".fragments.HostFragment">
 
     <!-- Top navbar -->
     <com.google.android.material.appbar.AppBarLayout
@@ -39,20 +39,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- NavHostFragment to manage fragment navigation -->
+    <!-- Content container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
