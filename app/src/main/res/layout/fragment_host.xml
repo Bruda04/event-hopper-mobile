@@ -2,10 +2,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/host"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HostActivity">
+    tools:context=".fragments.HostFragment">
 
     <!-- Top navbar -->
     <com.google.android.material.appbar.AppBarLayout
@@ -39,27 +39,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- NavHostFragment to manage fragment navigation -->
+    <!-- Content container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
+        app:navGraph="@navigation/nav_host"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/loginFragment">
+
+    <!-- Login Fragment -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ftn.eventhopper.fragments.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/loginFragment" />
+        <action
+            android:id="@+id/action_login_to_host"
+            app:destination="@id/hostFragment"
+            app:popUpTo="@id/loginFragment" />
+    </fragment>
+
+    <!-- Register Fragment -->
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.ftn.eventhopper.fragments.registration.RegistrationFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_registration">
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/registerFragment" />
+        <action
+            android:id="@+id/action_register_organizer"
+            app:destination="@id/organizerPersonalData1Fragment"
+            app:popUpTo="@id/registerFragment" />
+        <action
+            android:id="@+id/action_register_pup"
+            app:destination="@id/pupPersonalData1Fragment"
+            app:popUpTo="@id/registerFragment" />
+    </fragment>
+
+
+
+    <!-- Organizer registration -->
+    <fragment
+        android:id="@+id/organizerPersonalData1Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.OrganizerPersonalData1Fragment"
+        android:label="OrganizerPersonalData1"
+        tools:layout="@layout/fragment_organizer_personal_data1">
+        <action
+            android:id="@+id/action_to_organizer_data_2"
+            app:destination="@id/organizerPersonalData2Fragment"
+            app:popUpTo="@id/organizerPersonalData1Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/organizerPersonalData2Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.OrganizerPersonalData2Fragment"
+        android:label="OrganizerPersonalData2"
+        tools:layout="@layout/fragment_organizer_personal_data2">
+        <action
+            android:id="@+id/action_to_confirm_email"
+            app:destination="@id/confirmEmail"
+            app:popUpTo="@id/organizerPersonalData2Fragment" />
+    </fragment>
+
+
+    <!-- PUP registration -->
+    <fragment
+        android:id="@+id/pupPersonalData1Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupPersonalData1Fragment"
+        android:label="PupPersonalData1"
+        tools:layout="@layout/fragment_pup_personal_data1">
+        <action
+            android:id="@+id/action_to_pup_data_2"
+            app:destination="@id/pupPersonalData2Fragment"
+            app:popUpTo="@id/pupPersonalData1Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pupPersonalData2Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupPersonalData2Fragment"
+        android:label="PupPersonalData2"
+        tools:layout="@layout/fragment_pup_personal_data2">
+        <action
+            android:id="@+id/action_to_pup_image_upload"
+            app:destination="@id/pupImageUploadFragment"
+            app:popUpTo="@id/pupPersonalData2Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pupImageUploadFragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupImageUploadFragment"
+        android:label="PupImageUpload"
+        tools:layout="@layout/fragment_pup_image_upload">
+        <action
+            android:id="@+id/action_to_confirm_email"
+            app:destination="@id/confirmEmail"
+            app:popUpTo="@id/pupImageUploadFragment" />
+    </fragment>
+
+
+    <!-- Confirm email -->
+    <fragment
+        android:id="@+id/confirmEmail"
+        android:name="com.ftn.eventhopper.fragments.registration.ConfirmEmailFragment"
+        android:label="ConfirmEmail"
+        tools:layout="@layout/fragment_confirm_email">
+        <action
+            android:id="@+id/action_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment" />
+    </fragment>
+
+
+    <!-- Host Activity -->
+    <fragment
+        android:id="@+id/hostFragment"
+        android:name="com.ftn.eventhopper.fragments.HostFragment" />
+</navigation>
