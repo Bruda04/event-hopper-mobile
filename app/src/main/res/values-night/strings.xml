@@ -55,4 +55,6 @@
     <string name="sort_by">Sort By</string>
     <string name="products">Products</string>
     <string name="services">Services</string>
+    <string name="explore_events">Explore events</string>
+    <string name="explore_solutions">Explore services and products</string>
 </resources>
