@@ -49,7 +49,6 @@ public class HomeSolutionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_solutions, container, false);
-        EdgeToEdge.enable(requireActivity());
 
         CardSliderViewPager cardSliderViewPager2 = view.findViewById(R.id.viewPagerSolutions);
         cardSliderViewPager2.setAdapter(new ServiceAdapter(loadTop5Services()));

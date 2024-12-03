@@ -59,7 +59,6 @@ public class HomeEventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_events, container, false);
-        EdgeToEdge.enable(requireActivity());
 
         // Set up the Event and Service sliders
         CardSliderViewPager cardSliderViewPager = view.findViewById(R.id.viewPagerEvents);
@@ -84,8 +83,8 @@ public class HomeEventsFragment extends Fragment {
             return insets;
         });
 
-        return view;
-//        return inflater.inflate(R.layout.fragment_home_events, container, false);
+        //return view;
+        return inflater.inflate(R.layout.fragment_home_events, container, false);
     }
 
     @Override
