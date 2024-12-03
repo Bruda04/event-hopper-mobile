@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.models.Category;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -41,15 +43,32 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
 
         if (categories.get(position).isDeletable()) {
             holder.deleteButton.setOnClickListener(v -> {
-                categories.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, categories.size());
-                Toast.makeText(v.getContext(), "Category deleted", Toast.LENGTH_SHORT).show();
+                MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(v.getContext());
+                confirmDialog.setTitle("Delete category");
+                confirmDialog.setMessage("Are you sure you want to delete this category?");
+                confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+                    categories.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, categories.size());
+                });
+                confirmDialog.show();
             });
         } else {
             holder.deleteButton.setActivated(false);
-            holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.md_theme_onSurfaceVariant));        }
+            holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.md_theme_onSurfaceVariant));
+        }
 
+        holder.editButton.setOnClickListener(v -> {
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_category_creation, null);
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+                dialog.setTitle("Edit category");
+                dialog.setView(dialogView);
+                dialog.setPositiveButton("Save", (dialogInterface, i) -> {
+                });
+                dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
+                });
+                dialog.show();
+        });
     }
 
     @Override

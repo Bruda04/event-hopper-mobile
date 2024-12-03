@@ -13,11 +13,10 @@ import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.AdminsCategoriesAdapter;
-import com.ftn.eventhopper.adapters.AdminsSuggestionsAdapter;
-import com.ftn.eventhopper.adapters.PupServicesAdapter;
 import com.ftn.eventhopper.models.Category;
-import com.ftn.eventhopper.models.CategorySuggestion;
-import com.ftn.eventhopper.models.Service;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -52,6 +51,21 @@ public class AdminsCategoriesManagement extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
+        FloatingActionButton btnAddCategory = view.findViewById(R.id.floating_add_button);
+        btnAddCategory.setOnClickListener(v -> {
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_category_creation, null);
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+                dialog.setTitle("Create category");
+                dialog.setView(dialogView);
+                dialog.setPositiveButton("Create", (dialogInterface, i) -> {
+
+                });
+                dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                });
+                dialog.show();
+        });
 
         return view;
     }

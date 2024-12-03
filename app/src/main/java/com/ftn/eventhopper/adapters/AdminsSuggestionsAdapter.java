@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.models.Category;
 import com.ftn.eventhopper.models.CategorySuggestion;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,31 @@ public class AdminsSuggestionsAdapter extends RecyclerView.Adapter<AdminsSuggest
     public void onBindViewHolder(@NonNull AdminsSuggestionsAdapter.AdminsCategorySuggestionViewHolder holder, int position) {
         holder.categoryName.setText(suggestions.get(position).getName());
         holder.suggestionForProduct.setText(suggestions.get(position).getForProduct());
+
+        holder.approveButton.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(v.getContext());
+            confirmDialog.setTitle("Approve category");
+            confirmDialog.setMessage("Are you sure you want to approve this category?");
+            confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+                suggestions.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, suggestions.size());
+            });
+            confirmDialog.show();
+        });
+
+        holder.editButton.setOnClickListener(v -> {
+            Log.d("Edit", "Edit button clicked");
+            View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_suggestion_edit, null);
+            MaterialAlertDialogBuilder editDialog = new MaterialAlertDialogBuilder(context);
+            editDialog.setView(dialogView);
+            editDialog.setTitle("Edit products category");
+            editDialog.setPositiveButton("Save", (dialog, which) -> {
+            });
+            editDialog.setNegativeButton("Cancel", (dialog, which) -> {
+            });
+            editDialog.show();
+        });
     }
 
     @Override
