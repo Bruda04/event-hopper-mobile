@@ -25,9 +25,13 @@ import java.util.ArrayList;
 
 public class HomeEventsFragment extends Fragment {
 
-
     private Button filterButton_events;
 
+
+
+    public HomeEventsFragment() {
+        // Required empty public constructor
+    }
     private ArrayList<Event> loadTop5Events() {
         ArrayList<Event> events = new ArrayList<>();
 
@@ -47,11 +51,6 @@ public class HomeEventsFragment extends Fragment {
         events.add(event2);
 
         return events;
-    }
-
-
-    public HomeEventsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -76,8 +75,8 @@ public class HomeEventsFragment extends Fragment {
             }
         });
 
-        //return view;
-        return inflater.inflate(R.layout.fragment_home_events, container, false);
+        return view;
+        //return inflater.inflate(R.layout.fragment_home_events, container, false);
     }
 
     @Override

@@ -25,10 +25,11 @@
                 android:fontFamily="@font/poppins_regular"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
+                android:paddingTop="20dp"
                 android:text="@string/top_events_header1"
                 android:textColor="@color/md_theme_secondaryFixedDim_highContrast"
 
-                android:textSize="40sp"
+                android:textSize="30sp"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -44,7 +45,7 @@
                 android:paddingRight="20dp"
                 android:textColor="@color/ic_launcher_background"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
