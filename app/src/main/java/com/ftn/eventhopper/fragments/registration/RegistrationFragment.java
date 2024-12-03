@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
 
@@ -22,17 +20,24 @@ import com.ftn.eventhopper.R;
  * Use the  factory method to
  * create an instance of this fragment.
  */
-public class PupImageUploadFragment extends Fragment {
+// RoleSelectionFragment.java
+public class RegistrationFragment extends Fragment {
 
     private NavController navController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pup_image_upload, container, false);
+        View view = inflater.inflate(R.layout.fragment_registration, container, false);
         navController = NavHostFragment.findNavController(this);
 
-        view.findViewById(R.id.next_btn).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_confirm_email);
+        view.findViewById(R.id.organizer_btn).setOnClickListener(v -> {
+            Log.d("Registration", "Organizer button clicked");
+            navController.navigate(R.id.action_register_organizer);
+        });
+
+        view.findViewById(R.id.pup_btn).setOnClickListener(v -> {
+            Log.d("Registration", "Pup button clicked");
+            navController.navigate(R.id.action_register_pup);
         });
 
         return view;

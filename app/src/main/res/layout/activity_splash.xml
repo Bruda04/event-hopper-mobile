@@ -5,25 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.SplashActivity"
-    android:background="#118AB2">
+    android:background="@color/theme_blue">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="287dp"
-        android:layout_height="284dp"
-        app:srcCompat="@mipmap/ic_launcher_foreground"
+        android:layout_width="355dp"
+        android:layout_height="475dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
         android:contentDescription="@string/splash_screen_image_description"
-        android:layout_centerInParent="true" />
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="34sp"
         android:layout_below="@id/imageView"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/md_theme_surface"
-        android:layout_marginTop="-40dp"
-        android:fontFamily="@font/poppins_bold" />
+        android:layout_marginTop="-120dp"
+        android:textSize="36dp"
+        android:letterSpacing="0.15"
+        android:text="@string/app_name"
+        android:textAppearance="@style/WhiteHeaderText" />
 </RelativeLayout>
