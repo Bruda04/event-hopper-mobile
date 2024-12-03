@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,9 +25,10 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class OrganizerPersonalData1Fragment extends Fragment {
-    private NavController navController;
+
     private TextInputEditText emailField, nameField, surnameField, passwordField, passwordAgainField;
     private TextInputLayout emailLayout, nameLayout, surnameLayout, passwordLayout, passwordAgainLayout;
+
     private String email, name, surname, password, passwordAgain;
 
     private Button nextButton;
@@ -37,15 +36,14 @@ public class OrganizerPersonalData1Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_personal_data1, container, false);
-        navController = NavHostFragment.findNavController(this);
+
+        nextButton = view.findViewById(R.id.next_btn);
 
         retrieveFields(view);
-
-        view.findViewById(R.id.next_btn).setOnClickListener(v -> {
+        nextButton.setOnClickListener(v -> {
             retrieveData();
-            Log.d("Organizer Page 1", "Next button clicked.");
             if(!validateFields()){
-                navController.navigate(R.id.action_to_organizer_data_2);
+                goToPersonalData2();
             }
         });
 
@@ -145,4 +143,24 @@ public class OrganizerPersonalData1Fragment extends Fragment {
         return matcher.matches();
     }
 
+
+
+    private void goToPersonalData2() {
+        // Pass this data to the next fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        bundle.putString("surname", surname);
+        bundle.putString("email", email);
+        bundle.putString("password", password);
+
+        Log.d("Registration", "User: " + bundle.toString());
+
+        // Navigate to the next fragment
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        Fragment fragment = new OrganizerPersonalData2Fragment();
+        fragment.setArguments(bundle);
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }

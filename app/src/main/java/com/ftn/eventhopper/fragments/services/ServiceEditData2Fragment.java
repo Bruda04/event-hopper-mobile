@@ -17,7 +17,8 @@ import com.ftn.eventhopper.R;
 
 public class ServiceEditData2Fragment extends Fragment {
 
-    private NavController navController;
+    private Button saveButton;
+    private Button backButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,14 +28,22 @@ public class ServiceEditData2Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_edit_data2, container, false);
-        navController = NavHostFragment.findNavController(this);
 
-        view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_pup_services);
+        // Initialize buttons
+        saveButton = view.findViewById(R.id.next_button);
+        backButton = view.findViewById(R.id.back_button);
+
+        // Set up button actions
+        saveButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.pup_services); // Navigate to PupsServicesFragment
 
         });
-        view.findViewById(R.id.back_button).setOnClickListener(v -> {
-            navController.navigate(R.id.back_to_edit_service_1);
+        backButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.service_edit); // Navigate to PupsServicesFragment
+
+
         });
 
         return view;

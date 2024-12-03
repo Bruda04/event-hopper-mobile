@@ -36,16 +36,13 @@
         tools:layout="@layout/fragment_pups_services" >
         <action
             android:id="@+id/action_to_create_service1"
-            app:destination="@id/service_creation1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_creation1" />
         <action
             android:id="@+id/action_to_edit_service"
-            app:destination="@id/service_creation1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_creation1" />
         <action
             android:id="@+id/action_to_service_edit_fragment"
-            app:destination="@id/service_edit1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_edit" />
     </fragment>
 
 
@@ -56,8 +53,7 @@
         tools:layout="@layout/fragment_service_creation_data1" >
         <action
             android:id="@+id/action_to_create_service2"
-            app:destination="@id/service_creation2"
-            app:popUpTo="@id/service_creation1"/>
+            app:destination="@id/service_creation2" />
     </fragment>
 
     <fragment
@@ -65,44 +61,20 @@
         android:name="com.ftn.eventhopper.fragments.services.ServiceCreationData2Fragment"
         android:label="Service creation second window"
         tools:layout="@layout/fragment_service_creation_data2" >
-        <action
-            android:id="@+id/action_to_pup_services"
-            app:destination="@id/pup_services"
-            app:popUpTo="@id/pup_services"/>
-        <action
-            android:id="@+id/back_to_service_creation1"
-            app:destination="@id/service_creation1"
-            app:popUpTo="@id/service_creation2"/>
+    <action
+        android:id="@+id/back_to_pup_services"
+        app:destination="@id/pup_services" />
+    <action
+        android:id="@+id/back_to_service_creation1"
+        app:destination="@id/service_creation1" />
     </fragment>
 
 
     <fragment
-        android:id="@+id/service_edit1"
-        android:name="com.ftn.eventhopper.fragments.services.ServiceEditData1Fragment"
-        android:label="Edit Service 1"
-        tools:layout="@layout/fragment_service_edit_data1">
-        <action
-            android:id="@+id/action_to_edit_service2"
-            app:destination="@id/service_edit2"
-            app:popUpTo="@id/service_edit1"/>
-    </fragment>
-
-
-    <fragment
-        android:id="@+id/service_edit2"
-        android:name="com.ftn.eventhopper.fragments.services.ServiceEditData2Fragment"
-        android:label="Edit Service 2"
-        tools:layout="@layout/fragment_service_edit_data2">
-        <action
-            android:id="@+id/action_to_pup_services"
-            app:destination="@id/pup_services"
-            app:popUpTo="@id/pup_services"/>
-
-        <action
-            android:id="@+id/back_to_edit_service_1"
-            app:destination="@id/service_edit1"
-            app:popUpTo="@id/service_edit2"/>
-    </fragment>
+        android:id="@+id/service_edit"
+        android:name="com.ftn.eventhopper.fragments.services.ServiceEditFragment"
+        android:label="Edit Service"
+        tools:layout="@layout/fragment_service_edit" />
 
 
 </navigation>

@@ -43,7 +43,7 @@ public class ServiceCreationData2Fragment extends Fragment {
         // Set up button actions
         createButton.setOnClickListener(v -> {
             NavController navController = NavHostFragment.findNavController(this);
-            navController.navigate(R.id.action_to_pup_services);
+            navController.navigate(R.id.back_to_pup_services);
         });
         backButton.setOnClickListener(v -> {
             NavController navController = NavHostFragment.findNavController(this);

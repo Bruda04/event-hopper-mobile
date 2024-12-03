@@ -4,9 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,18 +21,33 @@ import com.ftn.eventhopper.R;
  */
 public class PupImageUploadFragment extends Fragment {
 
-    private NavController navController;
+    private Button nextBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pup_image_upload, container, false);
-        navController = NavHostFragment.findNavController(this);
 
-        view.findViewById(R.id.next_btn).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_confirm_email);
-        });
+
+
+        nextBtn = view.findViewById(R.id.next_btn);
+
+        nextBtn.setOnClickListener(v -> handleRegistration(savedInstanceState));
 
         return view;
     }
 
+    private void handleRegistration(Bundle savedInstanceState) {
+
+
+
+        // You can now handle the registration logic with these values
+        //Log.d("Registration", "User: " + savedInstanceState.toString());
+
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        Fragment fragment = new ConfirmEmailFragment();
+        fragment.setArguments(savedInstanceState);
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }

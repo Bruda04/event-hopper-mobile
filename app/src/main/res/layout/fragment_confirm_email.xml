@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_blue"
-    tools:context=".fragments.LoginFragment">
+    tools:context=".activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:textAppearance="@style/WhiteRegularText"
             />
 
-        <!-- back to login -->
+        <!-- back to homepage -->
         <com.google.android.material.button.MaterialButton
             style="@style/DarkButton"
             android:id="@+id/login_btn"
