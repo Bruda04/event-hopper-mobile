@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tabLayout = view.findViewById(R.id.tabLayout);
+        tabLayout = view.findViewById(R.id.home_tab_layout);
         viewPager2 = view.findViewById(R.id.viewPager);
         adapter = new HomeTabsPagerAdapter(getActivity());
         viewPager2.setAdapter(adapter);
