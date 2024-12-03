@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments;
+package com.ftn.eventhopper.fragments.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

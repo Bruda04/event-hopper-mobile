@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments;
+package com.ftn.eventhopper.fragments.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,12 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.datepicker.CalendarConstraints;
-import com.google.android.material.datepicker.MaterialDatePicker;
 
 public class SolutionsFilterSort extends BottomSheetDialogFragment {
 
