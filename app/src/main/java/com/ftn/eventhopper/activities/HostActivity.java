@@ -54,8 +54,8 @@ public class HostActivity extends AppCompatActivity {
                 navController.navigate(R.id.home);
                 return true;
             }else if (item.getItemId() == R.id.calendar){
-                navController.popBackStack(R.id.calendar, true);
-                navController.navigate(R.id.calendar);
+                navController.popBackStack(R.id.adminCatSugManagement, true);
+                navController.navigate(R.id.adminCatSugManagement);
                 return true;
             }else if (item.getItemId() == R.id.profile){
                 navController.popBackStack(R.id.profile, true); // Clear previous back stack if Profile exists

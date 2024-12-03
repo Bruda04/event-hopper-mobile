@@ -17,6 +17,13 @@
         android:label="Calendar"
         tools:layout="@layout/fragment_2" />
 
+    <!-- Home Fragment -->
+    <fragment
+        android:id="@+id/adminCatSugManagement"
+        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagement"
+        android:label="Man"
+        tools:layout="@layout/fragment_admins_categories_suggestions_management" />
+
     <!-- Profile Fragment -->
     <fragment
         android:id="@+id/profile"
