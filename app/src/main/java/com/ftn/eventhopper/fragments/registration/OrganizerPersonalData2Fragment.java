@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,22 +22,26 @@ import com.google.android.material.textfield.TextInputLayout;
  * create an instance of this fragment.
  */
 public class OrganizerPersonalData2Fragment extends Fragment {
-    private NavController navController;
+
     private TextInputEditText phoneField, cityField, addressField;
     private TextInputLayout phoneLayout, cityLayout, addressLayout;
     private String phone, city, address;
+    private Button registerBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_personal_data2, container, false);
-        navController = NavHostFragment.findNavController(this);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Log.d("OrganizerPersonalData2", "User data: " + bundle.toString());
+        }
+        registerBtn = view.findViewById(R.id.register_btn);
 
         retrieveFields(view);
-
-        view.findViewById(R.id.register_btn).setOnClickListener(v -> {
+        registerBtn.setOnClickListener(v -> {
             retrieveData();
             if(!validateFields()){
-                navController.navigate(R.id.action_to_confirm_email);
+                handleRegistration(bundle);
             }
         });
 
@@ -96,5 +98,23 @@ public class OrganizerPersonalData2Fragment extends Fragment {
         }
 
         return hasError;
+    }
+
+
+
+    private void handleRegistration(Bundle savedInstanceState) {
+        savedInstanceState.putString("phone", phone);
+        savedInstanceState.putString("city", city);
+        savedInstanceState.putString("address", address);
+
+
+        Log.d("Registration", "User: " + savedInstanceState.toString());
+
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        Fragment fragment = new ConfirmEmailFragment();
+        fragment.setArguments(savedInstanceState);
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
