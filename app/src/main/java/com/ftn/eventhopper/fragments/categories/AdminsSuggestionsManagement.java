@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.adapters.AdminsCategoriesAdapter;
 import com.ftn.eventhopper.adapters.AdminsSuggestionsAdapter;
-import com.ftn.eventhopper.models.Category;
 import com.ftn.eventhopper.models.CategorySuggestion;
 
 import java.util.ArrayList;

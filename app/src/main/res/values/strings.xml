@@ -101,6 +101,10 @@
     <string name="sort_by">Sort By</string>
     <string name="products">Products</string>
     <string name="services">Services</string>
+    <string name="for_product">For product:</string>
+    <string name="categories">Categories</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="create_category_button">create category button</string>
 
 
 </resources>

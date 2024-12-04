@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.AdminsCategoriesAdapter;
 import com.ftn.eventhopper.models.Category;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

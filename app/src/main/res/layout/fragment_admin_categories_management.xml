@@ -22,7 +22,7 @@
         android:id="@+id/floating_add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="create category button"
+        android:contentDescription="@string/create_category_button"
         android:layout_margin="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

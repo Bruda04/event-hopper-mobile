@@ -39,7 +39,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:text="For product: " />
+                    android:text="@string/for_product" />
 
                 <TextView
                     android:id="@+id/admins_category_suggestion_for_product"
