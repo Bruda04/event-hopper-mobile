@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/home">
 
+    <!-- Notifications Fragment -->
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.ftn.eventhopper.fragments.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" />
+
     <!-- Home Fragment -->
     <fragment
         android:id="@+id/home"

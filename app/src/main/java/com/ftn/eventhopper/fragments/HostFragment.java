@@ -71,5 +71,10 @@ public class HostFragment extends Fragment {
                 return false;
             });
         }
+
+        View notificationIcon = view.findViewById(R.id.notificationIcon);
+        notificationIcon.setOnClickListener(v -> {
+            navController.navigate(R.id.notificationsFragment);
+        });
     }
 }
