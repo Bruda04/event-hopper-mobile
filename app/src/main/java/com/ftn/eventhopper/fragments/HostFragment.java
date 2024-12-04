@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
@@ -11,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.ftn.eventhopper.R;
@@ -71,5 +74,27 @@ public class HostFragment extends Fragment {
                 return false;
             });
         }
+
+        Button notificationButton = view.findViewById(R.id.notificationIcon);
+        notificationButton.setOnClickListener(v -> {
+            NavDestination dest = navController.getCurrentDestination();
+
+            if (dest != null && dest.getId() == R.id.notificationsFragment) {
+                navController.popBackStack(R.id.notificationsFragment, true);
+                notificationButton.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+            } else {
+                navController.navigate(R.id.notificationsFragment);
+                notificationButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
+            }
+        });
+
+        // Observe navigation changes to update the button's background dynamically
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.notificationsFragment) {
+                notificationButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
+            } else {
+                notificationButton.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+            }
+        });
     }
 }

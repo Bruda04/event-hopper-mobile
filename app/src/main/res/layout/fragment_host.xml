@@ -26,14 +26,15 @@
 
 
             <!-- Notification icon inside the nav -->
-            <ImageView
+            <Button
                 android:id="@+id/notificationIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:tint="@color/white"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/notifications"
+                app:iconTint="@color/white"
                 android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/notifications" />
+                android:layout_marginEnd="16dp"/>
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -64,4 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
