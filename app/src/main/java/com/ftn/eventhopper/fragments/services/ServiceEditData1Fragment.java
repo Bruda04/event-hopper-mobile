@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,12 @@ public class ServiceEditData1Fragment extends Fragment {
     private EditText serviceNameInput, serviceDescriptionInput;
     private TextInputEditText serviceReservationWindowInput, serviceDurationInput, serviceCancellationWindowInput;
 
-
-    private Button nextButton;
+    private NavController navController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_edit_data1, container, false);
+        navController = NavHostFragment.findNavController(this);
 
         // Find input fields and the next button
         serviceNameInput = view.findViewById(R.id.service_name);
@@ -32,36 +34,14 @@ public class ServiceEditData1Fragment extends Fragment {
         serviceReservationWindowInput = view.findViewById(R.id.reservation_window);
         serviceDurationInput = view.findViewById(R.id.duration);
 
-        nextButton = view.findViewById(R.id.next_button);
 
         // Set click listener for the button
-        nextButton.setOnClickListener(v -> goToServiceCreationData2());
+        view.findViewById(R.id.next_button).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_edit_service2);
+        });
 
         return view;
     }
 
-    private void goToServiceCreationData2() {
-        // Capture data from input fields
-        String serviceName = serviceNameInput.getText().toString();
-        String serviceDescription = serviceDescriptionInput.getText().toString();
-        String serviceReservationWindow = serviceReservationWindowInput.getText().toString();
-        String serviceDuration = serviceDurationInput.getText().toString();
 
-
-        // Pass data to the next fragment using Bundle
-        Bundle bundle = new Bundle();
-        bundle.putString("serviceName", serviceName);
-        bundle.putString("serviceDescription", serviceDescription);
-        bundle.putString("serviceReservationWindow", serviceReservationWindow);
-        bundle.putString("serviceDuration", serviceDuration);
-
-
-        // Navigate to the next fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        Fragment nextFragment = new ServiceEditData2Fragment();
-        nextFragment.setArguments(bundle); // Set the bundle on the next fragment
-        transaction.replace(R.id.fragment_container, nextFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }
