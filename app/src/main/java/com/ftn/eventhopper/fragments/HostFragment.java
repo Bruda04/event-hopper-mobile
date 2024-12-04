@@ -73,8 +73,18 @@ public class HostFragment extends Fragment {
         }
 
         View notificationIcon = view.findViewById(R.id.notificationIcon);
-        notificationIcon.setOnClickListener(v -> {
-            navController.navigate(R.id.notificationsFragment);
+        notificationIcon.setOnClickListener(new View.OnClickListener() {
+            private boolean notificationsVisible = false;
+
+            @Override
+            public void onClick(View v) {
+                if (notificationsVisible) {
+                    navController.popBackStack(R.id.notificationsFragment, true);
+                } else {
+                    navController.navigate(R.id.notificationsFragment);
+                }
+                notificationsVisible = !notificationsVisible;
+            }
         });
     }
 }
