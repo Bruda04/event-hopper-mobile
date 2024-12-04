@@ -45,6 +45,11 @@ public class ProfileFragment extends Fragment {
             // Navigate using the action defined in the NavGraph
             navController.navigate(R.id.action_to_pup_services);
         });
+
+        view.findViewById(R.id.ListItemCategories).setOnClickListener(v -> {
+            // Navigate using the action defined in the NavGraph
+            navController.navigate(R.id.action_to_manage_categories);
+        });
         return view;
     }
 }
