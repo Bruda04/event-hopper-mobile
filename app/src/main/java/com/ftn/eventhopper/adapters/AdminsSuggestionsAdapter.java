@@ -50,6 +50,8 @@ public class AdminsSuggestionsAdapter extends RecyclerView.Adapter<AdminsSuggest
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, suggestions.size());
             });
+            confirmDialog.setNegativeButton("No", (dialog, which) -> {
+            });
             confirmDialog.show();
         });
 

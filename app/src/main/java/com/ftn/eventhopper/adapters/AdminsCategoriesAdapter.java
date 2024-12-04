@@ -50,6 +50,8 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, categories.size());
                 });
+                confirmDialog.setNegativeButton("No", (dialog, which) -> {
+                });
                 confirmDialog.show();
             });
         } else {
