@@ -14,6 +14,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.models.Category;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,12 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
 
         holder.editButton.setOnClickListener(v -> {
                 View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_category_creation, null);
+
+                TextInputEditText nameInput = dialogView.findViewById(R.id.category_name);
+                TextInputEditText descriptionInput = dialogView.findViewById(R.id.category_description);
+                nameInput.setText(categories.get(position).getName());
+                descriptionInput.setText(categories.get(position).getDescription());
+
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
                 dialog.setTitle("Edit category");
                 dialog.setView(dialogView);

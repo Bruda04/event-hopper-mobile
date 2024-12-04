@@ -54,7 +54,6 @@ public class AdminsSuggestionsAdapter extends RecyclerView.Adapter<AdminsSuggest
         });
 
         holder.editButton.setOnClickListener(v -> {
-            Log.d("Edit", "Edit button clicked");
             View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_suggestion_edit, null);
             MaterialAlertDialogBuilder editDialog = new MaterialAlertDialogBuilder(context);
             editDialog.setView(dialogView);
