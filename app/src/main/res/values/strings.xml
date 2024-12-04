@@ -105,6 +105,8 @@
     <string name="categories">Categories</string>
     <string name="suggestions">Suggestions</string>
     <string name="create_category_button">create category button</string>
+    <string name="explore_events">Events</string>
+    <string name="explore_solutions">Services/products</string>
 
 
 </resources>

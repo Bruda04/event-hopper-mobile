@@ -1,37 +1,33 @@
-package com.ftn.eventhopper.fragments;
+package com.ftn.eventhopper.fragments.home;
 
 import android.os.Bundle;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
-import com.ftn.eventhopper.adapters.ServiceAdapter;
 import com.ftn.eventhopper.models.Event;
-import com.ftn.eventhopper.models.Service;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+
+public class HomeEventsFragment extends Fragment {
 
     private Button filterButton_events;
-    private Button filterButton_solutions;
 
-    public HomeFragment() {
+
+
+    public HomeEventsFragment() {
         // Required empty public constructor
     }
-
     private ArrayList<Event> loadTop5Events() {
         ArrayList<Event> events = new ArrayList<>();
 
@@ -53,30 +49,16 @@ public class HomeFragment extends Fragment {
         return events;
     }
 
-    private ArrayList<Service> loadTop5Services() {
-        ArrayList<Service> services = new ArrayList<>();
-        Service service = new Service(
-                ContextCompat.getDrawable(getContext(), R.drawable.slani_ketering_2022_postavka),
-                getString(R.string.catering_title),
-                getString(R.string.catering_secondary),
-                getString(R.string.catering_description)
-        );
-        services.add(service);
-        return services;
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        EdgeToEdge.enable(requireActivity());
+        View view = inflater.inflate(R.layout.fragment_home_events, container, false);
 
         // Set up the Event and Service sliders
-        CardSliderViewPager cardSliderViewPager = view.findViewById(R.id.viewPager);
+        CardSliderViewPager cardSliderViewPager = view.findViewById(R.id.viewPagerEvents);
         cardSliderViewPager.setAdapter(new EventAdapter(loadTop5Events()));
 
-        CardSliderViewPager cardSliderViewPager2 = view.findViewById(R.id.viewPager2);
-        cardSliderViewPager2.setAdapter(new ServiceAdapter(loadTop5Services()));
 
         // Set up filter button for events
         filterButton_events = view.findViewById(R.id.filterButton);
@@ -89,25 +71,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Set up filter button for solutions
-        filterButton_solutions = view.findViewById(R.id.filterButtonSolution);
-        filterButton_solutions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                SolutionsFilterSort bottomSheet = new SolutionsFilterSort();
-                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
-            }
-        });
-
-        // Apply window insets for padding adjustment
-        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         return view;
+        //return inflater.inflate(R.layout.fragment_home_events, container, false);
     }
 
     @Override
