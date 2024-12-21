@@ -1,9 +1,17 @@
 package com.ftn.eventhopper.clients;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
 
 import com.ftn.eventhopper.BuildConfig;
+import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
+import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
+import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -16,9 +24,17 @@ public class ClientUtils {
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(setupGson()))
             .client(setupClient())
             .build();
+
+    private static Gson setupGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+                .create();
+    }
 
     public static OkHttpClient setupClient(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -33,5 +49,5 @@ public class ClientUtils {
         return client;
     }
 
-    //public static ProductService productService = retrofit.create(ProductService.class);
+//    public static ProductService productService = retrofit.create(ProductService.class);
 }
