@@ -63,4 +63,7 @@
     <string name="categories">Categories</string>
     <string name="suggestions">Suggestions</string>
     <string name="create_category_button">create category button</string>
+    <string name="unavailable">UNAVAILABLE</string>
+    <string name="image">Image</string>
+    <string name="profile_picture">profile picture</string>
 </resources>

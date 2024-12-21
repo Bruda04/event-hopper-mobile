@@ -109,6 +109,9 @@
     <string name="create_category_button">create category button</string>
     <string name="explore_events">Events</string>
     <string name="explore_solutions">Services/products</string>
+    <string name="unavailable">UNAVAILABLE</string>
+    <string name="image">Image</string>
+    <string name="profile_picture">profile picture</string>
 
 
 </resources>

@@ -21,7 +21,7 @@ public class SolutionDetailsDTO {
     private UUID id;
     private String name;
     private String description;
-    private boolean isAvailable;
+    private boolean available;
     private SimplePriceDTO price;
     private SimpleCategoryDTO category;
     private Collection<SimpleEventTypeDTO> eventTypes;
@@ -29,7 +29,7 @@ public class SolutionDetailsDTO {
     private double rating;
     private Collection<SimpleCommentDTO> comments;
     private SimpleServiceProviderDTO provider;
-    private boolean isService;
+    private boolean service;
     private int durationMinutes;
     private int reservationWindowDays;
     private int cancellationWindowDays;
