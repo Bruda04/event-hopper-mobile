@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.models;
+package com.ftn.eventhopper.shared.models;
 
 import java.time.LocalDateTime;
 

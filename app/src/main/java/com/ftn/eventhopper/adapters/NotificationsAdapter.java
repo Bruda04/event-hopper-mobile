@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.models.Notification;
+import com.ftn.eventhopper.shared.models.Notification;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

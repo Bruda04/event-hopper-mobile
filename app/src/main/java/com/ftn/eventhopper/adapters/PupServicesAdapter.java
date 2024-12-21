@@ -2,7 +2,6 @@ package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.models.Service;
+import com.ftn.eventhopper.shared.models.Service;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;

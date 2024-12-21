@@ -1,6 +1,5 @@
 package com.ftn.eventhopper.fragments.services;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.PupServicesAdapter;
-import com.ftn.eventhopper.models.Service;
+import com.ftn.eventhopper.shared.models.Service;
 import com.ftn.eventhopper.fragments.filters.BottomSheetPupServicesFilterSort;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

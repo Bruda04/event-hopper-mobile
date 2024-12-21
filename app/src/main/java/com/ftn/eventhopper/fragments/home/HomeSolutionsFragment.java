@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ServiceAdapter;
-import com.ftn.eventhopper.models.Service;
+import com.ftn.eventhopper.shared.models.Service;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
