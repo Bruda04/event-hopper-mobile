@@ -51,4 +51,5 @@ public class ClientUtils {
     }
 
     public static ProductService productService = retrofit.create(ProductService.class);
+
 }
