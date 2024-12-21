@@ -88,7 +88,7 @@
             <!-- View More Button -->
             <com.google.android.material.button.MaterialButton
                 style="@style/DarkButton"
-                android:id="@+id/pups_service_card_button"
+                android:id="@+id/pups_service_card_view_more_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="8dp"
