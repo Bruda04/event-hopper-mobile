@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.services.ServiceCreationData1Fragment"
+    tools:context=".fragments.solutions.services.ServiceCreationData1Fragment"
     android:background="@color/material_dynamic_neutral95"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 

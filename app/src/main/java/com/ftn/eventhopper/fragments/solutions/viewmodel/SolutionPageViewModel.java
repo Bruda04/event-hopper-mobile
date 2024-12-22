@@ -1,9 +1,13 @@
 package com.ftn.eventhopper.fragments.solutions.viewmodel;
 
+import android.os.Bundle;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.NavController;
 
+import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
@@ -42,5 +46,58 @@ public class SolutionPageViewModel extends ViewModel {
                 errorMessage.postValue(t.getMessage());
             }
         });
+    }
+
+    public void toggleFavorite() {
+        SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
+        if (solutionDetails != null) {
+            if (!solutionDetails.isFavorite())  {
+                Call<Void> call = ClientUtils.profileService.addSolutionToFavorites(solutionDetails.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            errorMessage.postValue("Failed to add favorite. Code: " + response.code());
+                        } else {
+                            solutionDetails.setFavorite(true);
+                            solutionDetailsLiveData.postValue(solutionDetails);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        errorMessage.postValue(t.getMessage());
+                    }
+                });
+            } else {
+                Call<Void> call = ClientUtils.profileService.removeSolutionFromFavorites(solutionDetails.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            errorMessage.postValue("Failed to remove favorite. Code: " + response.code());
+                        } else {
+                            solutionDetails.setFavorite(false);
+                            solutionDetailsLiveData.postValue(solutionDetails);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        errorMessage.postValue(t.getMessage());
+                    }
+                });
+            }
+        }
+    }
+
+    public void goToProviderPage(NavController navController) {
+        SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
+        if (solutionDetails != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("id", solutionDetails.getProvider().getId().toString());
+            navController.navigate(R.id.action_to_provider_page, bundle);
+        }
+
     }
 }

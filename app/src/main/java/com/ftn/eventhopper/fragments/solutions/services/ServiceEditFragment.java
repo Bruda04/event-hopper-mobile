@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments.services;
+package com.ftn.eventhopper.fragments.solutions.services;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,13 +14,13 @@ import androidx.fragment.app.Fragment;
 
 import com.ftn.eventhopper.R;
 
-public class ServiceCreationFragment extends Fragment {
+public class ServiceEditFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for the fragment
-        return inflater.inflate(R.layout.fragment_service_creation, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_service_edit, container, false);
     }
 
     @Override
@@ -34,10 +34,10 @@ public class ServiceCreationFragment extends Fragment {
             return insets;
         });
 
-        // Replace fragment container with initial fragment
+        // Replace the fragment container with the initial fragment
         if (savedInstanceState == null) {
             getChildFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new ServiceCreationData1Fragment())
+                    .replace(R.id.fragment_container, new ServiceEditData1Fragment())
                     .commit();
         }
     }

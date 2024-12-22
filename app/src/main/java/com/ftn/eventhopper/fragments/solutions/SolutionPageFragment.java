@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +37,7 @@ public class SolutionPageFragment extends Fragment {
     private static final String ARG_ID = "id";
 
     private SolutionPageViewModel viewModel;
+    private NavController navController;
 
     private UUID id;
 
@@ -47,6 +50,7 @@ public class SolutionPageFragment extends Fragment {
     private TextView reservationWindow;
     private TextView cancellationWindow;
     private TextView provider;
+    private TextView providerName;
     private TextView finalPrice;
     private TextView discount;
     private TextView oldPrice;
@@ -54,6 +58,7 @@ public class SolutionPageFragment extends Fragment {
     private TextView availability;
 
     private RecyclerView comments;
+    private ImageView favoriteButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -67,8 +72,8 @@ public class SolutionPageFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(SolutionPageViewModel.class);
 
         if (getArguments() != null) {
-            UUID productId = UUID.fromString(getArguments().getString(ARG_ID));
-            viewModel.fetchSolutionDetailsById(productId);
+            id = UUID.fromString(getArguments().getString(ARG_ID));
+            viewModel.fetchSolutionDetailsById(id);
 
             imageSlider = view.findViewById(R.id.solution_image_slider);
             name = view.findViewById(R.id.solution_name);
@@ -78,13 +83,15 @@ public class SolutionPageFragment extends Fragment {
             duration = view.findViewById(R.id.solution_duration);
             reservationWindow = view.findViewById(R.id.solution_reservation_window);
             cancellationWindow = view.findViewById(R.id.solution_cancellation_window);
-            provider = view.findViewById(R.id.solution_provider_name);
+            provider = view.findViewById(R.id.solution_provider_label);
+            providerName = view.findViewById(R.id.solution_provider_name);
             finalPrice = view.findViewById(R.id.solution_final_price);
             discount = view.findViewById(R.id.solution_discount);
             oldPrice = view.findViewById(R.id.solution_old_price);
             rating = view.findViewById(R.id.solution_rating);
             availability = view.findViewById(R.id.solution_availability);
             comments = view.findViewById(R.id.solution_comments_recyclerview);
+            favoriteButton = view.findViewById(R.id.solution_favorite);
         }
 
         viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), product -> {
@@ -99,6 +106,8 @@ public class SolutionPageFragment extends Fragment {
                 Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
+
+        navController = NavHostFragment.findNavController(this);
 
         return view;
     }
@@ -127,7 +136,16 @@ public class SolutionPageFragment extends Fragment {
             reservationWindow.setVisibility(View.GONE);
             cancellationWindow.setVisibility(View.GONE);
         }
-        provider.setText(product.getProvider().getName());
+
+        if (product.isService()) {
+            provider.setText(R.string.service_provider);
+
+        } else {
+            provider.setText(R.string.product_provider);
+        }
+
+        providerName.setText(product.getProvider().getName());
+
 
         finalPrice.setText(String.format("%.2f€", product.getPrice().getFinalPrice()));
         discount.setText(String.format("%.2f%%", product.getPrice().getDiscount()));
@@ -157,6 +175,20 @@ public class SolutionPageFragment extends Fragment {
         comments.setLayoutManager(layoutManager);
         comments.setItemAnimator(new DefaultItemAnimator());
         comments.setAdapter(commentsAdapter);
+
+        if (product.isFavorite()) {
+            favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
+        } else {
+            favoriteButton.setColorFilter(getResources().getColor(R.color.grey));
+        }
+
+        favoriteButton.setOnClickListener(v -> {
+            viewModel.toggleFavorite();
+        });
+
+        providerName.setOnClickListener(v -> {
+            viewModel.goToProviderPage(navController);
+        });
     }
 
 }

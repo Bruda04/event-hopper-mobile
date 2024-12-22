@@ -33,4 +33,5 @@ public class SolutionDetailsDTO {
     private int durationMinutes;
     private int reservationWindowDays;
     private int cancellationWindowDays;
+    private boolean favorite;
 }

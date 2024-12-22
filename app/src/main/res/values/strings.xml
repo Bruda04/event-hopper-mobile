@@ -112,6 +112,9 @@
     <string name="unavailable">UNAVAILABLE</string>
     <string name="image">Image</string>
     <string name="profile_picture">profile picture</string>
+    <string name="favorites_icon">favorites icon</string>
+    <string name="product_provider">"Product provider: "</string>
+    <string name="service_provider">"Service provider: "</string>
 
 
 </resources>
