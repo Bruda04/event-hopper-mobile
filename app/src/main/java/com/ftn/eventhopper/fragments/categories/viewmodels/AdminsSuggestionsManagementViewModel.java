@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
+import com.ftn.eventhopper.shared.dtos.categories.UpdateCategorySuggestionDTO;
+import com.ftn.eventhopper.shared.models.categories.CategoryStatus;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -54,7 +56,26 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
 
 
 
-    public void rejectSuggestion(UUID id) {
+    public void rejectSuggestion(UUID id, UUID selectedCategoryId) {
+        UpdateCategorySuggestionDTO reject = new UpdateCategorySuggestionDTO();
+        reject.setStatus(CategoryStatus.REJECTED);
+
+        Call<Void> call = ClientUtils.categoriesService.approveCategory(id, reject);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchSuggestions();
+                } else {
+                    errorMessage.postValue("Failed to reject suggestion. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
     }
 
     public void fetchApprovedCategories() {
@@ -72,6 +93,28 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<ArrayList<CategoryDTO>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
+    public void approveSuggestion(UUID id) {
+        UpdateCategorySuggestionDTO approve = new UpdateCategorySuggestionDTO();
+        approve.setStatus(CategoryStatus.APPROVED);
+
+        Call<Void> call = ClientUtils.categoriesService.approveCategory(id, approve);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchSuggestions();
+                } else {
+                    errorMessage.postValue("Failed to approve suggestion. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });

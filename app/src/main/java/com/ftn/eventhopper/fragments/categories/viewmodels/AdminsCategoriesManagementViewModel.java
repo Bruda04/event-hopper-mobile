@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
+import com.ftn.eventhopper.shared.dtos.categories.CreateCategoryDTO;
+import com.ftn.eventhopper.shared.dtos.categories.UpdateCategoryDTO;
+import com.ftn.eventhopper.shared.models.categories.CategoryStatus;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -47,8 +50,69 @@ public class AdminsCategoriesManagementViewModel extends ViewModel {
     }
 
     public void deleteCategory(UUID id) {
+        Call<Void> call = ClientUtils.categoriesService.deleteCategory(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchApprovedCategories();
+                } else {
+                    errorMessage.postValue("Failed to delete category. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
     }
 
-    public void editCategory(UUID id, String name, String description) {
+    public void editCategory(UUID id, String name, String description, ArrayList<UUID> eventTypesIds, CategoryStatus status) {
+        UpdateCategoryDTO updateCategoryDTO  = new UpdateCategoryDTO();
+        updateCategoryDTO.setName(name);
+        updateCategoryDTO.setDescription(description);
+        updateCategoryDTO.setEventTypesIds(eventTypesIds);
+        updateCategoryDTO.setStatus(status);
+
+        Call<Void> call = ClientUtils.categoriesService.updateCategory(id, updateCategoryDTO);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchApprovedCategories();
+                } else {
+                    errorMessage.postValue("Failed to edit category. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
+    public void createCategory(String categoryName, String categoryDescription) {
+        CreateCategoryDTO createCategoryDTO = new CreateCategoryDTO();
+        createCategoryDTO.setName(categoryName);
+        createCategoryDTO.setDescription(categoryDescription);
+
+        Call<Void> call = ClientUtils.categoriesService.addCategory(createCategoryDTO);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchApprovedCategories();
+                } else {
+                    errorMessage.postValue("Failed to create category. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
     }
 }

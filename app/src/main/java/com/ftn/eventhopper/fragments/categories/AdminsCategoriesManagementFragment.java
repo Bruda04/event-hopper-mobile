@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.categories;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -20,6 +21,8 @@ import com.ftn.eventhopper.fragments.categories.viewmodels.AdminsCategoriesManag
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -63,7 +66,12 @@ public class AdminsCategoriesManagementFragment extends Fragment {
             if (error != null) {
                 Log.e("EventHopper", "Error fetching categories: " + error);
                 statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
+                recyclerView.setVisibility(View.GONE);
                 statusMessage.setVisibility(View.VISIBLE);
+            } else {
+                statusMessage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -85,12 +93,54 @@ public class AdminsCategoriesManagementFragment extends Fragment {
             dialog.setTitle("Create category");
             dialog.setView(dialogView);
             dialog.setPositiveButton("Create", (dialogInterface, i) -> {
-
             });
             dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
                 dialogInterface.dismiss();
             });
-            dialog.show();
+            AlertDialog alertDialog = dialog.create();
+            alertDialog.show();
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
+                if (createCategory(dialogView)) {
+                    alertDialog.dismiss();
+                }
+            });
         });
     }
+
+    private boolean createCategory(View dialogView) {
+        boolean isValid = true;
+
+        // Get references to the input fields
+        TextInputLayout categoryNameLayout = dialogView.findViewById(R.id.category_name_layout);
+        String categoryName = categoryNameLayout != null ? categoryNameLayout.getEditText().getText().toString().trim() : "";
+
+        // Check category name validation
+        if (categoryNameLayout != null && categoryName.isEmpty()) {
+            categoryNameLayout.setError("Category name is required");
+            isValid = false;
+        } else {
+            categoryNameLayout.setError(null); // Clear previous error if any
+        }
+
+        TextInputLayout categoryDescriptionLayout = dialogView.findViewById(R.id.category_description_layout);
+        String categoryDescription = categoryDescriptionLayout != null ? categoryDescriptionLayout.getEditText().getText().toString().trim() : "";
+
+        // Check category description validation
+        if (categoryDescriptionLayout != null && categoryDescription.isEmpty()) {
+            categoryDescriptionLayout.setError("Category description is required");
+            isValid = false;
+        } else {
+            categoryDescriptionLayout.setError(null); // Clear previous error if any
+        }
+
+        // If validation fails, do not close the dialog
+        if (!isValid) {
+            return false; // Do not dismiss the dialog, keep it open
+        }
+
+        // If validation passes, proceed to create the category
+        viewModel.createCategory(categoryName, categoryDescription);
+        return true;
+    }
+
 }

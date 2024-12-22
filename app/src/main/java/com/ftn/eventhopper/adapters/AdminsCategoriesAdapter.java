@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.categories.viewmodels.AdminsCategoriesManagementViewModel;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
+import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategoriesAdapter.AdminsCategoryViewHolder> {
     ArrayList<CategoryDTO> categories;
@@ -47,39 +53,28 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
 
         if (categories.get(position).getEventTypes().isEmpty()) {
             holder.deleteButton.setOnClickListener(v -> {
-                MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(v.getContext());
-                confirmDialog.setTitle("Delete category");
-                confirmDialog.setMessage("Are you sure you want to delete this category?");
-                confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
-                    viewmodel.deleteCategory(categories.get(position).getId());
-                });
-                confirmDialog.setNegativeButton("No", (dialog, which) -> {
-                });
-                confirmDialog.show();
+                setupDeleteDialog(position);
             });
         } else {
             holder.deleteButton.setActivated(false);
-            holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.md_theme_onSurfaceVariant));
+            holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
         }
 
         holder.editButton.setOnClickListener(v -> {
-                View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_category_creation, null);
-
-                TextInputEditText nameInput = dialogView.findViewById(R.id.category_name);
-                TextInputEditText descriptionInput = dialogView.findViewById(R.id.category_description);
-                nameInput.setText(categories.get(position).getName());
-                descriptionInput.setText(categories.get(position).getDescription());
-
-                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-                dialog.setTitle("Edit category");
-                dialog.setView(dialogView);
-                dialog.setPositiveButton("Save", (dialogInterface, i) -> {
-                    viewmodel.editCategory(categories.get(position).getId(), nameInput.getText().toString(), descriptionInput.getText().toString());
-                });
-                dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
-                });
-                dialog.show();
+                setupEditDialog(position);
         });
+    }
+
+    private void setupDeleteDialog(int position) {
+            MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
+            confirmDialog.setTitle("Delete category");
+            confirmDialog.setMessage("Are you sure you want to delete this category?");
+            confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+                viewmodel.deleteCategory(categories.get(position).getId());
+            });
+            confirmDialog.setNegativeButton("No", (dialog, which) -> {
+            });
+            confirmDialog.show();
     }
 
     @Override
@@ -87,6 +82,57 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
         return categories.size();
     }
 
+    private void setupEditDialog(int position) {
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_category_edit, null);
+
+        TextInputLayout nameInput = dialogView.findViewById(R.id.category_name_layout);
+        TextInputLayout descriptionInput = dialogView.findViewById(R.id.category_description_layout);
+
+        Objects.requireNonNull(nameInput.getEditText()).setText(categories.get(position).getName());
+        Objects.requireNonNull(descriptionInput.getEditText()).setText(categories.get(position).getDescription());
+
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+        dialogBuilder.setTitle("Edit category");
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setPositiveButton("Save", (dialogInterface, i) -> {
+        });
+        dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        });
+        AlertDialog editDialog = dialogBuilder.create();
+        editDialog.show();
+        editDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
+            if (nameInput.getEditText().getText().toString().trim().isEmpty()) {
+                nameInput.setError("Category name is required");
+            } else {
+                nameInput.setError(null);
+            }
+
+            if (descriptionInput.getEditText().getText().toString().trim().isEmpty()) {
+                descriptionInput.setError("Category description is required");
+            } else {
+                descriptionInput.setError(null);
+            }
+
+            String name = nameInput.getEditText().getText().toString().trim();
+            String description = descriptionInput.getEditText().getText().toString().trim();
+            ArrayList<UUID> eventTypesIds = categories.get(position).getEventTypes()
+                    .stream()
+                    .map(SimpleEventTypeDTO::getId)
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+            if (nameInput.getError() == null && descriptionInput.getError() == null) {
+                viewmodel.editCategory(
+                        categories.get(position).getId(),
+                        name,
+                        description,
+                        eventTypesIds,
+                        categories.get(position).getStatus()
+                );
+
+                editDialog.dismiss();
+            }
+        });
+    }
 
     public class AdminsCategoryViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryName;

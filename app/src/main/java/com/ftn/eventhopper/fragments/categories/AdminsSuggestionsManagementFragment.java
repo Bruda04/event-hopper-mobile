@@ -19,7 +19,6 @@ import com.ftn.eventhopper.adapters.AdminsSuggestionsAdapter;
 import com.ftn.eventhopper.fragments.categories.viewmodels.AdminsSuggestionsManagementViewModel;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
-import com.ftn.eventhopper.shared.models.CategorySuggestion;
 
 import java.util.ArrayList;
 
@@ -47,11 +46,7 @@ public class AdminsSuggestionsManagementFragment extends Fragment {
         statusMessage.setVisibility(View.VISIBLE);
 
 
-
         viewModel.fetchSuggestions();
-
-
-
         viewModel.getCategorySuggestions().observe(getViewLifecycleOwner(), suggestions -> {
             if (suggestions != null) {
                 statusMessage.setVisibility(View.GONE);
