@@ -47,6 +47,7 @@ public class ServiceProviderPageFragment extends Fragment {
     private TextView companyPhone;
     private TextView companyRating;
     private RecyclerView companyComments;
+    private TextView statusMessage;
 
 
     @Override
@@ -56,6 +57,9 @@ public class ServiceProviderPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_service_provider_page, container, false);
 
         viewModel = new ViewModelProvider(this).get(ServiceProviderPageViewModel.class);
+        statusMessage = view.findViewById(R.id.status_message);
+        statusMessage.setText(R.string.loading_provider_details);
+        statusMessage.setVisibility(View.VISIBLE);
 
         if (getArguments() != null) {
             id = UUID.fromString(getArguments().getString(ARG_ID));
@@ -79,6 +83,7 @@ public class ServiceProviderPageFragment extends Fragment {
 
         viewModel.getProviderDetails().observe(getViewLifecycleOwner(), provider -> {
             if (provider != null) {
+                statusMessage.setVisibility(View.GONE);
                 this.setFieldValues(provider);
             }
         });
@@ -86,7 +91,8 @@ public class ServiceProviderPageFragment extends Fragment {
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
                 Log.e("EventHopper", "Error fetching provider details: " + error);
-                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
+                statusMessage.setVisibility(View.VISIBLE);
             }
         });
 
@@ -139,6 +145,15 @@ public class ServiceProviderPageFragment extends Fragment {
         companyComments.setItemAnimator(new DefaultItemAnimator());
         companyComments.setAdapter(commentsAdapter);
 
+        blockButton.setVisibility(View.VISIBLE);
+        reportButton.setVisibility(View.VISIBLE);
 
+        blockButton.setOnClickListener(v -> {
+            viewModel.blockUser();
+        });
+
+        reportButton.setOnClickListener(v -> {
+            viewModel.reportUser();
+        });
     }
 }

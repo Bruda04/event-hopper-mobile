@@ -36,6 +36,7 @@ public class SolutionPageViewModel extends ViewModel {
             public void onResponse(Call<SolutionDetailsDTO> call, Response<SolutionDetailsDTO> response) {
                 if (response.isSuccessful()) {
                     solutionDetailsLiveData.postValue(response.body());
+
                 } else {
                     errorMessage.postValue("Failed to fetch products. Code: " + response.code());
                 }
@@ -52,41 +53,11 @@ public class SolutionPageViewModel extends ViewModel {
         SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
         if (solutionDetails != null) {
             if (!solutionDetails.isFavorite())  {
-                Call<Void> call = ClientUtils.profileService.addSolutionToFavorites(solutionDetails.getId());
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (!response.isSuccessful()) {
-                            errorMessage.postValue("Failed to add favorite. Code: " + response.code());
-                        } else {
-                            solutionDetails.setFavorite(true);
-                            solutionDetailsLiveData.postValue(solutionDetails);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        errorMessage.postValue(t.getMessage());
-                    }
-                });
+                solutionDetails.setFavorite(true);
+                solutionDetailsLiveData.postValue(solutionDetails);
             } else {
-                Call<Void> call = ClientUtils.profileService.removeSolutionFromFavorites(solutionDetails.getId());
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (!response.isSuccessful()) {
-                            errorMessage.postValue("Failed to remove favorite. Code: " + response.code());
-                        } else {
-                            solutionDetails.setFavorite(false);
-                            solutionDetailsLiveData.postValue(solutionDetails);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        errorMessage.postValue(t.getMessage());
-                    }
-                });
+                solutionDetails.setFavorite(false);
+                solutionDetailsLiveData.postValue(solutionDetails);
             }
         }
     }

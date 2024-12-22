@@ -71,4 +71,7 @@
     <string name="service_provider">"Service provider: "</string>
     <string name="block">BLOCK</string>
     <string name="report">REPORT</string>
+    <string name="oops_something_went_wrong_please_try_again_later">Oops! Something went wrong.\n Please try again later.</string>
+    <string name="loading_provider_details">Loading provider details...</string>
+    <string name="loading_product_service_details">Loading product/service details...</string>
 </resources>

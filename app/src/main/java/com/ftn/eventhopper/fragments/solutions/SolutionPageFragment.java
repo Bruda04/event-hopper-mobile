@@ -57,6 +57,7 @@ public class SolutionPageFragment extends Fragment {
 
     private RecyclerView comments;
     private ImageView favoriteButton;
+    private TextView statusMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -66,6 +67,9 @@ public class SolutionPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_solution_page, container, false);
 
         viewModel = new ViewModelProvider(this).get(SolutionPageViewModel.class);
+        statusMessage = view.findViewById(R.id.status_message);
+        statusMessage.setText(R.string.loading_product_service_details);
+        statusMessage.setVisibility(View.VISIBLE);
 
         if (getArguments() != null) {
             id = UUID.fromString(getArguments().getString(ARG_ID));
@@ -92,6 +96,7 @@ public class SolutionPageFragment extends Fragment {
 
         viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), solution -> {
             if (solution != null) {
+                statusMessage.setVisibility(View.GONE);
                 this.setFieldValues(solution);
             }
         });
@@ -99,7 +104,8 @@ public class SolutionPageFragment extends Fragment {
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
                 Log.e("EventHopper", "Error fetching solution details: " + error);
-                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
+                statusMessage.setVisibility(View.VISIBLE);
             }
         });
 
@@ -144,6 +150,10 @@ public class SolutionPageFragment extends Fragment {
 
 
         finalPrice.setText(String.format("%.2f€", solution.getPrice().getFinalPrice()));
+        if (solution.getPrice().getDiscount() == 0) {
+            discount.setVisibility(View.GONE);
+            oldPrice.setVisibility(View.GONE);
+        }
         discount.setText(String.format("%.2f%%", solution.getPrice().getDiscount()));
         oldPrice.setText(String.format("%.2f€", solution.getPrice().getBasePrice()));
 
@@ -174,6 +184,7 @@ public class SolutionPageFragment extends Fragment {
         comments.setItemAnimator(new DefaultItemAnimator());
         comments.setAdapter(commentsAdapter);
 
+        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_star_24));
         if (solution.isFavorite()) {
             favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
         } else {

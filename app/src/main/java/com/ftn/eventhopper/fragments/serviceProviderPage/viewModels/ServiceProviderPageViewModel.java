@@ -44,4 +44,9 @@ public class ServiceProviderPageViewModel extends ViewModel {
         });
     }
 
+    public void blockUser() {
+    }
+
+    public void reportUser() {
+    }
 }
