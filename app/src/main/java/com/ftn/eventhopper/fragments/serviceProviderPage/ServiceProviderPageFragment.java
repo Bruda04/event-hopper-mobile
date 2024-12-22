@@ -22,7 +22,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
-import com.ftn.eventhopper.fragments.serviceProviderPage.viewModels.ServiceProviderPageViewModel;
+import com.ftn.eventhopper.fragments.serviceProviderPage.viewmodels.ServiceProviderPageViewModel;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 import com.google.android.material.button.MaterialButton;
 

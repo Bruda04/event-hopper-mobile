@@ -1,6 +1,5 @@
-package com.ftn.eventhopper.clients.services;
+package com.ftn.eventhopper.clients.services.users;
 
-import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
 import java.util.UUID;

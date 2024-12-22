@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments.serviceProviderPage.viewModels;
+package com.ftn.eventhopper.fragments.serviceProviderPage.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

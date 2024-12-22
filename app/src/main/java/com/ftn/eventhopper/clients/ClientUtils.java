@@ -4,14 +4,13 @@ package com.ftn.eventhopper.clients;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.concurrent.TimeUnit;
 
 import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
-import com.ftn.eventhopper.clients.services.ProductService;
-import com.ftn.eventhopper.clients.services.ProfileService;
+import com.ftn.eventhopper.clients.services.solutions.ProductService;
+import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.clients.services;
+package com.ftn.eventhopper.clients.services.solutions;
 
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
