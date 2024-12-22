@@ -60,6 +60,12 @@
     <item name="android:textColor">@color/white</item>
 </style>
 
+<style name="RedButton">
+    <item name="android:textAppearance">@style/WhiteRegularText</item>
+    <item name="android:backgroundTint">@color/md_theme_error</item>
+    <item name="android:textColor">@color/white</item>
+</style>
+
 <style name="BlueBackgroundInputField">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>

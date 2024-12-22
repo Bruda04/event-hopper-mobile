@@ -115,6 +115,8 @@
     <string name="favorites_icon">favorites icon</string>
     <string name="product_provider">"Product provider: "</string>
     <string name="service_provider">"Service provider: "</string>
+    <string name="block">BLOCK</string>
+    <string name="report">REPORT</string>
 
 
 </resources>

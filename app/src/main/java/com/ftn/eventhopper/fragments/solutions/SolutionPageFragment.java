@@ -19,11 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
-import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.solutions.viewmodel.SolutionPageViewModel;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
@@ -66,8 +64,6 @@ public class SolutionPageFragment extends Fragment {
                              Bundle savedInstanceState
     ) {
         View view = inflater.inflate(R.layout.fragment_solution_page, container, false);
-        name = view.findViewById(R.id.solution_name);
-
 
         viewModel = new ViewModelProvider(this).get(SolutionPageViewModel.class);
 
@@ -75,7 +71,7 @@ public class SolutionPageFragment extends Fragment {
             id = UUID.fromString(getArguments().getString(ARG_ID));
             viewModel.fetchSolutionDetailsById(id);
 
-            imageSlider = view.findViewById(R.id.solution_image_slider);
+            imageSlider = view.findViewById(R.id.provider_image_slider);
             name = view.findViewById(R.id.solution_name);
             description = view.findViewById(R.id.solution_description);
             category = view.findViewById(R.id.solution_category);
@@ -94,9 +90,9 @@ public class SolutionPageFragment extends Fragment {
             favoriteButton = view.findViewById(R.id.solution_favorite);
         }
 
-        viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), product -> {
-            if (product != null) {
-                this.setFiledValues(product);
+        viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), solution -> {
+            if (solution != null) {
+                this.setFieldValues(solution);
             }
         });
 
@@ -112,50 +108,52 @@ public class SolutionPageFragment extends Fragment {
         return view;
     }
 
-    private void setFiledValues(SolutionDetailsDTO product) {
-        name.setText(product.getName());
-        description.setText(product.getDescription());
-        category.setText(String.format("Category: %s", product.getCategory().getName()));
+    private void setFieldValues(SolutionDetailsDTO solution) {
+        name.setText(solution.getName());
+        description.setText(solution.getDescription());
+        category.setText(String.format("Category: %s", solution.getCategory().getName()));
 
         StringBuilder eventTypesText = new StringBuilder();
         int eventTypeIndex = 0;
-        for (SimpleEventTypeDTO eventType : product.getEventTypes()) {
+        for (SimpleEventTypeDTO eventType : solution.getEventTypes()) {
             eventTypesText.append(eventType.getName());
-            if (eventTypeIndex++ < product.getEventTypes().size() - 1) {
+            if (eventTypeIndex++ < solution.getEventTypes().size() - 1) {
                 eventTypesText.append(", ");
             }
         }
         eventTypes.setText(String.format("Event types: %s", eventTypesText.toString()));
 
-        if (product.isService()) {
-            duration.setText(String.format("Duration: %s minutes",product.getDurationMinutes()));
-            reservationWindow.setText(String.format("Reservation window: %d day(s)", product.getReservationWindowDays()));
-            cancellationWindow.setText(String.format("Cancellation window: %d day(s)", product.getCancellationWindowDays()));
+        if (solution.isService()) {
+            duration.setText(String.format("Duration: %s minutes",solution.getDurationMinutes()));
+            reservationWindow.setText(String.format("Reservation window: %d day(s)", solution.getReservationWindowDays()));
+            cancellationWindow.setText(String.format("Cancellation window: %d day(s)", solution.getCancellationWindowDays()));
         } else {
             duration.setVisibility(View.GONE);
             reservationWindow.setVisibility(View.GONE);
             cancellationWindow.setVisibility(View.GONE);
         }
 
-        if (product.isService()) {
+        if (solution.isService()) {
             provider.setText(R.string.service_provider);
 
         } else {
             provider.setText(R.string.product_provider);
         }
 
-        providerName.setText(product.getProvider().getName());
+        providerName.setText(solution.getProvider().getCompanyName());
 
 
-        finalPrice.setText(String.format("%.2f€", product.getPrice().getFinalPrice()));
-        discount.setText(String.format("%.2f%%", product.getPrice().getDiscount()));
-        oldPrice.setText(String.format("%.2f€", product.getPrice().getBasePrice()));
+        finalPrice.setText(String.format("%.2f€", solution.getPrice().getFinalPrice()));
+        discount.setText(String.format("%.2f%%", solution.getPrice().getDiscount()));
+        oldPrice.setText(String.format("%.2f€", solution.getPrice().getBasePrice()));
 
-        if (!product.isAvailable()) {
+        if (!solution.isAvailable()) {
             availability.setText(R.string.unavailable);
+        } else {
+            availability.setVisibility(View.GONE);
         }
 
-        int filledStars = (int) Math.floor(product.getRating());
+        int filledStars = (int) Math.floor(solution.getRating());
         int emptyStars = 5 - filledStars;
         StringBuilder ratingText = new StringBuilder();
         for (int i = 0; i < filledStars; i++) {
@@ -166,17 +164,17 @@ public class SolutionPageFragment extends Fragment {
         }
         rating.setText(ratingText.toString());
 
-        String[] imageUrls = product.getPictures().toArray(String[]::new);
+        String[] imageUrls = solution.getPictures().toArray(String[]::new);
         ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
         imageSlider.setAdapter(imageSliderAdapter);
 
-        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(product.getComments()));
+        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(solution.getComments()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         comments.setLayoutManager(layoutManager);
         comments.setItemAnimator(new DefaultItemAnimator());
         comments.setAdapter(commentsAdapter);
 
-        if (product.isFavorite()) {
+        if (solution.isFavorite()) {
             favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
         } else {
             favoriteButton.setColorFilter(getResources().getColor(R.color.grey));

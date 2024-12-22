@@ -93,7 +93,7 @@ public class SolutionPageViewModel extends ViewModel {
 
     public void goToProviderPage(NavController navController) {
         SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
-        if (solutionDetails != null) {
+        if (solutionDetails != null && navController != null && solutionDetails.getProvider() != null) {
             Bundle bundle = new Bundle();
             bundle.putString("id", solutionDetails.getProvider().getId().toString());
             navController.navigate(R.id.action_to_provider_page, bundle);
