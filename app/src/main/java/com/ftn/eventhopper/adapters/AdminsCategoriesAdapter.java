@@ -8,10 +8,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.shared.models.Category;
+import com.ftn.eventhopper.fragments.categories.viewmodels.AdminsCategoriesManagementViewModel;
+import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -19,14 +21,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
 public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategoriesAdapter.AdminsCategoryViewHolder> {
-    ArrayList<Category> categories;
+    ArrayList<CategoryDTO> categories;
     Context context;
     private final Fragment fragment;
 
-    public AdminsCategoriesAdapter(Context context, ArrayList<Category> categories, Fragment fragment) {
+    private final AdminsCategoriesManagementViewModel viewmodel;
+
+    public AdminsCategoriesAdapter(Context context, ArrayList<CategoryDTO> categories, Fragment fragment, AdminsCategoriesManagementViewModel viewModel) {
         this.categories = categories;
         this.context = context;
         this.fragment = fragment;
+        this.viewmodel = viewModel;
     }
 
     @NonNull
@@ -40,15 +45,13 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
         holder.categoryName.setText(categories.get(position).getName());
         holder.categoryDescription.setText(categories.get(position).getDescription());
 
-        if (categories.get(position).isDeletable()) {
+        if (categories.get(position).getEventTypes().isEmpty()) {
             holder.deleteButton.setOnClickListener(v -> {
                 MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(v.getContext());
                 confirmDialog.setTitle("Delete category");
                 confirmDialog.setMessage("Are you sure you want to delete this category?");
                 confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
-                    categories.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, categories.size());
+                    viewmodel.deleteCategory(categories.get(position).getId());
                 });
                 confirmDialog.setNegativeButton("No", (dialog, which) -> {
                 });
@@ -71,6 +74,7 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
                 dialog.setTitle("Edit category");
                 dialog.setView(dialogView);
                 dialog.setPositiveButton("Save", (dialogInterface, i) -> {
+                    viewmodel.editCategory(categories.get(position).getId(), nameInput.getText().toString(), descriptionInput.getText().toString());
                 });
                 dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
                 });

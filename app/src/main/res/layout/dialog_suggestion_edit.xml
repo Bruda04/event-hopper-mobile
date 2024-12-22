@@ -6,6 +6,7 @@
 
     <!-- Category Combobox -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/category_select"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,11 +16,11 @@
         android:hint="@string/category">
 
         <AutoCompleteTextView
-            android:id="@+id/category_combobox"
+            android:id="@+id/category_select_autocomplete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            app:simpleItems="@array/category_dummy" />
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -27,7 +27,7 @@
     <!-- Home Fragment -->
     <fragment
         android:id="@+id/adminCatSugManagement"
-        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagement"
+        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
         android:label="Man"
         tools:layout="@layout/fragment_admins_categories_suggestions_management" />
 
@@ -129,7 +129,7 @@
 
     <fragment
         android:id="@+id/manage_categories"
-        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagement"
+        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
         android:label="Manage Categories"
         tools:layout="@layout/fragment_admins_categories_suggestions_management">
 

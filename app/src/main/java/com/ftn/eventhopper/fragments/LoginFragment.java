@@ -38,7 +38,7 @@ public class LoginFragment extends Fragment {
         });
 
         view.findViewById(R.id.register_link).setOnClickListener(v -> {
-            navController.navigate(R.id.action_login_to_register);
+            navController.navigate(R.id.action_login_to_host);
         });
 
 
