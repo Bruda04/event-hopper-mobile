@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        int SPLASH_TIME_OUT = 0;
+        int SPLASH_TIME_OUT = 5000;
 
         new Timer().schedule(new TimerTask() {
             @Override
