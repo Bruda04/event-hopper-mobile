@@ -51,7 +51,7 @@ public class AdminsCategoriesAdapter extends RecyclerView.Adapter<AdminsCategori
         holder.categoryName.setText(categories.get(position).getName());
         holder.categoryDescription.setText(categories.get(position).getDescription());
 
-        if (categories.get(position).getEventTypes().isEmpty()) {
+        if (categories.get(position).isDeletable()) {
             holder.deleteButton.setOnClickListener(v -> {
                 setupDeleteDialog(position);
             });
