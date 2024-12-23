@@ -59,14 +59,14 @@ public interface CategoriesService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @PUT("categories/suggestions/{id}")
-    Call<Void> approveCategory(@Path("id") UUID id, @Body UpdateCategorySuggestionDTO category);
+    @PUT("categories/suggestions/{id}/approve")
+    Call<Void> approveCategory(@Path("id") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @PUT("categories/suggestions/{id}")
-    Call<Void> rejectCategory(@Path("id") UUID id, @Body UpdateCategorySuggestionDTO category);
+    @PUT("categories/suggestions/{id}/reject/{substituteCategoryId}")
+    Call<Void> rejectCategory(@Path("id") UUID id, @Path("substituteCategoryId") UUID substituteCategoryId);
 
 }

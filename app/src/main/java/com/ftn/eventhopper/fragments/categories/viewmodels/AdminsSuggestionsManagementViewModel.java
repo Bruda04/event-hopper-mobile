@@ -54,30 +54,6 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
         });
     }
 
-
-
-    public void rejectSuggestion(UUID id, UUID selectedCategoryId) {
-        UpdateCategorySuggestionDTO reject = new UpdateCategorySuggestionDTO();
-        reject.setStatus(CategoryStatus.REJECTED);
-
-        Call<Void> call = ClientUtils.categoriesService.approveCategory(id, reject);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    fetchSuggestions();
-                } else {
-                    errorMessage.postValue("Failed to reject suggestion. Code: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
-
     public void fetchApprovedCategories() {
         Call<ArrayList<CategoryDTO>> call = ClientUtils.categoriesService.getApproved();
         call.enqueue(new Callback<ArrayList<CategoryDTO>>() {
@@ -99,10 +75,7 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
     }
 
     public void approveSuggestion(UUID id) {
-        UpdateCategorySuggestionDTO approve = new UpdateCategorySuggestionDTO();
-        approve.setStatus(CategoryStatus.APPROVED);
-
-        Call<Void> call = ClientUtils.categoriesService.approveCategory(id, approve);
+        Call<Void> call = ClientUtils.categoriesService.approveCategory(id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -110,6 +83,26 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
                     fetchSuggestions();
                 } else {
                     errorMessage.postValue("Failed to approve suggestion. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
+
+    public void rejectSuggestion(UUID id, UUID selectedCategoryId) {
+        Call<Void> call = ClientUtils.categoriesService.rejectCategory(id, selectedCategoryId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchSuggestions();
+                } else {
+                    errorMessage.postValue("Failed to reject suggestion. Code: " + response.code());
                 }
             }
 
