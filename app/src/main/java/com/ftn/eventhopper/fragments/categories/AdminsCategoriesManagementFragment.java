@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class AdminsCategoriesManagementFragment extends Fragment {
     private RecyclerView recyclerView;
     private FloatingActionButton btnAddCategory;
     private TextView statusMessage;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public AdminsCategoriesManagementFragment() {
@@ -52,12 +54,22 @@ public class AdminsCategoriesManagementFragment extends Fragment {
         // Set up the RecyclerView with an adapter
         recyclerView = view.findViewById(R.id.recycler_view_categories);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            statusMessage.setText(R.string.loading_categories);
+            statusMessage.setVisibility(View.VISIBLE);
+            viewModel.fetchApprovedCategories();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
         viewModel.fetchApprovedCategories();
         btnAddCategory = view.findViewById(R.id.floating_add_button);
 
         viewModel.getApprovedCategories().observe(getViewLifecycleOwner(), categories -> {
             if (categories != null) {
                 statusMessage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 this.setComponents(categories);
             }
         });
@@ -71,7 +83,6 @@ public class AdminsCategoriesManagementFragment extends Fragment {
             } else {
                 statusMessage.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-
             }
         });
 
@@ -106,6 +117,8 @@ public class AdminsCategoriesManagementFragment extends Fragment {
             });
         });
     }
+
+
 
     private boolean createCategory(View dialogView) {
         boolean isValid = true;

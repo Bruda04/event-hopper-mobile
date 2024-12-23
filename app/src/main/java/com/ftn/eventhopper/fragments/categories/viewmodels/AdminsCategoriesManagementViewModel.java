@@ -36,6 +36,7 @@ public class AdminsCategoriesManagementViewModel extends ViewModel {
             public void onResponse(Call<ArrayList<CategoryDTO>> call, Response<ArrayList<CategoryDTO>> response) {
                 if (response.isSuccessful()) {
                     approvedCategoriesLiveData.postValue(response.body());
+                    errorMessage.postValue(null);
 
                 } else {
                     errorMessage.postValue("Failed to fetch approved categories. Code: " + response.code());
@@ -56,6 +57,7 @@ public class AdminsCategoriesManagementViewModel extends ViewModel {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     fetchApprovedCategories();
+                    errorMessage.postValue(null);
                 } else {
                     errorMessage.postValue("Failed to delete category. Code: " + response.code());
                 }
@@ -81,6 +83,7 @@ public class AdminsCategoriesManagementViewModel extends ViewModel {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     fetchApprovedCategories();
+                    errorMessage.postValue(null);
                 } else {
                     errorMessage.postValue("Failed to edit category. Code: " + response.code());
                 }
@@ -104,6 +107,7 @@ public class AdminsCategoriesManagementViewModel extends ViewModel {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     fetchApprovedCategories();
+                    errorMessage.postValue(null);
                 } else {
                     errorMessage.postValue("Failed to create category. Code: " + response.code());
                 }

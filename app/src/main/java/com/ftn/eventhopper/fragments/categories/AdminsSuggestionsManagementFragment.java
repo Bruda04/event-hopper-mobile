@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,11 +25,12 @@ import java.util.ArrayList;
 
 public class AdminsSuggestionsManagementFragment extends Fragment {
 
-    AdminsSuggestionsManagementViewModel viewModel;
-    RecyclerView recyclerView;
-    TextView statusMessage;
-    ArrayList<CategorySuggestionDTO> suggestions;
-    ArrayList<CategoryDTO> approvedCategories;
+    private AdminsSuggestionsManagementViewModel viewModel;
+    private RecyclerView recyclerView;
+    private TextView statusMessage;
+    private ArrayList<CategorySuggestionDTO> suggestions;
+    private ArrayList<CategoryDTO> approvedCategories;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -46,12 +48,25 @@ public class AdminsSuggestionsManagementFragment extends Fragment {
         statusMessage.setVisibility(View.VISIBLE);
 
 
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            statusMessage.setText(R.string.loading_suggestions);
+            statusMessage.setVisibility(View.VISIBLE);
+            viewModel.fetchSuggestions();
+            viewModel.fetchApprovedCategories();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+
+
         viewModel.fetchSuggestions();
         viewModel.getCategorySuggestions().observe(getViewLifecycleOwner(), suggestions -> {
             if (suggestions != null) {
                 statusMessage.setVisibility(View.GONE);
                 this.suggestions = suggestions;
                 if (approvedCategories != null) {
+                    recyclerView.setVisibility(View.VISIBLE);
                     this.setFieldValues(suggestions, approvedCategories);
                 }
             }
@@ -61,7 +76,11 @@ public class AdminsSuggestionsManagementFragment extends Fragment {
             if (error != null) {
                 Log.e("EventHopper", "Error fetching category suggestions: " + error);
                 statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
+                recyclerView.setVisibility(View.GONE);
                 statusMessage.setVisibility(View.VISIBLE);
+            } else {
+                statusMessage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -71,18 +90,12 @@ public class AdminsSuggestionsManagementFragment extends Fragment {
                 statusMessage.setVisibility(View.GONE);
                 this.approvedCategories = approved;
                 if (suggestions != null) {
+                    recyclerView.setVisibility(View.VISIBLE);
                     this.setFieldValues(suggestions, approved);
                 }
             }
         });
 
-        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
-            if (error != null) {
-                Log.e("EventHopper", "Error fetching approved categories: " + error);
-                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
-                statusMessage.setVisibility(View.VISIBLE);
-            }
-        });
 
         return view;
     }
