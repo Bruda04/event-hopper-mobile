@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
-import com.ftn.eventhopper.shared.dtos.categories.UpdateCategorySuggestionDTO;
-import com.ftn.eventhopper.shared.models.categories.CategoryStatus;
 
 import java.util.ArrayList;
 import java.util.UUID;

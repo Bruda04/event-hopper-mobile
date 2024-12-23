@@ -4,8 +4,6 @@ import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CreateCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.UpdateCategoryDTO;
-import com.ftn.eventhopper.shared.dtos.categories.UpdateCategorySuggestionDTO;
-import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import java.util.ArrayList;
 import java.util.UUID;
