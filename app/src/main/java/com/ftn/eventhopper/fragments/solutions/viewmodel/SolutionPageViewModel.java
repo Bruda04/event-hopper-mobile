@@ -9,6 +9,7 @@ import androidx.navigation.NavController;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import java.util.UUID;
@@ -53,11 +54,41 @@ public class SolutionPageViewModel extends ViewModel {
         SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
         if (solutionDetails != null) {
             if (!solutionDetails.isFavorite())  {
-                solutionDetails.setFavorite(true);
-                solutionDetailsLiveData.postValue(solutionDetails);
+                Call<Void> call = ClientUtils.profileService.addSolutionToFavorites(solutionDetails.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            solutionDetails.setFavorite(true);
+                            solutionDetailsLiveData.postValue(solutionDetails);
+                        } else {
+                            errorMessage.postValue("Failed to add solution to favorites. Code: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        errorMessage.postValue(t.getMessage());
+                    }
+                });
             } else {
-                solutionDetails.setFavorite(false);
-                solutionDetailsLiveData.postValue(solutionDetails);
+                Call<Void> call = ClientUtils.profileService.removeSolutionFromFavorites(solutionDetails.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            solutionDetails.setFavorite(false);
+                            solutionDetailsLiveData.postValue(solutionDetails);
+                        } else {
+                            errorMessage.postValue("Failed to remove solution from favorites. Code: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        errorMessage.postValue(t.getMessage());
+                    }
+                });
             }
         }
     }
