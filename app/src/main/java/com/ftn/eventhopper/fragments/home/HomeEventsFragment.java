@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.Button;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
+import com.ftn.eventhopper.adapters.TopEventAdapter;
 import com.ftn.eventhopper.shared.models.Event;
 import com.github.islamkhsh.CardSliderViewPager;
 
@@ -57,8 +61,37 @@ public class HomeEventsFragment extends Fragment {
 
         // Set up the Event and Service sliders
         CardSliderViewPager cardSliderViewPager = view.findViewById(R.id.viewPagerEvents);
-        cardSliderViewPager.setAdapter(new EventAdapter(loadTop5Events()));
+        cardSliderViewPager.setAdapter(new TopEventAdapter(loadTop5Events()));
 
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_allevents);
+
+        ArrayList<Event> events = new ArrayList<>();
+        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
+                getString(R.string.jennet_and_john_wedding),    // String resource for title
+                getString(R.string.wedding_secondary),         // String resource for secondary text
+                getString(R.string.wedding_supporting)         // String resource for description
+        ));
+        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
+                getString(R.string.jennet_and_john_wedding),    // String resource for title
+                getString(R.string.wedding_secondary),         // String resource for secondary text
+                getString(R.string.wedding_supporting)         // String resource for description
+        ));
+        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
+                getString(R.string.jennet_and_john_wedding),    // String resource for title
+                getString(R.string.wedding_secondary),         // String resource for secondary text
+                getString(R.string.wedding_supporting)         // String resource for description
+        ));
+        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
+                getString(R.string.jennet_and_john_wedding),    // String resource for title
+                getString(R.string.wedding_secondary),         // String resource for secondary text
+                getString(R.string.wedding_supporting)         // String resource for description
+        ));
+
+        EventAdapter adapter = new EventAdapter(getContext(),events,this);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
 
         // Set up filter button for events
         filterButton_events = view.findViewById(R.id.filterButton);

@@ -1,73 +1,59 @@
 package com.ftn.eventhopper.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.shared.models.Event;
-import com.github.islamkhsh.CardSliderAdapter;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class EventAdapter extends CardSliderAdapter<EventAdapter.EventViewHolder> {
+public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
-    private ArrayList<Event> events;
+    ArrayList<Event> events;
+    Context context;
+    private final Fragment fragment;
 
-    public EventAdapter(ArrayList<Event> events){
-        this.events = events;
-    }
-
-    @Override
-    public int getItemCount(){
-        return events.size();
+    public EventAdapter(Context context, ArrayList<Event> events, Fragment fragment){
+     this.events = events;
+     this.context = context;
+     this.fragment = fragment;
     }
 
     @NonNull
     @Override
-    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list_item, parent, false);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        return new EventViewHolder(view);
+    public EventAdapter.EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+        return new EventAdapter.EventViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list_item, parent, false));
     }
-    public void onBindViewHolder(int position, EventViewHolder holder) {
-        Event event = events.get(position);
-
-        // Bind event data to views within holder
-        ImageView imageView = holder.itemView.findViewById(R.id.card_image);
-        TextView titleView = holder.itemView.findViewById(R.id.card_title);
-        TextView secondayView = holder.itemView.findViewById(R.id.card_secondary);
-        TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
-
-    }
-
 
     @Override
-    public void bindVH(EventViewHolder holder, int position) {
-        Event event = events.get(position);
+    public void onBindViewHolder(@NonNull EventAdapter.EventViewHolder holder, int position) {
 
-        // Bind event data to views within holder
-        ImageView imageView = holder.itemView.findViewById(R.id.card_image);
-        TextView titleView = holder.itemView.findViewById(R.id.card_title);
-        TextView secondaryView = holder.itemView.findViewById(R.id.card_secondary);
-        TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
-
-        // Assuming your `Event` class has methods to retrieve this data
-        // Set image, title, and description, and secondary text
-        imageView.setImageDrawable(event.getImage()); // Postavite Drawable
-        titleView.setText(event.getTitle());
-        secondaryView.setText(event.getSecondary());
-        descriptionView.setText(event.getDescription());
+        holder.titleView.setText(events.get(position).getTitle());
+        holder.descriptionView.setText(events.get(position).getDescription());
+        holder.secondaryView.setText(events.get(position).getSecondary());
+        holder.imageView.setImageDrawable(events.get(position).getImage());
     }
 
+    @Override
+    public int getItemCount() {
+        return events.size();
+    }
 
-    public static class EventViewHolder extends RecyclerView.ViewHolder {
+    public class EventViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView titleView;
@@ -82,4 +68,6 @@ public class EventAdapter extends CardSliderAdapter<EventAdapter.EventViewHolder
             descriptionView = view.findViewById(R.id.card_description);
         }
     }
+
+
 }
