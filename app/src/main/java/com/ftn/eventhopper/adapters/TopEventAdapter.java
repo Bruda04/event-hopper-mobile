@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.github.islamkhsh.CardSliderAdapter;
 
 import java.util.ArrayList;
 
 public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventViewHolder> {
 
-    private ArrayList<Event> events;
+    private ArrayList<SimpleEventDTO> events;
 
-    public TopEventAdapter(ArrayList<Event> events){
+    public TopEventAdapter(ArrayList<SimpleEventDTO> events){
         this.events = events;
     }
 
@@ -36,7 +39,7 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
         return new EventViewHolder(view);
     }
     public void onBindViewHolder(int position, EventViewHolder holder) {
-        Event event = events.get(position);
+        SimpleEventDTO event = events.get(position);
 
         // Bind event data to views within holder
         ImageView imageView = holder.itemView.findViewById(R.id.card_image);
@@ -49,7 +52,7 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
 
     @Override
     public void bindVH(EventViewHolder holder, int position) {
-        Event event = events.get(position);
+        SimpleEventDTO event = events.get(position);
 
         // Bind event data to views within holder
         ImageView imageView = holder.itemView.findViewById(R.id.card_image);
@@ -59,9 +62,17 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
 
         // Assuming your `Event` class has methods to retrieve this data
         // Set image, title, and description, and secondary text
-        imageView.setImageDrawable(event.getImage()); // Postavite Drawable
-        titleView.setText(event.getTitle());
-        secondaryView.setText(event.getSecondary());
+
+        titleView.setText(event.getName());
+        secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
+        imageView.setImageDrawable(Drawable.createFromPath(events.get(position).getPicture()));
+
+        String imageUrl = events.get(position).getPicture();
+        Glide.with(holder.imageView.getContext())
+                .load(imageUrl)
+//                .placeholder(R.drawable.placeholder_image) // Prikaz slike dok se učitava
+//                .error(R.drawable.error_image) // Prikaz slike u slučaju greške
+                .into(holder.imageView);
         descriptionView.setText(event.getDescription());
     }
 
