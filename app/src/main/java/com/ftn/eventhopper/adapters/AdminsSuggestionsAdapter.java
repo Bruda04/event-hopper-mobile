@@ -1,7 +1,6 @@
 package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.models.CategorySuggestion;
+import com.ftn.eventhopper.shared.models.CategorySuggestion;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 

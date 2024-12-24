@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.NotificationsAdapter;
-import com.ftn.eventhopper.models.Notification;
+import com.ftn.eventhopper.shared.models.Notification;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

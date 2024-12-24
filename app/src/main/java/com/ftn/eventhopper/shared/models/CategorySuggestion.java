@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.models;
+package com.ftn.eventhopper.shared.models;
 
 public class CategorySuggestion {
     private String name;

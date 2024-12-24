@@ -1,24 +1,18 @@
-package com.ftn.eventhopper.models;
+package com.ftn.eventhopper.shared.models;
 
 import android.graphics.drawable.Drawable;
 
-public class Event {
+public class Service {
     Drawable image;
     String title;
 
     String secondary;
     String description;
 
-    public Event(Drawable image, String title, String location, String description) {
+    public Service(Drawable image, String title, String secondary, String description) {
         this.image = image;
         this.title = title;
-        this.secondary = location;
-        this.description = description;
-    }
-    public Event( String title, String location, String description) {
-        //this.image = image;
-        this.title = title;
-        this.secondary = location;
+        this.secondary = secondary;
         this.description = description;
     }
 
