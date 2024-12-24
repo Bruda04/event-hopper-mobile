@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +18,8 @@ import android.widget.Button;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
 import com.ftn.eventhopper.adapters.TopEventAdapter;
-import com.ftn.eventhopper.shared.models.Event;
+import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
+import com.ftn.eventhopper.shared.dtos.events.CardEventDTO;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
@@ -25,32 +27,14 @@ import java.util.ArrayList;
 
 public class HomeEventsFragment extends Fragment {
 
+    private HomeViewModel viewModel;
+    private CardSliderViewPager topEventsRecyclerView;
+    private RecyclerView allEventsRecyclerView;
     private Button filterButton_events;
-
 
 
     public HomeEventsFragment() {
         // Required empty public constructor
-    }
-    private ArrayList<Event> loadTop5Events() {
-        ArrayList<Event> events = new ArrayList<>();
-
-        Event event = new Event(
-                ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
-                getString(R.string.jennet_and_john_wedding),    // String resource for title
-                getString(R.string.wedding_secondary),         // String resource for secondary text
-                getString(R.string.wedding_supporting)         // String resource for description
-        );
-        Event event2 = new Event(
-                ContextCompat.getDrawable(getContext(), R.drawable.concert), // Drawable resource
-                getString(R.string.concert_title),    // String resource for title
-                getString(R.string.concert_secondary),         // String resource for secondary text
-                getString(R.string.concert_supporting)         // String resource for description
-        );
-        events.add(event);
-        events.add(event2);
-
-        return events;
     }
 
     @Override
@@ -58,40 +42,36 @@ public class HomeEventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_events, container, false);
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
 
         // Set up the Event and Service sliders
-        CardSliderViewPager cardSliderViewPager = view.findViewById(R.id.viewPagerEvents);
-        cardSliderViewPager.setAdapter(new TopEventAdapter(loadTop5Events()));
+        this.topEventsRecyclerView = view.findViewById(R.id.viewPagerEvents);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_allevents);
 
-        ArrayList<Event> events = new ArrayList<>();
-        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
-                getString(R.string.jennet_and_john_wedding),    // String resource for title
-                getString(R.string.wedding_secondary),         // String resource for secondary text
-                getString(R.string.wedding_supporting)         // String resource for description
-        ));
-        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
-                getString(R.string.jennet_and_john_wedding),    // String resource for title
-                getString(R.string.wedding_secondary),         // String resource for secondary text
-                getString(R.string.wedding_supporting)         // String resource for description
-        ));
-        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
-                getString(R.string.jennet_and_john_wedding),    // String resource for title
-                getString(R.string.wedding_secondary),         // String resource for secondary text
-                getString(R.string.wedding_supporting)         // String resource for description
-        ));
-        events.add(new Event( ContextCompat.getDrawable(getContext(), R.drawable.wedding), // Drawable resource
-                getString(R.string.jennet_and_john_wedding),    // String resource for title
-                getString(R.string.wedding_secondary),         // String resource for secondary text
-                getString(R.string.wedding_supporting)         // String resource for description
-        ));
+        this.allEventsRecyclerView = view.findViewById(R.id.recyclerView_allevents);
 
-        EventAdapter adapter = new EventAdapter(getContext(),events,this);
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        viewModel.fetchAllEvents();
+        viewModel.fetchTopEvents();
+
+        viewModel.getTop5Events().observe(getViewLifecycleOwner(), topEvents ->
+        {
+            if (topEvents!=null){
+                topEventsRecyclerView.setVisibility(View.VISIBLE);
+                this.setTop5(topEvents);
+            }
+        });
+
+
+        viewModel.getEvents().observe(getViewLifecycleOwner(), events ->
+        {
+           if(events!=null){
+               allEventsRecyclerView.setVisibility(View.VISIBLE);
+               this.setAll(events);
+
+           }
+        });
+
 
         // Set up filter button for events
         filterButton_events = view.findViewById(R.id.filterButton);
@@ -121,5 +101,18 @@ public class HomeEventsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    private void setAll(ArrayList<CardEventDTO> events){
+
+        EventAdapter adapter = new EventAdapter(getContext(),events,this);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
+        this.allEventsRecyclerView.setLayoutManager(layoutManager);
+        this.allEventsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        this.allEventsRecyclerView.setAdapter(adapter);
+    }
+
+    private void setTop5(ArrayList<CardEventDTO> top5Events){
+        this.topEventsRecyclerView.setAdapter(new TopEventAdapter(top5Events));
     }
 }

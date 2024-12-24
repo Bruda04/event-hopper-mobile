@@ -10,6 +10,7 @@ import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
 import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
+import com.ftn.eventhopper.clients.services.events.EventService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,4 +50,5 @@ public class ClientUtils {
     }
 
 //    public static ProductService productService = retrofit.create(ProductService.class);
+    public static EventService eventService = retrofit.create(EventService.class);
 }

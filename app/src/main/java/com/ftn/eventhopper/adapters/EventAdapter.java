@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.shared.models.Event;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
+import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 
 
 import androidx.annotation.NonNull;
@@ -23,11 +21,11 @@ import java.util.ArrayList;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
-    ArrayList<Event> events;
+    ArrayList<SimpleEventDTO> events;
     Context context;
     private final Fragment fragment;
 
-    public EventAdapter(Context context, ArrayList<Event> events, Fragment fragment){
+    public EventAdapter(Context context, ArrayList<SimpleEventDTO> events, Fragment fragment){
      this.events = events;
      this.context = context;
      this.fragment = fragment;
@@ -42,10 +40,17 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.EventViewHolder holder, int position) {
 
-        holder.titleView.setText(events.get(position).getTitle());
+        holder.titleView.setText(events.get(position).getName());
         holder.descriptionView.setText(events.get(position).getDescription());
-        holder.secondaryView.setText(events.get(position).getSecondary());
-        holder.imageView.setImageDrawable(events.get(position).getImage());
+        holder.secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
+        holder.imageView.setImageDrawable(Drawable.createFromPath(events.get(position).getPicture()));
+
+        String imageUrl = events.get(position).getPicture();
+        Glide.with(holder.imageView.getContext())
+                .load(imageUrl)
+//                .placeholder(R.drawable.placeholder_image) // Prikaz slike dok se učitava
+//                .error(R.drawable.error_image) // Prikaz slike u slučaju greške
+                .into(holder.imageView);
     }
 
     @Override
