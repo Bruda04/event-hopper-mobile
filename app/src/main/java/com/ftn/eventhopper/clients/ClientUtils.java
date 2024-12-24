@@ -12,6 +12,7 @@ import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
 import com.ftn.eventhopper.clients.services.categories.CategoriesService;
 import com.ftn.eventhopper.clients.services.solutions.ProductService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
+import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ClientUtils {
 
     public static final String SERVICE_API_PATH = "http://"+ BuildConfig.IP_ADDR +":8080/api/";
-    public static final String SERVICE_API_IMAGE_PATH = "http://"+ BuildConfig.IP_ADDR +":8080/api/images";
+    public static final String SERVICE_API_IMAGE_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/images";
+
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
@@ -43,10 +45,10 @@ public class ClientUtils {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor).build();
-
-        return client;
+        return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .addInterceptor(new JWTInterceptor())
+                .build();
     }
 
     public static ProductService productService = retrofit.create(ProductService.class);

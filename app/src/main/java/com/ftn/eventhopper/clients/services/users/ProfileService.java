@@ -5,17 +5,27 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDeta
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ProfileService {
 
-    // TODO: Implement this with JWT
-    Call<Void> addSolutionToFavorites(UUID id);
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/favorite-solutions/{id}")
+    Call<Void> addSolutionToFavorites(@Path("id") UUID id);
 
-    // TODO: Implement this with JWT
-    Call<Void> removeSolutionFromFavorites(UUID id);
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("persons/favorite-solutions/{id}")
+    Call<Void> removeSolutionFromFavorites(@Path("id") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",

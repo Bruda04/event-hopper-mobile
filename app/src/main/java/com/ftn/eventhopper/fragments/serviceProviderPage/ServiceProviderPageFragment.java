@@ -22,6 +22,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.serviceProviderPage.viewmodels.ServiceProviderPageViewModel;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 import com.google.android.material.button.MaterialButton;
@@ -145,15 +146,17 @@ public class ServiceProviderPageFragment extends Fragment {
         companyComments.setItemAnimator(new DefaultItemAnimator());
         companyComments.setAdapter(commentsAdapter);
 
-        blockButton.setVisibility(View.VISIBLE);
-        reportButton.setVisibility(View.VISIBLE);
+        if (!UserService.getJwtToken().isEmpty()) {
+            blockButton.setVisibility(View.VISIBLE);
+            reportButton.setVisibility(View.VISIBLE);
 
-        blockButton.setOnClickListener(v -> {
-            viewModel.blockUser();
-        });
+            blockButton.setOnClickListener(v -> {
+                viewModel.blockUser();
+            });
 
-        reportButton.setOnClickListener(v -> {
-            viewModel.reportUser();
-        });
+            reportButton.setOnClickListener(v -> {
+                viewModel.reportUser();
+            });
+        }
     }
 }

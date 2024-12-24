@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
+import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.solutions.viewmodel.SolutionPageViewModel;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
@@ -130,7 +131,7 @@ public class SolutionPageFragment extends Fragment {
         eventTypes.setText(String.format("Event types: %s", eventTypesText.toString()));
 
         if (solution.isService()) {
-            duration.setText(String.format("Duration: %s minutes",solution.getDurationMinutes()));
+            duration.setText(String.format("Duration: %s minutes", solution.getDurationMinutes()));
             reservationWindow.setText(String.format("Reservation window: %d day(s)", solution.getReservationWindowDays()));
             cancellationWindow.setText(String.format("Cancellation window: %d day(s)", solution.getCancellationWindowDays()));
         } else {
@@ -184,16 +185,19 @@ public class SolutionPageFragment extends Fragment {
         comments.setItemAnimator(new DefaultItemAnimator());
         comments.setAdapter(commentsAdapter);
 
-        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_star_24));
-        if (solution.isFavorite()) {
-            favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
-        } else {
-            favoriteButton.setColorFilter(getResources().getColor(R.color.grey));
-        }
+        if(!UserService.getJwtToken().isEmpty()){
+            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_star_24));
+            if (solution.isFavorite()) {
+                favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
+            } else {
+                favoriteButton.setColorFilter(getResources().getColor(R.color.grey));
+            }
+            favoriteButton.setVisibility(View.VISIBLE);
 
-        favoriteButton.setOnClickListener(v -> {
-            viewModel.toggleFavorite();
-        });
+            favoriteButton.setOnClickListener(v -> {
+                viewModel.toggleFavorite();
+            });
+        }
 
         providerName.setOnClickListener(v -> {
             viewModel.goToProviderPage(navController);
