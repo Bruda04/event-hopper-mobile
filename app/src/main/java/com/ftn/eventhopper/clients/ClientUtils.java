@@ -10,6 +10,7 @@ import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
+import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,10 +43,10 @@ public class ClientUtils {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor).build();
-
-        return client;
+        return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .addInterceptor(new JWTInterceptor())
+                .build();
     }
 
 //    public static ProductService productService = retrofit.create(ProductService.class);
