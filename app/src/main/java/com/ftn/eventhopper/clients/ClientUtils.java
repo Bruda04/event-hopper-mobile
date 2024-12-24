@@ -4,7 +4,6 @@ package com.ftn.eventhopper.clients;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.concurrent.TimeUnit;
 
 import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
