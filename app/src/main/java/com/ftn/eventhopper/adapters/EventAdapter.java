@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 
 
@@ -43,13 +44,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.titleView.setText(events.get(position).getName());
         holder.descriptionView.setText(events.get(position).getDescription());
         holder.secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
-        holder.imageView.setImageDrawable(Drawable.createFromPath(events.get(position).getPicture()));
+        //holder.imageView.setImageDrawable(Drawable.createFromPath(events.get(position).getPicture()));
 
-        String imageUrl = events.get(position).getPicture();
+        //String imageUrl = events.get(position).getPicture();
+
         Glide.with(holder.imageView.getContext())
-                .load(imageUrl)
-//                .placeholder(R.drawable.placeholder_image) // Prikaz slike dok se učitava
-//                .error(R.drawable.error_image) // Prikaz slike u slučaju greške
+                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, events.get(position).getPicture()))
+                .placeholder(R.drawable.baseline_image_placeholder_24) // Prikaz slike dok se učitava
+                .error(R.drawable.baseline_image_not_supported_24) // Prikaz slike u slučaju greške
                 .into(holder.imageView);
     }
 

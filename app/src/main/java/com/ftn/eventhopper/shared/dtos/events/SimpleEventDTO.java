@@ -1,7 +1,9 @@
 package com.ftn.eventhopper.shared.dtos.events;
 
-import com.ftn.event_hopper.dtos.eventTypes.SimpleEventTypeDTO;
-import com.ftn.event_hopper.dtos.location.SimpleLocationDTO;
+
+import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
+import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -24,6 +24,7 @@ import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
 import com.ftn.eventhopper.shared.dtos.events.CardEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.github.islamkhsh.CardSliderViewPager;
+import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -34,7 +35,10 @@ public class HomeEventsFragment extends Fragment {
     private HomeViewModel viewModel;
     private CardSliderViewPager topEventsRecyclerView;
     private RecyclerView allEventsRecyclerView;
+    private SearchBar searchBar;
     private Button filterButton_events;
+
+    private String searchText = "";
 
 
     public HomeEventsFragment() {

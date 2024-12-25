@@ -74,14 +74,14 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     }
 
     private void applyFilters(String sortField, String time, String city, UUID eventTypeId) {
-        viewModel.applySort(city,
-                eventTypeId,
-                time,
-                searchContent,
-                sortField,
-                sortDirection,
-                page,
-                size);
+//        viewModel.applySort(city,
+//                eventTypeId,
+//                time,
+//                searchContent,
+//                sortField,
+//                sortDirection,
+//                page,
+//                size);
 //        if (!sortOption.isEmpty()) {
 //            // You can update your ViewModel or trigger the filter logic based on selected sort option.
 //            viewModel.applySort(city,
