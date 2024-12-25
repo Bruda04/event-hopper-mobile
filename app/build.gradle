@@ -67,6 +67,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.14.2'
 
+    implementation 'com.itextpdf:itext7-core:7.2.3'
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok

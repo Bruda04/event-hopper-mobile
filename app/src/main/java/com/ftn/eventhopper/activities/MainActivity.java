@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
 //        UserService.clearJwtToken();
-//        UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImF1ZCI6IndlYiIsImlhdCI6MTczNTA2MDA3MywiZXhwIjoxNzM1MDcwODczLCJyb2xlIjoiQURNSU4iLCJpZCI6ImU1MjdiMmRhLTY2YWUtNDA3Ni04MzAxLWQzYTlkYzNjNTg2MCJ9.ahxhGsttzl8LzP4UjYqhUPeqQOPik4TBtryJz1wntYd9SLvoT2AqdISzrLxT2-FWG5qVwhshuZ9nVg7WJbc8fA");
+        UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJwdXAzQGV4YW1wbGUuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNzM1MTI4MzMwLCJleHAiOjE3MzUxMzkxMzAsInJvbGUiOiJTRVJWSUNFX1BST1ZJREVSIiwiaWQiOiIzMTU0OGQ2Yi0wMTlmLTQ5MmUtYmEzOS0wN2JlN2ExNDMzZTUifQ.D94EFSbvk5T-ISaCj__oHAGb72XJUwFn3Q5Tw5Vy9m9SnOysCBmP_YsEzMiSH6qaLkSDxiW1K1SwQJfrr9-y5Q");
 
         Log.d("MainActivity", "setContentView called");
 
