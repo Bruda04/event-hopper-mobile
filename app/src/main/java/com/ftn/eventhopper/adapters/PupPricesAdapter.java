@@ -2,6 +2,9 @@ package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.filters.MinMaxInputFilter;
 import com.ftn.eventhopper.fragments.solutions.prices.viewmodels.PUPPricesManagementViewModel;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.prices.PriceManagementDTO;
@@ -71,9 +75,20 @@ public class PupPricesAdapter extends RecyclerView.Adapter<PupPricesAdapter.Pric
 
         TextInputLayout basePriceInput = dialogView.findViewById(R.id.base_price_layout);
         TextInputLayout discountInput = dialogView.findViewById(R.id.discount_layout);
+        TextView finalPrice = dialogView.findViewById(R.id.final_price_label);
+
+        Objects.requireNonNull(basePriceInput.getEditText())
+                .setFilters(new InputFilter[]{new MinMaxInputFilter(0.0, 10000.0)});
+        Objects.requireNonNull(discountInput.getEditText())
+                .setFilters(new InputFilter[]{new MinMaxInputFilter(0.0, 100.0)});
 
         Objects.requireNonNull(basePriceInput.getEditText()).setText(String.format("%.2f", prices.get(position).getBasePrice()));
         Objects.requireNonNull(discountInput.getEditText()).setText(String.format("%.2f",prices.get(position).getDiscount()));
+        finalPrice.setText(String.format("Final price: %.2f€", prices.get(position).getFinalPrice()));
+
+        TextWatcher priceWatcher = setupPriceWatcher(basePriceInput, discountInput, finalPrice);
+        Objects.requireNonNull(basePriceInput.getEditText()).addTextChangedListener(priceWatcher);
+        Objects.requireNonNull(discountInput.getEditText()).addTextChangedListener(priceWatcher);
 
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
         dialogBuilder.setTitle("Edit price for " + prices.get(position).getProductName());
@@ -112,6 +127,33 @@ public class PupPricesAdapter extends RecyclerView.Adapter<PupPricesAdapter.Pric
                 editDialog.dismiss();
             }
         });
+    }
+
+    private TextWatcher setupPriceWatcher(TextInputLayout basePriceInput, TextInputLayout discountInput, TextView finalPriceView) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Get the values from the inputs
+                String basePriceStr = Objects.requireNonNull(basePriceInput.getEditText()).getText().toString().trim();
+                String discountStr = Objects.requireNonNull(discountInput.getEditText()).getText().toString().trim();
+
+                // Ensure values are not empty before parsing
+                double basePriceValue = basePriceStr.isEmpty() ? 0 : Double.parseDouble(basePriceStr);
+                double discountValue = discountStr.isEmpty() ? 0 : Double.parseDouble(discountStr);
+
+                // Calculate the final price
+                double finalPriceValue = basePriceValue - (basePriceValue * (discountValue / 100));
+
+                // Update the TextView with the result
+                finalPriceView.setText(String.format("Final price: %.2f€", finalPriceValue));
+            }
+        };
     }
 
     public class PriceManagementViewHolder extends RecyclerView.ViewHolder {

@@ -14,6 +14,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         app:errorEnabled="true"
+        android:maxLength="6"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -33,6 +34,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
+        android:maxLength="3"
         app:errorEnabled="true"
         >
 
@@ -42,5 +44,15 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/final_price_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/discount_layout"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        />
 
 </RelativeLayout>
