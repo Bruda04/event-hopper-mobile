@@ -45,6 +45,10 @@
         <action
             android:id="@+id/action_to_manage_categories"
             app:destination="@id/manage_categories" />
+
+        <action
+            android:id="@+id/action_to_manage_prices"
+            app:destination="@id/manage_prices" />
     </fragment>
 
     <fragment
@@ -132,6 +136,14 @@
         android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
         android:label="Manage Categories"
         tools:layout="@layout/fragment_admins_categories_suggestions_management">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_prices"
+        android:name="com.ftn.eventhopper.fragments.solutions.prices.PUPPricesManagementFragment"
+        android:label="Manage Categories"
+        tools:layout="@layout/fragment_p_u_p_prices_management">
 
     </fragment>
 

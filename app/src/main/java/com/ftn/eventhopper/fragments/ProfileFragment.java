@@ -50,6 +50,11 @@ public class ProfileFragment extends Fragment {
             // Navigate using the action defined in the NavGraph
             navController.navigate(R.id.action_to_manage_categories);
         });
+
+        view.findViewById(R.id.ListItemMyPrices).setOnClickListener(v -> {
+            // Navigate using the action defined in the NavGraph
+            navController.navigate(R.id.action_to_manage_prices);
+        });
         return view;
     }
 }
