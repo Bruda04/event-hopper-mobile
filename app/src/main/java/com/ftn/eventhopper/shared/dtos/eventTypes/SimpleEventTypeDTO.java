@@ -1,5 +1,4 @@
-package com.ftn.event_hopper.dtos.eventTypes;
-
+package com.ftn.eventhopper.shared.dtos.eventTypes;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

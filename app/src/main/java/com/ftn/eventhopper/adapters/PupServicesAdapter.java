@@ -2,6 +2,7 @@ package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             Toast.makeText(v.getContext(), "Service deleted", Toast.LENGTH_SHORT).show();
         });
 
+
         holder.editButton.setOnClickListener(v -> {
             // Navigate to ServiceEditFragment
             if (navController != null) {
@@ -63,6 +65,21 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
                 NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
                 navCtrl.navigate(R.id.action_to_service_edit_fragment);
             }
+        });
+
+        holder.viewMoreButton.setOnClickListener( v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("id", "2eed4933-2477-487e-8b99-c39a9ac939dd");
+            // Navigate to ServiceDetailsFragment
+            if (navController != null) {
+                // Option 1: Use NavController directly
+                navController.navigate(R.id.action_to_solution_page_fragment, bundle);
+            } else if (fragment != null) {
+                // Option 2: Use Fragment to navigate (if no NavController passed)
+                NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
+                navCtrl.navigate(R.id.action_to_solution_page_fragment, bundle);
+            }
+
         });
 
     }
@@ -79,6 +96,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         private final ImageView serviceImage;
         public MaterialButton deleteButton;
         public MaterialButton editButton;
+        public MaterialButton viewMoreButton;
 
         public PupsServiceViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +106,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             this.serviceImage = itemView.findViewById(R.id.pups_service_card_image);
             this.deleteButton = itemView.findViewById(R.id.pups_service_card_delete_button);
             this.editButton = itemView.findViewById(R.id.pups_service_card_edit_button);
+            this.viewMoreButton = itemView.findViewById(R.id.pups_service_card_view_more_button);
         }
     }
 }
