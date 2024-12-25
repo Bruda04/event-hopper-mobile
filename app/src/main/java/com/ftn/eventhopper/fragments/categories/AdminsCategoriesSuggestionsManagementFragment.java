@@ -15,18 +15,18 @@ import android.view.ViewGroup;
 import com.ftn.eventhopper.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class AdminsCategoriesSuggestionsManagement extends Fragment {
+public class AdminsCategoriesSuggestionsManagementFragment extends Fragment {
 
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     CategoriesSuggestionsPagerAdapter pagerAdapter;
 
-    public AdminsCategoriesSuggestionsManagement() {
+    public AdminsCategoriesSuggestionsManagementFragment() {
         // Required empty public constructor
     }
 
-    public static AdminsCategoriesSuggestionsManagement newInstance() {
-        AdminsCategoriesSuggestionsManagement fragment = new AdminsCategoriesSuggestionsManagement();
+    public static AdminsCategoriesSuggestionsManagementFragment newInstance() {
+        AdminsCategoriesSuggestionsManagementFragment fragment = new AdminsCategoriesSuggestionsManagementFragment();
         return fragment;
     }
 
@@ -81,11 +81,11 @@ public class AdminsCategoriesSuggestionsManagement extends Fragment {
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    return new AdminsCategoriesManagement();
+                    return new AdminsCategoriesManagementFragment();
                 case 1:
-                    return new AdminsSuggestionsManagement();
+                    return new AdminsSuggestionsManagementFragment();
                 default:
-                    return new AdminsCategoriesManagement();
+                    return new AdminsCategoriesManagementFragment();
             }
 
         }
