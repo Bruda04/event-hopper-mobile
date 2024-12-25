@@ -34,6 +34,6 @@ public interface ProductService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @PUT("prices/management/{productId}")
+    @PUT("prices/{productId}")
     Call<Void> updateProductsPrice(@Path("productId") UUID productId, @Body UpdatePriceDTO updatePriceDTO);
 }
