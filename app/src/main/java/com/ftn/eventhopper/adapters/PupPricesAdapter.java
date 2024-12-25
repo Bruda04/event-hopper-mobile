@@ -115,8 +115,11 @@ public class PupPricesAdapter extends RecyclerView.Adapter<PupPricesAdapter.Pric
 
             if (basePriceInput.getError() == null && discountInput.getError() == null) {
 
-                double basePriceValue = Double.parseDouble(basePriceInput.getEditText().getText().toString().trim());
-                double discountValue = Double.parseDouble(discountInput.getEditText().getText().toString().trim());
+                String basePriceStr = basePriceInput.getEditText().getText().toString().trim();
+                String discountStr = discountInput.getEditText().getText().toString().trim();
+
+                double basePriceValue = parseDouble(basePriceStr);
+                double discountValue = parseDouble(discountStr);
 
                 viewmodel.editPrice(
                         prices.get(position).getProductId(),
@@ -127,6 +130,23 @@ public class PupPricesAdapter extends RecyclerView.Adapter<PupPricesAdapter.Pric
                 editDialog.dismiss();
             }
         });
+    }
+
+    // Function to handle the parsing logic
+    private double parseDouble(String input) {
+        if (input.isEmpty()) {
+            return 0;
+        }
+
+        // Normalize input by replacing ',' with '.'
+        input = input.replace(',', '.');
+
+        // Handle edge cases like input being only '.' or ',' or invalid numbers
+        try {
+            return Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            return 0; // Return 0 if input cannot be parsed
+        }
     }
 
     private TextWatcher setupPriceWatcher(TextInputLayout basePriceInput, TextInputLayout discountInput, TextView finalPriceView) {
@@ -144,8 +164,8 @@ public class PupPricesAdapter extends RecyclerView.Adapter<PupPricesAdapter.Pric
                 String discountStr = Objects.requireNonNull(discountInput.getEditText()).getText().toString().trim();
 
                 // Ensure values are not empty before parsing
-                double basePriceValue = basePriceStr.isEmpty() ? 0 : Double.parseDouble(basePriceStr);
-                double discountValue = discountStr.isEmpty() ? 0 : Double.parseDouble(discountStr);
+                double basePriceValue = parseDouble(basePriceStr);
+                double discountValue = parseDouble(discountStr);
 
                 // Calculate the final price
                 double finalPriceValue = basePriceValue - (basePriceValue * (discountValue / 100));
