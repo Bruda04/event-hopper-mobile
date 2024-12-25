@@ -97,10 +97,12 @@ public class PupPricesAdapter extends RecyclerView.Adapter<PupPricesAdapter.Pric
                 discountInput.setError(null);
             }
 
-            double basePriceValue = Double.parseDouble(basePriceInput.getEditText().getText().toString().trim());
-            double discountValue = Double.parseDouble(discountInput.getEditText().getText().toString().trim());
 
             if (basePriceInput.getError() == null && discountInput.getError() == null) {
+
+                double basePriceValue = Double.parseDouble(basePriceInput.getEditText().getText().toString().trim());
+                double discountValue = Double.parseDouble(discountInput.getEditText().getText().toString().trim());
+
                 viewmodel.editPrice(
                         prices.get(position).getProductId(),
                         basePriceValue,
