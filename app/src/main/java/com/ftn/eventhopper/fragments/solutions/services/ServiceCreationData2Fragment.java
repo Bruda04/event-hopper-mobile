@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments.services;
+package com.ftn.eventhopper.fragments.solutions.services;
 
 import android.content.Intent;
 import android.os.Bundle;

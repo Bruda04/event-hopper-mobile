@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.services.ServiceCreationData2Fragment"
+    tools:context=".fragments.solutions.services.ServiceCreationData2Fragment"
     android:background="@color/material_dynamic_neutral95">
 
     <LinearLayout

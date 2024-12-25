@@ -4,12 +4,13 @@ package com.ftn.eventhopper.clients;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.concurrent.TimeUnit;
 
 import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
+import com.ftn.eventhopper.clients.services.solutions.ProductService;
+import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,5 +50,7 @@ public class ClientUtils {
                 .build();
     }
 
-//    public static ProductService productService = retrofit.create(ProductService.class);
+    public static ProductService productService = retrofit.create(ProductService.class);
+    public static ProfileService profileService = retrofit.create(ProfileService.class);
+
 }
