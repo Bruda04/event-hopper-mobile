@@ -94,6 +94,7 @@ public class PUPPricesManagementFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         exportButton.setOnClickListener(v -> {
+            viewModel.exportPricesToPDF(getContext());
         });
     }
 }
