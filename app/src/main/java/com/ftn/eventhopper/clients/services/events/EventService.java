@@ -34,7 +34,7 @@ public interface EventService {
             "Content-Type:application/json"
     })
     @GET("events/persons-top-5/{usersId}")
-    Call<ArrayList<SimpleEventDTO>> getTop5Events(@Path("usersId") UUID id);
+    Call<ArrayList<SimpleEventDTO>> getTop5Events(@Path("usersId") UUID usersId);
 
 
 

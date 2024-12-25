@@ -1,5 +1,7 @@
 package com.ftn.eventhopper.fragments.home.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,9 +21,9 @@ public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<SimpleEventDTO>> allEvents = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<SimpleEventDTO>> top5Events = new MutableLiveData<>();
-
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
+    private static final String TAG = "ViewModel";
     public LiveData<ArrayList<SimpleEventDTO>> getTop5Events() {
         return top5Events;
     }
@@ -39,7 +41,6 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void onResponse(Call<ArrayList<SimpleEventDTO>> call, Response<ArrayList<SimpleEventDTO>> response) {
                 if(response.isSuccessful()){
-
                     allEvents.postValue(response.body());
                     errorMessage.postValue(null);
                 }else{
@@ -55,24 +56,30 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void fetchTopEvents(UUID id) {
+        Log.i(TAG,"Upao u fetch");
         Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events(id);
         call.enqueue(new Callback<ArrayList<SimpleEventDTO>>() {
+
             @Override
             public void onResponse(Call<ArrayList<SimpleEventDTO>> call, Response<ArrayList<SimpleEventDTO>> response) {
+                Log.i(TAG,"Upao u response");
                 if(response.isSuccessful()){
-
+                    Log.i(TAG,"Upao u if");
                     top5Events.postValue(response.body());
                     errorMessage.postValue(null);
                 }else{
-                    errorMessage.postValue("Failed to fetch events. Code: "+ response.code());
+                    Log.i(TAG,"Upao u else");
+                    errorMessage.postValue("Failed to fetch top events. Code: "+ response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<SimpleEventDTO>> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
+                Log.i(TAG,"Upao u error");
             }
         });
+        Log.i(TAG,"izasao");
     }
 
 

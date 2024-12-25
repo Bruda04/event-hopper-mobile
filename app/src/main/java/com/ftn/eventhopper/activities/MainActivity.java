@@ -17,8 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
-        UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImF1ZCI6IndlYiIsImlhdCI6MTczNTA0NTc5OSwiZXhwIjoxNzM1MDU2NTk5LCJyb2xlIjoiQURNSU4iLCJpZCI6ImU1MjdiMmRhLTY2YWUtNDA3Ni04MzAxLWQzYTlkYzNjNTg2MCJ9.d1j9RNhXPPP0hpsEe-E1aVGOseaOyNFndVuxXTyApFi5xu8GtT57OWmlCHpLMoEHS8DuZua2dl4bryET5PoTCw");
-
+        UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJwdXAzQGV4YW1wbGUuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNzM1MDg4NDEyLCJleHAiOjE3MzUwOTkyMTIsInJvbGUiOiJTRVJWSUNFX1BST1ZJREVSIiwiaWQiOiIzMTU0OGQ2Yi0wMTlmLTQ5MmUtYmEzOS0wN2JlN2ExNDMzZTUifQ.jylZQMquQnKzA4GaFejYI9PXJXjFk6cifGTD1-hhfVkxk11-niTbyOaPJfZFtzeJDGnfYUJaUat8SV4wHALfkw");
         Log.d("MainActivity", "setContentView called");
 
         // Correctly referencing the FragmentContainerView ID
