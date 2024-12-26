@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -15,6 +16,7 @@ import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.UUID;
 
@@ -33,16 +35,27 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.filter_events, container, false);
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         // Initialize views
         this.sortRadioGroup = view.findViewById(R.id.sort_group);
         this.applyFiltersButton = view.findViewById(R.id.apply_filters_button);
+
         openDatePickerButton = view.findViewById(R.id.open_date_picker_button);
 
-        cityAutoComplete = view.findViewById(R.id.location_menu);
-        eventTypeAutoComplete = view.findViewById(R.id.event_type_menu);
+        cityAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.location_menu)).getEditText();
+        eventTypeAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.event_type_menu)).getEditText();
 
+        viewModel.fetchCities();
+        viewModel.getCities().observe(getViewLifecycleOwner(), cities -> {
+            if (cities != null && !cities.isEmpty()) {
+                // Kreiraj adapter sa listom gradova
+                ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, cities);
+
+                // Postavi adapter na AutoCompleteTextView
+                cityAutoComplete.setAdapter(cityAdapter);
+            }
+        });
 
         this.setUpApplyFiltersButton();
         this.setUpDatePickerButton();
@@ -50,17 +63,22 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         return view;
     }
 
+
     private void setUpApplyFiltersButton() {
         applyFiltersButton.setOnClickListener(v -> {
             String sortOption = getSelectedSortOption();
             String city = cityAutoComplete.getText().toString().trim();
             String eventType = eventTypeAutoComplete.getText().toString().trim();
+            UUID eventTypeId = UUID.randomUUID(); // Zamenite sa pravim UUID-om iz vaše logike
 
-            //applyFilters(sortOption,selectedDate, city, eventType);
+            viewModel.setSortField(sortOption);
+            viewModel.setSelectedCity(city);
+            viewModel.setSelectedEventType(eventTypeId);
+            viewModel.setSelectedDate(selectedDate);
+
             dismiss();
         });
     }
-
 
     private String getSelectedSortOption() {
         int selectedSortId = sortRadioGroup.getCheckedRadioButtonId();
@@ -74,27 +92,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     }
 
     private void applyFilters(String sortField, String time, String city, UUID eventTypeId) {
-//        viewModel.applySort(city,
-//                eventTypeId,
-//                time,
-//                searchContent,
-//                sortField,
-//                sortDirection,
-//                page,
-//                size);
-//        if (!sortOption.isEmpty()) {
-//            // You can update your ViewModel or trigger the filter logic based on selected sort option.
-//            viewModel.applySort(city,
-//                    eventTypeId,
-//                    time,
-//                    searchContent,
-//                    sortField,
-//                    sortDirection,
-//                    page,
-//                    size);
-//        } else {
-//            Toast.makeText(getContext(), "No sort option selected.", Toast.LENGTH_SHORT).show();
-//        }
+
     }
 
 
@@ -120,11 +118,5 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             Toast.makeText(getContext(), "Selected Date: " + selectedDate, Toast.LENGTH_SHORT).show();
         });
     }
-
-
-
-
-
-
 
 }

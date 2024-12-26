@@ -6,6 +6,7 @@ import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -13,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface EventService {
     @Headers({
@@ -55,7 +57,12 @@ public interface EventService {
     );
 
 
-
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("events/search")
+    Call<PagedResponse<SimpleEventDTO>> getEventsPage(@QueryMap Map<String, String> queryParams);
 }
 
 

@@ -30,8 +30,7 @@
             android:inputType="none"
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/location_dummy" />
+            app:boxStrokeColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
