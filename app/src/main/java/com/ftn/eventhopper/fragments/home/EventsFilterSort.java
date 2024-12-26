@@ -65,9 +65,11 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         });
 
         applyFiltersButton = view.findViewById(R.id.apply_filters_button);
-        applyFiltersButton.setOnClickListener(v -> applyFilters());
-
-
+        applyFiltersButton.setOnClickListener(v -> {
+            applyFilters();
+            setOnDefault();
+            dismiss();
+        });
         this.setUpDatePickerButton();
 
         return view;

@@ -28,7 +28,7 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<LocationDTO>> locations = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> cities = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<>();
-    private MutableLiveData<String> searchQuery = new MutableLiveData<>("");
+    private MutableLiveData<String> searchText = new MutableLiveData<>("");
     private MutableLiveData<String> selectedCity = new MutableLiveData<>("");
     private MutableLiveData<UUID> selectedEventType = new MutableLiveData<>();
     private MutableLiveData<String> selectedDate = new MutableLiveData<>("");
@@ -62,8 +62,8 @@ public class HomeViewModel extends ViewModel {
         return eventTypes;
     }
 
-    public LiveData<String> getSearchQuery() {
-        return searchQuery;
+    public LiveData<String> getSearchText() {
+        return searchText;
     }
 
     public LiveData<String> getSelectedCity() {
@@ -82,24 +82,8 @@ public class HomeViewModel extends ViewModel {
         return sortField;
     }
 
-    public void setSearchQuery(String query) {
-        searchQuery.setValue(query);
-    }
-
-    public void setSelectedCity(String city) {
-        selectedCity.setValue(city);
-    }
-
-    public void setSelectedEventType(UUID eventType) {
-        selectedEventType.setValue(eventType);
-    }
-
-    public void setSelectedDate(String date) {
-        selectedDate.setValue(date);
-    }
-
-    public void setSortField(String field) {
-        sortField.setValue(field);
+    public void setSearchText(String text) {
+        searchText.setValue(text);
     }
 
     public LiveData<String> getErrorMessage() {

@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/md_theme_tertiaryFixed"
                     android:hint="@string/searchbar_hint"
-                    app:layout_constraintEnd_toStartOf="@id/filterButton"
+                    app:layout_constraintEnd_toStartOf="@id/search_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/all_events_title" />
 
@@ -120,10 +120,10 @@
                     android:hint="@string/searchbar_hint"
                     app:layout_anchor="@id/search_bar_events"
                     android:id="@+id/search_view_events"
-
                     >
                 </com.google.android.material.search.SearchView>
-<!--                <android.widget.SearchView-->
+
+                <!--                <android.widget.SearchView-->
 <!--                    android:id="@+id/search_view"-->
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="match_parent"-->
@@ -133,6 +133,18 @@
 
                     <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
 
+
+                <Button
+                    android:id="@+id/search_button"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="10dp"
+                    app:icon="@drawable/search"
+                    app:layout_constraintEnd_toStartOf="@id/filterButton"
+                    app:layout_constraintStart_toEndOf="@id/search_bar_events"
+                    app:layout_constraintTop_toBottomOf="@id/all_events_title" />
 
                 <Button
                     android:id="@+id/filterButton"
@@ -145,7 +157,7 @@
                     app:icon="@drawable/icons8_slider_96"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.938"
-                    app:layout_constraintStart_toEndOf="@id/search_bar_events"
+                    app:layout_constraintStart_toEndOf="@id/search_button"
                     app:layout_constraintTop_toBottomOf="@id/all_events_title" />
 
                 <androidx.recyclerview.widget.RecyclerView

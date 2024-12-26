@@ -34,6 +34,7 @@ public class HomeEventsFragment extends Fragment {
     private CardSliderViewPager topEventsRecyclerView;
     private RecyclerView allEventsRecyclerView;
     private Button filterButton_events;
+    private Button searchButton;
     private SearchView searchView;
     private SearchBar searchBar;
 
@@ -49,7 +50,7 @@ public class HomeEventsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_events, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        viewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> fetchEvents());
+        viewModel.getSearchText().observe(getViewLifecycleOwner(), query -> fetchEvents());
         viewModel.getSelectedCity().observe(getViewLifecycleOwner(), city -> fetchEvents());
         viewModel.getSelectedEventType().observe(getViewLifecycleOwner(), eventType -> fetchEvents());
         viewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> fetchEvents());
@@ -58,8 +59,7 @@ public class HomeEventsFragment extends Fragment {
 
         this.searchView = view.findViewById(R.id.search_view_events);
         this.searchBar = view.findViewById(R.id.search_bar_events);
-
-
+        this.searchButton = view.findViewById(R.id.search_button);
 
         this.topEventsRecyclerView = view.findViewById(R.id.viewPagerEvents);
         this.allEventsRecyclerView = view.findViewById(R.id.recyclerView_allevents);
@@ -100,7 +100,37 @@ public class HomeEventsFragment extends Fragment {
             }
         });
 
+        searchBar.setOnClickListener(v -> {
+            // Kada korisnik klikne na Search Bar, prikazuje Search View
+            searchView.setVisibility(View.VISIBLE);
+            searchBar.setVisibility(View.GONE);  // Možda želiš sakriti SearchBar dok se unosi pretraga
+        });
+
+        // Search View listener za unos
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // Kada korisnik pritisne enter ili dugme za pretragu
+//                performSearch(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                // Možeš obraditi promene u tekstu dok korisnik kuca
+//                return false;
+//            }
+//        });
+
+        // Dugme za pretragu
+        searchButton.setOnClickListener(v -> {
+            // Pročitaj tekst iz searchView i uradi pretragu
+//            String query = searchView.getQuery().toString();
+//            performSearch(query);
+        });
+
         return view;
+
     }
 
 
@@ -137,7 +167,7 @@ public class HomeEventsFragment extends Fragment {
         String city = viewModel.getSelectedCity().getValue();
         UUID eventTypeId = viewModel.getSelectedEventType().getValue();
         String time = viewModel.getSelectedDate().getValue();
-        String searchContent = viewModel.getSearchQuery().getValue();
+        String searchContent = viewModel.getSearchText().getValue();
         String sortField = viewModel.getSortField().getValue();
 
         viewModel.fetchAllEventsPage(city, eventTypeId, time, searchContent, sortField,  0, 10);
