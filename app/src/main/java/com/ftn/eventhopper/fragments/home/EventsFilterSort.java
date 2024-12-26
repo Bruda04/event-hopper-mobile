@@ -19,6 +19,9 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class EventsFilterSort extends BottomSheetDialogFragment {
@@ -121,15 +124,32 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select a Date")
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .setCalendarConstraints(new CalendarConstraints.Builder().build()) // Optional constraints
+                .setCalendarConstraints(new CalendarConstraints.Builder().build())
                 .build();
 
         datePicker.show(getChildFragmentManager(), "DATE_PICKER");
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
-            this.selectedDate = datePicker.getHeaderText();
-            Toast.makeText(getContext(), "Selected Date: " + selectedDate, Toast.LENGTH_SHORT).show();
+
+            Date date = new Date(selection);
+            String formattedDate = formatDate(date);
+
+            this.selectedDate = formattedDate;
+            Toast.makeText(getContext(), "Selected Date: " + formattedDate, Toast.LENGTH_SHORT).show();
         });
+    }
+
+
+    public String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        return sdf.format(date);
+    }
+
+    private void setOnDefault(){
+        this.selectedSortField = "";
+        this.selectedCity = "";
+        this.eventType = null;
+        this.selectedDate = "";
     }
 
 }
