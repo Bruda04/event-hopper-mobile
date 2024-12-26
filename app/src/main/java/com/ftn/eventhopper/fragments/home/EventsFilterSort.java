@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
+import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -26,10 +27,13 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     private RadioGroup sortRadioGroup;
     private Button applyFiltersButton;
     private Button openDatePickerButton;
-    private String selectedDate = "";
     private AutoCompleteTextView cityAutoComplete;
     private AutoCompleteTextView eventTypeAutoComplete;
-
+    private String selectedCity = "";
+    private SimpleEventTypeDTO eventType = null;
+    private String selectedSortField = "";
+    private String searchText = "";
+    private String selectedDate = "";
 
     @Override
 
@@ -57,52 +61,61 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             }
         });
 
-        this.setUpApplyFiltersButton();
+        applyFiltersButton = view.findViewById(R.id.apply_filters_button);
+        applyFiltersButton.setOnClickListener(v -> applyFilters());
+
+
         this.setUpDatePickerButton();
 
         return view;
     }
+    private void applyFilters() {
 
-
-    private void setUpApplyFiltersButton() {
-        applyFiltersButton.setOnClickListener(v -> {
-            String sortOption = getSelectedSortOption();
-            String city = cityAutoComplete.getText().toString().trim();
-            String eventType = eventTypeAutoComplete.getText().toString().trim();
-            UUID eventTypeId = UUID.randomUUID(); // Zamenite sa pravim UUID-om iz vaše logike
-
-            viewModel.setSortField(sortOption);
-            viewModel.setSelectedCity(city);
-            viewModel.setSelectedEventType(eventTypeId);
-            viewModel.setSelectedDate(selectedDate);
-
-            dismiss();
-        });
+        this.setSelectedSortOption();
+        this.setSelectedCity();
+        this.setSelectedEventType();
+        UUID eventTypeId = null;
+        if (this.eventType != null){
+            eventTypeId = eventType.getId();
+        }
+        viewModel.fetchAllEventsPage(selectedCity,eventTypeId, selectedDate, searchText, selectedSortField, 0, 10);
     }
 
-    private String getSelectedSortOption() {
+
+    private void setSelectedSortOption() {
         int selectedSortId = sortRadioGroup.getCheckedRadioButtonId();
         if (selectedSortId == R.id.sort_events_by_date) {
-            return "Date";
+            selectedSortField= "Date";
         } else if (selectedSortId == R.id.sort_events_by_name) {
-            return "Name";
-        } else {
-            return ""; // No selection or invalid selection
+            selectedSortField = "Name";
         }
     }
 
-    private void applyFilters(String sortField, String time, String city, UUID eventTypeId) {
+    private void setSelectedCity(){
+        selectedCity = cityAutoComplete.getText().toString().trim();
+    }
+
+    private void setSelectedEventType(){
+        String selectedEventTypeText = eventTypeAutoComplete.getText().toString().trim();
+        viewModel.getEventTypes().observe(getViewLifecycleOwner(), eventTypes -> {
+            if (eventTypes != null) {
+                for (SimpleEventTypeDTO eventTypeDTO : eventTypes) {
+                    if (eventTypeDTO.getName().equalsIgnoreCase(selectedEventTypeText)) {
+                        eventType = eventTypeDTO;
+                        break;
+                    }
+                }
+            }
+        });
 
     }
 
 
     private void setUpDatePickerButton() {
         openDatePickerButton.setOnClickListener(v -> {
-            // Create and show the DatePicker
             showDatePicker();
         });
     }
-
 
     private void showDatePicker() {
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
