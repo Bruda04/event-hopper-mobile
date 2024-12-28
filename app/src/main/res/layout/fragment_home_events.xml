@@ -100,38 +100,38 @@
                     android:text="@string/all_events_title"
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="24sp"
-                    app:layout_constraintStart_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/all_events" />
 
-                <com.google.android.material.search.SearchBar
-                    android:id="@+id/search_bar_events"
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/search"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/md_theme_tertiaryFixed"
-                    android:hint="@string/searchbar_hint"
-                    app:layout_constraintEnd_toStartOf="@id/search_button"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/all_events_title" />
-
-                <com.google.android.material.search.SearchView
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/searchbar_hint"
-                    app:layout_anchor="@id/search_bar_events"
-                    android:id="@+id/search_view_events"
+                    app:layout_constraintTop_toBottomOf="@+id/all_events_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/search_button"
                     >
-                </com.google.android.material.search.SearchView>
 
-                <!--                <android.widget.SearchView-->
-<!--                    android:id="@+id/search_view"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:queryHint="Pretraži..."-->
-<!--                    android:iconifiedByDefault="false" />-->
+                    <com.google.android.material.search.SearchBar
+                        android:id="@+id/search_bar_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/md_theme_tertiaryFixed"
+                        android:hint="@string/searchbar_hint"
+                        app:layout_constraintEnd_toStartOf="@id/search_button"
+                        app:layout_constraintStart_toStartOf="parent" />
 
+                    <com.google.android.material.search.SearchView
+                        android:id="@+id/search_view_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/searchbar_hint"
+                        app:layout_anchor="@id/search_bar_events"
+                        android:backgroundTint="@color/md_theme_tertiaryFixed"
+                        >
+                    </com.google.android.material.search.SearchView>
 
-                    <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
                 <Button
@@ -143,7 +143,7 @@
                     android:layout_marginEnd="10dp"
                     app:icon="@drawable/search"
                     app:layout_constraintEnd_toStartOf="@id/filterButton"
-                    app:layout_constraintStart_toEndOf="@id/search_bar_events"
+                    app:layout_constraintStart_toEndOf="@id/search"
                     app:layout_constraintTop_toBottomOf="@id/all_events_title" />
 
                 <Button

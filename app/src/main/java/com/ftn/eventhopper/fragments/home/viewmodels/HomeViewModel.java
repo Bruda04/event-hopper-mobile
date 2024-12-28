@@ -1,6 +1,8 @@
 package com.ftn.eventhopper.fragments.home.viewmodels;
 
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -118,6 +120,7 @@ public class HomeViewModel extends ViewModel {
             int page,
             int size
     ){
+        Log.i("VM", searchContent);
 
         Map<String,String> queryParams = new HashMap<>();
 
@@ -133,6 +136,7 @@ public class HomeViewModel extends ViewModel {
             queryParams.put("time", time);
         }
         if (searchContent != null && !searchContent.isEmpty()) {
+            Log.i("VM", "upao");
             queryParams.put("searchContent", searchContent);
         }
         if (sortField != null && !sortField.isEmpty()) {

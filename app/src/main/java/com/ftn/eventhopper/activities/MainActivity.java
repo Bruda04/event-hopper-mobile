@@ -19,8 +19,9 @@ public class MainActivity extends AppCompatActivity {
         UserService.initialize(getApplicationContext());
 
         UserService.clearJwtToken();
-        UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJwdXAzQGV4YW1wbGUuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNzM1MTcxNzg4LCJleHAiOjE3MzUxODI1ODgsInJvbGUiOiJTRVJWSUNFX1BST1ZJREVSIiwiaWQiOiIzMTU0OGQ2Yi0wMTlmLTQ5MmUtYmEzOS0wN2JlN2ExNDMzZTUifQ.wMpfukXQzqIcMGpakckH0szTV3GXmX3u2-5JwekI3b2XyiCj2CBQMeV34MS6WrVqU517XG3AyBRh5IjsDef50A");
-        Log.d("MainActivity", "setContentView called");
+        UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJwdXAzQGV4YW1wbGUuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNzM1Mzg3MjY0LCJleHAiOjE3MzUzOTgwNjQsInJvbGUiOiJTRVJWSUNFX1BST1ZJREVSIiwiaWQiOiIzMTU0OGQ2Yi0wMTlmLTQ5MmUtYmEzOS0wN2JlN2ExNDMzZTUifQ.rLyj_G4OyuacGo5PAb_KdFGki21eypnIDdeLiasqjLvPky2OdPd11gEPkkRto3X7cpIpcuRcwJYl7mdJr8LR0Q");
+
+    Log.d("MainActivity", "setContentView called");
 
         // Correctly referencing the FragmentContainerView ID
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()

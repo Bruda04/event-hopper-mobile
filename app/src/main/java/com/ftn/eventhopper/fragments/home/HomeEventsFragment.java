@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class HomeEventsFragment extends Fragment {
     private Button searchButton;
     private SearchView searchView;
     private SearchBar searchBar;
+    private String searchText = "";
 
 
     public HomeEventsFragment() {
@@ -100,34 +102,16 @@ public class HomeEventsFragment extends Fragment {
             }
         });
 
-        searchBar.setOnClickListener(v -> {
-            // Kada korisnik klikne na Search Bar, prikazuje Search View
-            searchView.setVisibility(View.VISIBLE);
-            searchBar.setVisibility(View.GONE);  // Možda želiš sakriti SearchBar dok se unosi pretraga
-        });
-
-        // Search View listener za unos
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // Kada korisnik pritisne enter ili dugme za pretragu
-//                performSearch(query);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                // Možeš obraditi promene u tekstu dok korisnik kuca
-//                return false;
-//            }
-//        });
-
-        // Dugme za pretragu
         searchButton.setOnClickListener(v -> {
-            // Pročitaj tekst iz searchView i uradi pretragu
-//            String query = searchView.getQuery().toString();
-//            performSearch(query);
+            searchText = searchView.getText().toString();
+
+            searchBar.setText(searchText);
+            Log.i("nesto",searchText);
+            searchView.hide();
+            this.fetchEvents();
+
         });
+
 
         return view;
 
@@ -170,7 +154,7 @@ public class HomeEventsFragment extends Fragment {
         String searchContent = viewModel.getSearchText().getValue();
         String sortField = viewModel.getSortField().getValue();
 
-        viewModel.fetchAllEventsPage(city, eventTypeId, time, searchContent, sortField,  0, 10);
+        viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,  0, 10);
     }
 
 
