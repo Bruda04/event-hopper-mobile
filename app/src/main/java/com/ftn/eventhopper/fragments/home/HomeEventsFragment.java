@@ -104,10 +104,9 @@ public class HomeEventsFragment extends Fragment {
 
         searchButton.setOnClickListener(v -> {
             searchText = searchView.getText().toString();
-
             searchBar.setText(searchText);
-            Log.i("nesto",searchText);
             searchView.hide();
+            viewModel.setSearchText(searchText);
             this.fetchEvents();
 
         });
@@ -151,7 +150,7 @@ public class HomeEventsFragment extends Fragment {
         String city = viewModel.getSelectedCity().getValue();
         UUID eventTypeId = viewModel.getSelectedEventType().getValue();
         String time = viewModel.getSelectedDate().getValue();
-        String searchContent = viewModel.getSearchText().getValue();
+        String searchText = viewModel.getSearchText().getValue();
         String sortField = viewModel.getSortField().getValue();
 
         viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,  0, 10);

@@ -136,7 +136,6 @@ public class HomeViewModel extends ViewModel {
             queryParams.put("time", time);
         }
         if (searchContent != null && !searchContent.isEmpty()) {
-            Log.i("VM", "upao");
             queryParams.put("searchContent", searchContent);
         }
         if (sortField != null && !sortField.isEmpty()) {
@@ -243,5 +242,21 @@ public class HomeViewModel extends ViewModel {
                 errorMessage.postValue(t.getMessage());
             }
         });
+    }
+
+    public void setSortField(String sortOption) {
+        sortField.setValue(sortOption);
+    }
+
+    public void setSelectedCity(String city){
+        selectedCity.setValue(city);
+    }
+
+    public void setSelectedEventType(UUID id){
+        selectedEventType.setValue(id);
+    }
+
+    public void setSelectedDate(String date){
+        selectedDate.setValue(date);
     }
 }

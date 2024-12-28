@@ -29,6 +29,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     private HomeViewModel viewModel;
     private RadioGroup sortRadioGroup;
     private Button applyFiltersButton;
+    private Button resetFiltersButton;
     private Button openDatePickerButton;
     private AutoCompleteTextView cityAutoComplete;
     private AutoCompleteTextView eventTypeAutoComplete;
@@ -64,13 +65,22 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             }
         });
 
+        restorePreviousState();
+
+
         applyFiltersButton = view.findViewById(R.id.apply_filters_button);
         applyFiltersButton.setOnClickListener(v -> {
             applyFilters();
-            setOnDefault();
+            //setOnDefault();
             dismiss();
         });
         this.setUpDatePickerButton();
+
+        resetFiltersButton = view.findViewById(R.id.reset_button);
+        resetFiltersButton.setOnClickListener(v -> {
+            setOnDefault();
+            Toast.makeText(getContext(), "Filters reset to default", Toast.LENGTH_SHORT).show();
+        });
 
         return view;
     }
@@ -79,6 +89,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         this.setSelectedSortOption();
         this.setSelectedCity();
         this.setSelectedEventType();
+        String searchText = viewModel.getSearchText().getValue();
         UUID eventTypeId = null;
         if (this.eventType != null){
             eventTypeId = eventType.getId();
@@ -90,14 +101,17 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     private void setSelectedSortOption() {
         int selectedSortId = sortRadioGroup.getCheckedRadioButtonId();
         if (selectedSortId == R.id.sort_events_by_date) {
-            selectedSortField= "Date";
+            selectedSortField= "time";
+            viewModel.setSortField("time");
         } else if (selectedSortId == R.id.sort_events_by_name) {
-            selectedSortField = "Name";
+            selectedSortField = "name";
+            viewModel.setSortField("name");
         }
     }
 
     private void setSelectedCity(){
         selectedCity = cityAutoComplete.getText().toString().trim();
+        viewModel.setSelectedCity(selectedCity);
     }
 
     private void setSelectedEventType(){
@@ -137,6 +151,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             String formattedDate = formatDate(date);
 
             this.selectedDate = formattedDate;
+            viewModel.setSelectedDate(selectedDate);
             Toast.makeText(getContext(), "Selected Date: " + formattedDate, Toast.LENGTH_SHORT).show();
         });
     }
@@ -152,6 +167,34 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         this.selectedCity = "";
         this.eventType = null;
         this.selectedDate = "";
+
+        sortRadioGroup.clearCheck();
+        cityAutoComplete.setText("");
+        eventTypeAutoComplete.setText("");
+        openDatePickerButton.setText("Choose date");
     }
+
+    private void restorePreviousState() {
+        if (viewModel.getSelectedCity().getValue() != null ) {
+            cityAutoComplete.setText(viewModel.getSelectedCity().getValue());
+        }
+
+        if (viewModel.getSelectedEventType().getValue() != null ) {
+            eventTypeAutoComplete.setText(viewModel.getSelectedEventType().getValue().toString());
+        }
+
+        if (viewModel.getSelectedDate().getValue() != null || !viewModel.getSelectedDate().getValue().isEmpty() ) {
+            openDatePickerButton.setText(viewModel.getSelectedDate().getValue().replace("T"," "));
+        }else{
+            openDatePickerButton.setText("Choose date");
+        }
+
+        if ("time".equals(viewModel.getSortField().getValue())) {
+            sortRadioGroup.check(R.id.sort_events_by_date);
+        } else if ("name".equals(viewModel.getSortField().getValue())) {
+            sortRadioGroup.check(R.id.sort_events_by_name);
+        }
+    }
+
 
 }
