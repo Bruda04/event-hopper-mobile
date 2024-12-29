@@ -1,16 +1,16 @@
 package com.ftn.eventhopper.fragments.home.viewmodels;
 
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 import java.util.ArrayList;
@@ -24,26 +24,52 @@ import retrofit2.Response;
 
 public class HomeViewModel extends ViewModel {
 
+    //events
     private final MutableLiveData<ArrayList<SimpleEventDTO>> allEvents = new MutableLiveData<>();
     private final MutableLiveData<PagedResponse<SimpleEventDTO>> allEventsPage = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<SimpleEventDTO>> top5Events = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<LocationDTO>> locations = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> cities = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<>();
-    private MutableLiveData<String> searchText = new MutableLiveData<>("");
+
+    //products
+
+    private final MutableLiveData<ArrayList<SimpleProductDTO>> allProducts = new MutableLiveData<>();
+    private final MutableLiveData<PagedResponse<SimpleProductDTO>> allProductsPage = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<SimpleProductDTO>> top5Products = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<CategoryDTO>> categories = new MutableLiveData<ArrayList<CategoryDTO>>();
+
+    //Event filters
+    private MutableLiveData<String> searchTextEvents = new MutableLiveData<>("");
     private MutableLiveData<String> selectedCity = new MutableLiveData<>("");
-    private MutableLiveData<UUID> selectedEventType = new MutableLiveData<>();
+    private MutableLiveData<UUID> selectedEventTypeEvents = new MutableLiveData<>();
     private MutableLiveData<String> selectedDate = new MutableLiveData<>("");
-    private MutableLiveData<String> sortField = new MutableLiveData<>("");
+    private MutableLiveData<String> sortFieldEvents = new MutableLiveData<>("");
 
-    //Page properties:
+    //product filters
 
-    private MutableLiveData<Integer> page = new MutableLiveData<>(0);
-    private MutableLiveData<Integer> pageSize = new MutableLiveData<>(10);
-    private MutableLiveData<Integer> totalCount = new MutableLiveData<>(0);
+    private MutableLiveData<Boolean> product=new MutableLiveData<>();
+    private MutableLiveData<Boolean> service=new MutableLiveData<>();
+    private MutableLiveData<String> searchTextProducts = new MutableLiveData<>("");
+    private MutableLiveData<ArrayList<UUID>> selectedEventTypesProducts = new MutableLiveData<>();
+    private MutableLiveData<UUID> selectedCategoryProducts = new MutableLiveData<>();
+    private MutableLiveData<Double> minPrice = new MutableLiveData<>();
+    private MutableLiveData<Double> maxPrice = new MutableLiveData<>();
+    private MutableLiveData<String> sortFieldProducts = new MutableLiveData<>("");
+    private MutableLiveData<Boolean> availability = new MutableLiveData<>();
+    //event page properties:
+
+    private MutableLiveData<Integer> pageEvents = new MutableLiveData<>(0);
+    private MutableLiveData<Integer> pageSizeEvents = new MutableLiveData<>(10);
+    private MutableLiveData<Integer> totalCountEvents = new MutableLiveData<>(0);
+
+    //solution page properties:
+    private MutableLiveData<Integer> pageProducts = new MutableLiveData<>(0);
+    private MutableLiveData<Integer> pageSizeProducts = new MutableLiveData<>(10);
+    private MutableLiveData<Integer> totalCountProducts = new MutableLiveData<>(0);
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-    private static final String TAG = "ViewModel";
+
     public LiveData<ArrayList<SimpleEventDTO>> getTop5Events() {
         return top5Events;
     }
@@ -51,9 +77,19 @@ public class HomeViewModel extends ViewModel {
     public LiveData<ArrayList<SimpleEventDTO>> getEvents() {
         return allEvents;
     }
-
     public LiveData<PagedResponse<SimpleEventDTO>> getEventsPage() {
         return allEventsPage;
+    }
+
+     public LiveData<ArrayList<SimpleProductDTO>> getTop5Products() {
+        return top5Products;
+    }
+
+    public LiveData<ArrayList<SimpleProductDTO>> getProducts() {
+        return allProducts;
+    }
+    public LiveData<PagedResponse<SimpleProductDTO>> getProductsPage() {
+        return allProductsPage;
     }
 
     public LiveData<ArrayList<LocationDTO>> getLocations() {
@@ -63,38 +99,65 @@ public class HomeViewModel extends ViewModel {
         return cities;
     }
 
-
     public LiveData<ArrayList<SimpleEventTypeDTO>> getEventTypes() {
         return eventTypes;
     }
 
-    public LiveData<String> getSearchText() {
-        return searchText;
+    public LiveData<ArrayList<CategoryDTO>> getCategories(){ return categories;}
+    public LiveData<String> getSearchTextEvents() {
+        return searchTextEvents;
     }
-
     public LiveData<String> getSelectedCity() {
         return selectedCity;
     }
-
-    public LiveData<UUID> getSelectedEventType() {
-        return selectedEventType;
+    public LiveData<UUID> getSelectedEventTypeEvents() {
+        return selectedEventTypeEvents;
     }
-
     public LiveData<String> getSelectedDate() {
         return selectedDate;
     }
-
-    public LiveData<String> getSortField() {
-        return sortField;
+    public LiveData<String> getSortFieldEvents() {
+        return sortFieldEvents;
     }
 
-    public void setSearchText(String text) {
-        searchText.setValue(text);
+    public LiveData<String> getSearchTextProducts() {
+        return searchTextProducts;
     }
-
+    public LiveData<ArrayList<UUID>> getSelectedEventTypesProducts() {
+        return selectedEventTypesProducts;
+    }
+    public LiveData<String> getSortFieldProducts() {
+        return sortFieldProducts;
+    }
+    public LiveData<Double> getMinPrice(){return  minPrice;}
+    public LiveData<Double> getMaxPrice(){return  maxPrice;}
+    public LiveData<UUID> getSelectedCategory(){return selectedCategoryProducts;}
+    public LiveData<Boolean> getIsProduct(){return product;}
+    public LiveData<Boolean> getIsService(){return service;}
+    public LiveData<Boolean> getAvailability(){return availability;}
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
+        public void setSearchTextEvents(String text) {
+        searchTextEvents.setValue(text);
+    }
+    public void setSortFieldEvents(String sortOption) {
+        sortFieldEvents.setValue(sortOption);
+    }
+
+    public void setSelectedCity(String city){
+        selectedCity.setValue(city);
+    }
+
+    public void setSelectedEventTypeEvents(UUID id){
+        selectedEventTypeEvents.setValue(id);
+    }
+
+    public void setSelectedDate(String date){
+        selectedDate.setValue(date);
+    }
+
+
     public void fetchAllEvents() {
         Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getEvents();
         call.enqueue(new Callback<ArrayList<SimpleEventDTO>>() {
@@ -115,6 +178,26 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
+    public void fetchAllSolutions() {
+        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getSolutions();
+        call.enqueue(new Callback<ArrayList<SimpleProductDTO>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SimpleProductDTO>> call, Response<ArrayList<SimpleProductDTO>> response) {
+                if(response.isSuccessful()){
+                    allProducts.postValue(response.body());
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to fetch solutions. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SimpleProductDTO>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
     public void fetchAllEventsPage(
             String city,
             UUID eventTypeId,
@@ -124,7 +207,6 @@ public class HomeViewModel extends ViewModel {
             int page,
             int size
     ){
-        Log.i("VM", searchContent);
 
         Map<String,String> queryParams = new HashMap<>();
 
@@ -155,7 +237,7 @@ public class HomeViewModel extends ViewModel {
                 if(response.isSuccessful()){
                     PagedResponse<SimpleEventDTO> pagedResponse = response.body();
                     allEventsPage.postValue(pagedResponse);
-                    totalCount.postValue((int) pagedResponse.getTotalElements());
+                    totalCountEvents.postValue((int) pagedResponse.getTotalElements());
                     errorMessage.postValue(null);
                 }else{
                     errorMessage.postValue("Failed to fetch events. Code: "+ response.code());
@@ -164,6 +246,75 @@ public class HomeViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<PagedResponse<SimpleEventDTO>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
+    public void fetchAllEventsPage(
+            Boolean isProduct,
+            Boolean isService,
+            UUID categoryId,
+            ArrayList<UUID> eventTypeIds,
+            Double minPrice,
+            Double maxPrice,
+            Boolean isAvailable,
+            String searchContent,
+            String sortField,
+            int page,
+            int size
+    ){
+
+        Map<String,String> queryParams = new HashMap<>();
+
+        queryParams.put("page", String.valueOf(page));
+        queryParams.put("size", String.valueOf(size));
+        if (isProduct != null ) {
+            queryParams.put("isProduct", isProduct.toString());
+        }
+        if (isService != null ) {
+            queryParams.put("isServuce", isService.toString());
+        }
+        if (availability != null ) {
+            queryParams.put("availability", availability.toString());
+        }
+        if (categoryId != null) {
+            queryParams.put("categoryId", categoryId.toString());
+        }
+        if (eventTypeIds != null || !eventTypeIds.isEmpty()) {
+            queryParams.put("eventTypeId", String.valueOf(eventTypeIds));
+        }
+        if (minPrice != null) {
+            queryParams.put("minPrice", minPrice.toString());
+        }
+        if (maxPrice != null) {
+            queryParams.put("maxPrice", maxPrice.toString());
+        }
+        if (searchContent != null && !searchContent.isEmpty()) {
+            queryParams.put("searchContent", searchContent);
+        }
+        if (sortField != null && !sortField.isEmpty()) {
+            queryParams.put("sortField", sortField);
+        }
+
+        Call<PagedResponse<SimpleProductDTO>> call = ClientUtils.productService.getSolutionsPage(
+            queryParams
+        );
+        call.enqueue(new Callback<PagedResponse<SimpleProductDTO>>() {
+            @Override
+            public void onResponse(Call<PagedResponse<SimpleProductDTO>> call, Response<PagedResponse<SimpleProductDTO>> response) {
+                if(response.isSuccessful()){
+                    PagedResponse<SimpleProductDTO> pagedResponse = response.body();
+                    allProductsPage.postValue(pagedResponse);
+                    totalCountProducts.postValue((int) pagedResponse.getTotalElements());
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to fetch solutions. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PagedResponse<SimpleProductDTO>> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
@@ -184,6 +335,26 @@ public class HomeViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<ArrayList<SimpleEventDTO>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+    public void fetchTopSolutions(UUID id) {
+        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getTop5Solutions(id);
+        call.enqueue(new Callback<ArrayList<SimpleProductDTO>>() {
+
+            @Override
+            public void onResponse(Call<ArrayList<SimpleProductDTO>> call, Response<ArrayList<SimpleProductDTO>> response) {
+                if(response.isSuccessful()){
+                    top5Products.postValue(response.body());
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to fetch top solutions. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SimpleProductDTO>> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
@@ -229,6 +400,25 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
+    public void fetchCategories(){
+        Call<ArrayList<CategoryDTO>> call = ClientUtils.categoriesService.getApproved();
+        call.enqueue(new Callback<ArrayList<CategoryDTO>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CategoryDTO>> call, Response<ArrayList<CategoryDTO>> response) {
+                if(response.isSuccessful()){
+                    categories.postValue(response.body());
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to fetch categories. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CategoryDTO>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
 
     public void fetchEventTypes(){
         Call<ArrayList<SimpleEventTypeDTO>> call = ClientUtils.eventTypeService.getEventTypes();
@@ -250,19 +440,4 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void setSortField(String sortOption) {
-        sortField.setValue(sortOption);
-    }
-
-    public void setSelectedCity(String city){
-        selectedCity.setValue(city);
-    }
-
-    public void setSelectedEventType(UUID id){
-        selectedEventType.setValue(id);
-    }
-
-    public void setSelectedDate(String date){
-        selectedDate.setValue(date);
-    }
 }

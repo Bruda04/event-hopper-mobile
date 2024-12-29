@@ -67,11 +67,11 @@ public class HomeEventsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_events, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        viewModel.getSearchText().observe(getViewLifecycleOwner(), query -> fetchEvents());
+        viewModel.getSearchTextEvents().observe(getViewLifecycleOwner(), query -> fetchEvents());
         viewModel.getSelectedCity().observe(getViewLifecycleOwner(), city -> fetchEvents());
-        viewModel.getSelectedEventType().observe(getViewLifecycleOwner(), eventType -> fetchEvents());
+        viewModel.getSelectedEventTypeEvents().observe(getViewLifecycleOwner(), eventType -> fetchEvents());
         viewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> fetchEvents());
-        viewModel.getSortField().observe(getViewLifecycleOwner(), sort -> fetchEvents());
+        viewModel.getSortFieldEvents().observe(getViewLifecycleOwner(), sort -> fetchEvents());
 
 
         this.searchView = view.findViewById(R.id.search_view_events);
@@ -128,7 +128,7 @@ public class HomeEventsFragment extends Fragment {
             searchText = searchView.getText().toString();
             searchBar.setText(searchText);
             searchView.hide();
-            viewModel.setSearchText(searchText);
+            viewModel.setSearchTextEvents(searchText);
             this.fetchEvents();
 
         });
@@ -218,10 +218,10 @@ public class HomeEventsFragment extends Fragment {
 
     private void fetchEvents() {
         String city = viewModel.getSelectedCity().getValue();
-        UUID eventTypeId = viewModel.getSelectedEventType().getValue();
+        UUID eventTypeId = viewModel.getSelectedEventTypeEvents().getValue();
         String time = viewModel.getSelectedDate().getValue();
-        String searchText = viewModel.getSearchText().getValue();
-        String sortField = viewModel.getSortField().getValue();
+        String searchText = viewModel.getSearchTextEvents().getValue();
+        String sortField = viewModel.getSortFieldEvents().getValue();
 
         viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,  currentPage, pageSize);
     }

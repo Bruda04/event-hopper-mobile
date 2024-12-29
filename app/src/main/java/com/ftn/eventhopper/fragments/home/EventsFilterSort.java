@@ -95,7 +95,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         this.setSelectedSortOption();
         this.setSelectedCity();
         this.setSelectedEventType();
-        String searchText = viewModel.getSearchText().getValue();
+        String searchText = viewModel.getSearchTextEvents().getValue();
         UUID eventTypeId = null;
         if (this.eventType != null){
             eventTypeId = eventType.getId();
@@ -108,10 +108,10 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         int selectedSortId = sortRadioGroup.getCheckedRadioButtonId();
         if (selectedSortId == R.id.sort_events_by_date) {
             selectedSortField= "time";
-            viewModel.setSortField("time");
+            viewModel.setSortFieldEvents("time");
         } else if (selectedSortId == R.id.sort_events_by_name) {
             selectedSortField = "name";
-            viewModel.setSortField("name");
+            viewModel.setSortFieldEvents("name");
         }
     }
 
@@ -185,8 +185,8 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             cityAutoComplete.setText(viewModel.getSelectedCity().getValue());
         }
 
-        if (viewModel.getSelectedEventType().getValue() != null ) {
-            eventTypeAutoComplete.setText(viewModel.getSelectedEventType().getValue().toString());
+        if (viewModel.getSelectedEventTypeEvents().getValue() != null ) {
+            eventTypeAutoComplete.setText(viewModel.getSelectedEventTypeEvents().getValue().toString());
         }
 
         if (viewModel.getSelectedDate().getValue() != null || !viewModel.getSelectedDate().getValue().isEmpty() ) {
@@ -195,9 +195,9 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             openDatePickerButton.setText("Choose date");
         }
 
-        if ("time".equals(viewModel.getSortField().getValue())) {
+        if ("time".equals(viewModel.getSortFieldEvents().getValue())) {
             sortRadioGroup.check(R.id.sort_events_by_date);
-        } else if ("name".equals(viewModel.getSortField().getValue())) {
+        } else if ("name".equals(viewModel.getSortFieldEvents().getValue())) {
             sortRadioGroup.check(R.id.sort_events_by_name);
         }
     }
