@@ -36,7 +36,11 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> selectedDate = new MutableLiveData<>("");
     private MutableLiveData<String> sortField = new MutableLiveData<>("");
 
+    //Page properties:
 
+    private MutableLiveData<Integer> page = new MutableLiveData<>(0);
+    private MutableLiveData<Integer> pageSize = new MutableLiveData<>(10);
+    private MutableLiveData<Integer> totalCount = new MutableLiveData<>(0);
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     private static final String TAG = "ViewModel";
@@ -149,7 +153,9 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void onResponse(Call<PagedResponse<SimpleEventDTO>> call, Response<PagedResponse<SimpleEventDTO>> response) {
                 if(response.isSuccessful()){
-                    allEventsPage.postValue(response.body());
+                    PagedResponse<SimpleEventDTO> pagedResponse = response.body();
+                    allEventsPage.postValue(pagedResponse);
+                    totalCount.postValue((int) pagedResponse.getTotalElements());
                     errorMessage.postValue(null);
                 }else{
                     errorMessage.postValue("Failed to fetch events. Code: "+ response.code());

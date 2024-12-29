@@ -39,6 +39,12 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     private String searchText = "";
     private String selectedDate = "";
 
+    //Page properties:
+
+    private int currentPage = 0;
+    private final int pageSize = 10;
+    private int totalCount = 0;
+
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,7 +100,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         if (this.eventType != null){
             eventTypeId = eventType.getId();
         }
-        viewModel.fetchAllEventsPage(selectedCity,eventTypeId, selectedDate, searchText, selectedSortField, 0, 10);
+        viewModel.fetchAllEventsPage(selectedCity,eventTypeId, selectedDate, searchText, selectedSortField, currentPage, pageSize);
     }
 
 

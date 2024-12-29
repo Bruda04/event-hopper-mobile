@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.EventAdapter;
@@ -39,6 +40,20 @@ public class HomeEventsFragment extends Fragment {
     private SearchView searchView;
     private SearchBar searchBar;
     private String searchText = "";
+    private Button nextPage;
+    private Button previousPage;
+    private TextView pager;
+
+    //Page properties:
+
+    private int currentPage = 0;
+    private final int pageSize = 10;
+    private int totalCount;
+
+    private int totalPages;
+
+    private int lowerNumber;
+    private int higherNumber;
 
 
     public HomeEventsFragment() {
@@ -66,6 +81,10 @@ public class HomeEventsFragment extends Fragment {
         this.topEventsRecyclerView = view.findViewById(R.id.viewPagerEvents);
         this.allEventsRecyclerView = view.findViewById(R.id.recyclerView_allevents);
 
+        this.nextPage = view.findViewById(R.id.forward_arrow_button);
+        this.previousPage = view.findViewById(R.id.back_arrow_button);
+        this.pager = view.findViewById(R.id.pager);
+
         viewModel.fetchAllEvents();
         UUID usersId = UUID.fromString(UserService.getJwtClaim(
                 UserService.getJwtToken(),"id"
@@ -84,6 +103,9 @@ public class HomeEventsFragment extends Fragment {
             if (pagedResponse != null && pagedResponse.getContent() != null) { // Pretpostavljamo da PagedResponse ima getContent() metod
                 allEventsRecyclerView.setVisibility(View.VISIBLE);
                 this.setAll(new ArrayList<>(pagedResponse.getContent())); // Prosleđujemo samo sadržaj kao ArrayList
+                totalCount = (int) viewModel.getEventsPage().getValue().getTotalElements();
+                totalPages = (int) viewModel.getEventsPage().getValue().getTotalPages();
+                setPager();
             }
         });
 
@@ -111,11 +133,59 @@ public class HomeEventsFragment extends Fragment {
 
         });
 
+        previousPage.setOnClickListener(v ->
+        {
+            currentPage--;
+            this.fetchEvents();
+            setPager();
+        });
+
+        nextPage.setOnClickListener(v ->{
+            currentPage++;
+            this.fetchEvents();
+            setPager();
+        });
 
         return view;
 
     }
 
+    void setPager(){
+
+        Log.i("totalCount" , String.valueOf(totalCount));
+
+        if (totalCount == 0){
+            lowerNumber = 0;
+        }else{
+            lowerNumber = currentPage*10 + 1;
+        }
+
+
+        if(currentPage < totalPages-1){
+            higherNumber = currentPage*10 + 10;
+        }else{
+            higherNumber = totalCount;
+        }
+        String pagerText = lowerNumber + "-" + higherNumber;
+        pager.setText(pagerText);
+
+
+        if (currentPage == 0){
+            previousPage.setClickable(false);
+            previousPage.setAlpha(0.5f);
+        }else{
+            previousPage.setClickable(true);
+            previousPage.setAlpha(1.0f);
+        }
+
+        if(currentPage == totalPages-1){
+            nextPage.setClickable(false);
+            nextPage.setAlpha(0.5f);
+        }else{
+            nextPage.setClickable(true);
+            nextPage.setAlpha(1.0f);
+        }
+    }
 
 
     @Override
@@ -153,8 +223,9 @@ public class HomeEventsFragment extends Fragment {
         String searchText = viewModel.getSearchText().getValue();
         String sortField = viewModel.getSortField().getValue();
 
-        viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,  0, 10);
+        viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,  currentPage, pageSize);
     }
+
 
 
 }
