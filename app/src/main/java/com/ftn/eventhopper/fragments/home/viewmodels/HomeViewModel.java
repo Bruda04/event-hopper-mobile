@@ -138,8 +138,13 @@ public class HomeViewModel extends ViewModel {
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
-        public void setSearchTextEvents(String text) {
+
+    public void setSearchTextEvents(String text) {
         searchTextEvents.setValue(text);
+    }
+
+    public void setSearchTextProducts(String text) {
+        searchTextProducts.setValue(text);
     }
     public void setSortFieldEvents(String sortOption) {
         sortFieldEvents.setValue(sortOption);
@@ -251,7 +256,7 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void fetchAllEventsPage(
+    public void fetchAllSolutionsPage(
             Boolean isProduct,
             Boolean isService,
             UUID categoryId,
@@ -439,5 +444,6 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
+
 
 }

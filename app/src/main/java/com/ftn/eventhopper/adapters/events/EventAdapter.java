@@ -1,7 +1,6 @@
-package com.ftn.eventhopper.adapters;
+package com.ftn.eventhopper.adapters.events;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -17,8 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.adapters.EventAdapter;
-import com.ftn.eventhopper.adapters.TopEventAdapter;
+import com.ftn.eventhopper.adapters.events.EventAdapter;
+import com.ftn.eventhopper.adapters.events.TopEventAdapter;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
@@ -35,7 +35,7 @@ public class HomeEventsFragment extends Fragment {
     private HomeViewModel viewModel;
     private CardSliderViewPager topEventsRecyclerView;
     private RecyclerView allEventsRecyclerView;
-    private Button filterButton_events;
+    private Button filterButton;
     private Button searchButton;
     private SearchView searchView;
     private SearchBar searchBar;
@@ -114,8 +114,8 @@ public class HomeEventsFragment extends Fragment {
 
 
         // Set up filter button for events
-        filterButton_events = view.findViewById(R.id.filterButton);
-        filterButton_events.setOnClickListener(new View.OnClickListener() {
+        filterButton = view.findViewById(R.id.filterButton);
+        filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
