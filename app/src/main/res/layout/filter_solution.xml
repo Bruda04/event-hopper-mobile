@@ -46,22 +46,23 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="10dp"
-        android:id="@+id/location_menu"
+        android:id="@+id/event_types_menu"
         style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/choose_location">
+        android:hint="@string/choose_eventtype">
 
         <AutoCompleteTextView
+            android:id="@+id/event_types_autocomplete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
+            android:focusable="false"
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/location_dummy" />
-
+            app:boxStrokeColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="10dp"
@@ -77,8 +78,25 @@
             android:inputType="none"
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/category_dummy" />
+            app:boxStrokeColor="@color/white" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/availability_menu"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/choose_availability">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textAppearance="@style/WhiteRegularText"
+            android:background="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,11 +111,11 @@
         android:layout_marginHorizontal="8dp"/>
 
     <com.google.android.material.slider.RangeSlider
-        android:id="@+id/price_range_slider"
+        android:id="@+id/price_range_slider_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:valueFrom="0.0"
-        android:valueTo="100.0"
+        android:valueTo="600.0"
         android:layout_marginHorizontal="8dp"
         app:values="@array/solution_filter_price"
         />
@@ -113,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <RadioButton
-            android:id="@+id/sort_solutions_by_date"
+            android:id="@+id/sort_solutions_by_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
@@ -129,12 +147,33 @@
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/apply_filters_button"
-        style="@style/DarkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/apply"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/LightButton"
+            android:id="@+id/reset_button_solutions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            app:layout_constraintEnd_toStartOf="@id/apply_filters_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/DarkButton"
+            android:id="@+id/apply_filters_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

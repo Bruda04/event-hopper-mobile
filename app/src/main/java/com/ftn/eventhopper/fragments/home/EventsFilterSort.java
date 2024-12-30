@@ -51,9 +51,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.filter_events, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        // Initialize views
         this.sortRadioGroup = view.findViewById(R.id.sort_group);
-        this.applyFiltersButton = view.findViewById(R.id.apply_filters_button);
 
         openDatePickerButton = view.findViewById(R.id.open_date_picker_button);
 
@@ -63,10 +61,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         viewModel.fetchCities();
         viewModel.getCities().observe(getViewLifecycleOwner(), cities -> {
             if (cities != null && !cities.isEmpty()) {
-                // Kreiraj adapter sa listom gradova
                 ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, cities);
-
-                // Postavi adapter na AutoCompleteTextView
                 cityAutoComplete.setAdapter(cityAdapter);
             }
         });
@@ -201,6 +196,4 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             sortRadioGroup.check(R.id.sort_events_by_name);
         }
     }
-
-
 }

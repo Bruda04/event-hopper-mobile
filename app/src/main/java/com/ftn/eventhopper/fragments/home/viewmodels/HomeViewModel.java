@@ -1,6 +1,8 @@
 package com.ftn.eventhopper.fragments.home.viewmodels;
 
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -48,8 +50,8 @@ public class HomeViewModel extends ViewModel {
 
     //product filters
 
-    private MutableLiveData<Boolean> product=new MutableLiveData<>();
-    private MutableLiveData<Boolean> service=new MutableLiveData<>();
+    private MutableLiveData<Boolean> product=new MutableLiveData<>(true);
+    private MutableLiveData<Boolean> service=new MutableLiveData<>(true);
     private MutableLiveData<String> searchTextProducts = new MutableLiveData<>("");
     private MutableLiveData<ArrayList<UUID>> selectedEventTypesProducts = new MutableLiveData<>();
     private MutableLiveData<UUID> selectedCategoryProducts = new MutableLiveData<>();
@@ -162,6 +164,9 @@ public class HomeViewModel extends ViewModel {
         selectedDate.setValue(date);
     }
 
+    public void setSortFieldProducts(String sortOption) {
+        sortFieldProducts.setValue(sortOption);
+    }
 
     public void fetchAllEvents() {
         Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getEvents();
@@ -275,19 +280,23 @@ public class HomeViewModel extends ViewModel {
         queryParams.put("page", String.valueOf(page));
         queryParams.put("size", String.valueOf(size));
         if (isProduct != null ) {
+            Log.i("VM", "upao product");
             queryParams.put("isProduct", isProduct.toString());
         }
         if (isService != null ) {
-            queryParams.put("isServuce", isService.toString());
+            Log.i("VM", "upao service");
+            queryParams.put("isService", isService.toString());
         }
-        if (availability != null ) {
-            queryParams.put("availability", availability.toString());
+        if (isAvailable != null ) {
+            queryParams.put("isAvailable", isAvailable.toString());
         }
         if (categoryId != null) {
             queryParams.put("categoryId", categoryId.toString());
         }
-        if (eventTypeIds != null || !eventTypeIds.isEmpty()) {
-            queryParams.put("eventTypeId", String.valueOf(eventTypeIds));
+        if (eventTypeIds != null ) {
+            if(!eventTypeIds.isEmpty()){
+                queryParams.put("eventTypeId", String.valueOf(eventTypeIds));
+            }
         }
         if (minPrice != null) {
             queryParams.put("minPrice", minPrice.toString());
@@ -446,4 +455,22 @@ public class HomeViewModel extends ViewModel {
     }
 
 
+    public void setAvailability(Boolean availability) {
+        this.availability.postValue(availability);
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice.postValue(maxPrice);
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice.postValue(minPrice);
+    }
+
+    public void setIsProduct(Boolean isProductSelected) {
+        this.product.postValue(isProductSelected);
+    }
+    public void setIsService(Boolean isServiceSelected) {
+        this.product.postValue(isServiceSelected);
+    }
 }
