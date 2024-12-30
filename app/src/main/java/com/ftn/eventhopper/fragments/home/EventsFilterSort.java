@@ -36,14 +36,13 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
     private String selectedCity = "";
     private SimpleEventTypeDTO eventType = null;
     private String selectedSortField = "";
-    private String searchText = "";
     private String selectedDate = "";
 
     //Page properties:
 
     private int currentPage = 0;
     private final int pageSize = 10;
-    private int totalCount = 0;
+
 
     @Override
 

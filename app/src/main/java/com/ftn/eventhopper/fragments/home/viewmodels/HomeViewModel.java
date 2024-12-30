@@ -61,13 +61,10 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<Boolean> availability = new MutableLiveData<>();
     //event page properties:
 
-    private MutableLiveData<Integer> pageEvents = new MutableLiveData<>(0);
-    private MutableLiveData<Integer> pageSizeEvents = new MutableLiveData<>(10);
+
     private MutableLiveData<Integer> totalCountEvents = new MutableLiveData<>(0);
 
     //solution page properties:
-    private MutableLiveData<Integer> pageProducts = new MutableLiveData<>(0);
-    private MutableLiveData<Integer> pageSizeProducts = new MutableLiveData<>(10);
     private MutableLiveData<Integer> totalCountProducts = new MutableLiveData<>(0);
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 

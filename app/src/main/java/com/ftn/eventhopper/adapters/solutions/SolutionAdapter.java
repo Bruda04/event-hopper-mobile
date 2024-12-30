@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.adapters.events.EventAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 

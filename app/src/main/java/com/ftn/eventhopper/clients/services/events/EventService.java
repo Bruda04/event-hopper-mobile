@@ -4,7 +4,7 @@ package com.ftn.eventhopper.clients.services.events;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;

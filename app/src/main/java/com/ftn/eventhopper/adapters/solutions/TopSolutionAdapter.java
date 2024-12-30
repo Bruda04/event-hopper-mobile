@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.adapters.events.TopEventAdapter;
-import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.github.islamkhsh.CardSliderAdapter;
 
