@@ -1,6 +1,8 @@
 package com.ftn.eventhopper.clients.services.solutions;
 
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
+import com.ftn.eventhopper.shared.dtos.prices.PriceManagementDTO;
+import com.ftn.eventhopper.shared.dtos.prices.UpdatePriceDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
@@ -9,8 +11,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -28,8 +32,16 @@ public interface ProductService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
+
     @GET("solutions")
     Call<ArrayList<SimpleProductDTO>> getSolutions();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("prices/management")
+    Call<ArrayList<PriceManagementDTO>> getPricesForManagement();
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -67,5 +79,13 @@ public interface ProductService {
     })
     @GET("solutions/persons-top-5/{id}")
     Call<ArrayList<SimpleProductDTO>> getTop5Solutions(@Path("id") UUID id);
+
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("prices/{productId}")
+    Call<Void> updateProductsPrice(@Path("productId") UUID productId, @Body UpdatePriceDTO updatePriceDTO);
 
 }
