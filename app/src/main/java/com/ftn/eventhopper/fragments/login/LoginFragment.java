@@ -1,21 +1,29 @@
-package com.ftn.eventhopper.fragments;
+package com.ftn.eventhopper.fragments.login;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
+import com.ftn.eventhopper.fragments.solutions.prices.viewmodels.PUPPricesManagementViewModel;
+import com.ftn.eventhopper.shared.dtos.login.LoginResponse;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
+
+import org.w3c.dom.Text;
 
 public class LoginFragment extends Fragment {
-
+    private LoginViewModel viewModel;
     private String email, password;
     private TextInputLayout emailLayout, passwordLayout;
     private NavController navController;
@@ -24,7 +32,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         navController = NavHostFragment.findNavController(this);
-
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         emailLayout = view.findViewById(R.id.login_email_layout);
         passwordLayout = view.findViewById(R.id.login_password_layout);
@@ -33,7 +41,15 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(v -> {
             retrieveData();
             if (!validateFields()) {
-                navController.navigate(R.id.action_login_to_host);
+                viewModel.login(this.email, this.password);
+                viewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+                    if (errorMessage.isEmpty()) {
+                        navController.navigate(R.id.action_login_to_host);
+                        return;
+                    }
+                    MaterialTextView errorText = view.findViewById(R.id.error_text);
+                    errorText.setText(errorMessage);
+                });
             }
         });
 
