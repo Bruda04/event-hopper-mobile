@@ -14,6 +14,7 @@ import com.ftn.eventhopper.clients.services.solutions.ProductService;
 import com.ftn.eventhopper.clients.services.users.LoginService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
+import com.ftn.eventhopper.clients.services.users.RegistrationService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -56,4 +57,5 @@ public class ClientUtils {
     public static ProfileService profileService = retrofit.create(ProfileService.class);
     public static CategoriesService categoriesService = retrofit.create(CategoriesService.class);
     public static LoginService loginService = retrofit.create(LoginService.class);
+    public static RegistrationService registrationService = retrofit.create(RegistrationService.class);
 }

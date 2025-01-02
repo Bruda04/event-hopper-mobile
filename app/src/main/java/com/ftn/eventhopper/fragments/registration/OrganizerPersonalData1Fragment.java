@@ -103,7 +103,11 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (name.isEmpty()) {
             nameLayout.setError("Name is required"); // Show error message
-            nameLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            nameLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
+        }else if(name.length() < 3){
+            nameLayout.setError("Name is too short"); // Show error message
+            nameLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         } else {
             nameLayout.setError(null); // Clear error
@@ -112,7 +116,7 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (surname.isEmpty()) {
             surnameLayout.setError("Surname is required"); // Show error message
-            surnameLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            surnameLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         } else {
             surnameLayout.setError(null); // Clear error
@@ -121,11 +125,11 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (passwordAgain.isEmpty()) {
             passwordAgainLayout.setError("Password is required"); // Show error message
-            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         }else if(!passwordAgain.equals(password)) {
             passwordAgainLayout.setError("Password must match"); // Show error message
-            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         }
         else {
