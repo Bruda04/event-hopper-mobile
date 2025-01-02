@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -15,11 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.registration.viewmodels.OrganizerRegistrationViewModel;
+import com.ftn.eventhopper.fragments.registration.viewmodels.PupRegistrationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class OrganizerPersonalData2Fragment extends Fragment {
     private NavController navController;
+    private OrganizerRegistrationViewModel viewModel;
     private TextInputEditText phoneField, cityField, addressField;
     private TextInputLayout phoneLayout, cityLayout, addressLayout;
     private String phone, city, address;
@@ -28,12 +32,19 @@ public class OrganizerPersonalData2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_personal_data2, container, false);
         navController = NavHostFragment.findNavController(this);
+        viewModel = new ViewModelProvider(this).get(OrganizerRegistrationViewModel.class);
 
         retrieveFields(view);
 
         view.findViewById(R.id.register_btn).setOnClickListener(v -> {
             retrieveData();
             if(!validateFields()){
+                Bundle receivedBundle = getArguments();
+                receivedBundle.putString("phone", phone);
+                receivedBundle.putString("city", city);
+                receivedBundle.putString("address", address);
+
+                viewModel.register(receivedBundle);
                 navController.navigate(R.id.action_to_confirm_email);
             }
         });

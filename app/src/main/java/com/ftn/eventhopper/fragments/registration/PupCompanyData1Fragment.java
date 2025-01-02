@@ -60,6 +60,11 @@ public class PupCompanyData1Fragment extends Fragment {
             companyEmailLayout.setError("Email is required"); // Show error message
             companyEmailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
+        }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(companyEmail).matches()){
+            companyEmailLayout.setError("Email is in wrong format");
+            companyEmailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
         } else {
             companyEmailLayout.setError(null); // Clear error
             companyEmailLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color

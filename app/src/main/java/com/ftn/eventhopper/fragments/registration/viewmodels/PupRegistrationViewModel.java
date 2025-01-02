@@ -21,7 +21,7 @@ public class PupRegistrationViewModel extends ViewModel {
 
     public void register(Bundle bundle){
         CreateServiceProviderAccountDTO createDTO = new CreateServiceProviderAccountDTO();
-        createDTO.setEmail(bundle.getString("companyEmail"));
+        createDTO.setEmail(bundle.getString("email"));
         createDTO.setPassword(bundle.getString("password"));
         createDTO.setVerified(false);
         createDTO.setType(PersonType.SERVICE_PROVIDER);
@@ -47,8 +47,6 @@ public class PupRegistrationViewModel extends ViewModel {
         personDTO.setLocation(personLocation);
 
         createDTO.setPerson(personDTO);
-
-        Log.d("HelloOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" , createDTO.toString());
 
         Call<CreateServiceProviderAccountDTO> call = ClientUtils.registrationService.registerServiceProvider(createDTO);
         call.enqueue(new Callback<CreateServiceProviderAccountDTO>() {

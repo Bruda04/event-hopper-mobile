@@ -23,9 +23,9 @@ public class PupPersonalDataFragment extends Fragment {
 
     private NavController navController;
     private PupRegistrationViewModel viewModel;
-    private TextInputEditText nameField, surnameField, phoneField, cityField, addressField;
-    private TextInputLayout nameLayout, surnameLayout, phoneLayout, cityLayout, addressLayout;
-    private String name, surname, phone, city, address;
+    private TextInputEditText emailField, nameField, surnameField, phoneField, cityField, addressField;
+    private TextInputLayout emailLayout, nameLayout, surnameLayout, phoneLayout, cityLayout, addressLayout;
+    private String email, name, surname, phone, city, address;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,13 +41,12 @@ public class PupPersonalDataFragment extends Fragment {
             retrieveData();
             Log.d("Pup personal data page", "Next button clicked.");
             if(!validateFields()){
+                receivedBundle.putString("email", email);
                 receivedBundle.putString("name", name);
                 receivedBundle.putString("surname", surname);
                 receivedBundle.putString("phone", phone);
                 receivedBundle.putString("city", city);
                 receivedBundle.putString("address", address);
-
-                Log.d("HelloOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" , receivedBundle.toString());
 
                 viewModel.register(receivedBundle);
                 navController.navigate(R.id.action_to_confirm_email);
@@ -59,12 +58,14 @@ public class PupPersonalDataFragment extends Fragment {
     }
 
     private void retrieveFields(View view){
+        emailLayout = view.findViewById(R.id.register_email_layout);
         nameLayout = view.findViewById(R.id.register_name_layout);
         surnameLayout = view.findViewById(R.id.register_surname_layout);
         cityLayout = view.findViewById(R.id.register_city_layout);
         phoneLayout = view.findViewById(R.id.register_phone_number_layout);
         addressLayout = view.findViewById(R.id.register_address_layout);
 
+        emailField = (TextInputEditText) emailLayout.getEditText();
         nameField = (TextInputEditText) nameLayout.getEditText();
         surnameField = (TextInputEditText) surnameLayout.getEditText();
         cityField = (TextInputEditText) cityLayout.getEditText();
@@ -74,6 +75,7 @@ public class PupPersonalDataFragment extends Fragment {
 
 
     private void retrieveData(){
+        email = emailField != null ? emailField.getText().toString().trim() : "";
         name = nameField != null ? nameField.getText().toString().trim() : "";
         surname = surnameField != null ? surnameField.getText().toString().trim() : "";
         phone = phoneField != null ? phoneField.getText().toString().trim() : "";
@@ -83,6 +85,21 @@ public class PupPersonalDataFragment extends Fragment {
 
     private boolean validateFields(){
         boolean hasError = false;
+
+        if (email.isEmpty()) {
+            emailLayout.setError("Email is required"); // Show error message
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
+        }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailLayout.setError("Email is in wrong format");
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
+        }
+        else {
+            emailLayout.setError(null); // Clear error
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
+        }
 
         if (name.isEmpty()) {
             nameLayout.setError("Name is required"); // Show error message

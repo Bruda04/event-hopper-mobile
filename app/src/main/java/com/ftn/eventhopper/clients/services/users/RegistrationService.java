@@ -23,7 +23,7 @@ public interface RegistrationService {
             "Content-Type:application/json"
     })
     @POST("accounts/event-organizer")
-    Call<CreatedEventOrganizerAccountDTO> registerEventOrganizer(@Body CreateEventOrganizerAccountDTO createDTO);
+    Call<CreateEventOrganizerAccountDTO> registerEventOrganizer(@Body CreateEventOrganizerAccountDTO createDTO);
 
 
 }

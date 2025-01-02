@@ -45,7 +45,13 @@ public class OrganizerPersonalData1Fragment extends Fragment {
             retrieveData();
             Log.d("Organizer Page 1", "Next button clicked.");
             if(!validateFields()){
-                navController.navigate(R.id.action_to_organizer_data_2);
+                Bundle bundle = new Bundle();
+                bundle.putString("email", email);
+                bundle.putString("name", name);
+                bundle.putString("surname", surname);
+                bundle.putString("password", password);
+
+                navController.navigate(R.id.action_to_organizer_data_2, bundle);
             }
         });
 
@@ -79,9 +85,15 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (email.isEmpty()) {
             emailLayout.setError("Email is required"); // Show error message
-            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
-        } else {
+        }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailLayout.setError("Email is in wrong format");
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
+        }
+        else {
             emailLayout.setError(null); // Clear error
             emailLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
         }
@@ -89,11 +101,11 @@ public class OrganizerPersonalData1Fragment extends Fragment {
         // Check password
         if (password.isEmpty()) {
             passwordLayout.setError("Password is required. " + getString(R.string.password_rule));
-            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.red));
+            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
             hasError = true;
         }else if(!isValidPassword(password)){
             passwordLayout.setError(getString(R.string.password_rule));
-            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.red));
+            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
             hasError = true;
         }
         else {
