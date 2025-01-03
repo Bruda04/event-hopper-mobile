@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.registration.viewmodels.OrganizerRegistrationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -27,17 +29,19 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class OrganizerPersonalData1Fragment extends Fragment {
+    private OrganizerRegistrationViewModel viewModel;
     private NavController navController;
     private TextInputEditText emailField, nameField, surnameField, passwordField, passwordAgainField;
     private TextInputLayout emailLayout, nameLayout, surnameLayout, passwordLayout, passwordAgainLayout;
     private String email, name, surname, password, passwordAgain;
-
     private Button nextButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_personal_data1, container, false);
         navController = NavHostFragment.findNavController(this);
+        viewModel = new ViewModelProvider(this).get(OrganizerRegistrationViewModel.class);
+
 
         retrieveFields(view);
 
@@ -45,13 +49,20 @@ public class OrganizerPersonalData1Fragment extends Fragment {
             retrieveData();
             Log.d("Organizer Page 1", "Next button clicked.");
             if(!validateFields()){
-                Bundle bundle = new Bundle();
-                bundle.putString("email", email);
-                bundle.putString("name", name);
-                bundle.putString("surname", surname);
-                bundle.putString("password", password);
+                viewModel.checkEmail(email, isTaken -> {
+                    if (isTaken) {
+                        emailLayout.setError("Email is taken.");
+                        emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("email", email);
+                        bundle.putString("name", name);
+                        bundle.putString("surname", surname);
+                        bundle.putString("password", password);
 
-                navController.navigate(R.id.action_to_organizer_data_2, bundle);
+                        navController.navigate(R.id.action_to_organizer_data_2, bundle);
+                    }
+                });
             }
         });
 
