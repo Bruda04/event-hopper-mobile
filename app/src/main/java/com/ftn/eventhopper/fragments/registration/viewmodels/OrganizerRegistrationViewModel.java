@@ -21,11 +21,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrganizerRegistrationViewModel  extends ViewModel {
-    private boolean emailTaken = false;
-    public boolean isEmailTaken() {
-        return emailTaken;
-    }
-
     public void checkEmail(String email, EmailCheckCallback callback) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email);
         Call<Boolean> call = ClientUtils.registrationService.isEmailTaken(requestBody);
