@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments;
+package com.ftn.eventhopper.fragments.profile;
 
 import android.os.Bundle;
 
@@ -61,6 +61,6 @@ public class Calendar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_2, container, false);
+        return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 }

@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments;
+package com.ftn.eventhopper.fragments.profile;
 
 import android.os.Bundle;
 
