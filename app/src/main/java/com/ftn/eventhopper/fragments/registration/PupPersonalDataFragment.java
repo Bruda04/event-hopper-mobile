@@ -41,15 +41,23 @@ public class PupPersonalDataFragment extends Fragment {
             retrieveData();
             Log.d("Pup personal data page", "Next button clicked.");
             if(!validateFields()){
-                receivedBundle.putString("email", email);
-                receivedBundle.putString("name", name);
-                receivedBundle.putString("surname", surname);
-                receivedBundle.putString("phone", phone);
-                receivedBundle.putString("city", city);
-                receivedBundle.putString("address", address);
+                viewModel.checkEmail(email, isTaken -> {
+                    if (isTaken) {
+                        emailLayout.setError("Email is taken.");
+                        emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+                    } else {
+                        receivedBundle.putString("email", email);
+                        receivedBundle.putString("name", name);
+                        receivedBundle.putString("surname", surname);
+                        receivedBundle.putString("phone", phone);
+                        receivedBundle.putString("city", city);
+                        receivedBundle.putString("address", address);
 
-                viewModel.register(receivedBundle);
-                navController.navigate(R.id.action_to_confirm_email);
+                        viewModel.register(receivedBundle);
+                        navController.navigate(R.id.action_to_confirm_email);
+                    }
+                });
+
             }
         });
 

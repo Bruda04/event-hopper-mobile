@@ -2,8 +2,8 @@ package com.ftn.eventhopper.clients.services.users;
 
 import com.ftn.eventhopper.shared.dtos.users.account.CreateEventOrganizerAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.CreateServiceProviderAccountDTO;
-import com.ftn.eventhopper.shared.dtos.users.account.CreatedEventOrganizerAccountDTO;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
@@ -25,5 +25,11 @@ public interface RegistrationService {
     @POST("accounts/event-organizer")
     Call<CreateEventOrganizerAccountDTO> registerEventOrganizer(@Body CreateEventOrganizerAccountDTO createDTO);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type: text/plain"
+    })
+    @POST("accounts/check-email")
+    Call<Boolean> isEmailTaken(@Body RequestBody email);
 
 }

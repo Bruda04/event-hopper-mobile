@@ -13,11 +13,38 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CreateServiceProvid
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PupRegistrationViewModel extends ViewModel {
+    public void checkEmail(String email, OrganizerRegistrationViewModel.EmailCheckCallback callback) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email);
+        Call<Boolean> call = ClientUtils.registrationService.isEmailTaken(requestBody);
+
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResult(response.body());
+                } else {
+                    callback.onResult(false); // Default to false if something goes wrong
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                callback.onResult(true); // Default to true on failure
+            }
+        });
+    }
+
+    public interface EmailCheckCallback {
+        void onResult(boolean isEmailTaken);
+    }
+
 
     public void register(Bundle bundle){
         CreateServiceProviderAccountDTO createDTO = new CreateServiceProviderAccountDTO();
