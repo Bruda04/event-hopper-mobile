@@ -36,7 +36,7 @@
             app:popUpTo="@id/registerFragment" />
         <action
             android:id="@+id/action_register_pup"
-            app:destination="@id/pupPersonalData1Fragment"
+            app:destination="@id/pupCompanyData1Fragment"
             app:popUpTo="@id/registerFragment" />
     </fragment>
 
@@ -68,37 +68,56 @@
 
     <!-- PUP registration -->
     <fragment
-        android:id="@+id/pupPersonalData1Fragment"
-        android:name="com.ftn.eventhopper.fragments.registration.PupPersonalData1Fragment"
-        android:label="PupPersonalData1"
-        tools:layout="@layout/fragment_pup_personal_data1">
+        android:id="@+id/pupCompanyData1Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupCompanyData1Fragment"
+        android:label="PupCompanyData1"
+        tools:layout="@layout/fragment_pup_company_data1">
         <action
-            android:id="@+id/action_to_pup_data_2"
-            app:destination="@id/pupPersonalData2Fragment"
-            app:popUpTo="@id/pupPersonalData1Fragment" />
+            android:id="@+id/action_to_pup_company_2"
+            app:destination="@id/pupCompanyData2Fragment"
+            app:popUpTo="@id/pupCompanyData1Fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/pupPersonalData2Fragment"
-        android:name="com.ftn.eventhopper.fragments.registration.PupPersonalData2Fragment"
-        android:label="PupPersonalData2"
-        tools:layout="@layout/fragment_pup_personal_data2">
+        android:id="@+id/pupCompanyData2Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupCompanyData2Fragment"
+        android:label="PupCompanyData2"
+        tools:layout="@layout/fragment_pup_company_data2">
         <action
             android:id="@+id/action_to_pup_image_upload"
             app:destination="@id/pupImageUploadFragment"
-            app:popUpTo="@id/pupPersonalData2Fragment" />
+            app:popUpTo="@id/pupCompanyData2Fragment" />
+
     </fragment>
+
 
     <fragment
         android:id="@+id/pupImageUploadFragment"
         android:name="com.ftn.eventhopper.fragments.registration.PupImageUploadFragment"
         android:label="PupImageUpload"
         tools:layout="@layout/fragment_pup_image_upload">
+
+        <action
+            android:id="@+id/action_to_pup_personal_data"
+            app:destination="@id/pupPersonalDataFragment"
+            app:popUpTo="@id/pupImageUploadFragment" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/pupPersonalDataFragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupPersonalDataFragment"
+        android:label="PupPersonalData"
+        tools:layout="@layout/fragment_pup_personal_data">
+
         <action
             android:id="@+id/action_to_confirm_email"
             app:destination="@id/confirmEmail"
-            app:popUpTo="@id/pupImageUploadFragment" />
+            app:popUpTo="@id/pupPersonalDataFragment" />
     </fragment>
+
+
 
 
     <!-- Confirm email -->

@@ -32,7 +32,7 @@ public class PupImageUploadFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
 
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_confirm_email);
+            navController.navigate(R.id.action_to_pup_personal_data, getArguments());
         });
 
         return view;
