@@ -13,6 +13,7 @@ import com.ftn.eventhopper.clients.services.categories.CategoriesService;
 import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
 import com.ftn.eventhopper.clients.services.locations.LocationService;
 import com.ftn.eventhopper.clients.services.solutions.ProductService;
+import com.ftn.eventhopper.clients.services.solutions.ServiceService;
 import com.ftn.eventhopper.clients.services.users.LoginService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
@@ -64,5 +65,6 @@ public class ClientUtils {
     public static RegistrationService registrationService = retrofit.create(RegistrationService.class);
     public static LocationService locationService = retrofit.create(LocationService.class);
     public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);
+    public static ServiceService serviceService = retrofit.create(ServiceService.class);
 
 }

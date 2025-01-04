@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments.filters;
+package com.ftn.eventhopper.fragments.solutions.services;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

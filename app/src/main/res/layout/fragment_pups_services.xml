@@ -70,7 +70,7 @@
     <Button
         style="@style/DarkButton"
 
-        android:id="@+id/back_arrow_button"
+        android:id="@+id/previous_page_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:contentDescription="@string/backArrowButton"
@@ -90,13 +90,13 @@
         android:textColor="@color/ic_launcher_background"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/forward_arrow_button"
+        app:layout_constraintEnd_toStartOf="@id/next_page_button"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/back_arrow_button" />
+        app:layout_constraintStart_toEndOf="@id/previous_page_button" />
 
     <Button
         style="@style/DarkButton"
-        android:id="@+id/forward_arrow_button"
+        android:id="@+id/next_page_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:contentDescription="@string/forwardArrowButton"
@@ -116,6 +116,19 @@
         app:layout_constraintBottom_toTopOf="@id/pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/add" />
+
+    <TextView
+        android:id="@+id/status_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/DarkLargerText"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
