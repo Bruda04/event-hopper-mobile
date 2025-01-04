@@ -18,10 +18,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
 
-//        UserService.clearJwtToken();
-       // UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJwdXAzQGV4YW1wbGUuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNzM1MTI4MzMwLCJleHAiOjE3MzUxMzkxMzAsInJvbGUiOiJTRVJWSUNFX1BST1ZJREVSIiwiaWQiOiIzMTU0OGQ2Yi0wMTlmLTQ5MmUtYmEzOS0wN2JlN2ExNDMzZTUifQ.D94EFSbvk5T-ISaCj__oHAGb72XJUwFn3Q5Tw5Vy9m9SnOysCBmP_YsEzMiSH6qaLkSDxiW1K1SwQJfrr9-y5Q");
-
-
         UserService.clearJwtToken();
         UserService.setJwtToken("eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJldmVudC1ob3BwZXIiLCJzdWIiOiJwdXAzQGV4YW1wbGUuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNzM1NTEzMjg5LCJleHAiOjE3MzU1MjQwODksInJvbGUiOiJTRVJWSUNFX1BST1ZJREVSIiwiaWQiOiIzMTU0OGQ2Yi0wMTlmLTQ5MmUtYmEzOS0wN2JlN2ExNDMzZTUifQ.kxHVlTLpNfG8yha3kMf4yVPVTKGVFGJohI6vDLtpcup_vn8IL69tj-Zsst9Yyjs_WP0aqlGsESMzbYo745nZMw");
 

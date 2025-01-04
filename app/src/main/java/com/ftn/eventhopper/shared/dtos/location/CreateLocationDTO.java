@@ -1,10 +1,8 @@
-package com.ftn.event_hopper.dtos.location;
+package com.ftn.eventhopper.shared.dtos.location;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Getter
 @Setter

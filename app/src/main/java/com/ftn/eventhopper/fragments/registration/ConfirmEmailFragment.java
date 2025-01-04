@@ -1,20 +1,16 @@
 package com.ftn.eventhopper.fragments.registration;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.fragments.LoginFragment;
 
 /**
  * A simple {@link Fragment} subclass.

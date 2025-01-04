@@ -13,9 +13,11 @@ import com.ftn.eventhopper.clients.services.categories.CategoriesService;
 import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
 import com.ftn.eventhopper.clients.services.locations.LocationService;
 import com.ftn.eventhopper.clients.services.solutions.ProductService;
+import com.ftn.eventhopper.clients.services.users.LoginService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
 import com.ftn.eventhopper.clients.services.events.EventService;
+import com.ftn.eventhopper.clients.services.users.RegistrationService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -60,5 +62,7 @@ public class ClientUtils {
     public static CategoriesService categoriesService = retrofit.create(CategoriesService.class);
     public static LocationService locationService = retrofit.create(LocationService.class);
     public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);
+    public static LoginService loginService = retrofit.create(LoginService.class);
+    public static RegistrationService registrationService = retrofit.create(RegistrationService.class);
 
 }

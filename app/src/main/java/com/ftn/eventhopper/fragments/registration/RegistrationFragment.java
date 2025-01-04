@@ -15,14 +15,7 @@ import android.widget.Button;
 
 import com.ftn.eventhopper.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the  factory method to
- * create an instance of this fragment.
- */
-// RoleSelectionFragment.java
 public class RegistrationFragment extends Fragment {
-
     private NavController navController;
 
     @Override

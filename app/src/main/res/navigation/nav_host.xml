@@ -20,7 +20,7 @@
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
-        android:name="com.ftn.eventhopper.fragments.Fragment2"
+        android:name="com.ftn.eventhopper.fragments.Calendar"
         android:label="Calendar"
         tools:layout="@layout/fragment_2" />
 

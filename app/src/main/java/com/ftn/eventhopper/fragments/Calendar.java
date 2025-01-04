@@ -12,10 +12,10 @@ import com.ftn.eventhopper.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment2#newInstance} factory method to
+ * Use the {@link Calendar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment2 extends Fragment {
+public class Calendar extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Fragment2 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment2() {
+    public Calendar() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class Fragment2 extends Fragment {
      * @return A new instance of fragment Fragment2.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment2 newInstance(String param1, String param2) {
-        Fragment2 fragment = new Fragment2();
+    public static Calendar newInstance(String param1, String param2) {
+        Calendar fragment = new Calendar();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
