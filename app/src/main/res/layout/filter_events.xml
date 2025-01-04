@@ -30,8 +30,7 @@
             android:inputType="none"
             android:textAppearance="@style/WhiteRegularText"
             android:background="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:simpleItems="@array/location_dummy" />
+            app:boxStrokeColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,13 +91,33 @@
 
     </RadioGroup>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/DarkButton"
-        android:id="@+id/apply_filters_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Apply"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/LightButton"
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            app:layout_constraintEnd_toStartOf="@id/apply_filters_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/DarkButton"
+            android:id="@+id/apply_filters_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

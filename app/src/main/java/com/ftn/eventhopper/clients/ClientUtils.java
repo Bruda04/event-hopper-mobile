@@ -10,11 +10,14 @@ import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
 import com.ftn.eventhopper.clients.services.categories.CategoriesService;
+import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
+import com.ftn.eventhopper.clients.services.locations.LocationService;
 import com.ftn.eventhopper.clients.services.solutions.ProductService;
 import com.ftn.eventhopper.clients.services.users.LoginService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.clients.interceptors.JWTInterceptor;
 import com.ftn.eventhopper.clients.services.users.RegistrationService;
+import com.ftn.eventhopper.clients.services.events.EventService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,9 +56,13 @@ public class ClientUtils {
                 .build();
     }
 
+    public static EventService eventService = retrofit.create(EventService.class);
     public static ProductService productService = retrofit.create(ProductService.class);
     public static ProfileService profileService = retrofit.create(ProfileService.class);
     public static CategoriesService categoriesService = retrofit.create(CategoriesService.class);
     public static LoginService loginService = retrofit.create(LoginService.class);
     public static RegistrationService registrationService = retrofit.create(RegistrationService.class);
+    public static LocationService locationService = retrofit.create(LocationService.class);
+    public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);
+
 }

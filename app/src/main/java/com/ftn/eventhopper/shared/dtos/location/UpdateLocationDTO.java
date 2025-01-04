@@ -1,5 +1,4 @@
-
-package com.ftn.eventhopper.shared.dtos.location;
+package com.ftn.event_hopper.dtos.location;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SimpleLocationDTO {
-    private UUID id;
+public class UpdateLocationDTO {
     private String city;
     private String address;
+    private double latitude;
+    private double longitude;
 }

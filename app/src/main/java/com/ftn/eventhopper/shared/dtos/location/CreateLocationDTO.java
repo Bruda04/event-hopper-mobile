@@ -13,4 +13,3 @@ public class CreateLocationDTO {
     private double latitude;
     private double longitude;
 }
-

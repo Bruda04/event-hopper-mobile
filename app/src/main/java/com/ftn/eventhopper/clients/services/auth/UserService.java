@@ -2,8 +2,13 @@ package com.ftn.eventhopper.clients.services.auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
+
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UserService {
     private static final String PREFERENCES_FILE_NAME = "secure_prefs";
@@ -62,4 +67,52 @@ public class UserService {
             throw new IllegalStateException("EncryptedSharedPreferences not initialized. Call initialize() first.");
         }
     }
+
+    /**
+     * Decodes the JWT payload.
+     *
+     * @param jwtToken The JWT token string.
+     * @return A JSON object representing the payload, or null if decoding fails.
+     */
+    public static JSONObject decodeJwtPayload(String jwtToken) {
+        try {
+            // Split the JWT token into parts
+            String[] parts = jwtToken.split("\\.");
+            if (parts.length < 2) {
+                return null; // Invalid JWT format
+            }
+
+            // Decode the payload (second part) from Base64
+            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+
+            // Parse the payload as a JSON object
+            return new JSONObject(payload);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Decoding failed
+        }
+    }
+
+    /**
+     * Retrieves a specific claim from the JWT payload.
+     *
+     * @param jwtToken The JWT token string.
+     * @param claimKey The key of the claim to retrieve.
+     * @return The value of the claim, or null if not found or decoding fails.
+     */
+    public static String getJwtClaim(String jwtToken, String claimKey) {
+        try {
+            JSONObject payload = decodeJwtPayload(jwtToken);
+            if (payload != null && payload.has(claimKey)) {
+                return payload.getString(claimKey);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null; // Claim not found or decoding failed
+    }
+
+
+
+
 }
