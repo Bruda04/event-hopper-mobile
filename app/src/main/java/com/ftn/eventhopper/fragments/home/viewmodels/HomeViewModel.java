@@ -165,46 +165,6 @@ public class HomeViewModel extends ViewModel {
         sortFieldProducts.setValue(sortOption);
     }
 
-    public void fetchAllEvents() {
-        Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getEvents();
-        call.enqueue(new Callback<ArrayList<SimpleEventDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<SimpleEventDTO>> call, Response<ArrayList<SimpleEventDTO>> response) {
-                if(response.isSuccessful()){
-                    allEvents.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch events. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<SimpleEventDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
-
-    public void fetchAllSolutions() {
-        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getSolutions();
-        call.enqueue(new Callback<ArrayList<SimpleProductDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<SimpleProductDTO>> call, Response<ArrayList<SimpleProductDTO>> response) {
-                if(response.isSuccessful()){
-                    allProducts.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch solutions. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<SimpleProductDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
-
     public void fetchAllEventsPage(
             String city,
             UUID eventTypeId,
@@ -271,7 +231,7 @@ public class HomeViewModel extends ViewModel {
             int page,
             int size
     ){
-
+        Log.i("VM","pozvao fetch");
         Map<String,String> queryParams = new HashMap<>();
 
         queryParams.put("page", String.valueOf(page));
@@ -329,6 +289,7 @@ public class HomeViewModel extends ViewModel {
                 errorMessage.postValue(t.getMessage());
             }
         });
+        Log.i("VM","--------------------------");
     }
     public void fetchTopEvents(UUID id) {
         Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events(id);

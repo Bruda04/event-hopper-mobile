@@ -66,18 +66,6 @@ public class HomeSolutionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_solutions, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-
-        viewModel.getIsProduct().observe(getViewLifecycleOwner(), isProduct -> fetchProducts());
-        viewModel.getIsService().observe(getViewLifecycleOwner(), isService -> fetchProducts());
-        viewModel.getSearchTextProducts().observe(getViewLifecycleOwner(), query -> fetchProducts());
-        viewModel.getSelectedCategory().observe(getViewLifecycleOwner(), category -> fetchProducts());
-        viewModel.getSelectedEventTypesProducts().observe(getViewLifecycleOwner(), eventTypes -> fetchProducts());
-        viewModel.getAvailability().observe(getViewLifecycleOwner(), availability -> fetchProducts());
-        viewModel.getMaxPrice().observe(getViewLifecycleOwner(), minPrice -> fetchProducts());
-        viewModel.getMinPrice().observe(getViewLifecycleOwner(), maxPrice -> fetchProducts());
-        viewModel.getSortFieldProducts().observe(getViewLifecycleOwner(), sort -> fetchProducts());
-
-
         this.searchView = view.findViewById(R.id.search_view_solutions);
         this.searchBar = view.findViewById(R.id.search_bar_solutions);
         this.searchButton = view.findViewById(R.id.search_button_solutions);
@@ -89,7 +77,7 @@ public class HomeSolutionsFragment extends Fragment {
         this.previousPage = view.findViewById(R.id.back_arrow_button_solutions);
         this.pager = view.findViewById(R.id.pager_solutions);
 
-        viewModel.fetchAllSolutions();
+        //viewModel.fetchAllSolutions();
         UUID usersId = UUID.fromString(UserService.getJwtClaim(
                 UserService.getJwtToken(),"id"
         ));
@@ -102,6 +90,8 @@ public class HomeSolutionsFragment extends Fragment {
                 this.setTop(topProducts);
             }
         });
+
+        this.fetchProducts();
 
         viewModel.getProductsPage().observe(getViewLifecycleOwner(), pagedResponse -> {
             if (pagedResponse != null && pagedResponse.getContent() != null) {
@@ -218,6 +208,7 @@ public class HomeSolutionsFragment extends Fragment {
     }
 
     private void fetchProducts() {
+        Log.i("Home", "pozvao fetch products");
         UUID category = viewModel.getSelectedCategory().getValue();
         ArrayList<UUID> eventTypeIds = viewModel.getSelectedEventTypesProducts().getValue();
         Boolean isProduct = viewModel.getIsProduct().getValue();

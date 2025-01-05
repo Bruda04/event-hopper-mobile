@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.fragments.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
     private CheckBox service;
     private AutoCompleteTextView categoryAutoComplete;
 
-    //dodati za eventtypes
+    private AutoCompleteTextView eventTypeAutoComplete;
     private AutoCompleteTextView availabilityAutoComplete;
     private RangeSlider priceSlider;
     private RadioGroup sortRadioGroup;
@@ -53,7 +54,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
 
     private int currentPage = 0;
     private final int pageSize = 10;
-    private int totalCount = 0;
+
 
     @Override
 
@@ -64,11 +65,12 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         product= view.findViewById(R.id.checkbox_products);
         service= view.findViewById(R.id.checkbox_services);
         categoryAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.category_menu)).getEditText();
+        eventTypeAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.event_types_menu_solutions)).getEditText();
         availabilityAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.availability_menu)).getEditText();
         priceSlider = view.findViewById(R.id.price_range_slider_filter);
         resetFiltersButton = view.findViewById(R.id.reset_button_solutions);
         sortRadioGroup = view.findViewById(R.id.sort_group);
-        applyFiltersButton = view.findViewById(R.id.apply_filters_button);
+        applyFiltersButton = view.findViewById(R.id.apply_filters_button_solutions);
 
         viewModel.fetchCategories();
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
@@ -92,6 +94,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         restorePreviousState();
 
         applyFiltersButton.setOnClickListener( v-> {
+            Log.i("apply listener","kliknuo");
             applyFilters();
             dismiss();
         });

@@ -17,6 +17,8 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface EventService {
+
+
     @Headers({
         "User-Agent: Mobile-Android",
         "Content-Type:application/json"
@@ -38,23 +40,6 @@ public interface EventService {
     @GET("events/persons-top-5/{usersId}")
     Call<ArrayList<SimpleEventDTO>> getTop5Events(@Path("usersId") UUID usersId);
 
-
-
-    @Headers({
-            "User-Agent: Mobile-Android",
-            "Content-Type:application/json"
-    })
-    @GET("events/search")
-    Call<PagedResponse<SimpleEventDTO>> getEventsPage(
-            @Query("city") String city,
-            @Query("eventTypeId") UUID eventTypeId,
-            @Query("time") String time,
-            @Query("searchContent") String searchContent,
-            @Query("sortField") String sortField,
-            @Query("sortDirection") String sortDirection,
-            @Query("page") int page,
-            @Query("size") int size
-    );
 
 
     @Headers({

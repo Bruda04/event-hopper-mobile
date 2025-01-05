@@ -131,6 +131,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
 
 
     private void setUpDatePickerButton() {
+        openDatePickerButton.setText("Choose date");
         openDatePickerButton.setOnClickListener(v -> {
             showDatePicker();
         });

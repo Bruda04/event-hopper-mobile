@@ -67,12 +67,6 @@ public class HomeEventsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_events, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        viewModel.getSearchTextEvents().observe(getViewLifecycleOwner(), query -> fetchEvents());
-        viewModel.getSelectedCity().observe(getViewLifecycleOwner(), city -> fetchEvents());
-        viewModel.getSelectedEventTypeEvents().observe(getViewLifecycleOwner(), eventType -> fetchEvents());
-        viewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> fetchEvents());
-        viewModel.getSortFieldEvents().observe(getViewLifecycleOwner(), sort -> fetchEvents());
-
 
         this.searchView = view.findViewById(R.id.search_view_events);
         this.searchBar = view.findViewById(R.id.search_bar_events);
@@ -85,7 +79,7 @@ public class HomeEventsFragment extends Fragment {
         this.previousPage = view.findViewById(R.id.back_arrow_button);
         this.pager = view.findViewById(R.id.pager);
 
-        viewModel.fetchAllEvents();
+        //viewModel.fetchAllEvents();
         UUID usersId = UUID.fromString(UserService.getJwtClaim(
                 UserService.getJwtToken(),"id"
         ));
@@ -99,10 +93,12 @@ public class HomeEventsFragment extends Fragment {
             }
         });
 
+        this.fetchEvents();
+
         viewModel.getEventsPage().observe(getViewLifecycleOwner(), pagedResponse -> {
-            if (pagedResponse != null && pagedResponse.getContent() != null) { // Pretpostavljamo da PagedResponse ima getContent() metod
+            if (pagedResponse != null && pagedResponse.getContent() != null) {
                 allEventsRecyclerView.setVisibility(View.VISIBLE);
-                this.setAll(new ArrayList<>(pagedResponse.getContent())); // Prosleđujemo samo sadržaj kao ArrayList
+                this.setAll(new ArrayList<>(pagedResponse.getContent()));
                 totalCount = (int) viewModel.getEventsPage().getValue().getTotalElements();
                 totalPages = (int) viewModel.getEventsPage().getValue().getTotalPages();
                 setPager();

@@ -46,7 +46,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="10dp"
-        android:id="@+id/event_types_menu"
+        android:id="@+id/event_types_menu_solutions"
         style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset"
-            app:layout_constraintEnd_toStartOf="@id/apply_filters_button"
+            app:layout_constraintEnd_toStartOf="@id/apply_filters_button_solutions"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
@@ -165,7 +165,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/DarkButton"
-            android:id="@+id/apply_filters_button"
+            android:id="@+id/apply_filters_button_solutions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apply"
