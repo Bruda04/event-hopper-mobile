@@ -159,8 +159,6 @@ public class HomeSolutionsFragment extends Fragment {
 
     void setPager(){
 
-        Log.i("totalCount" , String.valueOf(totalCount));
-
         if (totalCount == 0){
             lowerNumber = 0;
         }else{
@@ -208,7 +206,6 @@ public class HomeSolutionsFragment extends Fragment {
     }
 
     private void fetchProducts() {
-        Log.i("Home", "pozvao fetch products");
         UUID category = viewModel.getSelectedCategory().getValue();
         ArrayList<UUID> eventTypeIds = viewModel.getSelectedEventTypesProducts().getValue();
         Boolean isProduct = viewModel.getIsProduct().getValue();

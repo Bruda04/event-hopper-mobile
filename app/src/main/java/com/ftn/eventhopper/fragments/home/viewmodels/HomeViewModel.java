@@ -176,14 +176,14 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void setIsProduct(Boolean isProductSelected) {
-        Log.i("setter", getIsProduct().getValue().toString());
-        Log.i("setter", product.getValue().toString());
-        Log.i("setter", isProductSelected.toString());
         this.product.setValue(isProductSelected);
-        Log.i("setter", product.getValue().toString());
     }
     public void setIsService(Boolean isServiceSelected) {
         this.service.setValue(isServiceSelected);
+    }
+
+    public void setSelectedCategory(UUID id){
+        this.selectedCategoryProducts.setValue(id);
     }
     public void fetchAllEventsPage(
             String city,
@@ -251,17 +251,15 @@ public class HomeViewModel extends ViewModel {
             int page,
             int size
     ){
-        Log.i("VM","pozvao fetch");
+
         Map<String,String> queryParams = new HashMap<>();
 
         queryParams.put("page", String.valueOf(page));
         queryParams.put("size", String.valueOf(size));
         if (isProduct != null ) {
-            Log.i("VM", "upao product");
             queryParams.put("isProduct", isProduct.toString());
         }
         if (isService != null ) {
-            Log.i("VM", "upao service");
             queryParams.put("isService", isService.toString());
         }
         if (isAvailable != null ) {
@@ -309,7 +307,6 @@ public class HomeViewModel extends ViewModel {
                 errorMessage.postValue(t.getMessage());
             }
         });
-        Log.i("VM","--------------------------");
     }
     public void fetchTopEvents(UUID id) {
         Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events(id);
@@ -431,7 +428,6 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-
 
 
 }

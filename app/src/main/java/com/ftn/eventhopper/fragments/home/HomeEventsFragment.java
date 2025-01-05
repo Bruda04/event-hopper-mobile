@@ -148,8 +148,6 @@ public class HomeEventsFragment extends Fragment {
 
     void setPager(){
 
-        Log.i("totalCount" , String.valueOf(totalCount));
-
         if (totalCount == 0){
             lowerNumber = 0;
         }else{

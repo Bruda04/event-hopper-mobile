@@ -75,10 +75,10 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         viewModel.fetchCategories();
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
             ArrayList<String> categoriesNames = new ArrayList<>();
-            for(CategoryDTO categoryDTO:categories){
-                categoriesNames.add(categoryDTO.getName());
-            }
-            if(categories != null && categories.isEmpty()){
+            if(categories != null && !categories.isEmpty()){
+                for(CategoryDTO categoryDTO:categories){
+                    categoriesNames.add(categoryDTO.getName());
+                }
                 ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categoriesNames);
                 categoryAutoComplete.setAdapter(categoryAdapter);
             }
@@ -143,6 +143,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
                 for (CategoryDTO categoryDTO : categories) {
                     if (categoryDTO.getName().equalsIgnoreCase(selectedCategoryText)) {
                         selectedCategory = categoryDTO;
+                        viewModel.setSelectedCategory(categoryDTO.getId());
                         break;
                     }
                 }
@@ -201,7 +202,9 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
 
     private void setOnDefault(){
         this.isProductSelected = true;
+        this.product.setChecked(true);
         this.isServiceSelected = true;
+        this.service.setChecked(true);
         this.selectedCategory = null;
         this.selectedEventTypes = null;
         this.selectedAvailability = null;
@@ -216,8 +219,6 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
 
     private void restorePreviousState(){
         if (viewModel.getIsProduct().getValue() != null) {
-            Log.i("restore", viewModel.getIsProduct().getValue().toString());
-
             product.setChecked(viewModel.getIsProduct().getValue());
         }
 
@@ -226,7 +227,8 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         }
 
         if (viewModel.getSelectedCategory().getValue() != null) {
-            categoryAutoComplete.setText(viewModel.getSelectedCategory().getValue().toString());
+            String name = getCatgeoryNameById(viewModel.getSelectedCategory().getValue());
+            categoryAutoComplete.setText(name);
         }
 
         if (viewModel.getAvailability().getValue() != null) {
@@ -252,4 +254,15 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
             sortRadioGroup.clearCheck();
         }
     }
+
+    public String getCatgeoryNameById(UUID id){
+        ArrayList<CategoryDTO> categories = viewModel.getCategories().getValue();
+        for(CategoryDTO categoryDTO: categories){
+            if(categoryDTO.getId().equals(id)){
+                return categoryDTO.getName();
+            }
+        }
+        return "";
+    }
+
 }
