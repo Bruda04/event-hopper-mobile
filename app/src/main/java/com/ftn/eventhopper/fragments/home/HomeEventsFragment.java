@@ -148,7 +148,11 @@ public class HomeEventsFragment extends Fragment {
 
     void setPager(){
 
-        lowerNumber = currentPage+1;
+        if(totalPages == 0){
+            lowerNumber = 0;
+        }else{
+            lowerNumber = currentPage+1;
+        }
         higherNumber = totalPages;
 
         String pagerText = lowerNumber + "/" + higherNumber;
