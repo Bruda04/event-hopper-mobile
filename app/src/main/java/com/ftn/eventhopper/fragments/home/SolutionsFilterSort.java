@@ -94,7 +94,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         restorePreviousState();
 
         applyFiltersButton.setOnClickListener( v-> {
-            Log.i("apply listener","kliknuo");
+
             applyFilters();
             dismiss();
         });
@@ -216,6 +216,8 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
 
     private void restorePreviousState(){
         if (viewModel.getIsProduct().getValue() != null) {
+            Log.i("restore", viewModel.getIsProduct().getValue().toString());
+
             product.setChecked(viewModel.getIsProduct().getValue());
         }
 

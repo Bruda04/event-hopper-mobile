@@ -84,9 +84,6 @@ public class HomeViewModel extends ViewModel {
         return top5Products;
     }
 
-    public LiveData<ArrayList<SimpleProductDTO>> getProducts() {
-        return allProducts;
-    }
     public LiveData<PagedResponse<SimpleProductDTO>> getProductsPage() {
         return allProductsPage;
     }
@@ -134,6 +131,7 @@ public class HomeViewModel extends ViewModel {
     public LiveData<Boolean> getIsProduct(){return product;}
     public LiveData<Boolean> getIsService(){return service;}
     public LiveData<Boolean> getAvailability(){return availability;}
+
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
@@ -165,6 +163,28 @@ public class HomeViewModel extends ViewModel {
         sortFieldProducts.setValue(sortOption);
     }
 
+    public void setAvailability(Boolean availability) {
+        this.availability.setValue(availability);
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice.setValue(maxPrice);
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice.setValue(minPrice);
+    }
+
+    public void setIsProduct(Boolean isProductSelected) {
+        Log.i("setter", getIsProduct().getValue().toString());
+        Log.i("setter", product.getValue().toString());
+        Log.i("setter", isProductSelected.toString());
+        this.product.setValue(isProductSelected);
+        Log.i("setter", product.getValue().toString());
+    }
+    public void setIsService(Boolean isServiceSelected) {
+        this.service.setValue(isServiceSelected);
+    }
     public void fetchAllEventsPage(
             String city,
             UUID eventTypeId,
@@ -413,22 +433,5 @@ public class HomeViewModel extends ViewModel {
     }
 
 
-    public void setAvailability(Boolean availability) {
-        this.availability.postValue(availability);
-    }
 
-    public void setMaxPrice(Double maxPrice) {
-        this.maxPrice.postValue(maxPrice);
-    }
-
-    public void setMinPrice(Double minPrice) {
-        this.minPrice.postValue(minPrice);
-    }
-
-    public void setIsProduct(Boolean isProductSelected) {
-        this.product.postValue(isProductSelected);
-    }
-    public void setIsService(Boolean isServiceSelected) {
-        this.product.postValue(isServiceSelected);
-    }
 }
