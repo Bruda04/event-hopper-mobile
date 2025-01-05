@@ -90,6 +90,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         ArrayAdapter<String> availabilityAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, availabilityStrings);
         availabilityAutoComplete.setAdapter(availabilityAdapter);
 
+        priceSlider.setValues(priceSlider.getValueFrom(), priceSlider.getValueTo());
 
         restorePreviousState();
 
@@ -163,10 +164,11 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
     }
 
     private void setAvailability() {
-        if(availabilityAutoComplete.getText().toString().trim().equals("Available")){
+        String selectedAvailabilityString = availabilityAutoComplete.getText().toString().trim();
+        if(selectedAvailabilityString.equals("Available")){
             selectedAvailability = true;
             viewModel.setAvailability(true);
-        }else if(availabilityAutoComplete.getText().toString().trim().equals("Unavailable")){
+        }else if(selectedAvailabilityString.equals("Unavailable")){
             selectedAvailability = false;
             viewModel.setAvailability(false);
         }else{

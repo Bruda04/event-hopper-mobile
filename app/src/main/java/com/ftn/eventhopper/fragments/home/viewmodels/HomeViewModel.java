@@ -349,7 +349,6 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-
     public void fetchLocations(){
         Call<ArrayList<LocationDTO>> call = ClientUtils.locationService.getLocations();
         call.enqueue(new Callback<ArrayList<LocationDTO>>() {
@@ -369,7 +368,6 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-
     public void fetchCities(){
         Call<ArrayList<String>> call = ClientUtils.locationService.getCities();
         call.enqueue(new Callback<ArrayList<String>>() {
@@ -408,26 +406,5 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-
-    public void fetchEventTypes(){
-        Call<ArrayList<SimpleEventTypeDTO>> call = ClientUtils.eventTypeService.getEventTypes();
-        call.enqueue(new Callback<ArrayList<SimpleEventTypeDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<SimpleEventTypeDTO>> call, Response<ArrayList<SimpleEventTypeDTO>> response) {
-                if(response.isSuccessful()){
-                    eventTypes.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch event types. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<SimpleEventTypeDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
-
 
 }

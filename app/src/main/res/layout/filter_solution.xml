@@ -115,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:valueFrom="0.0"
-        android:valueTo="600.0"
+        android:valueTo="10000.0"
         android:layout_marginHorizontal="8dp"
         app:values="@array/solution_filter_price"
         />
