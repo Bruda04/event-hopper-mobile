@@ -3,13 +3,10 @@ package com.ftn.eventhopper.fragments.solutions.services.viewmodels;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
-import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
-import com.ftn.eventhopper.shared.models.Service;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 import java.util.ArrayList;
@@ -102,7 +99,7 @@ public class PupsServicesViewModel extends ViewModel {
 
 
     public void deleteService(UUID id) {
-        Call<Void> call = ClientUtils.serviceService.deleteService(id);
+        Call<Void> call = ClientUtils.serviceService.delete(id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

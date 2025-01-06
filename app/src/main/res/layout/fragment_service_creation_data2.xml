@@ -15,12 +15,12 @@
 
         <!-- Price Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/service_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/price">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/service_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
@@ -28,12 +28,12 @@
 
         <!-- Discount Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/service_discount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/discount">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/service_discount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
@@ -46,12 +46,12 @@
 
         <!-- Duration Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/duration_minutes">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -59,12 +59,12 @@
 
         <!-- Reservation Window Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reservation_window"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/reservation_window_days">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reservation_window"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -72,12 +72,12 @@
 
         <!-- Cancellation Window Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cancellation_window"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/cancellation_window_days">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cancellation_window"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />

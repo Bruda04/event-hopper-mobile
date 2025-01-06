@@ -11,34 +11,27 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.solutions.services.viewmodels.ServiceCreationViewModel;
 
 public class ServiceCreationFragment extends Fragment {
+    private ServiceCreationViewModel viewModel;
 
-    @Nullable
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for the fragment
-        return inflater.inflate(R.layout.fragment_service_creation, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_service_creation, container, false);
+        viewModel = new ViewModelProvider(this).get(ServiceCreationViewModel.class);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        // Adjust padding for system bars
-        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        // Replace fragment container with initial fragment
-        if (savedInstanceState == null) {
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new ServiceCreationData1Fragment())
-                    .commit();
-        }
+
+        return view;
     }
 }
