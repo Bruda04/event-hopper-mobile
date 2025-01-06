@@ -37,13 +37,23 @@
             android:hint="@string/searchbar_hint"
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/filterButtonSolution"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/search_button"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            app:icon="@drawable/search"
+            app:layout_constraintEnd_toStartOf="@id/filterButton"
+            app:layout_constraintStart_toEndOf="@id/search_bar_solutions"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/filterButtonSolution"
+            android:id="@+id/filterButton"
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,9 +96,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:text="@string/pageLabel"
+        android:text=""
         android:textColor="@color/ic_launcher_background"
         android:textSize="30sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/next_page_button"
         app:layout_constraintHorizontal_bias="0.5"

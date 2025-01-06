@@ -78,4 +78,5 @@
     <string name="loading_suggestions">Loading suggestions...</string>
     <string name="choose_availability">Choose availability</string>
     <string name="loading_prices">Loading prices...</string>
+    <string name="clear">Clear</string>
 </resources>

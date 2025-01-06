@@ -9,8 +9,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -23,4 +25,11 @@ public interface ServiceService {
     Call<PagedResponse<ServiceManagementDTO>> getAllForManagement(
         @QueryMap Map<String, String> queryParams
     );
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("services/{id}")
+    Call<Void> deleteService(@Path("id") UUID id);
 }

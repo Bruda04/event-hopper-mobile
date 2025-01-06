@@ -18,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.fragments.solutions.services.PupsServicesFragment;
+import com.ftn.eventhopper.fragments.solutions.services.viewmodels.PupsServicesViewModel;
 import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.models.Service;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -28,13 +31,15 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
     ArrayList<ServiceManagementDTO> services;
     Context context;
     private final NavController navController; // Add NavController or Fragment
-    private final Fragment fragment;
+    private final PupsServicesFragment fragment;
+    private PupsServicesViewModel viewmodel;
 
-    public PupServicesAdapter(Context context, ArrayList<ServiceManagementDTO> services, NavController navController, Fragment fragment) {
+    public PupServicesAdapter(Context context, ArrayList<ServiceManagementDTO> services, NavController navController, PupsServicesFragment fragment, PupsServicesViewModel viewmodel) {
         this.services = services;
         this.context = context;
         this.navController = navController;
         this.fragment = fragment;
+        this.viewmodel = viewmodel;
     }
 
     @NonNull
@@ -60,6 +65,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
                 .into(holder.serviceImage);
 
         holder.deleteButton.setOnClickListener(v -> {
+            setupDeleteDialog(position);
         });
 
 
@@ -90,6 +96,18 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
 
         });
 
+    }
+
+    private void setupDeleteDialog(int position) {
+        MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
+        confirmDialog.setTitle("Delete service");
+        confirmDialog.setMessage("Are you sure you want to delete this service?");
+        confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+            fragment.deleteService(services.get(position).getId());
+        });
+        confirmDialog.setNegativeButton("No", (dialog, which) -> {
+        });
+        confirmDialog.show();
     }
 
     @Override
