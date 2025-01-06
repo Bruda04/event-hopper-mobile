@@ -77,18 +77,6 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         sortRadioGroup = view.findViewById(R.id.sort_group);
         applyFiltersButton = view.findViewById(R.id.apply_filters_button_solutions);
 
-//        viewModel.fetchCategories();
-//        viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
-//            ArrayList<String> categoriesNames = new ArrayList<>();
-//            if(categories != null && !categories.isEmpty()){
-//                for(CategoryDTO categoryDTO:categories){
-//                    categoriesNames.add(categoryDTO.getName());
-//                }
-//                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categoriesNames);
-//                categoryAutoComplete.setAdapter(categoryAdapter);
-//            }
-//        });
-
         viewModel.fetchCategories();
         viewModel.fetchEventTypes();
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
@@ -297,21 +285,15 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
             }
 
             if (viewModel.getSelectedEventTypesProducts().getValue() != null && !viewModel.getSelectedEventTypesProducts().getValue().isEmpty()){
-                Log.i("chip", "upao u 3 uslova");
+
                 for(UUID id: viewModel.getSelectedEventTypesProducts().getValue()){
-                    Log.i("prvi for", id.toString());
-                    Log.i("ChipGroup", "Child count: " + eventTypes.getChildCount());
                     for (int i = 0; i < eventTypes.getChildCount(); i++) {
                         Chip chip = (Chip) eventTypes.getChildAt(i);
                         String eventTypeName = getEventTypeNameById(id);
-                        Log.i("chip for",chip.getText().toString() );
                         if (chip.getText().toString().equalsIgnoreCase(eventTypeName)) {
-                            Log.i("chip", chip.getText().toString());
                             chip.setChecked(true);
 
-//                        break;
                         }
-
                     }
                 }
             }
