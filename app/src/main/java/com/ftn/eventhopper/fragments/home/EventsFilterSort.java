@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.fragments.home;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
+import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.CalendarConstraints;
@@ -20,6 +22,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -65,6 +68,27 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             }
         });
 
+        viewModel.fetchEventTypes();
+        viewModel.getEventTypes().observe(getViewLifecycleOwner(), eventTypes -> {
+            ArrayList<String> eventTypesNames = new ArrayList<>();
+            if(eventTypes != null && !eventTypes.isEmpty()) {
+                Log.i("if","upao");
+                for(SimpleEventTypeDTO eventTypeDTO: eventTypes){
+                    Log.i("for",eventTypeDTO.getName());
+                    eventTypesNames.add(eventTypeDTO.getName());
+                }
+                ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_dropdown_item_1line, eventTypesNames);
+                eventTypeAutoComplete.setAdapter(eventTypeAdapter);
+            }else if(eventTypes == null){
+                Log.i("null","null je brt");
+            }else if(eventTypes.isEmpty()){
+                Log.i("prazan","prazan je lol");
+            }else{
+                Log.i("ne znam","nez");
+            }
+        });
+
+
         restorePreviousState();
 
 
@@ -92,6 +116,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         String searchText = viewModel.getSearchTextEvents().getValue();
         UUID eventTypeId = null;
         if (this.eventType != null){
+            Log.i("event type","upao");
             eventTypeId = eventType.getId();
         }
         viewModel.fetchAllEventsPage(selectedCity,eventTypeId, selectedDate, searchText, selectedSortField, currentPage, pageSize);
@@ -116,11 +141,16 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
 
     private void setSelectedEventType(){
         String selectedEventTypeText = eventTypeAutoComplete.getText().toString().trim();
+        Log.i("setter", selectedEventTypeText);
         viewModel.getEventTypes().observe(getViewLifecycleOwner(), eventTypes -> {
             if (eventTypes != null) {
+                Log.i("setter", "upao u razlicito od null");
                 for (SimpleEventTypeDTO eventTypeDTO : eventTypes) {
-                    if (eventTypeDTO.getName().equalsIgnoreCase(selectedEventTypeText)) {
-                        eventType = eventTypeDTO;
+                    Log.i("setter", eventTypeDTO.getName());
+                    if (eventTypeDTO.getName().equals(selectedEventTypeText)) {
+                        Log.i("setter", "upao");
+                        this.eventType = eventTypeDTO;
+                        viewModel.setSelectedEventTypeEvents(eventTypeDTO.getId());
                         break;
                     }
                 }
@@ -181,7 +211,8 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         }
 
         if (viewModel.getSelectedEventTypeEvents().getValue() != null ) {
-            eventTypeAutoComplete.setText(viewModel.getSelectedEventTypeEvents().getValue().toString());
+            String name = getEventTypeNameById(viewModel.getSelectedEventTypeEvents().getValue());
+            eventTypeAutoComplete.setText(name);
         }
 
         if (viewModel.getSelectedDate().getValue() != null || !viewModel.getSelectedDate().getValue().isEmpty() ) {
@@ -195,5 +226,17 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         } else if ("name".equals(viewModel.getSortFieldEvents().getValue())) {
             sortRadioGroup.check(R.id.sort_events_by_name);
         }
+    }
+
+    public String getEventTypeNameById(UUID id){
+        ArrayList<SimpleEventTypeDTO> eventTypes = viewModel.getEventTypes().getValue();
+        if(eventTypes!= null){
+            for(SimpleEventTypeDTO eventTypeDTO: eventTypes){
+                if(eventTypeDTO.getId().equals(id)){
+                    return eventTypeDTO.getName();
+                }
+            }
+        }
+        return "";
     }
 }

@@ -105,7 +105,7 @@ public class HomeEventsFragment extends Fragment {
             }
         });
 
-        viewModel.fetchLocations();
+        //viewModel.fetchLocations();
         //viewModel.fetchEventTypes();          need to be implemented on servers side
 
 

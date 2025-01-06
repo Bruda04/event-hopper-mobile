@@ -32,7 +32,7 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<SimpleEventDTO>> top5Events = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<LocationDTO>> locations = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> cities = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<ArrayList<SimpleEventTypeDTO>>();
 
     //products
 
@@ -87,10 +87,6 @@ public class HomeViewModel extends ViewModel {
     public LiveData<PagedResponse<SimpleProductDTO>> getProductsPage() {
         return allProductsPage;
     }
-
-    public LiveData<ArrayList<LocationDTO>> getLocations() {
-        return locations;
-    }
     public LiveData<ArrayList<String>> getCities() {
         return cities;
     }
@@ -99,7 +95,9 @@ public class HomeViewModel extends ViewModel {
         return eventTypes;
     }
 
-    public LiveData<ArrayList<CategoryDTO>> getCategories(){ return categories;}
+    public LiveData<ArrayList<CategoryDTO>> getCategories(){
+        return categories;
+    }
     public LiveData<String> getSearchTextEvents() {
         return searchTextEvents;
     }
@@ -349,25 +347,6 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void fetchLocations(){
-        Call<ArrayList<LocationDTO>> call = ClientUtils.locationService.getLocations();
-        call.enqueue(new Callback<ArrayList<LocationDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<LocationDTO>> call, Response<ArrayList<LocationDTO>> response) {
-                if(response.isSuccessful()){
-                    locations.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch locations. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<LocationDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
     public void fetchCities(){
         Call<ArrayList<String>> call = ClientUtils.locationService.getCities();
         call.enqueue(new Callback<ArrayList<String>>() {
@@ -402,6 +381,26 @@ public class HomeViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<ArrayList<CategoryDTO>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
+    public void fetchEventTypes(){
+        Call<ArrayList<SimpleEventTypeDTO>> call = ClientUtils.eventTypeService.getEventTypes();
+        call.enqueue(new Callback<ArrayList<SimpleEventTypeDTO>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SimpleEventTypeDTO>> call, Response<ArrayList<SimpleEventTypeDTO>> response) {
+                if(response.isSuccessful()){
+                    eventTypes.postValue(response.body());
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to fetch event types. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SimpleEventTypeDTO>> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });

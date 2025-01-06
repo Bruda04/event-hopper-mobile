@@ -229,7 +229,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         }
 
         if (viewModel.getSelectedCategory().getValue() != null) {
-            String name = getCatgeoryNameById(viewModel.getSelectedCategory().getValue());
+            String name = getCategoryNameById(viewModel.getSelectedCategory().getValue());
             categoryAutoComplete.setText(name);
         }
 
@@ -257,11 +257,13 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         }
     }
 
-    public String getCatgeoryNameById(UUID id){
+    public String getCategoryNameById(UUID id){
         ArrayList<CategoryDTO> categories = viewModel.getCategories().getValue();
-        for(CategoryDTO categoryDTO: categories){
-            if(categoryDTO.getId().equals(id)){
-                return categoryDTO.getName();
+        if(categories!= null){
+            for(CategoryDTO categoryDTO: categories){
+                if(categoryDTO.getId().equals(id)){
+                    return categoryDTO.getName();
+                }
             }
         }
         return "";
