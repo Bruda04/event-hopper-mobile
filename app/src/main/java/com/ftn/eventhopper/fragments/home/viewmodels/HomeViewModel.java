@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
+import com.ftn.eventhopper.shared.dtos.eventTypes.EventTypeManagementDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
@@ -387,12 +388,13 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void fetchEventTypes(){
-        Call<ArrayList<SimpleEventTypeDTO>> call = ClientUtils.eventTypeService.getEventTypes();
-        call.enqueue(new Callback<ArrayList<SimpleEventTypeDTO>>() {
+        Call<EventTypeManagementDTO> call = ClientUtils.eventTypeService.getEventTypes();
+        call.enqueue(new Callback<EventTypeManagementDTO>() {
             @Override
-            public void onResponse(Call<ArrayList<SimpleEventTypeDTO>> call, Response<ArrayList<SimpleEventTypeDTO>> response) {
+            public void onResponse(Call<EventTypeManagementDTO> call, Response<EventTypeManagementDTO> response) {
                 if(response.isSuccessful()){
-                    eventTypes.postValue(response.body());
+                    EventTypeManagementDTO res = response.body();
+                    eventTypes.postValue((ArrayList<SimpleEventTypeDTO>) res.getEventTypes());
                     errorMessage.postValue(null);
                 }else{
                     errorMessage.postValue("Failed to fetch event types. Code: "+ response.code());
@@ -400,7 +402,7 @@ public class HomeViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<SimpleEventTypeDTO>> call, Throwable t) {
+            public void onFailure(Call<EventTypeManagementDTO> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });

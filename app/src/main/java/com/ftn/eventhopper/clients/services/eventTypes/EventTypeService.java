@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.clients.services.eventTypes;
 
+import com.ftn.eventhopper.shared.dtos.eventTypes.EventTypeManagementDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 
@@ -16,6 +17,6 @@ public interface EventTypeService {
             "Content-Type:application/json"
     })
     @GET("event-types")
-    Call<ArrayList<SimpleEventTypeDTO>> getEventTypes();
+    Call<EventTypeManagementDTO> getEventTypes();
 
 }
