@@ -21,6 +21,7 @@ import com.ftn.eventhopper.adapters.PupServicesAdapter;
 import com.ftn.eventhopper.fragments.solutions.services.viewmodels.PupsServicesViewModel;
 import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
 
@@ -42,6 +43,7 @@ public class PupsServicesFragment extends Fragment {
     private Button nextPageButton;
     private Button previousPageButton;
     private TextView pager;
+    private FloatingActionButton createServiceButton;
 
 
 
@@ -61,6 +63,7 @@ public class PupsServicesFragment extends Fragment {
         previousPageButton = view.findViewById(R.id.previous_page_button);
         pager = view.findViewById(R.id.pager);
         filterButton = view.findViewById(R.id.filterButton);
+        createServiceButton = view.findViewById(R.id.floating_add_button);
 
         viewModel.fetchAllServicesPage(currentPage, pageSize);
 
@@ -91,6 +94,10 @@ public class PupsServicesFragment extends Fragment {
             if (filters != null) {
                 viewModel.fetchAllServicesPage(currentPage, pageSize);
             }
+        });
+
+        createServiceButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).navigate(R.id.action_to_create_service1);
         });
 
         return view;

@@ -114,7 +114,7 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
 
             if (filters.containsKey("categoryId")) {
                 CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getId().toString().equals(filters.get("categoryId"))).findFirst().orElse(null);
-                category.getEditText().setText(selectedCategory.getName());
+                ((AutoCompleteTextView) category.getEditText()).setText(selectedCategory.getName(), false);
                 if (selectedCategory != null) {
                     ((AutoCompleteTextView) category.getEditText()).getOnItemClickListener().onItemClick(
                             null,

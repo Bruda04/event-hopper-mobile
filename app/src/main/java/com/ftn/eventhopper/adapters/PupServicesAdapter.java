@@ -57,12 +57,17 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         holder.servicePrice.setText(String.format("%.2f€", service.getPrice().getFinalPrice()));
 
         ArrayList<String> pictures = new ArrayList<>(service.getPictures());
-        String profilePictureUrl = String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, pictures.get(0));
-        Glide.with(holder.itemView.getContext())
-                .load(profilePictureUrl)
-                .placeholder(R.drawable.baseline_image_placeholder_24)  // Optional: Placeholder
-                .error(R.drawable.baseline_image_not_supported_24)        // Optional: Error image
-                .into(holder.serviceImage);
+        if (pictures.size() == 0) {
+            holder.serviceImage.setImageResource(R.drawable.baseline_image_not_supported_24);
+            return;
+        } else {
+            String profilePictureUrl = String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, pictures.get(0));
+            Glide.with(holder.itemView.getContext())
+                    .load(profilePictureUrl)
+                    .placeholder(R.drawable.baseline_image_placeholder_24)  // Optional: Placeholder
+                    .error(R.drawable.baseline_image_not_supported_24)        // Optional: Error image
+                    .into(holder.serviceImage);
+        }
 
         holder.deleteButton.setOnClickListener(v -> {
             setupDeleteDialog(position);
