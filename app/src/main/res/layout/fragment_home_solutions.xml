@@ -103,24 +103,50 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/all_solutions" />
 
-                <com.google.android.material.search.SearchBar
-                    android:id="@+id/search_bar_solutions"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/md_theme_tertiaryFixed"
-                    android:hint="@string/searchbar_hint"
-                    app:layout_constraintEnd_toStartOf="@id/filterButtonSolution"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/all_solutions_title" />
 
-                <com.google.android.material.search.SearchView
-                    android:layout_width="match_parent"
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/search_solutions"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:hint="@string/searchbar_hint"
-                    app:layout_anchor="@id/search_bar_solutions"
+                    app:layout_constraintTop_toBottomOf="@+id/all_solutions_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/search_button_solutions"
                     >
 
-                </com.google.android.material.search.SearchView>
+                    <com.google.android.material.search.SearchBar
+                        android:id="@+id/search_bar_solutions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/md_theme_tertiaryFixed"
+                        android:hint="@string/searchbar_hint"
+                        app:layout_constraintEnd_toStartOf="@id/search_button_solutions"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.google.android.material.search.SearchView
+                        android:id="@+id/search_view_solutions"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/searchbar_hint"
+                        app:layout_anchor="@id/search_bar_solutions"
+                        android:backgroundTint="@color/md_theme_tertiaryFixed"
+                        >
+                    </com.google.android.material.search.SearchView>
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                <Button
+                    android:id="@+id/search_button_solutions"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="10dp"
+                    app:icon="@drawable/search"
+                    app:layout_constraintEnd_toStartOf="@id/filterButtonSolution"
+                    app:layout_constraintStart_toEndOf="@id/search_solutions"
+                    app:layout_constraintTop_toBottomOf="@id/all_solutions_title" />
+
 
                 <Button
                     android:id="@+id/filterButtonSolution"
@@ -133,83 +159,22 @@
                     app:icon="@drawable/icons8_slider_96"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.938"
-                    app:layout_constraintStart_toEndOf="@id/search_bar_solutions"
+                    app:layout_constraintStart_toEndOf="@id/search_button_solutions"
                     app:layout_constraintTop_toBottomOf="@id/all_solutions_title" />
 
-                <!--            <LinearLayout-->
-                <!--                android:id="@+id/ll_all_events"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:orientation="vertical"-->
-                <!--                app:layout_constraintTop_toBottomOf="@id/filterButton"-->
-                <!--                >-->
 
-                <!--                <androidx.recyclerview.widget.RecyclerView-->
-                <!--                    android:id="@+id/recyclerView_allevents"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_margin="25dp"-->
-                <!--                    android:orientation="vertical"-->
-                <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    tools:itemCount="10"-->
-                <!--                    tools:listitem="@layout/card_list_item"-->
-                <!--                    />-->
-                <!--            </LinearLayout>-->
-
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_allsolutions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="vertical"
+
                     app:layout_constraintTop_toBottomOf="@id/filterButtonSolution"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                    >
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-                    <include
-                        layout="@layout/catering"
-
-                        />
-
-
-                </LinearLayout>
 
                 <Button
                     android:id="@+id/back_arrow_button_solutions"

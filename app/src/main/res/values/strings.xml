@@ -122,7 +122,9 @@
     <string name="loading_product_service_details">Loading product/service details...</string>
     <string name="loading_categories">Loading categories...</string>
     <string name="loading_suggestions">Loading suggestions...</string>
+    <string name="choose_availability">Choose availability</string>
     <string name="loading_prices">Loading prices...</string>
+    <string name="clear">Clear</string>
 
 
 </resources>

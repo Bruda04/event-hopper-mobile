@@ -1,3 +1,4 @@
+
 package com.ftn.eventhopper.shared.dtos.location;
 
 import lombok.Getter;

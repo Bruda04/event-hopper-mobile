@@ -84,7 +84,7 @@
         <action
             android:id="@+id/action_to_create_service2"
             app:destination="@id/service_creation2"
-            app:popUpTo="@id/service_creation1"/>
+            app:popUpTo="@id/pup_services"/>
     </fragment>
 
     <fragment
@@ -99,7 +99,7 @@
         <action
             android:id="@+id/back_to_service_creation1"
             app:destination="@id/service_creation1"
-            app:popUpTo="@id/service_creation2"/>
+            app:popUpTo="@id/pup_services"/>
     </fragment>
 
 

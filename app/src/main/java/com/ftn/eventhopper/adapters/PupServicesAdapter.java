@@ -15,23 +15,31 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.fragments.solutions.services.PupsServicesFragment;
+import com.ftn.eventhopper.fragments.solutions.services.viewmodels.PupsServicesViewModel;
+import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.models.Service;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
 public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.PupsServiceViewHolder> {
-    ArrayList<Service> services;
+    ArrayList<ServiceManagementDTO> services;
     Context context;
     private final NavController navController; // Add NavController or Fragment
-    private final Fragment fragment;
+    private final PupsServicesFragment fragment;
+    private PupsServicesViewModel viewmodel;
 
-    public PupServicesAdapter(Context context, ArrayList<Service> services, NavController navController, Fragment fragment) {
+    public PupServicesAdapter(Context context, ArrayList<ServiceManagementDTO> services, NavController navController, PupsServicesFragment fragment, PupsServicesViewModel viewmodel) {
         this.services = services;
         this.context = context;
-        this.navController = navController; // Initialize NavController
+        this.navController = navController;
         this.fragment = fragment;
+        this.viewmodel = viewmodel;
     }
 
     @NonNull
@@ -42,16 +50,27 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull PupServicesAdapter.PupsServiceViewHolder holder, int position) {
-        holder.serviceName.setText(services.get(position).getTitle());
-        holder.serviceDescription.setText(services.get(position).getDescription());
-        holder.servicePrice.setText("Price: " + services.get(position).getSecondary());
-        holder.serviceImage.setImageDrawable(services.get(position).getImage());
+        ServiceManagementDTO service = services.get(position);
+
+        holder.serviceName.setText(service.getName());
+        holder.serviceDescription.setText(service.getDescription());
+        holder.servicePrice.setText(String.format("%.2f€", service.getPrice().getFinalPrice()));
+
+        ArrayList<String> pictures = new ArrayList<>(service.getPictures());
+        if (pictures.size() == 0) {
+            holder.serviceImage.setImageResource(R.drawable.baseline_image_not_supported_24);
+            return;
+        } else {
+            String profilePictureUrl = String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, pictures.get(0));
+            Glide.with(holder.itemView.getContext())
+                    .load(profilePictureUrl)
+                    .placeholder(R.drawable.baseline_image_placeholder_24)  // Optional: Placeholder
+                    .error(R.drawable.baseline_image_not_supported_24)        // Optional: Error image
+                    .into(holder.serviceImage);
+        }
 
         holder.deleteButton.setOnClickListener(v -> {
-            services.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, services.size());
-            Toast.makeText(v.getContext(), "Service deleted", Toast.LENGTH_SHORT).show();
+            setupDeleteDialog(position);
         });
 
 
@@ -69,7 +88,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
 
         holder.viewMoreButton.setOnClickListener( v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", "2eed4933-2477-487e-8b99-c39a9ac939dd");
+            bundle.putString("id", services.get(position).getId().toString());
             // Navigate to ServiceDetailsFragment
             if (navController != null) {
                 // Option 1: Use NavController directly
@@ -82,6 +101,18 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
 
         });
 
+    }
+
+    private void setupDeleteDialog(int position) {
+        MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
+        confirmDialog.setTitle("Delete service");
+        confirmDialog.setMessage("Are you sure you want to delete this service?");
+        confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+            fragment.deleteService(services.get(position).getId());
+        });
+        confirmDialog.setNegativeButton("No", (dialog, which) -> {
+        });
+        confirmDialog.show();
     }
 
     @Override
