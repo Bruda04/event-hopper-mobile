@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
-
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
+        android:text="Filter By"
         android:textColor="@color/ic_launcher_background"
         android:textSize="25dp"
-        android:text="Filter By"
         android:textStyle="bold" />
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/menu_category"
@@ -26,31 +24,21 @@
         android:hint="@string/category">
 
         <AutoCompleteTextView
+            android:id="@+id/category_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:id="@+id/category_dropdown"
-            app:simpleItems="@array/category_dummy"/>
-        />
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/menu_event_type"
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/selected_event_types"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-
-        android:hint="@string/event_type">
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:id="@+id/event_type_dropdown"
-            app:simpleItems="@array/event_types_dummy"/>
-        />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginTop="8dp"
+        app:singleLine="true"
+        app:chipSpacing="8dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/menu_availability"
@@ -61,11 +49,11 @@
         android:hint="@string/availability">
 
         <AutoCompleteTextView
+            android:id="@+id/availability_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:id="@+id/availability_dropdown"
-            app:simpleItems="@array/availability"/>
+            app:simpleItems="@array/availability" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -75,24 +63,41 @@
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginHorizontal="8dp"/>
+        android:layout_marginHorizontal="8dp" />
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/price_range_slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:valueFrom="0.0"
-        android:valueTo="100.0"
+        android:valueTo="10000.00"
         android:layout_marginHorizontal="8dp"
-        app:values="@array/initial_pup_service_filter_price_slider_values"
-     />
+        app:values="@array/initial_pup_service_filter_price_slider_values" />
 
-    <Button
-        style="@style/DarkButton"
-        android:id="@+id/apply_filters_button"
-        android:layout_width="wrap_content"
+    <!-- Add Clear and Apply Buttons in Horizontal Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apply"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/LightButton"
+            android:id="@+id/clear_filters_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            style="@style/DarkButton"
+            android:id="@+id/apply_filters_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/apply" />
+    </LinearLayout>
 </LinearLayout>
