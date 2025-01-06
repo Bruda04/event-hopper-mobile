@@ -184,6 +184,10 @@ public class HomeViewModel extends ViewModel {
     public void setSelectedCategory(UUID id){
         this.selectedCategoryProducts.setValue(id);
     }
+    public void setSelectedEventTypesProducts(ArrayList<UUID> selectedEventTypes) {
+        this.selectedEventTypesProducts.setValue(selectedEventTypes);
+    }
+
     public void fetchAllEventsPage(
             String city,
             UUID eventTypeId,
@@ -407,5 +411,6 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
+
 
 }

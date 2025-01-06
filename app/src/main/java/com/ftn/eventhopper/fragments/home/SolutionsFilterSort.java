@@ -25,6 +25,7 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -89,6 +90,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
 //        });
 
         viewModel.fetchCategories();
+        viewModel.fetchEventTypes();
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
                     if (categories == null) return;
 
@@ -102,7 +104,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
                                 .map(SimpleEventTypeDTO::getName)
                                 .collect(Collectors.toList());
 
-                        eventTypes.removeAllViews(); // Clear previous chips if any
+                        eventTypes.removeAllViews();
 
                         for (String eventType : eventTypesList) {
                             Chip chip = new Chip(getContext());
@@ -166,6 +168,29 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
     }
 
     private void setSelectedEventTypes() {
+        selectedEventTypes = new ArrayList<>();
+        ArrayList<UUID> selectedEventTypesUUIDs = new ArrayList<>();
+
+        for (int i = 0; i < eventTypes.getChildCount(); i++) {
+            Chip chip = (Chip) eventTypes.getChildAt(i);
+            String chipText = chip.getText().toString();
+
+            if (chip.isChecked() && selectedCategory != null) {
+
+                for (SimpleEventTypeDTO eventType : selectedCategory.getEventTypes()) {
+                    if (chipText.equalsIgnoreCase(eventType.getName())) {
+                        selectedEventTypes.add(eventType);
+                        selectedEventTypesUUIDs.add(eventType.getId());
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        viewModel.setSelectedEventTypesProducts(selectedEventTypesUUIDs);
+
+
     }
 
     private void setSelectedCategory() {
@@ -246,7 +271,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         }
         sortRadioGroup.clearCheck();
         categoryAutoComplete.setText("");
-        //event types
+        eventTypes.clearCheck();
         availabilityAutoComplete.setText("");
     }
 
@@ -262,7 +287,37 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         if (viewModel.getSelectedCategory().getValue() != null) {
             String name = getCategoryNameById(viewModel.getSelectedCategory().getValue());
             categoryAutoComplete.setText(name);
+
+            ArrayList<String> eventTypesList = getEventTypesByCategory(viewModel.getSelectedCategory().getValue());
+            for (String eventType : eventTypesList) {
+                Chip chip = new Chip(getContext());
+                chip.setText(eventType);
+                chip.setCheckable(true);
+                eventTypes.addView(chip);
+            }
+
+            if (viewModel.getSelectedEventTypesProducts().getValue() != null && !viewModel.getSelectedEventTypesProducts().getValue().isEmpty()){
+                Log.i("chip", "upao u 3 uslova");
+                for(UUID id: viewModel.getSelectedEventTypesProducts().getValue()){
+                    Log.i("prvi for", id.toString());
+                    Log.i("ChipGroup", "Child count: " + eventTypes.getChildCount());
+                    for (int i = 0; i < eventTypes.getChildCount(); i++) {
+                        Chip chip = (Chip) eventTypes.getChildAt(i);
+                        String eventTypeName = getEventTypeNameById(id);
+                        Log.i("chip for",chip.getText().toString() );
+                        if (chip.getText().toString().equalsIgnoreCase(eventTypeName)) {
+                            Log.i("chip", chip.getText().toString());
+                            chip.setChecked(true);
+
+//                        break;
+                        }
+
+                    }
+                }
+            }
         }
+
+
 
         if (viewModel.getAvailability().getValue() != null) {
             if(viewModel.getAvailability().getValue()){
@@ -278,7 +333,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
             priceSlider.setValues(minPrice, maxPrice);
         }
 
-        // Restore sorting radio group
+
         if ("price".equals(viewModel.getSortFieldProducts().getValue())) {
             sortRadioGroup.check(R.id.sort_solutions_by_price);
         } else if ("name".equals(viewModel.getSortFieldProducts().getValue())) {
@@ -286,6 +341,37 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         } else {
             sortRadioGroup.clearCheck();
         }
+    }
+
+    private ArrayList<String> getEventTypesByCategory(UUID id) {
+        Collection<SimpleEventTypeDTO> eventTypes = new ArrayList<>();
+        ArrayList<String> eventTypesNames = new ArrayList<>();
+        ArrayList<CategoryDTO> categories = viewModel.getCategories().getValue();
+        if(categories!= null){
+            for(CategoryDTO categoryDTO: categories){
+                if(categoryDTO.getId().equals(id)){
+                    eventTypes = categoryDTO.getEventTypes();
+                    break;
+                }
+            }
+        }
+        for(SimpleEventTypeDTO dto: eventTypes){
+            eventTypesNames.add(dto.getName());
+        }
+
+        return eventTypesNames;
+    }
+
+    private String getEventTypeNameById(UUID id) {
+        ArrayList<SimpleEventTypeDTO> eventTypeDTOS = viewModel.getEventTypes().getValue();
+        if(eventTypeDTOS!=null){
+            for(SimpleEventTypeDTO eventTypeDTO: eventTypeDTOS){
+                if(eventTypeDTO.getId().equals(id)){
+                    return eventTypeDTO.getName();
+                }
+            }
+        }
+        return "";
     }
 
     public String getCategoryNameById(UUID id){
