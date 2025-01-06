@@ -43,25 +43,32 @@
             android:text="@string/services"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginTop="10dp"
+    <com.google.android.material.chip.ChipGroup
         android:id="@+id/event_types_menu_solutions"
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/choose_eventtype">
+        android:layout_marginTop="8dp"
+        app:singleLine="true"
+        app:chipSpacing="8dp" />
 
-        <AutoCompleteTextView
-            android:id="@+id/event_types_autocomplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:focusable="false"
-            android:textAppearance="@style/WhiteRegularText"
-            android:background="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:id="@+id/event_types_menu_solutions"-->
+<!--        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/choose_eventtype">-->
+
+<!--        <AutoCompleteTextView-->
+<!--            android:id="@+id/event_types_autocomplete"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="none"-->
+<!--            android:focusable="false"-->
+<!--            android:textAppearance="@style/WhiteRegularText"-->
+<!--            android:background="@color/md_theme_secondaryContainer"-->
+<!--            app:boxStrokeColor="@color/white" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
 
     <com.google.android.material.textfield.TextInputLayout

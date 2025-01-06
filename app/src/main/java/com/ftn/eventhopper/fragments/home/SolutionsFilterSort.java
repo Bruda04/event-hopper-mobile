@@ -19,11 +19,15 @@ import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class SolutionsFilterSort extends BottomSheetDialogFragment {
 
@@ -32,7 +36,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
     private CheckBox service;
     private AutoCompleteTextView categoryAutoComplete;
 
-    private AutoCompleteTextView eventTypeAutoComplete;
+    private ChipGroup eventTypes;
     private AutoCompleteTextView availabilityAutoComplete;
     private RangeSlider priceSlider;
     private RadioGroup sortRadioGroup;
@@ -65,24 +69,51 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         product= view.findViewById(R.id.checkbox_products);
         service= view.findViewById(R.id.checkbox_services);
         categoryAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.category_menu)).getEditText();
-        eventTypeAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.event_types_menu_solutions)).getEditText();
+        eventTypes = view.findViewById(R.id.event_types_menu_solutions);
         availabilityAutoComplete = (AutoCompleteTextView) ((TextInputLayout) view.findViewById(R.id.availability_menu)).getEditText();
         priceSlider = view.findViewById(R.id.price_range_slider_filter);
         resetFiltersButton = view.findViewById(R.id.reset_button_solutions);
         sortRadioGroup = view.findViewById(R.id.sort_group);
         applyFiltersButton = view.findViewById(R.id.apply_filters_button_solutions);
 
+//        viewModel.fetchCategories();
+//        viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
+//            ArrayList<String> categoriesNames = new ArrayList<>();
+//            if(categories != null && !categories.isEmpty()){
+//                for(CategoryDTO categoryDTO:categories){
+//                    categoriesNames.add(categoryDTO.getName());
+//                }
+//                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categoriesNames);
+//                categoryAutoComplete.setAdapter(categoryAdapter);
+//            }
+//        });
+
         viewModel.fetchCategories();
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
-            ArrayList<String> categoriesNames = new ArrayList<>();
-            if(categories != null && !categories.isEmpty()){
-                for(CategoryDTO categoryDTO:categories){
-                    categoriesNames.add(categoryDTO.getName());
-                }
-                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categoriesNames);
-                categoryAutoComplete.setAdapter(categoryAdapter);
-            }
-        });
+                    if (categories == null) return;
+
+                    List<String> categoryNames = categories.stream().map(CategoryDTO::getName).collect(Collectors.toList());
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categoryNames);
+                    categoryAutoComplete.setAdapter(adapter);
+
+                    categoryAutoComplete.setOnItemClickListener((parent, view1, position, id) -> {
+                        CategoryDTO selectedCategory = categories.get(position);
+                        List<String> eventTypesList = selectedCategory.getEventTypes().stream()
+                                .map(SimpleEventTypeDTO::getName)
+                                .collect(Collectors.toList());
+
+                        eventTypes.removeAllViews(); // Clear previous chips if any
+
+                        for (String eventType : eventTypesList) {
+                            Chip chip = new Chip(getContext());
+                            chip.setText(eventType);
+                            chip.setCheckable(true);
+                            eventTypes.addView(chip);
+                        }
+                    });
+
+                });
+
 
         ArrayList<String> availabilityStrings = new ArrayList<>();
         availabilityStrings.add("Available");
