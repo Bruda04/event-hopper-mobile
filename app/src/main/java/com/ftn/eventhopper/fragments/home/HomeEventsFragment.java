@@ -66,6 +66,8 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
 
     private SensorManager sensorManager;
     private static final int SHAKE_THRESHOLD = 800;
+    private static final long MIN_TIME_BETWEEN_SHAKES = 500; // Minimalni razmak između shake događaja u milisekundama
+    private long lastFetchTime = 0; // Vremenska oznaka poslednjeg fetch-a
     private long lastUpdate;
     private float last_x;
     private float last_y;
@@ -272,21 +274,20 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
                 //checks if speed is high enough to be detected as gesture
                 if (speed > SHAKE_THRESHOLD ) {
 
-                    if(!viewModel.getSortFieldEvents().getValue().equals("")){
-                        if(sortDirection.equals("asc") || sortDirection.equals("")) {
-                            sortDirection = "desc";
-                            viewModel.setSortDirectionEvents("desc");
-                        }else if(sortDirection.equals("desc")){
-                            sortDirection = "asc";
-                            viewModel.setSortDirectionEvents("asc");
+                    if(!viewModel.getSortFieldEvents().getValue().equals("")) {
+                        if (curTime - lastFetchTime > MIN_TIME_BETWEEN_SHAKES) {
+                            lastFetchTime = curTime;
+                            if (sortDirection.equals("asc") || sortDirection.equals("")) {
+                                sortDirection = "desc";
+                                viewModel.setSortDirectionEvents("desc");
+                            } else if (sortDirection.equals("desc")) {
+                                sortDirection = "asc";
+                                viewModel.setSortDirectionEvents("asc");
+                            }
+                            fetchEvents();
                         }
+
                     }
-                    //long curFetchTime = System.currentTimeMillis();
-//                    if ((curFetchTime - lastFetchTime) > 2000) { // Fetch svakih 2 sekunde
-//                        lastFetchTime = curFetchTime;
-//                        fetchEvents();
-//                    }
-                    fetchEvents();
                 }
                 last_x = x;
                 last_y = y;
