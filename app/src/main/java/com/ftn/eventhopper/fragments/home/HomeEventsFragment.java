@@ -286,7 +286,6 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
                             }
                             fetchEvents();
                         }
-
                     }
                 }
                 last_x = x;
