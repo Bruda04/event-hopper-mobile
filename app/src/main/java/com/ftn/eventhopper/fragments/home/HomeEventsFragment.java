@@ -72,8 +72,6 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
     private float last_z;
 
 
-
-
     public HomeEventsFragment() {
         // Required empty public constructor
     }

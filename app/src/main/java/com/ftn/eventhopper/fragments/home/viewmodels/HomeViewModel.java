@@ -60,7 +60,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<Double> minPrice = new MutableLiveData<>();
     private MutableLiveData<Double> maxPrice = new MutableLiveData<>();
     private MutableLiveData<String> sortFieldProducts = new MutableLiveData<>("");
-    private MutableLiveData<String> sortDirectionProducts = new MutableLiveData<>("asc");
+    private MutableLiveData<String> sortDirectionProducts = new MutableLiveData<>("");
 
     private MutableLiveData<Boolean> availability = new MutableLiveData<>();
     //event page properties:
@@ -309,6 +309,9 @@ public class HomeViewModel extends ViewModel {
         }
         if (sortField != null && !sortField.isEmpty()) {
             queryParams.put("sortField", sortField);
+        }
+        if (sortDirection != null && !sortDirection.isEmpty()) {
+            queryParams.put("sortDirection", sortDirection);
         }
 
         Call<PagedResponse<SimpleProductDTO>> call = ClientUtils.productService.getSolutionsPage(

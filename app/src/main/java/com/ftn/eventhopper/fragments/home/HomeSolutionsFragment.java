@@ -1,5 +1,10 @@
 package com.ftn.eventhopper.fragments.home;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,7 +34,7 @@ import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class HomeSolutionsFragment extends Fragment {
+public class HomeSolutionsFragment extends Fragment implements SensorEventListener {
 
     private HomeViewModel viewModel;
     private CardSliderViewPager topSolutionsRecyclerView;
@@ -39,7 +44,7 @@ public class HomeSolutionsFragment extends Fragment {
     private SearchView searchView;
     private SearchBar searchBar;
     private String searchText = "";
-    private String sortDirection = "asc";
+    private String sortDirection = "";
     private Button nextPage;
     private Button previousPage;
     private TextView pager;
@@ -54,6 +59,13 @@ public class HomeSolutionsFragment extends Fragment {
 
     private int lowerNumber;
     private int higherNumber;
+
+    private SensorManager sensorManager;
+    private static final int SHAKE_THRESHOLD = 800;
+    private long lastUpdate;
+    private float last_x;
+    private float last_y;
+    private float last_z;
 
     public HomeSolutionsFragment() {
         // Required empty public constructor
@@ -154,8 +166,22 @@ public class HomeSolutionsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        //binding = null;
+        sensorManager.unregisterListener(this);
+
     }
 
     void setPager(){
@@ -211,7 +237,63 @@ public class HomeSolutionsFragment extends Fragment {
         Double maxPrice = viewModel.getMaxPrice().getValue();
         String searchText = viewModel.getSearchTextProducts().getValue();
         String sortField = viewModel.getSortFieldProducts().getValue();
+        String sortDirection = viewModel.getSortDirectionProducts().getValue();
 
         viewModel.fetchAllSolutionsPage(isProduct,isService,category, eventTypeIds, minPrice,maxPrice,availability, searchText, sortField,sortDirection,  currentPage, pageSize);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        //checks if sensor is accelerometer
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 200) {
+                //calculates how much time has last from last update
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                //gets acceleration by axis
+                float[] values = sensorEvent.values;
+                float x = values[0];
+                float y = values[1];
+                float z = values[2];
+
+                //calculates speed
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                //checks if speed is high enough to be detected as gesture
+                if (speed > SHAKE_THRESHOLD ) {
+
+                    if(!viewModel.getSortFieldProducts().getValue().equals("")){
+                        if(sortDirection.equals("asc") || sortDirection.equals("")) {
+                            sortDirection = "desc";
+                            viewModel.setSortDirectionProducts("desc");
+                        }else if(sortDirection.equals("desc")){
+                            sortDirection = "asc";
+                            viewModel.setSortDirectionProducts("asc");
+                        }
+                    }
+                    //long curFetchTime = System.currentTimeMillis();
+//                    if ((curFetchTime - lastFetchTime) > 2000) { // Fetch svakih 2 sekunde
+//                        lastFetchTime = curFetchTime;
+//                        fetchEvents();
+//                    }
+                    fetchProducts();
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        if(sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            Log.i("REZ_ACCELEROMETER", String.valueOf(accuracy));
+        }
     }
 }
