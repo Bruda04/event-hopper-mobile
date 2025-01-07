@@ -1,5 +1,11 @@
 package com.ftn.eventhopper.fragments.home;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
@@ -27,10 +34,11 @@ import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.UUID;
 
 
-public class HomeEventsFragment extends Fragment {
+public class HomeEventsFragment extends Fragment implements SensorEventListener {
 
     private HomeViewModel viewModel;
     private CardSliderViewPager topEventsRecyclerView;
@@ -40,6 +48,7 @@ public class HomeEventsFragment extends Fragment {
     private SearchView searchView;
     private SearchBar searchBar;
     private String searchText = "";
+    private String sortDirection = "";
     private Button nextPage;
     private Button previousPage;
     private TextView pager;
@@ -54,6 +63,15 @@ public class HomeEventsFragment extends Fragment {
 
     private int lowerNumber;
     private int higherNumber;
+
+    private SensorManager sensorManager;
+    private static final int SHAKE_THRESHOLD = 800;
+    private long lastUpdate;
+    private float last_x;
+    private float last_y;
+    private float last_z;
+
+
 
 
     public HomeEventsFragment() {
@@ -78,6 +96,8 @@ public class HomeEventsFragment extends Fragment {
         this.nextPage = view.findViewById(R.id.forward_arrow_button);
         this.previousPage = view.findViewById(R.id.back_arrow_button);
         this.pager = view.findViewById(R.id.pager);
+
+
 
         //viewModel.fetchAllEvents();
         UUID usersId = UUID.fromString(UserService.getJwtClaim(
@@ -105,11 +125,7 @@ public class HomeEventsFragment extends Fragment {
             }
         });
 
-        //viewModel.fetchLocations();
-        //viewModel.fetchEventTypes();          need to be implemented on servers side
 
-
-        // Set up filter button for events
         filterButton = view.findViewById(R.id.filterButton);
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +158,27 @@ public class HomeEventsFragment extends Fragment {
             setPager();
         });
 
+
         return view;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        //binding = null;
+        sensorManager.unregisterListener(this);
 
     }
 
@@ -187,10 +223,6 @@ public class HomeEventsFragment extends Fragment {
         super.onStop();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     private void setAll(ArrayList<SimpleEventDTO> events){
 
@@ -211,10 +243,64 @@ public class HomeEventsFragment extends Fragment {
         String time = viewModel.getSelectedDate().getValue();
         String searchText = viewModel.getSearchTextEvents().getValue();
         String sortField = viewModel.getSortFieldEvents().getValue();
+        String sortDirection = viewModel.getSortDirectionEvents().getValue();
 
-        viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,  currentPage, pageSize);
+        viewModel.fetchAllEventsPage(city, eventTypeId, time, searchText, sortField,sortDirection,  currentPage, pageSize);
     }
 
 
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
 
+        //checks if sensor is accelerometer
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 200) {
+                //calculates how much time has last from last update
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                //gets acceleration by axis
+                float[] values = sensorEvent.values;
+                float x = values[0];
+                float y = values[1];
+                float z = values[2];
+
+                //calculates speed
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                //checks if speed is high enough to be detected as gesture
+                if (speed > SHAKE_THRESHOLD ) {
+
+                    if(!viewModel.getSortFieldEvents().getValue().equals("")){
+                        if(sortDirection.equals("asc") || sortDirection.equals("")) {
+                            sortDirection = "desc";
+                            viewModel.setSortDirectionEvents("desc");
+                        }else if(sortDirection.equals("desc")){
+                            sortDirection = "asc";
+                            viewModel.setSortDirectionEvents("asc");
+                        }
+                    }
+                    //long curFetchTime = System.currentTimeMillis();
+//                    if ((curFetchTime - lastFetchTime) > 2000) { // Fetch svakih 2 sekunde
+//                        lastFetchTime = curFetchTime;
+//                        fetchEvents();
+//                    }
+                    fetchEvents();
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        if(sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            Log.i("REZ_ACCELEROMETER", String.valueOf(accuracy));
+        }
+    }
 }

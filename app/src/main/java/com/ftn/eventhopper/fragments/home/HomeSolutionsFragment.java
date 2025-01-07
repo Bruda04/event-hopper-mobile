@@ -39,6 +39,7 @@ public class HomeSolutionsFragment extends Fragment {
     private SearchView searchView;
     private SearchBar searchBar;
     private String searchText = "";
+    private String sortDirection = "asc";
     private Button nextPage;
     private Button previousPage;
     private TextView pager;
@@ -211,6 +212,6 @@ public class HomeSolutionsFragment extends Fragment {
         String searchText = viewModel.getSearchTextProducts().getValue();
         String sortField = viewModel.getSortFieldProducts().getValue();
 
-        viewModel.fetchAllSolutionsPage(isProduct,isService,category, eventTypeIds, minPrice,maxPrice,availability, searchText, sortField,  currentPage, pageSize);
+        viewModel.fetchAllSolutionsPage(isProduct,isService,category, eventTypeIds, minPrice,maxPrice,availability, searchText, sortField,sortDirection,  currentPage, pageSize);
     }
 }

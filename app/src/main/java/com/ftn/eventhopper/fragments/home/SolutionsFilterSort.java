@@ -152,7 +152,8 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
                 eventTypesIds.add(dto.getId());
             }
         }
-        viewModel.fetchAllSolutionsPage(isProductSelected,isServiceSelected,categoryId,eventTypesIds, minPrice, maxPrice, selectedAvailability, searchText, selectedSortField, currentPage, pageSize);
+
+        viewModel.fetchAllSolutionsPage(isProductSelected,isServiceSelected,categoryId,eventTypesIds, minPrice, maxPrice, selectedAvailability, searchText, selectedSortField,"", currentPage, pageSize);
     }
 
     private void setSelectedEventTypes() {
