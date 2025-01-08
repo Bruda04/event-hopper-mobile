@@ -49,7 +49,7 @@ public class QuickRegistration2Fragment extends Fragment {
                 receivedBundle.putString("address", address);
 
                 viewModel.register(receivedBundle);
-                navController.navigate(R.id.action_to_confirm_email);
+                navController.navigate(R.id.action_to_login);
             }
         });
 
