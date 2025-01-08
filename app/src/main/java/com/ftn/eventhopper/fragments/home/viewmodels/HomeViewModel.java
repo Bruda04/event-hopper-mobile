@@ -336,8 +336,8 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-    public void fetchTopEvents(UUID id) {
-        Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events(id);
+    public void fetchTopEvents() {
+        Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events();
         call.enqueue(new Callback<ArrayList<SimpleEventDTO>>() {
 
             @Override
@@ -356,8 +356,9 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-    public void fetchTopSolutions(UUID id) {
-        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getTop5Solutions(id);
+    public void fetchTopSolutions() {
+
+        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getTop5Solutions();
         call.enqueue(new Callback<ArrayList<SimpleProductDTO>>() {
 
             @Override

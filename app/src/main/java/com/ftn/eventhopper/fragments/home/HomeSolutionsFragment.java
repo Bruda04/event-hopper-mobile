@@ -90,15 +90,25 @@ public class HomeSolutionsFragment extends Fragment implements SensorEventListen
         this.topSolutionsRecyclerView = view.findViewById(R.id.viewPagerSolutions);
         this.allSolutionsRecycleView = view.findViewById(R.id.recyclerView_allsolutions);
 
+        if (topSolutionsRecyclerView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) topSolutionsRecyclerView.getParent()).setLayoutTransition(null);
+        }
+        topSolutionsRecyclerView.setLayoutTransition(null);
+
+        if (allSolutionsRecycleView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) allSolutionsRecycleView.getParent()).setLayoutTransition(null);
+        }
+        allSolutionsRecycleView.setLayoutTransition(null);
+
         this.nextPage = view.findViewById(R.id.forward_arrow_button_solutions);
         this.previousPage = view.findViewById(R.id.back_arrow_button_solutions);
         this.pager = view.findViewById(R.id.pager_solutions);
 
         //viewModel.fetchAllSolutions();
-        UUID usersId = UUID.fromString(UserService.getJwtClaim(
-                UserService.getJwtToken(),"id"
-        ));
-        viewModel.fetchTopSolutions(usersId);
+//        UUID usersId = UUID.fromString(UserService.getJwtClaim(
+//                UserService.getJwtToken(),"id"
+//        ));
+        viewModel.fetchTopSolutions();
 
         viewModel.getTop5Products().observe(getViewLifecycleOwner(), topProducts ->
         {

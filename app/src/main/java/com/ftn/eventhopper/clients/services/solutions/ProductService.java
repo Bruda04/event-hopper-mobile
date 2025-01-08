@@ -77,8 +77,8 @@ public interface ProductService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @GET("solutions/persons-top-5/{id}")
-    Call<ArrayList<SimpleProductDTO>> getTop5Solutions(@Path("id") UUID id);
+    @GET("solutions/persons-top-5")
+    Call<ArrayList<SimpleProductDTO>> getTop5Solutions();
 
 
     @Headers({

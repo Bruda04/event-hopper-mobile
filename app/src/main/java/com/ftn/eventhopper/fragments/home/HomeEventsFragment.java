@@ -92,6 +92,15 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
 
         this.topEventsRecyclerView = view.findViewById(R.id.viewPagerEvents);
         this.allEventsRecyclerView = view.findViewById(R.id.recyclerView_allevents);
+        if (topEventsRecyclerView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) topEventsRecyclerView.getParent()).setLayoutTransition(null);
+        }
+        topEventsRecyclerView.setLayoutTransition(null);
+
+        if (allEventsRecyclerView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) allEventsRecyclerView.getParent()).setLayoutTransition(null);
+        }
+        allEventsRecyclerView.setLayoutTransition(null);
 
         this.nextPage = view.findViewById(R.id.forward_arrow_button);
         this.previousPage = view.findViewById(R.id.back_arrow_button);
@@ -100,10 +109,10 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
 
 
         //viewModel.fetchAllEvents();
-        UUID usersId = UUID.fromString(UserService.getJwtClaim(
-                UserService.getJwtToken(),"id"
-        ));
-        viewModel.fetchTopEvents(usersId);
+//        UUID usersId = UUID.fromString(UserService.getJwtClaim(
+//                UserService.getJwtToken(),"id"
+//        ));
+        viewModel.fetchTopEvents();
 
         viewModel.getTop5Events().observe(getViewLifecycleOwner(), topEvents ->
         {
