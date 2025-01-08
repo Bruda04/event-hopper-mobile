@@ -126,6 +126,7 @@
     <string name="loading_prices">Loading prices...</string>
     <string name="clear">Clear</string>
     <string name="enter_email_address">Enter email address</string>
+    <string name="new_user">New user</string>
 
 
 </resources>
