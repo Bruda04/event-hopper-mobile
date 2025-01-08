@@ -114,8 +114,9 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         } else {
             holder.viewMoreButton.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
+                bundle.putString("id", services.get(position).getId().toString());
                 // Navigate to ServiceDetailsFragment
-                this.navController.navigate(R.id.action_to_solution_page_fragment, bundle);
+                navController.navigate(R.id.action_to_solution_page_fragment, bundle);
             });
         }
 

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.PupServicesAdapter;
@@ -44,6 +45,7 @@ public class PupsServicesFragment extends Fragment {
     private Button previousPageButton;
     private TextView pager;
     private FloatingActionButton createServiceButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -64,6 +66,15 @@ public class PupsServicesFragment extends Fragment {
         pager = view.findViewById(R.id.pager);
         filterButton = view.findViewById(R.id.filterButton);
         createServiceButton = view.findViewById(R.id.floating_add_button);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            statusMessage.setText(R.string.loading_services);
+            statusMessage.setVisibility(View.VISIBLE);
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+            swipeRefreshLayout.setRefreshing(false);
+        });
 
         viewModel.fetchAllServicesPage(currentPage, pageSize);
 

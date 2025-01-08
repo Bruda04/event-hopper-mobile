@@ -49,8 +49,6 @@ public class ServiceEditData2Fragment extends Fragment {
                 patchService();
                 viewModel.updateService();
             }
-            navController.navigate(R.id.action_to_pup_services);
-
         });
 
         backButton.setOnClickListener(v -> {
