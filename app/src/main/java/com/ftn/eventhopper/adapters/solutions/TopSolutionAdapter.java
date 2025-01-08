@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.github.islamkhsh.CardSliderAdapter;
 
@@ -64,11 +65,10 @@ public class TopSolutionAdapter extends CardSliderAdapter<TopSolutionAdapter.Sol
         secondaryView.setText(solution.getCategory().getName() );
         imageView.setImageDrawable(Drawable.createFromPath(solutions.get(position).getPictures().get(0)));
 
-        String imageUrl = solutions.get(position).getPictures().get(0);
         Glide.with(holder.imageView.getContext())
-                .load(imageUrl)
-//                .placeholder(R.drawable.placeholder_image)
-//                .error(R.drawable.error_image)
+                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, solutions.get(position).getPictures().get(0)))
+                .placeholder(R.drawable.baseline_image_placeholder_24)
+                .error(R.drawable.baseline_image_not_supported_24)
                 .into(holder.imageView);
         descriptionView.setText(solution.getDescription());
     }
