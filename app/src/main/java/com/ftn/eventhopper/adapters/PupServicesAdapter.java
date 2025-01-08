@@ -22,6 +22,7 @@ import com.ftn.eventhopper.fragments.solutions.services.PupsServicesFragment;
 import com.ftn.eventhopper.fragments.solutions.services.viewmodels.PupsServicesViewModel;
 import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.models.Service;
+import com.ftn.eventhopper.shared.models.solutions.ProductStatus;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -56,6 +57,10 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         holder.serviceDescription.setText(service.getDescription());
         holder.servicePrice.setText(String.format("%.2f€", service.getPrice().getFinalPrice()));
 
+        if (service.getStatus() == ProductStatus.PENDING) {
+            holder.syncImage.setVisibility(View.VISIBLE);
+        }
+
         ArrayList<String> pictures = new ArrayList<>(service.getPictures());
         if (pictures.size() == 0) {
             holder.serviceImage.setImageResource(R.drawable.baseline_image_not_supported_24);
@@ -78,28 +83,36 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             // Navigate to ServiceEditFragment
             if (navController != null) {
                 // Option 1: Use NavController directly
-                navController.navigate(R.id.action_to_service_edit_fragment);
+                navController.navigate(R.id.action_to_edit_service1);
             } else if (fragment != null) {
                 // Option 2: Use Fragment to navigate (if no NavController passed)
                 NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
-                navCtrl.navigate(R.id.action_to_service_edit_fragment);
+                navCtrl.navigate(R.id.action_to_edit_service1);
             }
         });
 
-        holder.viewMoreButton.setOnClickListener( v -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("id", services.get(position).getId().toString());
-            // Navigate to ServiceDetailsFragment
-            if (navController != null) {
-                // Option 1: Use NavController directly
-                navController.navigate(R.id.action_to_solution_page_fragment, bundle);
-            } else if (fragment != null) {
-                // Option 2: Use Fragment to navigate (if no NavController passed)
-                NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
-                navCtrl.navigate(R.id.action_to_solution_page_fragment, bundle);
-            }
-
-        });
+        if (service.getStatus() == ProductStatus.PENDING) {
+            holder.editButton.setEnabled(false);
+            holder.deleteButton.setEnabled(false);
+            holder.viewMoreButton.setEnabled(false);
+            holder.editButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
+            holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
+            holder.viewMoreButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
+        } else {
+            holder.viewMoreButton.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", services.get(position).getId().toString());
+                // Navigate to ServiceDetailsFragment
+                if (navController != null) {
+                    // Option 1: Use NavController directly
+                    navController.navigate(R.id.action_to_solution_page_fragment, bundle);
+                } else if (fragment != null) {
+                    // Option 2: Use Fragment to navigate (if no NavController passed)
+                    NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
+                    navCtrl.navigate(R.id.action_to_solution_page_fragment, bundle);
+                }
+            });
+        }
 
     }
 
@@ -125,6 +138,8 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         private final TextView serviceDescription;
         private final TextView servicePrice;
         private final ImageView serviceImage;
+
+        private final ImageView syncImage;
         public MaterialButton deleteButton;
         public MaterialButton editButton;
         public MaterialButton viewMoreButton;
@@ -138,6 +153,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             this.deleteButton = itemView.findViewById(R.id.pups_service_card_delete_button);
             this.editButton = itemView.findViewById(R.id.pups_service_card_edit_button);
             this.viewMoreButton = itemView.findViewById(R.id.pups_service_card_view_more_button);
+            this.syncImage = itemView.findViewById(R.id.pups_service_card_title_icon);
         }
     }
 }

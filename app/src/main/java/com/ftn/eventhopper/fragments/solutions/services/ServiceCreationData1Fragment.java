@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 public class ServiceCreationData1Fragment extends Fragment {
 
-    private TextInputLayout nameInput, descriptionInput, category;
+    private TextInputLayout nameInput, descriptionInput, category, suggestedCategoryName;
     private ChipGroup eventTypes;
     private MaterialSwitch suggestSwitch;
     private CheckBox isVisibleCheckbox, isAvailableCheckbox, isAutoAcceptCheckbox;
@@ -59,6 +59,22 @@ public class ServiceCreationData1Fragment extends Fragment {
         isAutoAcceptCheckbox = view.findViewById(R.id.auto_accept_checkbox);
         category = view.findViewById(R.id.category_select);
         eventTypes = view.findViewById(R.id.event_types);
+        suggestedCategoryName = view.findViewById(R.id.suggested_category_name);
+
+        suggestSwitch.setOnClickListener(v -> {
+            if (!suggestSwitch.isChecked()) {
+                suggestedCategoryName.setVisibility(View.GONE);
+                category.setVisibility(View.VISIBLE);
+                eventTypes.setVisibility(View.VISIBLE);
+                viewModel.setCategorySuggested(false);
+            } else {
+                category.setVisibility(View.GONE);
+                eventTypes.setVisibility(View.GONE);
+                suggestedCategoryName.setVisibility(View.VISIBLE);
+                viewModel.setCategorySuggested(true);
+
+            }
+        });
 
         viewModel.fetchCategories();
         viewModel.getCategories().observe(
@@ -91,13 +107,71 @@ public class ServiceCreationData1Fragment extends Fragment {
         );
 
 
+
+
         // Set click listener for the button
         nextButton.setOnClickListener(v -> {
-            patchService();
-            navController.navigate(R.id.action_to_create_service2);
+            if (validate()) {
+                patchService();
+                navController.navigate(R.id.action_to_create_service2);
+            }
         });
 
         return view;
+    }
+
+    private boolean validate() {
+        if (nameInput.getEditText().getText().toString().trim().isEmpty()) {
+            nameInput.setError("Name is required");
+            return false;
+        } else {
+            nameInput.setError(null);
+        }
+
+        if (descriptionInput.getEditText().getText().toString().trim().isEmpty()) {
+            descriptionInput.setError("Description is required");
+            return false;
+        } else if (descriptionInput.getEditText().getText().toString().trim().length() > 255) {
+            descriptionInput.setError("Description is too long");
+            return false;
+
+        } else {
+            descriptionInput.setError(null);
+        }
+
+        if (!suggestSwitch.isChecked()) {
+            if (category.getEditText().getText().toString().trim().isEmpty()) {
+                category.setError("Category is required");
+                return false;
+            } else {
+                category.setError(null);
+
+                boolean atLeastOneEventTypeSelected = false;
+                for (int i = 0; i < eventTypes.getChildCount(); i++) {
+                    Chip chip = (Chip) eventTypes.getChildAt(i);
+                    if (chip.isChecked()) {
+                        atLeastOneEventTypeSelected = true;
+                        break;
+                    }
+                }
+                if (!atLeastOneEventTypeSelected) {
+                    category.setError("At least one event type must be selected");
+                    return false;
+                }
+            }
+
+        } else {
+            if (suggestedCategoryName.getEditText().getText().toString().trim().isEmpty()) {
+                suggestedCategoryName.setError("Category name is required");
+                return false;
+            } else {
+                suggestedCategoryName.setError(null);
+            }
+        }
+
+
+
+        return true;
     }
 
     private void patchService() {
@@ -106,28 +180,32 @@ public class ServiceCreationData1Fragment extends Fragment {
         viewModel.getService().setVisible(isVisibleCheckbox.isChecked());
         viewModel.getService().setAvailable(isAvailableCheckbox.isChecked());
         viewModel.getService().setAutoAccept(isAutoAcceptCheckbox.isChecked());
-        CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getName().equals(category.getEditText().getText().toString())).findFirst().orElse(null);
-        if (selectedCategory != null) {
-            viewModel.getService().setCategoryId(selectedCategory.getId());
+        if (suggestSwitch.isChecked()) {
+            viewModel.setSuggestedCategoryName(suggestedCategoryName.getEditText().getText().toString().trim());
+        } else {
+            CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getName().equals(category.getEditText().getText().toString())).findFirst().orElse(null);
+            if (selectedCategory != null) {
+                viewModel.getService().setCategoryId(selectedCategory.getId());
 
-            // Initialize a list to hold the selected event type names
-            List<UUID> selectedEventTypeIds = new ArrayList<>();
+                // Initialize a list to hold the selected event type names
+                List<UUID> selectedEventTypeIds = new ArrayList<>();
 
-            // Loop through all chips in the ChipGroup
-            for (int i = 0; i < eventTypes.getChildCount(); i++) {
-                Chip chip = (Chip) eventTypes.getChildAt(i);
+                // Loop through all chips in the ChipGroup
+                for (int i = 0; i < eventTypes.getChildCount(); i++) {
+                    Chip chip = (Chip) eventTypes.getChildAt(i);
 
-                if (chip.isChecked()) {
-                    // Add the chip's text (event type name) to the list
-                    selectedEventTypeIds.add(
-                            selectedCategory.getEventTypes().stream().filter(e -> e.getName().equals(chip.getText().toString())).findFirst().get().getId()
-                    );
+                    if (chip.isChecked()) {
+                        // Add the chip's text (event type name) to the list
+                        selectedEventTypeIds.add(
+                                selectedCategory.getEventTypes().stream().filter(e -> e.getName().equals(chip.getText().toString())).findFirst().get().getId()
+                        );
+                    }
                 }
-            }
 
-            // Optionally, put the selected event type names into the filters map
-            if (!selectedEventTypeIds.isEmpty()) {
-                viewModel.getService().setEventTypesIds(selectedEventTypeIds);
+                // Optionally, put the selected event type names into the filters map
+                if (!selectedEventTypeIds.isEmpty()) {
+                    viewModel.getService().setEventTypesIds(selectedEventTypeIds);
+                }
             }
         }
     }
@@ -148,38 +226,51 @@ public class ServiceCreationData1Fragment extends Fragment {
         if (viewModel.getService().isAutoAccept()) {
             isAutoAcceptCheckbox.setChecked(true);
         }
-        if (viewModel.getService().getCategoryId() != null) {
-            CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getId().equals(viewModel.getService().getCategoryId())).findFirst().orElse(null);
-            ((AutoCompleteTextView) category.getEditText()).setText(selectedCategory.getName(), false);
+        if (viewModel.isCategorySuggested()) {
+            suggestSwitch.setChecked(true);
+            suggestedCategoryName.setVisibility(View.VISIBLE);
+            category.setVisibility(View.GONE);
+            eventTypes.setVisibility(View.GONE);
+            suggestedCategoryName.getEditText().setText(viewModel.getSuggestedCategoryName());
+        } else {
+            suggestSwitch.setChecked(false);
+            suggestedCategoryName.setVisibility(View.GONE);
+            category.setVisibility(View.VISIBLE);
+            eventTypes.setVisibility(View.VISIBLE);
 
-            List<String> eventTypesList = selectedCategory.getEventTypes().stream()
-                    .map(SimpleEventTypeDTO::getName)
-                    .collect(Collectors.toList());
+            if (viewModel.getService().getCategoryId() != null) {
+                CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getId().equals(viewModel.getService().getCategoryId())).findFirst().orElse(null);
+                ((AutoCompleteTextView) category.getEditText()).setText(selectedCategory.getName(), false);
 
-            eventTypes.removeAllViews(); // Clear previous chips if any
+                List<String> eventTypesList = selectedCategory.getEventTypes().stream()
+                        .map(SimpleEventTypeDTO::getName)
+                        .collect(Collectors.toList());
 
-            for (String eventTypeName : eventTypesList) {
-                Chip et = new Chip(getContext());
-                et.setText(eventTypeName);
-                et.setCheckable(true);
-                eventTypes.addView(et);
-            }
+                eventTypes.removeAllViews(); // Clear previous chips if any
 
-            if (viewModel.getService().getEventTypesIds() != null) {
-                // Loop through the chips in the ChipGroup
-                for (int i = 0; i < eventTypes.getChildCount(); i++) {
-                    Chip chip = (Chip) eventTypes.getChildAt(i);
-                    String chipText = chip.getText().toString();
+                for (String eventTypeName : eventTypesList) {
+                    Chip et = new Chip(getContext());
+                    et.setText(eventTypeName);
+                    et.setCheckable(true);
+                    eventTypes.addView(et);
+                }
 
-                    // Check if the chip matches one of the selected event types by ID
-                    for (UUID eventTypeId : viewModel.getService().getEventTypesIds()) {
-                        SimpleEventTypeDTO eventType = selectedCategory.getEventTypes().stream()
-                                .filter(e -> e.getId().toString().equals(eventTypeId.toString()))
-                                .findFirst().orElse(null);
+                if (viewModel.getService().getEventTypesIds() != null) {
+                    // Loop through the chips in the ChipGroup
+                    for (int i = 0; i < eventTypes.getChildCount(); i++) {
+                        Chip chip = (Chip) eventTypes.getChildAt(i);
+                        String chipText = chip.getText().toString();
 
-                        if (eventType != null && chipText.equals(eventType.getName())) {
-                            chip.setChecked(true);
-                            break;
+                        // Check if the chip matches one of the selected event types by ID
+                        for (UUID eventTypeId : viewModel.getService().getEventTypesIds()) {
+                            SimpleEventTypeDTO eventType = selectedCategory.getEventTypes().stream()
+                                    .filter(e -> e.getId().toString().equals(eventTypeId.toString()))
+                                    .findFirst().orElse(null);
+
+                            if (eventType != null && chipText.equals(eventType.getName())) {
+                                chip.setChecked(true);
+                                break;
+                            }
                         }
                     }
                 }
