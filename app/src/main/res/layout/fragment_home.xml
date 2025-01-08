@@ -42,7 +42,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:contentDescription="@string/commentsbutton"
+        android:contentDescription="@string/chatbutton"
         app:srcCompat="@drawable/message" />
 
 

@@ -39,7 +39,7 @@
     <string name="backArrowButton">button for going back</string>
     <string name="forwardArrowButton">button for going forward</string>
     <string name="pageLabel">1/10</string>
-    <string name="commentsbutton">floating button for comments</string>
+    <string name="chatbutton">floating button for chat</string>
     <string name="all_solutions_title">Explore all services/products</string>
     <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
     <string name="login_btn_text">Login</string>
@@ -125,6 +125,7 @@
     <string name="choose_availability">Choose availability</string>
     <string name="loading_prices">Loading prices...</string>
     <string name="clear">Clear</string>
+    <string name="enter_email_address">Enter email address</string>
 
 
 </resources>
