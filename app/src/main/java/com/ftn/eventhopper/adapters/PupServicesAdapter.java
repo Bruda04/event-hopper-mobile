@@ -3,6 +3,7 @@ package com.ftn.eventhopper.adapters;
 import android.content.Context;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.PupsServiceViewHolder> {
     ArrayList<ServiceManagementDTO> services;
@@ -80,14 +82,31 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
 
 
         holder.editButton.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("serviceId", services.get(position).getId().toString());
+            bundle.putString("name", services.get(position).getName());
+            bundle.putString("description", services.get(position).getDescription());
+            bundle.putInt("duration", services.get(position).getDurationMinutes());
+            bundle.putInt("reservationWindow", services.get(position).getReservationWindowDays());
+            bundle.putInt("cancellationWindow", services.get(position).getCancellationWindowDays());
+            bundle.putBoolean("visibility", services.get(position).isVisible());
+            bundle.putBoolean("availability", services.get(position).isAvailable());
+            bundle.putBoolean("autoAccept", services.get(position).isAutoAccept());
+            bundle.putStringArrayList("eventTypes", new ArrayList<String>(services.get(position).getEventTypes()
+                    .stream().map(e -> e.getId().toString())
+                    .collect(Collectors.toCollection(ArrayList::new))
+            ));
+            bundle.putStringArrayList("pictures", new ArrayList<>(services.get(position).getPictures()));
+            bundle.putString("categoryId", services.get(position).getCategory().getId().toString());
+
             // Navigate to ServiceEditFragment
             if (navController != null) {
                 // Option 1: Use NavController directly
-                navController.navigate(R.id.action_to_edit_service1);
+                navController.navigate(R.id.action_to_edit_service1, bundle);
             } else if (fragment != null) {
                 // Option 2: Use Fragment to navigate (if no NavController passed)
                 NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
-                navCtrl.navigate(R.id.action_to_edit_service1);
+                navCtrl.navigate(R.id.action_to_edit_service1, bundle);
             }
         });
 
@@ -101,7 +120,6 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         } else {
             holder.viewMoreButton.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
-                bundle.putString("id", services.get(position).getId().toString());
                 // Navigate to ServiceDetailsFragment
                 if (navController != null) {
                     // Option 1: Use NavController directly

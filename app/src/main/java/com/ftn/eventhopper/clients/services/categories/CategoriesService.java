@@ -76,4 +76,11 @@ public interface CategoriesService {
     @POST("categories/suggestions")
     Call<CreatedCategorySuggestionDTO> makeSuggestion(@Body CreateCategorySuggestionDTO categorySuggestion);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("categories/{id}")
+    Call<CategoryDTO> getCategory(@Path("id") UUID id);
+
 }

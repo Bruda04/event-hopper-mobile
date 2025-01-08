@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.solutions.services.viewmodels.ServiceCreationViewModel;
@@ -33,6 +34,7 @@ public class ServiceCreationData1Fragment extends Fragment {
 
     private TextInputLayout nameInput, descriptionInput, category, suggestedCategoryName;
     private ChipGroup eventTypes;
+    private TextView eventTypesError;
     private MaterialSwitch suggestSwitch;
     private CheckBox isVisibleCheckbox, isAvailableCheckbox, isAutoAcceptCheckbox;
 
@@ -59,7 +61,9 @@ public class ServiceCreationData1Fragment extends Fragment {
         isAutoAcceptCheckbox = view.findViewById(R.id.auto_accept_checkbox);
         category = view.findViewById(R.id.category_select);
         eventTypes = view.findViewById(R.id.event_types);
+        eventTypesError = view.findViewById(R.id.eventTypesError);
         suggestedCategoryName = view.findViewById(R.id.suggested_category_name);
+
 
         suggestSwitch.setOnClickListener(v -> {
             if (!suggestSwitch.isChecked()) {
@@ -155,8 +159,11 @@ public class ServiceCreationData1Fragment extends Fragment {
                     }
                 }
                 if (!atLeastOneEventTypeSelected) {
-                    category.setError("At least one event type must be selected");
+                    eventTypesError.setText("At least one event type must be selected");
+                    eventTypesError.setVisibility(View.VISIBLE);
                     return false;
+                } else {
+                    eventTypesError.setVisibility(View.GONE);
                 }
             }
 
