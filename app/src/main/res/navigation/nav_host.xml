@@ -24,7 +24,7 @@
         android:label="Calendar"
         tools:layout="@layout/fragment_2" />
 
-    <!-- Home Fragment -->
+    <!--  -->
     <fragment
         android:id="@+id/adminCatSugManagement"
         android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
@@ -66,7 +66,7 @@
             app:popUpTo="@id/pup_services"/>
         <action
             android:id="@+id/action_to_solution_page_fragment"
-            app:destination="@+id/solution_page"
+            app:destination="@id/solution_page"
             app:popUpTo="@id/pup_services"/>
     </fragment>
 
@@ -143,20 +143,20 @@
     </fragment>
 
     <fragment
-        android:id="@id/solution_page"
+        android:id="@+id/solution_page"
         android:name="com.ftn.eventhopper.fragments.solutions.SolutionPageFragment"
         android:label="Solution Page"
         tools:layout="@layout/fragment_solution_page">
 
         <action
             android:id="@+id/action_to_provider_page"
-            app:destination="@+id/service_provider_page"
+            app:destination="@id/service_provider_page"
             app:popUpTo="@id/solution_page"/>
 
     </fragment>
 
     <fragment
-        android:id="@id/service_provider_page"
+        android:id="@+id/service_provider_page"
         android:name="com.ftn.eventhopper.fragments.serviceProviderPage.ServiceProviderPageFragment"
         android:label="Service Provider Page"
         tools:layout="@layout/fragment_service_provider_page">

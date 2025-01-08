@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.PupsServiceViewHolder> {
     ArrayList<ServiceManagementDTO> services;
     Context context;
-    private final NavController navController; // Add NavController or Fragment
+    private final NavController navController;
     private final PupsServicesFragment fragment;
     private PupsServicesViewModel viewmodel;
 
@@ -99,15 +100,8 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             bundle.putStringArrayList("pictures", new ArrayList<>(services.get(position).getPictures()));
             bundle.putString("categoryId", services.get(position).getCategory().getId().toString());
 
-            // Navigate to ServiceEditFragment
-            if (navController != null) {
-                // Option 1: Use NavController directly
-                navController.navigate(R.id.action_to_edit_service1, bundle);
-            } else if (fragment != null) {
-                // Option 2: Use Fragment to navigate (if no NavController passed)
-                NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
-                navCtrl.navigate(R.id.action_to_edit_service1, bundle);
-            }
+
+            navController.navigate(R.id.action_to_edit_service1, bundle);
         });
 
         if (service.getStatus() == ProductStatus.PENDING) {
@@ -121,14 +115,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
             holder.viewMoreButton.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
                 // Navigate to ServiceDetailsFragment
-                if (navController != null) {
-                    // Option 1: Use NavController directly
-                    navController.navigate(R.id.action_to_solution_page_fragment, bundle);
-                } else if (fragment != null) {
-                    // Option 2: Use Fragment to navigate (if no NavController passed)
-                    NavController navCtrl = androidx.navigation.Navigation.findNavController(fragment.requireView());
-                    navCtrl.navigate(R.id.action_to_solution_page_fragment, bundle);
-                }
+                this.navController.navigate(R.id.action_to_solution_page_fragment, bundle);
             });
         }
 
