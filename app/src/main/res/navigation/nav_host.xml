@@ -20,14 +20,14 @@
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
-        android:name="com.ftn.eventhopper.fragments.profile.Calendar"
+        android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <!-- Favorites Fragment -->
     <fragment
         android:id="@+id/favorites"
-        android:name="com.ftn.eventhopper.fragments.profile.Favorites"
+        android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
 
