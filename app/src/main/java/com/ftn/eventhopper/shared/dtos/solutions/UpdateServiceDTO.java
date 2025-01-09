@@ -11,5 +11,5 @@ public class UpdateServiceDTO extends UpdateProductDTO {
     private int durationMinutes;
     private int reservationWindowDays;
     private int cancellationWindowDays;
-    private boolean isAutoAccept;
+    private boolean autoAccept;
 }

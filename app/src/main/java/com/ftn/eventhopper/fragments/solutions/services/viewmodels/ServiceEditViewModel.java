@@ -1,7 +1,6 @@
 package com.ftn.eventhopper.fragments.solutions.services.viewmodels;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
-import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.UpdateServiceDTO;
 
 import java.util.ArrayList;

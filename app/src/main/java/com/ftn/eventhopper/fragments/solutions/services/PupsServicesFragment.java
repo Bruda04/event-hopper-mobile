@@ -40,7 +40,6 @@ public class PupsServicesFragment extends Fragment {
     private Button searchButton;
     private SearchView searchView;
     private SearchBar searchBar;
-    private String searchText = "";
     private Button nextPageButton;
     private Button previousPageButton;
     private TextView pager;
@@ -67,6 +66,10 @@ public class PupsServicesFragment extends Fragment {
         filterButton = view.findViewById(R.id.filterButton);
         createServiceButton = view.findViewById(R.id.floating_add_button);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
+        searchBar = view.findViewById(R.id.search_bar);
+        searchView = view.findViewById(R.id.search_view);
+        searchButton = view.findViewById(R.id.search_button);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             recyclerView.setVisibility(View.GONE);
@@ -102,13 +105,22 @@ public class PupsServicesFragment extends Fragment {
         });
 
         viewModel.getFilters().observe(getViewLifecycleOwner(), filters -> {
-            if (filters != null) {
-                viewModel.fetchAllServicesPage(currentPage, pageSize);
-            }
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
         });
 
         createServiceButton.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_to_create_service1);
+        });
+
+        searchButton.setOnClickListener(v -> {
+            viewModel.setSearchText(searchView.getText().toString().trim());
+            searchBar.setText(viewModel.getSearchText());
+            Log.d("PupsServicesFragment", "Search text set to: " + viewModel.getSearchText());
+            searchView.hide();
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+
         });
 
         return view;
@@ -158,5 +170,6 @@ public class PupsServicesFragment extends Fragment {
     public void deleteService(UUID id) {
         viewModel.deleteService(id);
         currentPage = 0;
+        viewModel.fetchAllServicesPage(currentPage, pageSize);
     }
 }

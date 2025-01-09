@@ -67,7 +67,6 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
         ArrayList<String> pictures = new ArrayList<>(service.getPictures());
         if (pictures.size() == 0) {
             holder.serviceImage.setImageResource(R.drawable.baseline_image_not_supported_24);
-            return;
         } else {
             String profilePictureUrl = String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, pictures.get(0));
             Glide.with(holder.itemView.getContext())
@@ -77,39 +76,12 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
                     .into(holder.serviceImage);
         }
 
-        holder.deleteButton.setOnClickListener(v -> {
-            setupDeleteDialog(position);
-        });
-
-
-        holder.editButton.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("serviceId", services.get(position).getId().toString());
-            bundle.putString("name", services.get(position).getName());
-            bundle.putString("description", services.get(position).getDescription());
-            bundle.putInt("duration", services.get(position).getDurationMinutes());
-            bundle.putInt("reservationWindow", services.get(position).getReservationWindowDays());
-            bundle.putInt("cancellationWindow", services.get(position).getCancellationWindowDays());
-            bundle.putBoolean("visibility", services.get(position).isVisible());
-            bundle.putBoolean("availability", services.get(position).isAvailable());
-            bundle.putBoolean("autoAccept", services.get(position).isAutoAccept());
-            bundle.putStringArrayList("eventTypes", new ArrayList<String>(services.get(position).getEventTypes()
-                    .stream().map(e -> e.getId().toString())
-                    .collect(Collectors.toCollection(ArrayList::new))
-            ));
-            bundle.putStringArrayList("pictures", new ArrayList<>(services.get(position).getPictures()));
-            bundle.putString("categoryId", services.get(position).getCategory().getId().toString());
-
-
-            navController.navigate(R.id.action_to_edit_service1, bundle);
-        });
-
         if (service.getStatus() == ProductStatus.PENDING) {
-            holder.editButton.setEnabled(false);
-            holder.deleteButton.setEnabled(false);
-            holder.viewMoreButton.setEnabled(false);
-            holder.editButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
+            holder.editButton.setActivated(false);
+            holder.viewMoreButton.setActivated(false);
+            holder.deleteButton.setActivated(false);
             holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
+            holder.editButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
             holder.viewMoreButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
         } else {
             holder.viewMoreButton.setOnClickListener(v -> {
@@ -117,6 +89,32 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
                 bundle.putString("id", services.get(position).getId().toString());
                 // Navigate to ServiceDetailsFragment
                 navController.navigate(R.id.action_to_solution_page_fragment, bundle);
+            });
+
+            holder.deleteButton.setOnClickListener(v -> {
+                setupDeleteDialog(position);
+            });
+
+            holder.editButton.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("serviceId", services.get(position).getId().toString());
+                bundle.putString("name", services.get(position).getName());
+                bundle.putString("description", services.get(position).getDescription());
+                bundle.putInt("duration", services.get(position).getDurationMinutes());
+                bundle.putInt("reservationWindow", services.get(position).getReservationWindowDays());
+                bundle.putInt("cancellationWindow", services.get(position).getCancellationWindowDays());
+                bundle.putBoolean("visibility", services.get(position).isVisible());
+                bundle.putBoolean("availability", services.get(position).isAvailable());
+                bundle.putBoolean("autoAccept", services.get(position).isAutoAccept());
+                bundle.putStringArrayList("eventTypes", new ArrayList<String>(services.get(position).getEventTypes()
+                        .stream().map(e -> e.getId().toString())
+                        .collect(Collectors.toCollection(ArrayList::new))
+                ));
+                bundle.putStringArrayList("pictures", new ArrayList<>(services.get(position).getPictures()));
+                bundle.putString("categoryId", services.get(position).getCategory().getId().toString());
+
+
+                navController.navigate(R.id.action_to_edit_service1, bundle);
             });
         }
 

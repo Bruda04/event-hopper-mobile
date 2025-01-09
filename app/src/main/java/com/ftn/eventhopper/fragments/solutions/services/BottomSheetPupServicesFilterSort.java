@@ -108,7 +108,6 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
             @Override
             public void onClick(View v) {
                 clearFilters();
-                setFilters();
                 dismiss();
             }
         });
@@ -123,13 +122,18 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
             if (filters.containsKey("isAvailable"))
                 availability.getEditText().setText(filters.get("isAvailable").equals("true") ? "Available" : "Not Available");
 
+            float min = priceRange.getValueFrom();
+            float max = priceRange.getValueTo();
+
             if (filters.containsKey("minPrice")) {
-                priceRange.setValues(Float.parseFloat(filters.get("minPrice")), Float.parseFloat(filters.get("maxPrice")));
+                min = Float.parseFloat(filters.get("minPrice"));
             }
 
             if (filters.containsKey("maxPrice")) {
-                priceRange.setValues(Float.parseFloat(filters.get("minPrice")), Float.parseFloat(filters.get("maxPrice")));
+                max = Float.parseFloat(filters.get("maxPrice"));
             }
+            priceRange.setValues(min, max);
+
 
             if (filters.containsKey("categoryId")) {
                 CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getId().toString().equals(filters.get("categoryId"))).findFirst().orElse(null);
