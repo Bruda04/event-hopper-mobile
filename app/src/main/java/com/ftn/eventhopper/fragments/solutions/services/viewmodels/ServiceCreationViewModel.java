@@ -1,10 +1,15 @@
 package com.ftn.eventhopper.fragments.solutions.services.viewmodels;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CreateCategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CreatedCategorySuggestionDTO;
@@ -13,6 +18,8 @@ import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +46,10 @@ public class ServiceCreationViewModel extends ViewModel {
     public LiveData<Boolean> getCreated() {
         return createdLiveData;
     }
+
+    @Getter
+    @Setter
+    private ArrayList<Bitmap> uploadedImages = new ArrayList<>();
 
     private boolean isCategorySuggested = false;
     @Setter
@@ -76,6 +87,42 @@ public class ServiceCreationViewModel extends ViewModel {
     }
 
     private void callServiceCreation() {
+        service.setPictures(new ArrayList<>());
+        AtomicInteger remainingUploads = new AtomicInteger(uploadedImages.size());
+        AtomicBoolean hasUploadFailed = new AtomicBoolean(false);
+
+        for (Bitmap image : uploadedImages) {
+            Call<String> call = ImageUtils.uploadImage(image);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()){
+                        service.getPictures().add(response.body());
+                        if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get())  {
+                            enqueueServiceCreation();
+                        }
+
+                    }else{
+                        errorMessage.postValue("Failed to upload image. Code: "+ response.code());
+                        hasUploadFailed.set(true);
+                        service = new CreateServiceDTO();
+                        uploadedImages.clear();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    errorMessage.postValue("Failed to upload image. Error: "+ t.getMessage());
+                    Log.e("Image upload failed", t.getMessage());
+                    hasUploadFailed.set(true);
+                    service = new CreateServiceDTO();
+                    uploadedImages.clear();
+                }
+            });
+        }
+    }
+
+    private void enqueueServiceCreation() {
         Call<Void> call = ClientUtils.serviceService.create(service);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -88,12 +135,14 @@ public class ServiceCreationViewModel extends ViewModel {
                     errorMessage.postValue("Failed to create service. Code: "+ response.code());
                 }
                 service = new CreateServiceDTO();
+                uploadedImages.clear();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 errorMessage.postValue("Failed to create service. Error: "+ t.getMessage());
                 service = new CreateServiceDTO();
+                uploadedImages.clear();
             }
         });
     }
