@@ -25,6 +25,25 @@
             android:text="@string/upload_pictures"
              />
 
+        <TextView
+            android:id="@+id/imagesError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_error"
+            android:visibility="gone"
+            android:text="@string/images_are_required"
+            android:textSize="12sp" />
+
+        <!-- RecyclerView for image previews -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/image_preview_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_image_preview" />
+
 
         <!-- Spacer -->
         <Space

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
@@ -49,7 +50,7 @@ public class ServiceCreationViewModel extends ViewModel {
 
     @Getter
     @Setter
-    private ArrayList<Bitmap> uploadedImages = new ArrayList<>();
+    private ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedImages = new ArrayList<>();
 
     private boolean isCategorySuggested = false;
     @Setter
@@ -91,8 +92,8 @@ public class ServiceCreationViewModel extends ViewModel {
         AtomicInteger remainingUploads = new AtomicInteger(uploadedImages.size());
         AtomicBoolean hasUploadFailed = new AtomicBoolean(false);
 
-        for (Bitmap image : uploadedImages) {
-            Call<String> call = ImageUtils.uploadImage(image);
+        for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
+            Call<String> call = ImageUtils.uploadImage(image.getBitmap());
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

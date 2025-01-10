@@ -30,5 +30,9 @@ public class ImageUtils {
         return ClientUtils.ImageService.uploadImage(imagePart);
     }
 
+    public static Call<Void> deleteImage(String imageName) {
+        return ClientUtils.ImageService.deleteImage(imageName);
+    }
+
 }
 

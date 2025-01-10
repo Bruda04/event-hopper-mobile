@@ -56,8 +56,7 @@
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                app:simpleItems="@array/category_dummy"/>
+                android:inputType="none"/>
             />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,17 +1,23 @@
 package com.ftn.eventhopper.fragments.solutions.services.viewmodels;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.UpdateServiceDTO;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
@@ -32,6 +38,14 @@ public class ServiceEditViewModel extends ViewModel {
     @Getter
     @Setter
     private UUID serviceCategoryId;
+
+    @Getter
+    @Setter
+    private ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedImages = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private ArrayList<ImagePreviewAdapter.ImagePreviewItem> oldImages;
 
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     public LiveData<String> getErrorMessage() {
@@ -69,6 +83,78 @@ public class ServiceEditViewModel extends ViewModel {
     }
 
     public void updateService(){
+        AtomicInteger remainingUploads = new AtomicInteger(uploadedImages.size());
+        AtomicBoolean hasUploadFailed = new AtomicBoolean(false);
+
+        AtomicInteger remainingDeletions = new AtomicInteger(serviceUpdateDTO.getPictures().size() - oldImages.size());
+        AtomicBoolean hasDeletionFailed = new AtomicBoolean(false);
+
+        for (String picture : serviceUpdateDTO.getPictures()) {
+            if (!oldImages.stream().map(ImagePreviewAdapter.ImagePreviewItem::getImageUrl).collect(Collectors.toList()).contains(picture)) {
+                Call<Void> call = ImageUtils.deleteImage(picture);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            errorMessage.postValue("Failed to delete image. Code: " + response.code());
+                            hasDeletionFailed.set(true);
+                            serviceUpdateDTO = new UpdateServiceDTO();
+                            uploadedImages.clear();
+                            oldImages.clear();
+                        } else {
+                            if (remainingDeletions.decrementAndGet() == 0 && !hasDeletionFailed.get() && remainingUploads.get() == 0 && !hasUploadFailed.get()) {
+                                enqueueUpdate();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        errorMessage.postValue("Failed to delete image. Error: " + t.getMessage());
+                        Log.e("Image deletion failed", t.getMessage());
+                        hasDeletionFailed.set(true);
+                        serviceUpdateDTO = new UpdateServiceDTO();
+                        uploadedImages.clear();
+                        oldImages.clear();
+                    }
+                });
+            }
+        }
+
+        serviceUpdateDTO.setPictures(oldImages.stream().map(ImagePreviewAdapter.ImagePreviewItem::getImageUrl).collect(Collectors.toCollection(ArrayList::new)));
+        for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
+            Call<String> call = ImageUtils.uploadImage(image.getBitmap());
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()){
+                        serviceUpdateDTO.getPictures().add(response.body());
+                        if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get() && remainingDeletions.get() == 0 && !hasDeletionFailed.get())  {
+                            enqueueUpdate();
+                        }
+
+                    }else{
+                        errorMessage.postValue("Failed to upload image. Code: "+ response.code());
+                        hasUploadFailed.set(true);
+                        serviceUpdateDTO = new UpdateServiceDTO();
+                        uploadedImages.clear();
+                        oldImages.clear();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    errorMessage.postValue("Failed to upload image. Error: "+ t.getMessage());
+                    Log.e("Image upload failed", t.getMessage());
+                    hasUploadFailed.set(true);
+                    serviceUpdateDTO = new UpdateServiceDTO();
+                    uploadedImages.clear();
+                }
+            });
+        }
+    }
+
+    private void enqueueUpdate() {
         Call<Void> call = ClientUtils.serviceService.update(serviceId, serviceUpdateDTO);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -79,6 +165,8 @@ public class ServiceEditViewModel extends ViewModel {
                     serviceUpdateDTO = new UpdateServiceDTO();
                     serviceCategoryId = null;
                     serviceId = null;
+                    uploadedImages.clear();
+                    oldImages.clear();
                 }else{
                     errorMessage.postValue("Failed to update service. Code: "+ response.code());
                 }
@@ -104,6 +192,10 @@ public class ServiceEditViewModel extends ViewModel {
         serviceUpdateDTO.setEventTypesIds(arguments.getStringArrayList("eventTypes").stream().map(UUID::fromString).collect(Collectors.toCollection(ArrayList::new)));
         serviceUpdateDTO.setPictures(arguments.getStringArrayList("pictures"));
         serviceCategoryId = UUID.fromString(arguments.getString("categoryId"));
+        oldImages = new ArrayList<>();
+        for (String imageUrl : serviceUpdateDTO.getPictures()) {
+            oldImages.add(new ImagePreviewAdapter.ImagePreviewItem(imageUrl));
+        }
 
     }
 }

@@ -30,6 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ServiceCreationData2Fragment extends Fragment {
@@ -121,7 +122,7 @@ public class ServiceCreationData2Fragment extends Fragment {
                     Uri imageUri = data.getClipData().getItemAt(i).getUri();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                        viewModel.getUploadedImages().add(bitmap);
+                        viewModel.getUploadedImages().add(new ImagePreviewAdapter.ImagePreviewItem(bitmap));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -131,7 +132,7 @@ public class ServiceCreationData2Fragment extends Fragment {
                 Uri imageUri = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    viewModel.getUploadedImages().add(bitmap);
+                    viewModel.getUploadedImages().add(new ImagePreviewAdapter.ImagePreviewItem(bitmap));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
