@@ -89,6 +89,11 @@ public class ServiceEditViewModel extends ViewModel {
         AtomicInteger remainingDeletions = new AtomicInteger(serviceUpdateDTO.getPictures().size() - oldImages.size());
         AtomicBoolean hasDeletionFailed = new AtomicBoolean(false);
 
+        if (remainingUploads.get() == 0 && remainingDeletions.get() == 0) {
+            enqueueUpdate();
+            return;
+        }
+
         for (String picture : serviceUpdateDTO.getPictures()) {
             if (!oldImages.stream().map(ImagePreviewAdapter.ImagePreviewItem::getImageUrl).collect(Collectors.toList()).contains(picture)) {
                 Call<Void> call = ImageUtils.deleteImage(picture);
