@@ -10,10 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="8dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="8dp"
         android:text="example@gmail.com"
         android:textColor="#000"
-        android:background="#E6F7FF"
-        android:layout_marginEnd="8dp" />
+        android:background="@drawable/rounded_corners"
+        android:layout_marginEnd="8dp"
+
+        />
 
     <Button
         android:id="@+id/delete_button"
