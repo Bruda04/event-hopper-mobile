@@ -111,7 +111,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/next_btn"
+        android:id="@+id/invite_people_button"
         style="@style/DarkButton"
         android:layout_width="159dp"
         android:layout_height="wrap_content"

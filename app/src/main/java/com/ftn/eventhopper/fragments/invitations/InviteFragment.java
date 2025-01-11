@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.invitations.viewmodels.InvitationsViewModel;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
 
 
 public class InviteFragment extends Fragment {
 
+    private InvitationsViewModel viewModel;
     private TextInputEditText emailField;
     private LinearLayout emailsList;
     private Button addButton;
+    private Button inviteButton;
+
+    private ArrayList<String> emails = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +40,6 @@ public class InviteFragment extends Fragment {
         emailField = view.findViewById(R.id.invite_email);
         emailsList = view.findViewById(R.id.emails_list);
         addButton  = view.findViewById(R.id.invite_button);
-
         addButton.setOnClickListener( v ->{
 
                 String email = emailField.getText().toString().trim();
@@ -45,6 +52,17 @@ public class InviteFragment extends Fragment {
                 }
 
             });
+
+
+        inviteButton = view.findViewById(R.id.invite_people_button);
+        inviteButton.setOnClickListener( v ->{
+            for(String email: emails){
+                Log.i("Invitation",email);
+            }
+            viewModel.sendInvitations(emails);
+        });
+
+
         return view;
     }
 
@@ -55,7 +73,11 @@ public class InviteFragment extends Fragment {
         Button deleteButton = emailView.findViewById(R.id.delete_button);
 
         emailLabel.setText(email);
-        deleteButton.setOnClickListener(view -> emailsList.removeView(emailView));
+        emails.add(email);
+        deleteButton.setOnClickListener(view -> {
+            emails.remove(email);
+            emailsList.removeView(emailView);
+        });
 
         emailsList.addView(emailView);
     }
