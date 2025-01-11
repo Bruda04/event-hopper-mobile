@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
+import com.ftn.eventhopper.shared.dtos.eventTypes.EventTypeManagementDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
@@ -32,7 +33,7 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<SimpleEventDTO>> top5Events = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<LocationDTO>> locations = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> cities = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<ArrayList<SimpleEventTypeDTO>>();
 
     //products
 
@@ -84,15 +85,8 @@ public class HomeViewModel extends ViewModel {
         return top5Products;
     }
 
-    public LiveData<ArrayList<SimpleProductDTO>> getProducts() {
-        return allProducts;
-    }
     public LiveData<PagedResponse<SimpleProductDTO>> getProductsPage() {
         return allProductsPage;
-    }
-
-    public LiveData<ArrayList<LocationDTO>> getLocations() {
-        return locations;
     }
     public LiveData<ArrayList<String>> getCities() {
         return cities;
@@ -102,7 +96,9 @@ public class HomeViewModel extends ViewModel {
         return eventTypes;
     }
 
-    public LiveData<ArrayList<CategoryDTO>> getCategories(){ return categories;}
+    public LiveData<ArrayList<CategoryDTO>> getCategories(){
+        return categories;
+    }
     public LiveData<String> getSearchTextEvents() {
         return searchTextEvents;
     }
@@ -134,6 +130,7 @@ public class HomeViewModel extends ViewModel {
     public LiveData<Boolean> getIsProduct(){return product;}
     public LiveData<Boolean> getIsService(){return service;}
     public LiveData<Boolean> getAvailability(){return availability;}
+
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
@@ -165,44 +162,30 @@ public class HomeViewModel extends ViewModel {
         sortFieldProducts.setValue(sortOption);
     }
 
-    public void fetchAllEvents() {
-        Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getEvents();
-        call.enqueue(new Callback<ArrayList<SimpleEventDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<SimpleEventDTO>> call, Response<ArrayList<SimpleEventDTO>> response) {
-                if(response.isSuccessful()){
-                    allEvents.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch events. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<SimpleEventDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
+    public void setAvailability(Boolean availability) {
+        this.availability.setValue(availability);
     }
 
-    public void fetchAllSolutions() {
-        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getSolutions();
-        call.enqueue(new Callback<ArrayList<SimpleProductDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<SimpleProductDTO>> call, Response<ArrayList<SimpleProductDTO>> response) {
-                if(response.isSuccessful()){
-                    allProducts.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch solutions. Code: "+ response.code());
-                }
-            }
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice.setValue(maxPrice);
+    }
 
-            @Override
-            public void onFailure(Call<ArrayList<SimpleProductDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
+    public void setMinPrice(Double minPrice) {
+        this.minPrice.setValue(minPrice);
+    }
+
+    public void setIsProduct(Boolean isProductSelected) {
+        this.product.setValue(isProductSelected);
+    }
+    public void setIsService(Boolean isServiceSelected) {
+        this.service.setValue(isServiceSelected);
+    }
+
+    public void setSelectedCategory(UUID id){
+        this.selectedCategoryProducts.setValue(id);
+    }
+    public void setSelectedEventTypesProducts(ArrayList<UUID> selectedEventTypes) {
+        this.selectedEventTypesProducts.setValue(selectedEventTypes);
     }
 
     public void fetchAllEventsPage(
@@ -277,11 +260,9 @@ public class HomeViewModel extends ViewModel {
         queryParams.put("page", String.valueOf(page));
         queryParams.put("size", String.valueOf(size));
         if (isProduct != null ) {
-            Log.i("VM", "upao product");
             queryParams.put("isProduct", isProduct.toString());
         }
         if (isService != null ) {
-            Log.i("VM", "upao service");
             queryParams.put("isService", isService.toString());
         }
         if (isAvailable != null ) {
@@ -371,27 +352,6 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-
-    public void fetchLocations(){
-        Call<ArrayList<LocationDTO>> call = ClientUtils.locationService.getLocations();
-        call.enqueue(new Callback<ArrayList<LocationDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<LocationDTO>> call, Response<ArrayList<LocationDTO>> response) {
-                if(response.isSuccessful()){
-                    locations.postValue(response.body());
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to fetch locations. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<LocationDTO>> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
-
     public void fetchCities(){
         Call<ArrayList<String>> call = ClientUtils.locationService.getCities();
         call.enqueue(new Callback<ArrayList<String>>() {
@@ -432,12 +392,13 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void fetchEventTypes(){
-        Call<ArrayList<SimpleEventTypeDTO>> call = ClientUtils.eventTypeService.getEventTypes();
-        call.enqueue(new Callback<ArrayList<SimpleEventTypeDTO>>() {
+        Call<EventTypeManagementDTO> call = ClientUtils.eventTypeService.getEventTypes();
+        call.enqueue(new Callback<EventTypeManagementDTO>() {
             @Override
-            public void onResponse(Call<ArrayList<SimpleEventTypeDTO>> call, Response<ArrayList<SimpleEventTypeDTO>> response) {
+            public void onResponse(Call<EventTypeManagementDTO> call, Response<EventTypeManagementDTO> response) {
                 if(response.isSuccessful()){
-                    eventTypes.postValue(response.body());
+                    EventTypeManagementDTO res = response.body();
+                    eventTypes.postValue((ArrayList<SimpleEventTypeDTO>) res.getEventTypes());
                     errorMessage.postValue(null);
                 }else{
                     errorMessage.postValue("Failed to fetch event types. Code: "+ response.code());
@@ -445,29 +406,11 @@ public class HomeViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<SimpleEventTypeDTO>> call, Throwable t) {
+            public void onFailure(Call<EventTypeManagementDTO> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
     }
 
 
-    public void setAvailability(Boolean availability) {
-        this.availability.postValue(availability);
-    }
-
-    public void setMaxPrice(Double maxPrice) {
-        this.maxPrice.postValue(maxPrice);
-    }
-
-    public void setMinPrice(Double minPrice) {
-        this.minPrice.postValue(minPrice);
-    }
-
-    public void setIsProduct(Boolean isProductSelected) {
-        this.product.postValue(isProductSelected);
-    }
-    public void setIsService(Boolean isServiceSelected) {
-        this.product.postValue(isServiceSelected);
-    }
 }

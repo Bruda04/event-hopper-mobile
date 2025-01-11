@@ -66,18 +66,6 @@ public class HomeSolutionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_solutions, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-
-        viewModel.getIsProduct().observe(getViewLifecycleOwner(), isProduct -> fetchProducts());
-        viewModel.getIsService().observe(getViewLifecycleOwner(), isService -> fetchProducts());
-        viewModel.getSearchTextProducts().observe(getViewLifecycleOwner(), query -> fetchProducts());
-        viewModel.getSelectedCategory().observe(getViewLifecycleOwner(), category -> fetchProducts());
-        viewModel.getSelectedEventTypesProducts().observe(getViewLifecycleOwner(), eventTypes -> fetchProducts());
-        viewModel.getAvailability().observe(getViewLifecycleOwner(), availability -> fetchProducts());
-        viewModel.getMaxPrice().observe(getViewLifecycleOwner(), minPrice -> fetchProducts());
-        viewModel.getMinPrice().observe(getViewLifecycleOwner(), maxPrice -> fetchProducts());
-        viewModel.getSortFieldProducts().observe(getViewLifecycleOwner(), sort -> fetchProducts());
-
-
         this.searchView = view.findViewById(R.id.search_view_solutions);
         this.searchBar = view.findViewById(R.id.search_bar_solutions);
         this.searchButton = view.findViewById(R.id.search_button_solutions);
@@ -89,7 +77,7 @@ public class HomeSolutionsFragment extends Fragment {
         this.previousPage = view.findViewById(R.id.back_arrow_button_solutions);
         this.pager = view.findViewById(R.id.pager_solutions);
 
-        viewModel.fetchAllSolutions();
+        //viewModel.fetchAllSolutions();
         UUID usersId = UUID.fromString(UserService.getJwtClaim(
                 UserService.getJwtToken(),"id"
         ));
@@ -102,6 +90,8 @@ public class HomeSolutionsFragment extends Fragment {
                 this.setTop(topProducts);
             }
         });
+
+        this.fetchProducts();
 
         viewModel.getProductsPage().observe(getViewLifecycleOwner(), pagedResponse -> {
             if (pagedResponse != null && pagedResponse.getContent() != null) {
@@ -169,21 +159,14 @@ public class HomeSolutionsFragment extends Fragment {
 
     void setPager(){
 
-        Log.i("totalCount" , String.valueOf(totalCount));
-
-        if (totalCount == 0){
+        if(totalPages == 0){
             lowerNumber = 0;
         }else{
-            lowerNumber = currentPage*10 + 1;
+            lowerNumber = currentPage+1;
         }
+        higherNumber = totalPages;
 
-
-        if(currentPage < totalPages-1){
-            higherNumber = currentPage*10 + 10;
-        }else{
-            higherNumber = totalCount;
-        }
-        String pagerText = lowerNumber + "-" + higherNumber;
+        String pagerText = lowerNumber + "/" + higherNumber;
         pager.setText(pagerText);
 
 

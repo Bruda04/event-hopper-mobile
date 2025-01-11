@@ -43,25 +43,32 @@
             android:text="@string/services"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginTop="10dp"
-        android:id="@+id/event_types_menu"
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/event_types_menu_solutions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/choose_eventtype">
+        android:layout_marginTop="8dp"
+        app:singleLine="true"
+        app:chipSpacing="8dp" />
 
-        <AutoCompleteTextView
-            android:id="@+id/event_types_autocomplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:focusable="false"
-            android:textAppearance="@style/WhiteRegularText"
-            android:background="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:id="@+id/event_types_menu_solutions"-->
+<!--        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/choose_eventtype">-->
+
+<!--        <AutoCompleteTextView-->
+<!--            android:id="@+id/event_types_autocomplete"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="none"-->
+<!--            android:focusable="false"-->
+<!--            android:textAppearance="@style/WhiteRegularText"-->
+<!--            android:background="@color/md_theme_secondaryContainer"-->
+<!--            app:boxStrokeColor="@color/white" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -115,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:valueFrom="0.0"
-        android:valueTo="600.0"
+        android:valueTo="10000.0"
         android:layout_marginHorizontal="8dp"
         app:values="@array/solution_filter_price"
         />
@@ -157,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset"
-            app:layout_constraintEnd_toStartOf="@id/apply_filters_button"
+            app:layout_constraintEnd_toStartOf="@id/apply_filters_button_solutions"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
@@ -165,7 +172,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/DarkButton"
-            android:id="@+id/apply_filters_button"
+            android:id="@+id/apply_filters_button_solutions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apply"
