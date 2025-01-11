@@ -203,4 +203,18 @@ public class ServiceEditViewModel extends ViewModel {
         }
 
     }
+
+    public void reset() {
+        serviceId = null;
+        serviceUpdateDTO = new UpdateServiceDTO();
+        serviceCategoryId = null;
+        uploadedImages.clear();
+        oldImages.clear();
+        errorMessage.postValue(null);
+        editedLiveData.postValue(false);
+    }
+
+    public void setEdited(boolean b) {
+        editedLiveData.postValue(b);
+    }
 }

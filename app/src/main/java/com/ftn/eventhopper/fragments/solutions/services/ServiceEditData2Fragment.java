@@ -72,6 +72,7 @@ public class ServiceEditData2Fragment extends Fragment {
 
         viewModel.getEdited().observe(getViewLifecycleOwner(), edited -> {
             if (edited) {
+                viewModel.setEdited(false);
                 navController.navigate(R.id.action_to_pup_services);
             }
         });

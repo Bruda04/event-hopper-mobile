@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.solutions.services;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -44,12 +45,26 @@ public class ServiceCreationData1Fragment extends Fragment {
     private Button nextButton;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                viewModel.reset();
+                navController.popBackStack(R.id.pup_services, false);
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_creation_data1, container, false);
 
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(requireActivity(),
                 new ViewModelProvider.NewInstanceFactory()).get(ServiceCreationViewModel.class);
+
+
 
 
         nextButton = view.findViewById(R.id.next_button);

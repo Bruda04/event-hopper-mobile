@@ -131,7 +131,6 @@ public class ServiceCreationViewModel extends ViewModel {
                 if(response.isSuccessful()){
                     errorMessage.postValue(null);
                     createdLiveData.postValue(true);
-
                 }else{
                     errorMessage.postValue("Failed to create service. Code: "+ response.code());
                 }
@@ -176,4 +175,16 @@ public class ServiceCreationViewModel extends ViewModel {
         isCategorySuggested = categorySuggested;
     }
 
+    public void setCreated(boolean b) {
+        createdLiveData.postValue(b);
+    }
+
+    public void reset() {
+        service = new CreateServiceDTO();
+        uploadedImages.clear();
+        isCategorySuggested = false;
+        suggestedCategoryName = "";
+        setCreated(false);
+        errorMessage.postValue(null);
+    }
 }

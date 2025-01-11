@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -46,6 +47,18 @@ public class ServiceCreationData2Fragment extends Fragment {
 
 
     private TextInputLayout reservationWindowInput, durationInput, cancellationWindowInput, priceInput, discountInput;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                viewModel.reset();
+                navController.popBackStack(R.id.pup_services, false);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +105,8 @@ public class ServiceCreationData2Fragment extends Fragment {
 
         viewModel.getCreated().observe(getViewLifecycleOwner(), created -> {
             if (created) {
-                navController.navigate(R.id.action_to_pup_services);
+                viewModel.setCreated(false);
+                navController.navigate(R.id.back_to_pup_services);
             }
         });
 

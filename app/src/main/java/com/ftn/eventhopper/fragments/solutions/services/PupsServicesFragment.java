@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +48,9 @@ public class PupsServicesFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
-
+    public PupsServicesFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,10 +78,12 @@ public class PupsServicesFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             statusMessage.setText(R.string.loading_services);
             statusMessage.setVisibility(View.VISIBLE);
+            currentPage = 0;
             viewModel.fetchAllServicesPage(currentPage, pageSize);
             swipeRefreshLayout.setRefreshing(false);
         });
 
+        currentPage = 0;
         viewModel.fetchAllServicesPage(currentPage, pageSize);
 
         viewModel.getServicesPage().observe(getViewLifecycleOwner(), servicePage -> {
@@ -104,13 +109,24 @@ public class PupsServicesFragment extends Fragment {
             }
         });
 
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                BottomSheetPupServicesFilterSort bottomSheet = new BottomSheetPupServicesFilterSort(viewModel);
+                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
+            }
+        });
+
         viewModel.getFilters().observe(getViewLifecycleOwner(), filters -> {
             currentPage = 0;
             viewModel.fetchAllServicesPage(currentPage, pageSize);
         });
 
         createServiceButton.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_to_create_service1);
+            currentPage = 0;
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_to_create_service1);
         });
 
         searchButton.setOnClickListener(v -> {
@@ -136,34 +152,31 @@ public class PupsServicesFragment extends Fragment {
         if (servicePage.getTotalPages() == 0) {
             pager.setVisibility(View.GONE);
         }
-        currentPage = (int) (servicePage.getTotalElements() / pageSize);
 
         pager.setText(String.format("%d/%d", currentPage + 1, servicePage.getTotalPages()));
 
         if (currentPage + 1 < servicePage.getTotalPages()) {
+            nextPageButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
             nextPageButton.setOnClickListener(v -> {
-                    viewModel.fetchAllServicesPage(++currentPage, pageSize);
+                viewModel.fetchAllServicesPage(++currentPage , pageSize);
+
             });
+            nextPageButton.setEnabled(true);
         } else {
+            nextPageButton.setEnabled(false);
             nextPageButton.setBackgroundColor(getResources().getColor(R.color.grey));
         }
 
         if (currentPage > 0) {
+            previousPageButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
             previousPageButton.setOnClickListener(v -> {
-                    viewModel.fetchAllServicesPage(--currentPage, pageSize);
+                viewModel.fetchAllServicesPage(--currentPage, pageSize);
             });
+            previousPageButton.setEnabled(true);
         } else {
+            previousPageButton.setEnabled(false);
             previousPageButton.setBackgroundColor(getResources().getColor(R.color.grey));
         }
-
-        filterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                BottomSheetPupServicesFilterSort bottomSheet = new BottomSheetPupServicesFilterSort(viewModel);
-                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
-            }
-        });
 
     }
 
