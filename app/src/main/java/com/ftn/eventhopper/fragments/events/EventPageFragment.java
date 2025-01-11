@@ -99,4 +99,6 @@ public class EventPageFragment extends Fragment {
 
         return isValid;
     }
+
+
 }
