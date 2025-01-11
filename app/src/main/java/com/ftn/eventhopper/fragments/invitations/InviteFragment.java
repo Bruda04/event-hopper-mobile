@@ -3,6 +3,7 @@ package com.ftn.eventhopper.fragments.invitations;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
 import com.ftn.eventhopper.fragments.invitations.viewmodels.InvitationsViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -36,6 +38,7 @@ public class InviteFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_invite, container, false);
+        viewModel = new ViewModelProvider(requireActivity()).get(InvitationsViewModel.class);
 
         emailField = view.findViewById(R.id.invite_email);
         emailsList = view.findViewById(R.id.emails_list);
@@ -60,6 +63,7 @@ public class InviteFragment extends Fragment {
                 Log.i("Invitation",email);
             }
             viewModel.sendInvitations(emails);
+            getParentFragmentManager().popBackStack();
         });
 
 
