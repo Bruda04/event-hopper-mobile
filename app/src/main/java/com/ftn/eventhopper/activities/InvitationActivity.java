@@ -91,7 +91,7 @@ public class InvitationActivity extends AppCompatActivity {
         });
     }
 
-    public void redirect(){g
+    public void redirect(){
         if(accountDTO == null){
             //redirektuj na registraciju
         }
