@@ -119,7 +119,8 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
             Log.i("event type","upao");
             eventTypeId = eventType.getId();
         }
-        viewModel.fetchAllEventsPage(selectedCity,eventTypeId, selectedDate, searchText, selectedSortField, currentPage, pageSize);
+        String sortDirection = viewModel.getSortDirectionEvents().getValue();
+        viewModel.fetchAllEventsPage(selectedCity,eventTypeId, selectedDate, searchText, selectedSortField,sortDirection ,currentPage, pageSize);
     }
 
 
@@ -198,6 +199,9 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         this.selectedCity = "";
         this.eventType = null;
         this.selectedDate = "";
+
+        viewModel.setSortFieldEvents("");
+    //        viewModel.setSortDirectionEvents("");
 
         sortRadioGroup.clearCheck();
         cityAutoComplete.setText("");

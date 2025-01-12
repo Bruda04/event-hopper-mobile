@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.github.islamkhsh.CardSliderAdapter;
 
@@ -54,24 +55,19 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
     public void bindVH(EventViewHolder holder, int position) {
         SimpleEventDTO event = events.get(position);
 
-        // Bind event data to views within holder
         ImageView imageView = holder.itemView.findViewById(R.id.card_image);
         TextView titleView = holder.itemView.findViewById(R.id.card_title);
         TextView secondaryView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
 
-        // Assuming your `Event` class has methods to retrieve this data
-        // Set image, title, and description, and secondary text
-
         titleView.setText(event.getName());
         secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
         imageView.setImageDrawable(Drawable.createFromPath(events.get(position).getPicture()));
 
-        String imageUrl = events.get(position).getPicture();
         Glide.with(holder.imageView.getContext())
-                .load(imageUrl)
-//                .placeholder(R.drawable.placeholder_image) // Prikaz slike dok se učitava
-//                .error(R.drawable.error_image) // Prikaz slike u slučaju greške
+                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, events.get(position).getPicture()))
+                .placeholder(R.drawable.baseline_image_placeholder_24) // Prikaz slike dok se učitava
+                .error(R.drawable.baseline_image_not_supported_24) // Prikaz slike u slučaju greške
                 .into(holder.imageView);
         descriptionView.setText(event.getDescription());
     }
