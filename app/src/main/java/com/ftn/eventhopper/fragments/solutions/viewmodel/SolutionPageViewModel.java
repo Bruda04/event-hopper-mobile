@@ -10,6 +10,8 @@ import androidx.navigation.NavController;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
+import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
+import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import java.util.UUID;
@@ -101,5 +103,60 @@ public class SolutionPageViewModel extends ViewModel {
             navController.navigate(R.id.action_to_provider_page, bundle);
         }
 
+    }
+
+    public void makeReview(Integer rating, String comment) {
+        if (rating != null) {
+            rateSolution(rating);
+        }
+        if (comment != null) {
+            leaveComment(comment);
+        }
+    }
+
+    private void leaveComment(String comment) {
+        CreateCommentDTO createCommentDTO = new CreateCommentDTO();
+        createCommentDTO.setProductId(getSolutionDetails().getValue().getId());
+        createCommentDTO.setContent(comment);
+
+        Call<Void> call = ClientUtils.productService.commentProduct(createCommentDTO);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchSolutionDetailsById(getSolutionDetails().getValue().getId());
+                } else {
+                    errorMessage.postValue("Failed to comment product. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
+    private void rateSolution(Integer rating) {
+        CreateProductRatingDTO createProductRatingDTO = new CreateProductRatingDTO();
+        createProductRatingDTO.setProductId(getSolutionDetails().getValue().getId());
+        createProductRatingDTO.setValue(rating);
+
+        Call<Void> call = ClientUtils.productService.rateProduct(createProductRatingDTO);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    fetchSolutionDetailsById(getSolutionDetails().getValue().getId());
+                } else {
+                    errorMessage.postValue("Failed to rate product. Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
     }
 }
