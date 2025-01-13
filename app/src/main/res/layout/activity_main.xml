@@ -11,9 +11,8 @@
         android:id="@+id/nav_main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        app:navGraph="@navigation/nav_auth" />
+    />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
