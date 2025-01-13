@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
+import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
@@ -35,10 +36,24 @@ public class MainActivity extends AppCompatActivity {
             fragment = NavHostFragment.create(R.navigation.nav_auth);
         }
 
-        Log.d("TOKEN HERE", String.valueOf(UserService.isTokenValid()));
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.nav_main_fragment, fragment)
                 .commit();
+    }
+
+    public void navigateToAuthGraph() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_main_fragment);
+
+
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+
+            getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_main_fragment, NavHostFragment.create(R.navigation.nav_auth))
+                .commit();
+        }
     }
 }

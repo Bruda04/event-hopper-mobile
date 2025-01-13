@@ -3,6 +3,7 @@ package com.ftn.eventhopper.fragments.profile;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -11,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.activities.MainActivity;
+import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
+import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +22,8 @@ import com.ftn.eventhopper.R;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+
+    private ProfileViewModel viewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -36,6 +42,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
 
         NavController navController = NavHostFragment.findNavController(this);
@@ -54,6 +61,11 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemMyPrices).setOnClickListener(v -> {
             // Navigate using the action defined in the NavGraph
             navController.navigate(R.id.action_to_manage_prices);
+        });
+
+        view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
+            viewModel.logout();
+            ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
         return view;
     }
