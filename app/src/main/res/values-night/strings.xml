@@ -79,6 +79,8 @@
     <string name="choose_availability">Choose availability</string>
     <string name="loading_prices">Loading prices...</string>
     <string name="clear">Clear</string>
+    <string name="loading_services">Loading services...</string>
+    <string name="images_are_required">Images are required</string>
     <string name="rating">Rating</string>
     <string name="comment">Comment</string>
 </resources>

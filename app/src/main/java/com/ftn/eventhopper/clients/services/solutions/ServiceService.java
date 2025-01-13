@@ -2,6 +2,7 @@ package com.ftn.eventhopper.clients.services.solutions;
 
 import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.UpdateServiceDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 import java.util.Map;
@@ -13,6 +14,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
@@ -39,4 +41,11 @@ public interface ServiceService {
     })
     @POST("services")
     Call<Void> create(@Body CreateServiceDTO service);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("services/{id}")
+    Call<Void> update(@Path("id") UUID id, @Body UpdateServiceDTO service);
 }

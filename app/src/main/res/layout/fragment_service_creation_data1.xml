@@ -56,8 +56,7 @@
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                app:simpleItems="@array/category_dummy"/>
+                android:inputType="none"/>
             />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +67,14 @@
             android:layout_marginTop="8dp"
             app:singleLine="true"
             app:chipSpacing="8dp" />
+
+        <TextView
+            android:id="@+id/eventTypesError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_error"
+            android:visibility="gone"
+            android:textSize="12sp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/suggest_new_category_switch"
@@ -81,13 +88,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/suggested_categroy_name"
-            android:enabled="false">
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:visibility="gone" />
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 

@@ -74,6 +74,23 @@
         android:layout_marginHorizontal="8dp"
         app:values="@array/initial_pup_service_filter_price_slider_values" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/menu_sort_by"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Sort by">
+
+        <AutoCompleteTextView
+            android:id="@+id/sort_by_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            app:simpleItems="@array/sort_pups_services_by"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Add Clear and Apply Buttons in Horizontal Layout -->
     <LinearLayout
         android:layout_width="match_parent"

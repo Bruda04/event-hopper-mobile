@@ -14,7 +14,7 @@ public class UpdateProductDTO {
     private String name;
     private String description;
     private Collection<String> pictures;
-    private boolean isAvailable;
-    private boolean isVisible;
+    private boolean available;
+    private boolean visible;
     private Collection<UUID> eventTypesIds;
 }

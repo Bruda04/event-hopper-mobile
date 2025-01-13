@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.MultiAutoCompleteTextView;
 
 
 import com.ftn.eventhopper.R;
@@ -28,6 +27,25 @@ import java.util.stream.Collectors;
 
 public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment {
 
+    private Map<String, String> SortByTitleToValue() {
+        return Map.of("Name", "name",
+                "Description", "description",
+                "Base Price", "basePrice",
+                "Discount", "discount",
+                "Final Price", "finalPrice"
+        );
+    }
+
+    private Map<String, String> SortByValueToTitle() {
+        return Map.of("name", "Name",
+                "description", "Description",
+                "basePrice", "Base Price",
+                "discount", "Discount",
+                "finalPrice", "Final Price"
+        );
+    }
+
+    private TextInputLayout sortBy;
     private PupsServicesViewModel viewModel;
     private TextInputLayout availability;
     private TextInputLayout category;
@@ -49,6 +67,7 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
         priceRange = view.findViewById(R.id.price_range_slider);
         category = view.findViewById(R.id.menu_category);
         eventTypes = view.findViewById(R.id.selected_event_types);
+        sortBy = view.findViewById(R.id.menu_sort_by);
 
         viewModel.fetchCategories();
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
@@ -89,7 +108,6 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
             @Override
             public void onClick(View v) {
                 clearFilters();
-                setFilters();
                 dismiss();
             }
         });
@@ -104,13 +122,18 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
             if (filters.containsKey("isAvailable"))
                 availability.getEditText().setText(filters.get("isAvailable").equals("true") ? "Available" : "Not Available");
 
+            float min = priceRange.getValueFrom();
+            float max = priceRange.getValueTo();
+
             if (filters.containsKey("minPrice")) {
-                priceRange.setValues(Float.parseFloat(filters.get("minPrice")), Float.parseFloat(filters.get("maxPrice")));
+                min = Float.parseFloat(filters.get("minPrice"));
             }
 
             if (filters.containsKey("maxPrice")) {
-                priceRange.setValues(Float.parseFloat(filters.get("minPrice")), Float.parseFloat(filters.get("maxPrice")));
+                max = Float.parseFloat(filters.get("maxPrice"));
             }
+            priceRange.setValues(min, max);
+
 
             if (filters.containsKey("categoryId")) {
                 CategoryDTO selectedCategory = viewModel.getCategories().getValue().stream().filter(c -> c.getId().toString().equals(filters.get("categoryId"))).findFirst().orElse(null);
@@ -146,6 +169,10 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
                         }
                     }
                 }
+            }
+
+            if (filters.containsKey("sortField")) {
+                ((AutoCompleteTextView) sortBy.getEditText()).setText(this.SortByValueToTitle().get(filters.get("sortField")), false);
             }
 
         }
@@ -195,7 +222,9 @@ public class BottomSheetPupServicesFilterSort extends BottomSheetDialogFragment 
 
         }
 
-
+        if (!sortBy.getEditText().getText().toString().isEmpty()) {
+            filters.put("sortField", this.SortByTitleToValue().get(sortBy.getEditText().getText().toString()));
+        }
 
         viewModel.setFilters(filters);
     }

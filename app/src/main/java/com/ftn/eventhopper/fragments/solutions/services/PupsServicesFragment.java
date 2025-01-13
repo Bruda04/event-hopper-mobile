@@ -11,10 +11,12 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.PupServicesAdapter;
@@ -39,14 +41,16 @@ public class PupsServicesFragment extends Fragment {
     private Button searchButton;
     private SearchView searchView;
     private SearchBar searchBar;
-    private String searchText = "";
     private Button nextPageButton;
     private Button previousPageButton;
     private TextView pager;
     private FloatingActionButton createServiceButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
-
+    public PupsServicesFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +68,22 @@ public class PupsServicesFragment extends Fragment {
         pager = view.findViewById(R.id.pager);
         filterButton = view.findViewById(R.id.filterButton);
         createServiceButton = view.findViewById(R.id.floating_add_button);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
+        searchBar = view.findViewById(R.id.search_bar);
+        searchView = view.findViewById(R.id.search_view);
+        searchButton = view.findViewById(R.id.search_button);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            statusMessage.setText(R.string.loading_services);
+            statusMessage.setVisibility(View.VISIBLE);
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        currentPage = 0;
         viewModel.fetchAllServicesPage(currentPage, pageSize);
 
         viewModel.getServicesPage().observe(getViewLifecycleOwner(), servicePage -> {
@@ -90,14 +109,34 @@ public class PupsServicesFragment extends Fragment {
             }
         });
 
-        viewModel.getFilters().observe(getViewLifecycleOwner(), filters -> {
-            if (filters != null) {
-                viewModel.fetchAllServicesPage(currentPage, pageSize);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                BottomSheetPupServicesFilterSort bottomSheet = new BottomSheetPupServicesFilterSort(viewModel);
+                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
             }
         });
 
+        viewModel.getFilters().observe(getViewLifecycleOwner(), filters -> {
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+        });
+
         createServiceButton.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_to_create_service1);
+            currentPage = 0;
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_to_create_service1);
+        });
+
+        searchButton.setOnClickListener(v -> {
+            viewModel.setSearchText(searchView.getText().toString().trim());
+            searchBar.setText(viewModel.getSearchText());
+            Log.d("PupsServicesFragment", "Search text set to: " + viewModel.getSearchText());
+            searchView.hide();
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+
         });
 
         return view;
@@ -113,39 +152,37 @@ public class PupsServicesFragment extends Fragment {
         if (servicePage.getTotalPages() == 0) {
             pager.setVisibility(View.GONE);
         }
-        currentPage = (int) (servicePage.getTotalElements() / pageSize);
 
         pager.setText(String.format("%d/%d", currentPage + 1, servicePage.getTotalPages()));
 
         if (currentPage + 1 < servicePage.getTotalPages()) {
+            nextPageButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
             nextPageButton.setOnClickListener(v -> {
-                    viewModel.fetchAllServicesPage(++currentPage, pageSize);
+                viewModel.fetchAllServicesPage(++currentPage , pageSize);
+
             });
+            nextPageButton.setEnabled(true);
         } else {
+            nextPageButton.setEnabled(false);
             nextPageButton.setBackgroundColor(getResources().getColor(R.color.grey));
         }
 
         if (currentPage > 0) {
+            previousPageButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
             previousPageButton.setOnClickListener(v -> {
-                    viewModel.fetchAllServicesPage(--currentPage, pageSize);
+                viewModel.fetchAllServicesPage(--currentPage, pageSize);
             });
+            previousPageButton.setEnabled(true);
         } else {
+            previousPageButton.setEnabled(false);
             previousPageButton.setBackgroundColor(getResources().getColor(R.color.grey));
         }
-
-        filterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                BottomSheetPupServicesFilterSort bottomSheet = new BottomSheetPupServicesFilterSort(viewModel);
-                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
-            }
-        });
 
     }
 
     public void deleteService(UUID id) {
         viewModel.deleteService(id);
         currentPage = 0;
+        viewModel.fetchAllServicesPage(currentPage, pageSize);
     }
 }
