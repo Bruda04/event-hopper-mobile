@@ -30,4 +30,11 @@
         <item>Decoration</item>
         <item>Music</item>
     </string-array>
+    <string-array name="sort_pups_services_by" >
+        <item>Name</item>
+        <item>Description</item>
+        <item>Base Price</item>
+        <item>Discount</item>
+        <item>Final Price</item>
+    </string-array>
 </resources>

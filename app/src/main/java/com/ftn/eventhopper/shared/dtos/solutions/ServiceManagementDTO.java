@@ -23,13 +23,13 @@ public class ServiceManagementDTO {
     private SimplePriceDTO price;
     private ProductStatus status;
     private Collection<String> pictures;
-    private boolean isVisible;
-    private boolean isAvailable;
+    private boolean visible;
+    private boolean available;
     private SimpleCategoryDTO category;
     private Collection<SimpleEventTypeDTO> eventTypes;
 
     private int durationMinutes;
     private int reservationWindowDays;
     private int cancellationWindowDays;
-    private boolean isAutoAccept;
+    private boolean autoAccept;
 }
