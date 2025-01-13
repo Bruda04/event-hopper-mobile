@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "setContentView called");
         // Correctly referencing the FragmentContainerView ID
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-            .findFragmentById(R.id.nav_main_fragment);
-
-        NavController navController = navHostFragment.getNavController();
         Fragment fragment;
         if(UserService.isTokenValid()){
             fragment = new HostFragment();
@@ -43,17 +39,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigateToAuthGraph() {
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_main_fragment);
-
-
-        if (navHostFragment != null) {
-            NavController navController = navHostFragment.getNavController();
-
-            getSupportFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.nav_main_fragment, NavHostFragment.create(R.navigation.nav_auth))
                 .commit();
-        }
     }
 }
