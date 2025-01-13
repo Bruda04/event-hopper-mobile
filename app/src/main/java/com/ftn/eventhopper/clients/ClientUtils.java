@@ -6,6 +6,10 @@ import android.util.Log;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
@@ -34,6 +38,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
+import ua.naiksoftware.stomp.dto.StompHeader;
 
 public class ClientUtils {
 
@@ -44,7 +49,9 @@ public class ClientUtils {
     private static final StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_PATH);
 
     public static void connectWebSocket() {
-        stompClient.connect();
+        ArrayList<StompHeader> headers = new ArrayList<>();
+        headers.add(new StompHeader("Authorization", String.format("Bearer %s", UserService.getJwtToken())));
+        stompClient.connect(headers);
         Disposable d = stompClient.lifecycle().subscribe(
                 lifecycleEvent -> {
                     switch (lifecycleEvent.getType()) {
@@ -52,11 +59,9 @@ public class ClientUtils {
                             Log.d("WebSocket", "Stomp connection opened");
                             subscribeToDefaultTopics();
                             break;
-
                         case ERROR:
                             Log.e("WebSocket", "Error", lifecycleEvent.getException());
                             break;
-
                         case CLOSED:
                             Log.d("WebSocket", "Stomp connection closed");
                             break;
@@ -91,15 +96,13 @@ public class ClientUtils {
     }
 
     private static void subscribeToDefaultTopics() {
-        String accountId = UserService.getJwtClaim(UserService.getJwtToken(),"id");
-
-        subscribeToWebSocketTopic(String.format("/notifications/%s", accountId), new IChannelHandler() {
+        subscribeToWebSocketTopic("/user/topic/notifications", new IChannelHandler() {
             @Override
             public void onMessage(String message) {
                 Log.d("WebSocket","Received notification: " + message);
             }
         });
-        subscribeToWebSocketTopic(String.format("/messages/%s", accountId), new IChannelHandler() {
+        subscribeToWebSocketTopic("/user/topic/chat", new IChannelHandler() {
             @Override
             public void onMessage(String message) {
                 Log.d("WebSocket","Received message: " + message);
