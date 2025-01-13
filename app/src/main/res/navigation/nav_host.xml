@@ -35,11 +35,18 @@
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
-        android:name="com.ftn.eventhopper.fragments.Calendar"
+        android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
-        tools:layout="@layout/fragment_2" />
+        tools:layout="@layout/fragment_calendar" />
 
-    <!-- Home Fragment -->
+    <!-- Favorites Fragment -->
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <!--  -->
     <fragment
         android:id="@+id/adminCatSugManagement"
         android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
@@ -49,7 +56,7 @@
     <!-- Profile Fragment -->
     <fragment
         android:id="@+id/profile"
-        android:name="com.ftn.eventhopper.fragments.ProfileFragment"
+        android:name="com.ftn.eventhopper.fragments.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
 
@@ -64,7 +71,21 @@
         <action
             android:id="@+id/action_to_manage_prices"
             app:destination="@id/manage_prices" />
+
+        <action
+            android:id="@+id/action_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/profile"
+            app:popUpToInclusive="true"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.ftn.eventhopper.fragments.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+    </fragment>
+
 
     <fragment
         android:id="@+id/pup_services"
@@ -73,20 +94,14 @@
         tools:layout="@layout/fragment_pups_services" >
         <action
             android:id="@+id/action_to_create_service1"
-            app:destination="@id/service_creation1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_creation1"/>
         <action
-            android:id="@+id/action_to_edit_service"
-            app:destination="@id/service_creation1"
-            app:popUpTo="@id/pup_services"/>
-        <action
-            android:id="@+id/action_to_service_edit_fragment"
+            android:id="@+id/action_to_edit_service1"
             app:destination="@id/service_edit1"
             app:popUpTo="@id/pup_services"/>
-
         <action
             android:id="@+id/action_to_solution_page_fragment"
-            app:destination="@+id/solution_page"
+            app:destination="@id/solution_page"
             app:popUpTo="@id/pup_services"/>
     </fragment>
 
@@ -98,8 +113,7 @@
         tools:layout="@layout/fragment_service_creation_data1" >
         <action
             android:id="@+id/action_to_create_service2"
-            app:destination="@id/service_creation2"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_creation2"/>
     </fragment>
 
     <fragment
@@ -108,13 +122,11 @@
         android:label="Service creation second window"
         tools:layout="@layout/fragment_service_creation_data2" >
         <action
-            android:id="@+id/action_to_pup_services"
-            app:destination="@id/pup_services"
-            app:popUpTo="@id/pup_services"/>
+            android:id="@+id/back_to_pup_services"
+            app:destination="@id/pup_services"/>
         <action
             android:id="@+id/back_to_service_creation1"
-            app:destination="@id/service_creation1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_creation1"/>
     </fragment>
 
 
@@ -126,7 +138,7 @@
         <action
             android:id="@+id/action_to_edit_service2"
             app:destination="@id/service_edit2"
-            app:popUpTo="@id/service_edit1"/>
+            app:popUpTo="@id/pup_services"/>
     </fragment>
 
 
@@ -143,7 +155,7 @@
         <action
             android:id="@+id/back_to_edit_service_1"
             app:destination="@id/service_edit1"
-            app:popUpTo="@id/service_edit2"/>
+            app:popUpTo="@id/pup_services"/>
     </fragment>
 
     <fragment
@@ -163,20 +175,20 @@
     </fragment>
 
     <fragment
-        android:id="@id/solution_page"
+        android:id="@+id/solution_page"
         android:name="com.ftn.eventhopper.fragments.solutions.SolutionPageFragment"
         android:label="Solution Page"
         tools:layout="@layout/fragment_solution_page">
 
         <action
             android:id="@+id/action_to_provider_page"
-            app:destination="@+id/service_provider_page"
+            app:destination="@id/service_provider_page"
             app:popUpTo="@id/solution_page"/>
 
     </fragment>
 
     <fragment
-        android:id="@id/service_provider_page"
+        android:id="@+id/service_provider_page"
         android:name="com.ftn.eventhopper.fragments.serviceProviderPage.ServiceProviderPageFragment"
         android:label="Service Provider Page"
         tools:layout="@layout/fragment_service_provider_page">

@@ -152,7 +152,9 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
                 eventTypesIds.add(dto.getId());
             }
         }
-        viewModel.fetchAllSolutionsPage(isProductSelected,isServiceSelected,categoryId,eventTypesIds, minPrice, maxPrice, selectedAvailability, searchText, selectedSortField, currentPage, pageSize);
+        String sortDirection = viewModel.getSortDirectionProducts().getValue();
+
+        viewModel.fetchAllSolutionsPage(isProductSelected,isServiceSelected,categoryId,eventTypesIds, minPrice, maxPrice, selectedAvailability, searchText, selectedSortField,sortDirection, currentPage, pageSize);
     }
 
     private void setSelectedEventTypes() {
@@ -254,6 +256,7 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
         this.selectedCategory = null;
         this.selectedEventTypes = null;
         this.selectedAvailability = null;
+        viewModel.setSortFieldProducts("");
         if (priceSlider != null) {
             priceSlider.setValues(priceSlider.getValueFrom(), priceSlider.getValueTo());
         }
@@ -320,8 +323,6 @@ public class SolutionsFilterSort extends BottomSheetDialogFragment {
             sortRadioGroup.check(R.id.sort_solutions_by_price);
         } else if ("name".equals(viewModel.getSortFieldProducts().getValue())) {
             sortRadioGroup.check(R.id.sort_solutions_by_name);
-        } else {
-            sortRadioGroup.clearCheck();
         }
     }
 

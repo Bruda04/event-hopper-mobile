@@ -37,8 +37,8 @@ public interface EventService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @GET("events/persons-top-5/{usersId}")
-    Call<ArrayList<SimpleEventDTO>> getTop5Events(@Path("usersId") UUID usersId);
+    @GET("events/persons-top-5")
+    Call<ArrayList<SimpleEventDTO>> getTop5Events();
 
 
 

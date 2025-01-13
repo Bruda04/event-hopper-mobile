@@ -1,7 +1,5 @@
 package com.ftn.eventhopper.activities;
 
-import static androidx.media.session.MediaButtonReceiver.handleIntent;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +7,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
@@ -17,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+
 import com.ftn.eventhopper.shared.dtos.invitations.InvitationDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 
@@ -25,6 +25,7 @@ import java.util.UUID;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.ftn.eventhopper.fragments.HostFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,16 +38,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
 
-
-    Log.d("MainActivity", "setContentView called");
+        Log.d("MainActivity", "setContentView called");
 
         // Correctly referencing the FragmentContainerView ID
+        handleIntent(getIntent());
+
+    }
+
+    public void navigateToAuthGraph() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_main_fragment);
 
-        NavController navController = navHostFragment.getNavController();
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
 
-        handleIntent(getIntent());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_main_fragment, NavHostFragment.create(R.navigation.nav_auth))
+                    .commit();
+        }
     }
 
     private void handleIntent(Intent intent) {
@@ -54,12 +64,24 @@ public class MainActivity extends AppCompatActivity {
         if (data != null) {
             String invitationId = data.getLastPathSegment();
             getInvitationById(UUID.fromString(invitationId));
+        }else{
+
+            Fragment fragment;
+            Log.i("token", String.valueOf(UserService.isTokenValid()));
+            Log.i("token data", String.valueOf(UserService.getJwtToken()));
+            if(UserService.isTokenValid()){
+
+                fragment = new HostFragment();
+            }else{
+                fragment = NavHostFragment.create(R.navigation.nav_auth);
+            }
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_main_fragment, fragment)
+                    .commit();
 
         }
-    }
-
-    protected void onStart(Bundle savedInstanceState){
-
     }
 
 
@@ -93,6 +115,18 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<SimpleAccountDTO> call, Response<SimpleAccountDTO> response) {
                 if(response.isSuccessful()){
                     accountDTO.setValue(response.body());
+                    Fragment fragment;
+                    if(UserService.isTokenValid()){
+
+                        fragment = new HostFragment();
+                    }else{
+                        fragment = NavHostFragment.create(R.navigation.nav_auth);
+                    }
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_main_fragment, fragment)
+                            .commit();
                     //redirect();
                 }else{
                     Log.i("redirect","register");
@@ -116,19 +150,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void redirect(){
-        if(accountDTO == null){
-            Log.i("redirect","registre");
-            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.quickRegistrationData1Fragment);
 
-            NavController navController = navHostFragment.getNavController();
-        }else{
-            Log.i("redirect","login");
-            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.loginFragment);
-
-            NavController navController = navHostFragment.getNavController();
-        }
-    }
 }

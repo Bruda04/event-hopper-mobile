@@ -11,5 +11,5 @@ public class CreateServiceDTO extends CreateProductDTO{
     private int durationMinutes;
     private int reservationWindowDays;
     private int cancellationWindowDays;
-    private boolean isAutoAccept;
+    private boolean autoAccept;
 }

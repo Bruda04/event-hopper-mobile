@@ -83,5 +83,6 @@
     <string name="new_user">New user</string>
     <string name="invite_people">Invite people</string>
     <string name="provide_emails">Please, enter email addresses to invite</string>
-
+    <string name="loading_services">Loading services...</string>
+    <string name="images_are_required">Images are required</string>
 </resources>

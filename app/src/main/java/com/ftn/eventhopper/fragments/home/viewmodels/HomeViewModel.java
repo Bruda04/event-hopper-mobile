@@ -48,6 +48,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<UUID> selectedEventTypeEvents = new MutableLiveData<>();
     private MutableLiveData<String> selectedDate = new MutableLiveData<>("");
     private MutableLiveData<String> sortFieldEvents = new MutableLiveData<>("");
+    private MutableLiveData<String> sortDirectionEvents = new MutableLiveData<>("");
 
     //product filters
 
@@ -59,6 +60,8 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<Double> minPrice = new MutableLiveData<>();
     private MutableLiveData<Double> maxPrice = new MutableLiveData<>();
     private MutableLiveData<String> sortFieldProducts = new MutableLiveData<>("");
+    private MutableLiveData<String> sortDirectionProducts = new MutableLiveData<>("");
+
     private MutableLiveData<Boolean> availability = new MutableLiveData<>();
     //event page properties:
 
@@ -124,6 +127,13 @@ public class HomeViewModel extends ViewModel {
     public LiveData<String> getSortFieldProducts() {
         return sortFieldProducts;
     }
+    public LiveData<String> getSortDirectionEvents() {
+        return sortDirectionEvents;
+    }
+
+    public LiveData<String> getSortDirectionProducts() {
+        return sortDirectionProducts;
+    }
     public LiveData<Double> getMinPrice(){return  minPrice;}
     public LiveData<Double> getMaxPrice(){return  maxPrice;}
     public LiveData<UUID> getSelectedCategory(){return selectedCategoryProducts;}
@@ -161,6 +171,13 @@ public class HomeViewModel extends ViewModel {
     public void setSortFieldProducts(String sortOption) {
         sortFieldProducts.setValue(sortOption);
     }
+    public void setSortDirectionProducts(String sortDirection) {
+        sortDirectionProducts.setValue(sortDirection);
+    }
+
+    public void setSortDirectionEvents(String sortDirection) {
+        sortDirectionEvents.setValue(sortDirection);
+    }
 
     public void setAvailability(Boolean availability) {
         this.availability.setValue(availability);
@@ -194,6 +211,7 @@ public class HomeViewModel extends ViewModel {
             String time,
             String searchContent,
             String sortField,
+            String sortDirection,
             int page,
             int size
     ){
@@ -216,6 +234,9 @@ public class HomeViewModel extends ViewModel {
         }
         if (sortField != null && !sortField.isEmpty()) {
             queryParams.put("sortField", sortField);
+        }
+        if (sortDirection != null && !sortDirection.isEmpty()) {
+            queryParams.put("sortDirection", sortDirection);
         }
 
         Call<PagedResponse<SimpleEventDTO>> call = ClientUtils.eventService.getEventsPage(
@@ -251,6 +272,7 @@ public class HomeViewModel extends ViewModel {
             Boolean isAvailable,
             String searchContent,
             String sortField,
+            String sortDirection,
             int page,
             int size
     ){
@@ -288,6 +310,9 @@ public class HomeViewModel extends ViewModel {
         if (sortField != null && !sortField.isEmpty()) {
             queryParams.put("sortField", sortField);
         }
+        if (sortDirection != null && !sortDirection.isEmpty()) {
+            queryParams.put("sortDirection", sortDirection);
+        }
 
         Call<PagedResponse<SimpleProductDTO>> call = ClientUtils.productService.getSolutionsPage(
             queryParams
@@ -311,8 +336,8 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-    public void fetchTopEvents(UUID id) {
-        Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events(id);
+    public void fetchTopEvents() {
+        Call<ArrayList<SimpleEventDTO>> call = ClientUtils.eventService.getTop5Events();
         call.enqueue(new Callback<ArrayList<SimpleEventDTO>>() {
 
             @Override
@@ -331,8 +356,9 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-    public void fetchTopSolutions(UUID id) {
-        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getTop5Solutions(id);
+    public void fetchTopSolutions() {
+
+        Call<ArrayList<SimpleProductDTO>> call = ClientUtils.productService.getTop5Solutions();
         call.enqueue(new Callback<ArrayList<SimpleProductDTO>>() {
 
             @Override

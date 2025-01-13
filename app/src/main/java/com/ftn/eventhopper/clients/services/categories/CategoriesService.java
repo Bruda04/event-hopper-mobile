@@ -3,6 +3,8 @@ package com.ftn.eventhopper.clients.services.categories;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CreateCategoryDTO;
+import com.ftn.eventhopper.shared.dtos.categories.CreateCategorySuggestionDTO;
+import com.ftn.eventhopper.shared.dtos.categories.CreatedCategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.categories.UpdateCategoryDTO;
 
 import java.util.ArrayList;
@@ -66,5 +68,19 @@ public interface CategoriesService {
     })
     @PUT("categories/suggestions/{id}/reject/{substituteCategoryId}")
     Call<Void> rejectCategory(@Path("id") UUID id, @Path("substituteCategoryId") UUID substituteCategoryId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("categories/suggestions")
+    Call<CreatedCategorySuggestionDTO> makeSuggestion(@Body CreateCategorySuggestionDTO categorySuggestion);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("categories/{id}")
+    Call<CategoryDTO> getCategory(@Path("id") UUID id);
 
 }

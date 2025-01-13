@@ -2,7 +2,7 @@
     <string name="pup">Product/Service provider</string>
     <string name="organizer">Organizer</string>
     <string name="upload_profile_picture">Upload profile picture (Optional)</string>
-    <string name="upload_pictures">Upload images (Optional)</string>
+    <string name="upload_pictures">Upload images</string>
     <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
     <string name="continue_without_an_account">Continue without an account</string>
 
@@ -43,7 +43,7 @@
     <string name="all_solutions_title">Explore all services/products</string>
     <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
     <string name="login_btn_text">Login</string>
-    <string name="next">Next ></string>
+    <string name="next">Next</string>
     <string name="register">Register</string>
     <string name="confirm_email">A verification email has been sent to the provided address. It may take a few minutes to arrive.
     Make sure to check you spam and junk folder!
@@ -129,6 +129,7 @@
     <string name="new_user">New user</string>
     <string name="invite_people">Invite people</string>
     <string name="provide_emails">Please, enter email addresses to invite</string>
-
+    <string name="loading_services">Loading services...</string>
+    <string name="images_are_required">Images are required</string>
 
 </resources>
