@@ -121,15 +121,5 @@ public class OrganizerRegistrationViewModel  extends ViewModel {
 
         }
 
-
-
-
-
-
-
-
-
-
-
     }
 }

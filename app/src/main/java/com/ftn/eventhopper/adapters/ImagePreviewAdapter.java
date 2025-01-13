@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapter.ViewHolder> {
@@ -73,7 +74,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         }
     }
 
-    public static class ImagePreviewItem {
+    public static class ImagePreviewItem implements Serializable {
         private Bitmap bitmap;
         private String imageUrl;
 
