@@ -70,6 +70,10 @@ public class HostFragment extends Fragment {
                     navController.popBackStack(R.id.profile, true); // Clear previous back stack if Profile exists
                     navController.navigate(R.id.profile);
                     return true;
+                } else if (item.getItemId() == R.id.favorites) {
+                    navController.popBackStack(R.id.favorites, true); // Clear previous back stack if Profile exists
+                    navController.navigate(R.id.favorites);
+                    return true;
                 }
                 return false;
             });

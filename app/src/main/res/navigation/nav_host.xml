@@ -20,9 +20,16 @@
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
-        android:name="com.ftn.eventhopper.fragments.Calendar"
+        android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
-        tools:layout="@layout/fragment_2" />
+        tools:layout="@layout/fragment_calendar" />
+
+    <!-- Favorites Fragment -->
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
 
     <!-- Home Fragment -->
     <fragment
@@ -34,7 +41,7 @@
     <!-- Profile Fragment -->
     <fragment
         android:id="@+id/profile"
-        android:name="com.ftn.eventhopper.fragments.ProfileFragment"
+        android:name="com.ftn.eventhopper.fragments.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
 
