@@ -2,6 +2,7 @@ package com.ftn.eventhopper.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
@@ -34,7 +37,7 @@ public class InvitationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitation);
-
+        Log.i("invitation act", "UPAOOOO");
         Uri data = getIntent().getData();
         if (data != null) {
             String invitationId = data.getLastPathSegment(); // "6666407d-dc7b-4288-a318-a5be27fbdf7d"
@@ -93,7 +96,15 @@ public class InvitationActivity extends AppCompatActivity {
 
     public void redirect(){
         if(accountDTO == null){
-            //redirektuj na registraciju
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.quickRegistrationData1Fragment);
+
+            NavController navController = navHostFragment.getNavController();
+        }else{
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.loginFragment);
+
+            NavController navController = navHostFragment.getNavController();
         }
     }
 
