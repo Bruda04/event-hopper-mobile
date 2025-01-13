@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.Getter;
+import lombok.Setter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +35,11 @@ public class PupsServicesViewModel extends ViewModel {
     public LiveData<Map<String, String>> getFilters() {
         return filtersLiveData;
     }
+
+    @Getter
+    @Setter
+    private String searchText;
+
     private final MutableLiveData<ArrayList<CategoryDTO>> categoriesLiveData = new MutableLiveData<>();
 
     public LiveData<ArrayList<CategoryDTO>> getCategories() {
@@ -50,6 +57,14 @@ public class PupsServicesViewModel extends ViewModel {
 
         if (filtersLiveData.getValue() != null) {
             queryParams.putAll(filtersLiveData.getValue());
+        }
+
+        if (!queryParams.containsKey("sortField")) {
+            queryParams.put("sortField", "name");
+        }
+
+        if (searchText != null && !searchText.isEmpty()) {
+            queryParams.put("searchContent", searchText);
         }
 
         Call<PagedResponse<ServiceManagementDTO>> call = ClientUtils.serviceService.getAllForManagement(
