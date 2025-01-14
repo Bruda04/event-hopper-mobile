@@ -3,7 +3,6 @@ package com.ftn.eventhopper.fragments.registration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -13,41 +12,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.registration.viewmodels.OrganizerRegistrationViewModel;
+import com.ftn.eventhopper.fragments.registration.viewmodels.QuickRegistrationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the  factory method to
- * create an instance of this fragment.
- */
-public class OrganizerPersonalData1Fragment extends Fragment {
-    private OrganizerRegistrationViewModel viewModel;
+public class QuickRegistration1Fragment extends Fragment {
+
+    private QuickRegistrationViewModel viewModel;
     private NavController navController;
     private TextInputEditText emailField, nameField, surnameField, passwordField, passwordAgainField;
     private TextInputLayout emailLayout, nameLayout, surnameLayout, passwordLayout, passwordAgainLayout;
     private String email, name, surname, password, passwordAgain;
     private Button nextButton;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_organizer_personal_data1, container, false);
-        navController = NavHostFragment.findNavController(this);
-        viewModel = new ViewModelProvider(this).get(OrganizerRegistrationViewModel.class);
+    public QuickRegistration1Fragment() {
+        // Required empty public constructor
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_quick_registration1, container, false);
+        navController = NavHostFragment.findNavController(this);
+        viewModel = new ViewModelProvider(this).get(QuickRegistrationViewModel.class);
 
         retrieveFields(view);
 
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
             retrieveData();
-            Log.d("Organizer Page 1", "Next button clicked.");
+
             if(!validateFields()){
                 viewModel.checkEmail(email, isTaken -> {
                     if (isTaken) {
@@ -68,6 +68,7 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         return view;
     }
+
 
     private void retrieveFields(View view) {
         emailLayout = view.findViewById(R.id.register_email_layout);
@@ -171,5 +172,4 @@ public class OrganizerPersonalData1Fragment extends Fragment {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
-
 }

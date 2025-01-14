@@ -2,6 +2,7 @@ package com.ftn.eventhopper.clients.services.users;
 
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.CreateEventOrganizerAccountDTO;
+import com.ftn.eventhopper.shared.dtos.users.account.CreatePersonAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.CreateServiceProviderAccountDTO;
 import com.ftn.eventhopper.shared.models.registration.VerificationTokenState;
 
@@ -30,6 +31,13 @@ public interface RegistrationService {
     })
     @POST("accounts/event-organizer")
     Call<CreateEventOrganizerAccountDTO> registerEventOrganizer(@Body CreateEventOrganizerAccountDTO createDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/person")
+    Call<CreatePersonAccountDTO> registerPerson(@Body CreatePersonAccountDTO createDTO);
 
     @Headers({
             "User-Agent: Mobile-Android",

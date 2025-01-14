@@ -40,6 +40,32 @@
             app:popUpTo="@id/registerFragment" />
     </fragment>
 
+    <!-- Person registration -->
+    <fragment
+        android:id="@+id/quickRegistrationData1Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.QuickRegistration1Fragment"
+        android:label="QuickRegistrationData1"
+        tools:layout="@layout/fragment_quick_registration1">
+        <action
+            android:id="@+id/action_to_quick_registration_2"
+            app:destination="@id/quickRegistrationData2Fragment"
+            app:popUpTo="@id/quickRegistrationData1Fragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quickRegistrationData2Fragment"
+        android:name="com.ftn.eventhopper.fragments.registration.QuickRegistration2Fragment"
+        android:label="QuickRegistrationData2"
+        tools:layout="@layout/fragment_quick_registration2">
+        <action
+            android:id="@+id/action_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/quickRegistrationData2Fragment"
+        />
+
+    </fragment>
+
 
 
     <!-- Organizer registration -->
