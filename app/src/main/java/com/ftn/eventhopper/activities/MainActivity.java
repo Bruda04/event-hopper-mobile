@@ -128,8 +128,10 @@ public class MainActivity extends AppCompatActivity {
                     if(UserService.isTokenValid()){
 
                         fragment = new HostFragment();
+                        ClientUtils.profileService.addEventToAttending(invitationDTO.getValue().getEvent().getId());
                     }else{
                         fragment = NavHostFragment.create(R.navigation.nav_auth);
+                        //kako da nakon logina se doda event u attending?
                     }
 
                     getSupportFragmentManager()
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("redirect","register");
                     Bundle bundle = new Bundle();
                     bundle.putString("email", invitationDTO.getValue().getTargetEmail());
+                    bundle.putString("attending-event", invitationDTO.getValue().getEvent().getId().toString());
                     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.nav_main_fragment);
                     NavController navController = navHostFragment.getNavController();
@@ -149,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     NavGraph navGraph = inflater.inflate(R.navigation.nav_auth);
                     navGraph.setStartDestination(R.id.quickRegistrationData1Fragment);
                     navController.setGraph(navGraph,bundle);
+                    //kako da nakon registracije i logina se doda event u attending?
 
 
                 }

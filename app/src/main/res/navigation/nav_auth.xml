@@ -166,4 +166,6 @@
     <fragment
         android:id="@+id/hostFragment"
         android:name="com.ftn.eventhopper.fragments.HostFragment" />
+
+
 </navigation>

@@ -85,4 +85,6 @@
     <string name="provide_emails">Please, enter email addresses to invite</string>
     <string name="loading_services">Loading services...</string>
     <string name="images_are_required">Images are required</string>
+    <string name="upgrading_text">Choose what you want to become</string>
+    <string name="upgrading_successful">Upgrading successful!\n Please login</string>
 </resources>

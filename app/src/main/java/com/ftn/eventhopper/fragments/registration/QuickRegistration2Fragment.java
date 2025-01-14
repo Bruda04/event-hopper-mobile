@@ -48,8 +48,12 @@ public class QuickRegistration2Fragment extends Fragment {
                 receivedBundle.putString("city", city);
                 receivedBundle.putString("address", address);
 
+                String eventID = receivedBundle.getString("attending-event");
+                Bundle eventBundle = new Bundle();
+                eventBundle.putString("attending-event", eventID);
+
                 viewModel.register(receivedBundle);
-                navController.navigate(R.id.action_to_login);
+                navController.navigate(R.id.action_to_login,eventBundle);
             }
         });
 

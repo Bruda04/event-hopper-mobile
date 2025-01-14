@@ -30,6 +30,7 @@ public class QuickRegistration1Fragment extends Fragment {
     private TextInputLayout emailLayout, nameLayout, surnameLayout, passwordLayout, passwordAgainLayout;
     private String email, name, surname, password, passwordAgain;
     private Button nextButton;
+    private String attendingEventId;
 
     public QuickRegistration1Fragment() {
         // Required empty public constructor
@@ -50,6 +51,8 @@ public class QuickRegistration1Fragment extends Fragment {
             email = args.getString("email");
             emailField.setText(email);
             emailField.setEnabled(false);
+
+            attendingEventId = args.getString("attending-event");
         }
 
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
@@ -66,6 +69,7 @@ public class QuickRegistration1Fragment extends Fragment {
                         bundle.putString("name", name);
                         bundle.putString("surname", surname);
                         bundle.putString("password", password);
+                        bundle.putString("attending-event", attendingEventId);
 
                         navController.navigate(R.id.action_to_quick_registration_2, bundle);
                     }

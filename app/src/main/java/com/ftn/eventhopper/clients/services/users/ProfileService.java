@@ -10,6 +10,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ProfileService {
@@ -42,4 +43,28 @@ public interface ProfileService {
     })
     @GET("accounts/active/{email}")
     Call<SimpleAccountDTO> getActiveByEmail(@Path("email") String email);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/attending-events/{eventId}")
+    Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/upgrade-to-OD")
+    Call<Void> upgradeToOd();
+
+    @Headers({
+                "User-Agent: Mobile-Android",
+                "Content-Type:application/json"
+        })
+        @PUT("accounts/upgrade-to-PUP")
+        Call<Void> upgradeToPUP();
+
+
+
 }
