@@ -102,6 +102,10 @@ public class PupCompanyData1Fragment extends Fragment {
             companyPhoneNumberLayout.setError("Phone number is required"); // Show error message
             companyPhoneNumberLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
             hasError = true;
+        }else if( companyPhoneNumber.length() < 8 ) {
+            companyPhoneNumberLayout.setError("Phone number must be >8 digits");
+            companyPhoneNumberLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
+            hasError = true;
         } else {
             companyPhoneNumberLayout.setError(null); // Clear error
             companyPhoneNumberLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color

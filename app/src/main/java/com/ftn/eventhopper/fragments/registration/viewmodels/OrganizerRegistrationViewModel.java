@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrganizerRegistrationViewModel  extends ViewModel {
+public class OrganizerRegistrationViewModel extends ViewModel {
 
     @Getter
     @Setter
@@ -60,53 +60,21 @@ public class OrganizerRegistrationViewModel  extends ViewModel {
 
 
     public void register(Bundle bundle){
+        CreateEventOrganizerAccountDTO createDTO = deconstructBundle(bundle);
+
+        if(this.uploadedImages.isEmpty()){
+            submitRegistration(createDTO);
+            return;
+        }
+
         for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
             Call<String> call = ImageUtils.uploadImage(image.getBitmap());
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
-                        CreateEventOrganizerAccountDTO createDTO = new CreateEventOrganizerAccountDTO();
-                        createDTO.setEmail(bundle.getString("email"));
-                        createDTO.setPassword(bundle.getString("password"));
-                        createDTO.setVerified(false);
-                        createDTO.setType(PersonType.EVENT_ORGANIZER);
-                        createDTO.setRegistrationRequest(new CreateRegistrationRequestDTO());
-
-
-                        CreateEventOrganizerDTO eventOrganizerDTO = new CreateEventOrganizerDTO();
-                        eventOrganizerDTO.setName(bundle.getString("name"));
-                        eventOrganizerDTO.setSurname(bundle.getString("surname"));
-                        eventOrganizerDTO.setPhoneNumber(bundle.getString("phone"));
-                        eventOrganizerDTO.setType(PersonType.EVENT_ORGANIZER);
-
-                        CreateLocationDTO locationDTO = new CreateLocationDTO();
-                        locationDTO.setCity(bundle.getString("city"));
-                        locationDTO.setAddress(bundle.getString("address"));
-                        eventOrganizerDTO.setLocation(locationDTO);
-
-                        eventOrganizerDTO.setProfilePicture(response.body());
-
-                        createDTO.setPerson(eventOrganizerDTO);
-
-                        Call<CreateEventOrganizerAccountDTO> registerCall = ClientUtils.registrationService.registerEventOrganizer(createDTO);
-                        registerCall.enqueue(new Callback<CreateEventOrganizerAccountDTO>() {
-                            @Override
-                            public void onResponse(Call<CreateEventOrganizerAccountDTO> registerCall, Response<CreateEventOrganizerAccountDTO> callResponse) {
-                                if (callResponse.isSuccessful()) {
-                                    Log.d("Organizer registration", "User registered");
-                                } else {
-                                    Log.e("Organizer registration", "Registration failed");
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<CreateEventOrganizerAccountDTO> registerCall, Throwable t) {
-                                Log.e("Organizer registration", "Server error occurred.");
-                            }
-                        });
-
-
+                        createDTO.getPerson().setProfilePicture(response.body());
+                        submitRegistration(createDTO);
                     } else {
                         uploadedImages.clear();
                     }
@@ -120,6 +88,51 @@ public class OrganizerRegistrationViewModel  extends ViewModel {
 
 
         }
+
+    }
+
+
+    public CreateEventOrganizerAccountDTO deconstructBundle(Bundle bundle){
+        CreateEventOrganizerAccountDTO createDTO = new CreateEventOrganizerAccountDTO();
+        createDTO.setEmail(bundle.getString("email"));
+        createDTO.setPassword(bundle.getString("password"));
+        createDTO.setVerified(false);
+        createDTO.setType(PersonType.EVENT_ORGANIZER);
+        createDTO.setRegistrationRequest(new CreateRegistrationRequestDTO());
+
+
+        CreateEventOrganizerDTO eventOrganizerDTO = new CreateEventOrganizerDTO();
+        eventOrganizerDTO.setName(bundle.getString("name"));
+        eventOrganizerDTO.setSurname(bundle.getString("surname"));
+        eventOrganizerDTO.setPhoneNumber(bundle.getString("phone"));
+        eventOrganizerDTO.setType(PersonType.EVENT_ORGANIZER);
+
+        CreateLocationDTO locationDTO = new CreateLocationDTO();
+        locationDTO.setCity(bundle.getString("city"));
+        locationDTO.setAddress(bundle.getString("address"));
+        eventOrganizerDTO.setLocation(locationDTO);
+
+        createDTO.setPerson(eventOrganizerDTO);
+        return createDTO;
+    }
+
+    public void submitRegistration(CreateEventOrganizerAccountDTO createDTO){
+        Call<CreateEventOrganizerAccountDTO> registerCall = ClientUtils.registrationService.registerEventOrganizer(createDTO);
+        registerCall.enqueue(new Callback<CreateEventOrganizerAccountDTO>() {
+            @Override
+            public void onResponse(Call<CreateEventOrganizerAccountDTO> registerCall, Response<CreateEventOrganizerAccountDTO> callResponse) {
+                if (callResponse.isSuccessful()) {
+                    Log.d("Organizer registration", "User registered");
+                } else {
+                    Log.e("Organizer registration", "Registration failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreateEventOrganizerAccountDTO> registerCall, Throwable t) {
+                Log.e("Organizer registration", "Server error occurred.");
+            }
+        });
 
     }
 }

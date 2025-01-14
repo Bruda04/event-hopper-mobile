@@ -65,7 +65,9 @@ public class PupCompanyData2Fragment extends Fragment {
                 receivedBundle.putString("description", description);
                 receivedBundle.putString("companyCity", city);
                 receivedBundle.putString("companyAddress", address);
-                receivedBundle.putSerializable("profilePicture", this.uploadedProfilePicture.get(0));
+                if(!this.uploadedProfilePicture.isEmpty()){
+                    receivedBundle.putSerializable("profilePicture", this.uploadedProfilePicture.get(0));
+                }
 
                 navController.navigate(R.id.action_to_pup_image_upload, receivedBundle);
             }

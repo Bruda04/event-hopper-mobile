@@ -145,6 +145,10 @@ public class PupPersonalDataFragment extends Fragment {
             phoneLayout.setError("Phone number is required. ");
             phoneLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
             hasError = true;
+        }else if(phone.length() < 8 ) {
+            phoneLayout.setError("Phone number must be >8 digits");
+            phoneLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
+            hasError = true;
         } else {
             phoneLayout.setError(null);
             phoneLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
