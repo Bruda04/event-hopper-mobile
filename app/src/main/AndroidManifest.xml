@@ -24,6 +24,30 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">
+            <!--Supporting https-->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="localhost" android:port="4200" />
+                <data android:pathPrefix="/verify-email" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:host="localhost" android:port="4200" />
+                <data android:pathPrefix="/invitations" />
+                <data android:pathPrefix="/verify-email" />
+            </intent-filter>
+
+            <!--Supporting https-->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -33,9 +57,7 @@
                 <data android:scheme="https" />
                 <data android:host="localhost" android:port="4200" />
                 <data android:pathPrefix="/invitations" />
-                <data android:pathPrefix="/verify-email" />
             </intent-filter>
-
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 

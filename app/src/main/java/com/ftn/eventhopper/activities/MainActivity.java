@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         Uri data = intent.getData();
-        if (data != null) {
+        if (data != null ) {
             String path = data.getPath();
             if (path.startsWith("/invitations/")) {
                 String invitationId = data.getLastPathSegment();
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 getInvitationById(UUID.fromString(invitationId));
             } else if (path.startsWith("/verify-email/")) {
                 String verificationToken = data.getLastPathSegment();
-                Log.d("DeepLink", "Opened from verify email link with token: " + verificationToken);
+                Log.d("Email verification", "Opened from verify email link with token: " + verificationToken);
                 Bundle bundle = new Bundle();
                 UserService.clearJwtToken();
                 bundle.putString("token", verificationToken);

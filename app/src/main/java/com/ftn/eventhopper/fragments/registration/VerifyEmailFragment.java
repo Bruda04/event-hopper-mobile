@@ -34,7 +34,7 @@ public class VerifyEmailFragment extends Fragment {
 
     private String token;
     private VerifyEmailViewModel viewModel;
-    private TextView announcementText;
+    private TextView announcementText, titleText;
 
     public VerifyEmailFragment(Bundle bundle) {
         this.token = bundle.getString("token");
@@ -47,19 +47,23 @@ public class VerifyEmailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_verify_email, container, false);
         viewModel = new ViewModelProvider(this).get(VerifyEmailViewModel.class);
         viewModel.verifyToken(this.token);
-
+        announcementText = view.findViewById(R.id.announcement_text);
+        titleText = view.findViewById(R.id.title_text);
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<VerificationTokenState>() {
             @Override
             public void onChanged(VerificationTokenState state) {
                 switch (state) {
                     case ACCEPTED:
-                        announcementText.setText("Congratulations!\nYour account has been verified. You can now log in and start using your account.");
+                        titleText.setText(R.string.successful_email_confirmed_title);
+                        announcementText.setText(R.string.successful_email_confirmed_text);
                         break;
                     case EXPIRED:
-                        announcementText.setText("Oops! Too late...\nYour verification expired, please re-register.");
+                        titleText.setText(R.string.expired_email_confirmed_title);
+                        announcementText.setText(R.string.expired_email_confirmed_text);
                         break;
                     case MISSING:
-                        announcementText.setText("Oops! Something went wrong...\nWe couldn't find your account, your account may have been suspended or already verified.");
+                        titleText.setText(R.string.missing_email_confirmed_title);
+                        announcementText.setText(R.string.missing_email_confirmed_text);
                         break;
                 }
             }
