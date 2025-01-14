@@ -3,6 +3,7 @@ package com.ftn.eventhopper.clients.services.auth;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
@@ -112,7 +113,27 @@ public class UserService {
         return null; // Claim not found or decoding failed
     }
 
+    public static boolean isTokenValid(){
+        String jwtToken = getJwtToken();
+        if(jwtToken == null || jwtToken.isEmpty()){
+            return false;
+        }
 
+        try{
+            JSONObject payload = decodeJwtPayload(jwtToken);
+            Log.d("PAYLOAD", String.valueOf(payload));
+
+            if(payload != null && payload.has("exp")){
+                long expirationTime = payload.getLong("exp");
+                long currentTime = System.currentTimeMillis()/1000;
+                return expirationTime > currentTime;
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
 }

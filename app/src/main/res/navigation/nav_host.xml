@@ -10,19 +10,41 @@
         android:label="Notifications"
         tools:layout="@layout/fragment_notifications" />
 
+    <!-- Invitations Fragment -->
+    <fragment
+        android:id="@+id/invitationsFragment"
+        android:name="com.ftn.eventhopper.fragments.invitations.InviteFragment"
+        android:label="Invite people"
+        tools:layout="@layout/fragment_invite"
+        />
+
     <!-- Home Fragment -->
+    <!--    !!!!!!!!!!!!!inviting action is just to test inviting feature!!!!!!!!!!!!!!!!!!!!-->
     <fragment
         android:id="@+id/home"
         android:name="com.ftn.eventhopper.fragments.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home"
+        >
+        <action
+            android:id="@+id/action_to_invite"
+            app:destination="@id/invitationsFragment"
+            />
+    </fragment>
 
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
-        android:name="com.ftn.eventhopper.fragments.Calendar"
+        android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
-        tools:layout="@layout/fragment_2" />
+        tools:layout="@layout/fragment_calendar" />
+
+    <!-- Favorites Fragment -->
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
 
     <!--  -->
     <fragment
@@ -34,7 +56,7 @@
     <!-- Profile Fragment -->
     <fragment
         android:id="@+id/profile"
-        android:name="com.ftn.eventhopper.fragments.ProfileFragment"
+        android:name="com.ftn.eventhopper.fragments.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
 
@@ -49,7 +71,21 @@
         <action
             android:id="@+id/action_to_manage_prices"
             app:destination="@id/manage_prices" />
+
+        <action
+            android:id="@+id/action_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/profile"
+            app:popUpToInclusive="true"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.ftn.eventhopper.fragments.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+    </fragment>
+
 
     <fragment
         android:id="@+id/pup_services"

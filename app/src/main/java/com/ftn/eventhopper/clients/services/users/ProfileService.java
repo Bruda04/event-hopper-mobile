@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.clients.services.users;
 
+import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
 import java.util.UUID;
@@ -33,4 +34,12 @@ public interface ProfileService {
     })
     @GET("service-providers/{id}/details")
     Call<ServiceProviderDetailsDTO> getServiceProviderDetailsById(@Path("id") UUID id);
+
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("accounts/active/{email}")
+    Call<SimpleAccountDTO> getActiveByEmail(@Path("email") String email);
 }
