@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         Uri data = intent.getData();
-        if (data != null) {
+        if (data != null ) {
             String path = data.getPath();
             if (path.startsWith("/invitations/")) {
                 String invitationId = data.getLastPathSegment();
