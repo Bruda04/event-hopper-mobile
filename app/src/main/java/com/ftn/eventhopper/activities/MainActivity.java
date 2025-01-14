@@ -136,9 +136,11 @@ public class MainActivity extends AppCompatActivity {
                             .beginTransaction()
                             .replace(R.id.nav_main_fragment, fragment)
                             .commit();
-                    //redirect();
+
                 }else{
                     Log.i("redirect","register");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email", invitationDTO.getValue().getTargetEmail());
                     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.nav_main_fragment);
                     NavController navController = navHostFragment.getNavController();
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     NavInflater inflater = navController.getNavInflater();
                     NavGraph navGraph = inflater.inflate(R.navigation.nav_auth);
                     navGraph.setStartDestination(R.id.quickRegistrationData1Fragment);
-                    navController.setGraph(navGraph);
+                    navController.setGraph(navGraph,bundle);
 
 
                 }

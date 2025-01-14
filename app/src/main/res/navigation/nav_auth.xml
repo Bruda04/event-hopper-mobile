@@ -46,6 +46,9 @@
         android:name="com.ftn.eventhopper.fragments.registration.QuickRegistration1Fragment"
         android:label="QuickRegistrationData1"
         tools:layout="@layout/fragment_quick_registration1">
+        <argument
+            android:name="email"
+            app:argType="string" />
         <action
             android:id="@+id/action_to_quick_registration_2"
             app:destination="@id/quickRegistrationData2Fragment"

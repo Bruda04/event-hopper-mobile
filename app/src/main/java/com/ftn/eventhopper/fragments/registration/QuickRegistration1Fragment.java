@@ -45,6 +45,13 @@ public class QuickRegistration1Fragment extends Fragment {
 
         retrieveFields(view);
 
+        Bundle args = getArguments();
+        if(args != null){
+            email = args.getString("email");
+            emailField.setText(email);
+            emailField.setEnabled(false);
+        }
+
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
             retrieveData();
 
