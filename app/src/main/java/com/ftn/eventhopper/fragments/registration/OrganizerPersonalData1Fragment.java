@@ -60,7 +60,7 @@ public class OrganizerPersonalData1Fragment extends Fragment {
                         bundle.putString("surname", surname);
                         bundle.putString("password", password);
 
-                        navController.navigate(R.id.action_to_quick_registration_2, bundle);
+                        navController.navigate(R.id.action_to_organizer_data_2, bundle);
                     }
                 });
             }
