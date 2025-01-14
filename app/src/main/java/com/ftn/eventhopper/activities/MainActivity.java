@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
+        if (!UserService.getJwtToken().isEmpty()) {
+            ClientUtils.connectWebSocket();
+        }
 
         Log.d("MainActivity", "setContentView called");
 
