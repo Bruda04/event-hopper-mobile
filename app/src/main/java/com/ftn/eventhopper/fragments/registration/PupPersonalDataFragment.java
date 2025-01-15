@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
@@ -69,6 +70,15 @@ public class PupPersonalDataFragment extends Fragment {
                         receivedBundle.putString("address", address);
 
                         viewModel.register(receivedBundle);
+
+                        viewModel.getRegistrationComplete().observe(getViewLifecycleOwner(), isComplete -> {
+                            if (isComplete != null && isComplete) {
+                                viewModel.cleanupCache(requireContext());  // Call the cleanupCache method here
+                                navController.navigate(R.id.action_to_confirm_email);
+                            } else {
+                                Toast.makeText(requireContext(), "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         navController.navigate(R.id.action_to_confirm_email);
                     }
                 });

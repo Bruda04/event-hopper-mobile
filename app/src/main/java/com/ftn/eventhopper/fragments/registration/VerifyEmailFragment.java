@@ -23,6 +23,7 @@ import com.ftn.eventhopper.fragments.registration.viewmodels.VerifyEmailViewMode
 import com.ftn.eventhopper.shared.models.registration.VerificationTokenState;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.UUID;
 
@@ -71,7 +72,9 @@ public class VerifyEmailFragment extends Fragment {
 
 
         view.findViewById(R.id.login_btn).setOnClickListener(v -> {
-            ((MainActivity) requireActivity()).navigateToAuthGraph();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // Optional: Clear the activity stack
+            startActivity(intent);
         });
 
         return view;

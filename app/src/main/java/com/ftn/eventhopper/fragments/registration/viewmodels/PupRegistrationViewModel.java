@@ -1,10 +1,12 @@
 package com.ftn.eventhopper.fragments.registration.viewmodels;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
@@ -19,10 +21,12 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CreateServiceProvid
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import lombok.Getter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -30,6 +34,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PupRegistrationViewModel extends ViewModel {
+    @Getter
+    private MutableLiveData<Boolean> registrationComplete = new MutableLiveData<>();
+
     public void checkEmail(String email, OrganizerRegistrationViewModel.EmailCheckCallback callback) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email);
         Call<Boolean> call = ClientUtils.registrationService.isEmailTaken(requestBody);
@@ -166,6 +173,7 @@ public class PupRegistrationViewModel extends ViewModel {
                         pupDto.getCompanyPhotos().add(response.body());
                         if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get()) {
                             createAccountDTO.setPerson(pupDto);
+                            registrationComplete.setValue(true);
                             submitRegistrationData(createAccountDTO);
                         }
                     } else {
@@ -197,6 +205,7 @@ public class PupRegistrationViewModel extends ViewModel {
                 if (callResponse.isSuccessful()) {
                     Log.d("Pup registration", "User registered");
                 } else {
+                    registrationComplete.setValue(false);
                     Log.e("Pup registration", "Registration failed");
                 }
             }
@@ -205,6 +214,16 @@ public class PupRegistrationViewModel extends ViewModel {
                 Log.e("Pup registration", "Server error occurred.");
             }
         });
+    }
+
+
+    public void cleanupCache(Context context) {
+        File cacheDir = context.getCacheDir();
+        for (File file : cacheDir.listFiles()) {
+            if (file.getName().startsWith("image_")) {
+                file.delete();
+            }
+        }
     }
 
 }
