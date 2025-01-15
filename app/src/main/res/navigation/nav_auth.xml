@@ -12,8 +12,7 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login_to_register"
-            app:destination="@id/registerFragment"
-            app:popUpTo="@id/loginFragment" />
+            app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_login_to_host"
             app:destination="@id/hostFragment"
@@ -28,16 +27,13 @@
         tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_register_to_login"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/registerFragment" />
+            app:destination="@id/loginFragment"/>
         <action
             android:id="@+id/action_register_organizer"
-            app:destination="@id/organizerPersonalData1Fragment"
-            app:popUpTo="@id/registerFragment" />
+            app:destination="@id/organizerPersonalData1Fragment" />
         <action
             android:id="@+id/action_register_pup"
-            app:destination="@id/pupCompanyData1Fragment"
-            app:popUpTo="@id/registerFragment" />
+            app:destination="@id/pupCompanyData1Fragment"/>
     </fragment>
 
     <!-- Person registration -->
@@ -76,8 +72,7 @@
         tools:layout="@layout/fragment_organizer_personal_data1">
         <action
             android:id="@+id/action_to_organizer_data_2"
-            app:destination="@id/organizerPersonalData2Fragment"
-            app:popUpTo="@id/organizerPersonalData1Fragment" />
+            app:destination="@id/organizerPersonalData2Fragment" />
     </fragment>
 
     <fragment
@@ -87,8 +82,7 @@
         tools:layout="@layout/fragment_organizer_personal_data2">
         <action
             android:id="@+id/action_to_confirm_email"
-            app:destination="@id/confirmEmail"
-            app:popUpTo="@id/organizerPersonalData2Fragment" />
+            app:destination="@id/confirmEmail"/>
     </fragment>
 
 
@@ -100,8 +94,7 @@
         tools:layout="@layout/fragment_pup_company_data1">
         <action
             android:id="@+id/action_to_pup_company_2"
-            app:destination="@id/pupCompanyData2Fragment"
-            app:popUpTo="@id/pupCompanyData1Fragment" />
+            app:destination="@id/pupCompanyData2Fragment" />
     </fragment>
 
     <fragment
@@ -111,8 +104,7 @@
         tools:layout="@layout/fragment_pup_company_data2">
         <action
             android:id="@+id/action_to_pup_image_upload"
-            app:destination="@id/pupImageUploadFragment"
-            app:popUpTo="@id/pupCompanyData2Fragment" />
+            app:destination="@id/pupImageUploadFragment"/>
 
     </fragment>
 
@@ -125,8 +117,7 @@
 
         <action
             android:id="@+id/action_to_pup_personal_data"
-            app:destination="@id/pupPersonalDataFragment"
-            app:popUpTo="@id/pupImageUploadFragment" />
+            app:destination="@id/pupPersonalDataFragment"/>
     </fragment>
 
 
@@ -139,8 +130,7 @@
 
         <action
             android:id="@+id/action_to_confirm_email"
-            app:destination="@id/confirmEmail"
-            app:popUpTo="@id/pupPersonalDataFragment" />
+            app:destination="@id/confirmEmail" />
     </fragment>
 
 
@@ -155,7 +145,8 @@
         <action
             android:id="@+id/action_to_login"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment" />
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false"/>
     </fragment>
 
 

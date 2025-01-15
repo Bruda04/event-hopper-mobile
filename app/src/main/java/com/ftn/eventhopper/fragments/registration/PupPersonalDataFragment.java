@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.registration;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -26,6 +27,20 @@ public class PupPersonalDataFragment extends Fragment {
     private TextInputEditText emailField, nameField, surnameField, phoneField, cityField, addressField;
     private TextInputLayout emailLayout, nameLayout, surnameLayout, phoneLayout, cityLayout, addressLayout;
     private String email, name, surname, phone, city, address;
+
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.pupImageUploadFragment, false);
+            }
+        });
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

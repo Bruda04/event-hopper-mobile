@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.registration;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -19,6 +20,18 @@ public class RegistrationFragment extends Fragment {
     private NavController navController;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.pup_services, false);
+            }
+        });
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         navController = NavHostFragment.findNavController(this);
@@ -32,6 +45,7 @@ public class RegistrationFragment extends Fragment {
             Log.d("Registration", "Pup button clicked");
             navController.navigate(R.id.action_register_pup);
         });
+
 
         return view;
     }
