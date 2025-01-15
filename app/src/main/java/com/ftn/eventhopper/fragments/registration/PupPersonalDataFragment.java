@@ -28,7 +28,7 @@ public class PupPersonalDataFragment extends Fragment {
     private TextInputLayout emailLayout, nameLayout, surnameLayout, phoneLayout, cityLayout, addressLayout;
     private String email, name, surname, phone, city, address;
 
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

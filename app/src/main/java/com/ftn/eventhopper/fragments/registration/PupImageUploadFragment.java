@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -26,9 +27,12 @@ import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
+import com.ftn.eventhopper.fragments.registration.viewmodels.PupImageUploadViewModel;
+import com.ftn.eventhopper.fragments.registration.viewmodels.PupRegistrationViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -43,6 +47,8 @@ import lombok.Setter;
 public class PupImageUploadFragment extends Fragment {
 
     private NavController navController;
+
+    private PupImageUploadViewModel viewModel;
 
     @Getter
     @Setter
@@ -65,6 +71,8 @@ public class PupImageUploadFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pup_image_upload, container, false);
+        viewModel = new ViewModelProvider(this).get(PupImageUploadViewModel.class);
+
         navController = NavHostFragment.findNavController(this);
 
         uploadImageButton = view.findViewById(R.id.upload_images_btn);
@@ -73,10 +81,20 @@ public class PupImageUploadFragment extends Fragment {
         imagePreviewRecyclerView = view.findViewById(R.id.image_preview);
         imagePreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         imagePreviewRecyclerView.setAdapter(imagePreviewAdapter);
-
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
             Bundle receivedBundle = getArguments();
-            receivedBundle.putSerializable("companyPictures", this.uploadedImages);
+            if (!this.uploadedImages.isEmpty()) {
+                for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
+                    if (image.isBitmap()) {
+                        viewModel.saveBitmapToCache(requireContext(), image.getBitmap());
+                    }
+                }
+
+                // Add the cached file paths to the bundle
+                ArrayList<String> imageFilePaths = new ArrayList<>(viewModel.getImageFilePaths());
+                receivedBundle.putStringArrayList("companyPictures", imageFilePaths);
+            }
+
             navController.navigate(R.id.action_to_pup_personal_data, receivedBundle);
         });
 

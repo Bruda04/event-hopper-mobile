@@ -74,7 +74,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         }
     }
 
-    public static class ImagePreviewItem implements Serializable {
+    public static class ImagePreviewItem implements Serializable{
         private Bitmap bitmap;
         private String imageUrl;
 

@@ -25,7 +25,7 @@ public class RegistrationFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                navController.popBackStack(R.id.pup_services, false);
+                navController.popBackStack(R.id.loginFragment, false);
             }
         });
     }
