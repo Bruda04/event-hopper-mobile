@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.clients.services.users;
 
+import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
@@ -42,4 +43,11 @@ public interface ProfileService {
     })
     @GET("accounts/active/{email}")
     Call<SimpleAccountDTO> getActiveByEmail(@Path("email") String email);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("accounts/profile")
+    Call<ProfileForPersonDTO> getProfile();
 }
