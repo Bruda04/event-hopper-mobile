@@ -147,7 +147,11 @@ public class ClientUtils {
     }
 
     public static void disconnectStompClient() {
-        if (stompClient != null) {
+        if (stompClient == null) {
+            return;
+        }
+
+        if (stompClient.isConnected()) {
             stompClient.disconnect();
         }
     }

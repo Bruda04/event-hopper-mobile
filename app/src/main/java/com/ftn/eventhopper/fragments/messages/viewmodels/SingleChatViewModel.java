@@ -69,6 +69,10 @@ public class SingleChatViewModel extends ViewModel {
     }
 
     public void onMessageReceived(ChatMessageDTO message) {
+        if (!message.getSender().equals(receiverUsername) && !message.getRecipient().equals(receiverUsername)) {
+            return;
+        }
+
         ArrayList<ChatMessageDTO> history = historyLiveData.getValue();
         if (history == null) {
             history = new ArrayList<>();

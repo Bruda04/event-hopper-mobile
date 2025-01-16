@@ -167,20 +167,12 @@ public class SingleChatFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        viewModel.disconnectChat();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        viewModel.disconnectChat();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        if (initializedHistory) {
+            initializedHistory = false;
+            viewModel.fetchHistory();
+        }
         viewModel.connectToChat();
     }
 

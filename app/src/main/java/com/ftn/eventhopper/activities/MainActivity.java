@@ -160,25 +160,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ClientUtils.disconnectStompClient();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-        if (UserService.isTokenValid()) {
-            ClientUtils.connectWebSocket();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-    super.onResume();
-    if (UserService.isTokenValid()) {
         ClientUtils.connectWebSocket();
-    }
-}
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ClientUtils.disconnectStompClient();
     }
 
 }
