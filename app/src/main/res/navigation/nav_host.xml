@@ -19,7 +19,7 @@
         />
 
     <fragment
-        android:id="@+id/single_chat_fragmen"
+        android:id="@+id/single_chat_fragment"
         android:name="com.ftn.eventhopper.fragments.messages.SingleChatFragment"
         android:label="Invite people"
         tools:layout="@layout/fragment_single_chat"
@@ -34,7 +34,7 @@
 
         <action
             android:id="@+id/action_to_single_chat"
-            app:destination="@id/invitationsFragment"
+            app:destination="@id/single_chat_fragment"
             />
     </fragment>
 

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
-        if (!UserService.getJwtToken().isEmpty()) {
+        if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
         }
 
@@ -159,5 +159,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (UserService.isTokenValid()) {
+            ClientUtils.connectWebSocket();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+    super.onResume();
+    if (UserService.isTokenValid()) {
+        ClientUtils.connectWebSocket();
+    }
+}
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ClientUtils.disconnectStompClient();
+    }
 
 }

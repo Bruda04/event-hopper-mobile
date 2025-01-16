@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.messages;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -28,6 +29,18 @@ public class ConversationsListFragment extends Fragment {
     private TextView statusMessage;
     private RecyclerView conversationsListRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private NavController navController;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.home, false);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +48,7 @@ public class ConversationsListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_conversations_list, container, false);
         viewModel = new ViewModelProvider(this).get(ConversationsListViewModel.class);
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
         statusMessage = view.findViewById(R.id.status_message);
         statusMessage.setText(R.string.loading_conversations);
@@ -72,12 +86,11 @@ public class ConversationsListFragment extends Fragment {
     }
 
     public void openSingleChat(ConversationPreviewDTO conversation) {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-
         Bundle bundle = new Bundle();
         bundle.putString("username", conversation.getUsername());
         bundle.putString("name", conversation.getName());
         bundle.putString("surname", conversation.getSurname());
+        bundle.putString("profilePicture", conversation.getProfilePictureUrl());
 
         navController.navigate(R.id.action_to_single_chat, bundle);
     }

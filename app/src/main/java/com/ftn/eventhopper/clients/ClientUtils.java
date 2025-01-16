@@ -79,7 +79,7 @@ public class ClientUtils {
             .client(setupClient())
             .build();
 
-    private static Gson setupGson() {
+    public static Gson setupGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -131,10 +131,9 @@ public class ClientUtils {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(message -> {
-                    Log.d("WebSocket","Received message: " + message.getPayload());
                     messageHandler.onMessage(message.getPayload());
                 }, throwable -> {
-                    Log.e("WebSocket","Error on subscribing to topic: " + throwable.getMessage());
+                    Log.e("WebSocket","Error on topic handler: " + topic + " " + throwable.getMessage());
                 });
     }
 

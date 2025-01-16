@@ -133,5 +133,7 @@
     <string name="images_are_required">Images are required</string>
     <string name="close_chat">Close chat</string>
     <string name="loading_conversations">Loading conversations...</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="send">Send</string>
 
 </resources>
