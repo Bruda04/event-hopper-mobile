@@ -18,6 +18,7 @@ import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
 import com.ftn.eventhopper.clients.services.invitations.InvitationService;
 import com.ftn.eventhopper.clients.services.images.ImageService;
 import com.ftn.eventhopper.clients.services.locations.LocationService;
+import com.ftn.eventhopper.clients.services.messages.MessageService;
 import com.ftn.eventhopper.clients.services.solutions.ProductService;
 import com.ftn.eventhopper.clients.services.solutions.ServiceService;
 import com.ftn.eventhopper.clients.services.users.LoginService;
@@ -163,5 +164,6 @@ public class ClientUtils {
     public static ServiceService serviceService = retrofit.create(ServiceService.class);
     public static InvitationService invitationService = retrofit.create(InvitationService.class);
     public static ImageService ImageService = retrofit.create(ImageService.class);
+    public static MessageService messageService = retrofit.create(MessageService.class);
 
 }

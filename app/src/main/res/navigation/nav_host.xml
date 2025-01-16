@@ -18,6 +18,26 @@
         tools:layout="@layout/fragment_invite"
         />
 
+    <fragment
+        android:id="@+id/single_chat_fragmen"
+        android:name="com.ftn.eventhopper.fragments.messages.SingleChatFragment"
+        android:label="Invite people"
+        tools:layout="@layout/fragment_single_chat"
+        />
+
+    <fragment
+        android:id="@+id/conversations_fragment"
+        android:name="com.ftn.eventhopper.fragments.messages.ConversationsListFragment"
+        android:label="Conversations"
+        tools:layout="@layout/fragment_conversations_list"
+        >
+
+        <action
+            android:id="@+id/action_to_single_chat"
+            app:destination="@id/invitationsFragment"
+            />
+    </fragment>
+
     <!-- Home Fragment -->
     <!--    !!!!!!!!!!!!!inviting action is just to test inviting feature!!!!!!!!!!!!!!!!!!!!-->
     <fragment
@@ -30,6 +50,11 @@
             android:id="@+id/action_to_invite"
             app:destination="@id/invitationsFragment"
             />
+        <action
+            android:id="@+id/action_to_conversations"
+            app:destination="@id/conversations_fragment"
+            />
+
     </fragment>
 
     <!-- Calendar Fragment -->
