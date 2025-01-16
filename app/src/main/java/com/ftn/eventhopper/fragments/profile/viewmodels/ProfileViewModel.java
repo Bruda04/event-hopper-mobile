@@ -12,4 +12,5 @@ public class ProfileViewModel extends ViewModel {
         UserService.clearJwtToken();
     }
 
+    
 }
