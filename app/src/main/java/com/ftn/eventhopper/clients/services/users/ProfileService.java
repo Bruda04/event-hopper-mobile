@@ -1,11 +1,13 @@
 package com.ftn.eventhopper.clients.services.users;
 
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
+import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CompanyDetailsDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -62,8 +64,8 @@ public interface ProfileService {
                 "User-Agent: Mobile-Android",
                 "Content-Type:application/json"
         })
-        @PUT("accounts/upgrade-to-PUP")
-        Call<Void> upgradeToPUP();
+    @PUT("accounts/upgrade-to-PUP")
+    Call<Void> upgradeToPUP(@Body CompanyDetailsDTO companyDetailsDTO);
 
 
 

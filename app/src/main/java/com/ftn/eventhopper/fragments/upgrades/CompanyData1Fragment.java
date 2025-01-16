@@ -22,9 +22,9 @@ import java.util.regex.Pattern;
 public class CompanyData1Fragment extends Fragment {
 
     private NavController navController;
-    private TextInputEditText companyEmailField, companyNameField, companyPhoneNumberField ,cityField, addressField;
-    private TextInputLayout companyEmailLayout, companyNameLayout, companyPhoneNumberLayout, cityLayout, addressLayout;
-    private String companyEmail, companyName, companyPhoneNumber, city, address;
+    private TextInputEditText companyEmailField, companyNameField, companyPhoneNumberField;
+    private TextInputLayout companyEmailLayout, companyNameLayout, companyPhoneNumberLayout;
+    private String companyEmail, companyName, companyPhoneNumber;
 
 
     @Override
@@ -43,8 +43,6 @@ public class CompanyData1Fragment extends Fragment {
                 bundle.putString("companyName", companyName);
                 bundle.putString("companyEmail", companyEmail);
                 bundle.putString("companyPhoneNumber", companyPhoneNumber);
-                bundle.putString("city", city);
-                bundle.putString("address", address);
                 navController.navigate(R.id.action_to_company_data2, bundle);
             }
         });
@@ -96,25 +94,6 @@ public class CompanyData1Fragment extends Fragment {
             companyPhoneNumberLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
         }
 
-        if (city.isEmpty()) {
-            cityLayout.setError("City is required"); // Show error message
-            cityLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
-            hasError = true;
-        } else {
-            cityLayout.setError(null); // Clear error
-            cityLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
-        }
-
-        if (address.isEmpty()) {
-            addressLayout.setError("Address is required"); // Show error message
-            addressLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
-            hasError = true;
-        } else {
-            addressLayout.setError(null); // Clear error
-            addressLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
-        }
-
-
         return hasError;
     }
 
@@ -123,14 +102,11 @@ public class CompanyData1Fragment extends Fragment {
         companyEmailLayout = view.findViewById(R.id.register_email_layout);
         companyNameLayout = view.findViewById(R.id.register_name_layout);
         companyPhoneNumberLayout = view.findViewById(R.id.register_phone_number_layout);
-        cityLayout = view.findViewById(R.id.register_city_layout);
-        addressLayout = view.findViewById(R.id.register_address_layout);
+
 
         companyEmailField = (TextInputEditText) companyEmailLayout.getEditText();
         companyNameField = (TextInputEditText) companyNameLayout.getEditText();
         companyPhoneNumberField = (TextInputEditText) companyPhoneNumberLayout.getEditText();
-        cityField = (TextInputEditText) cityLayout.getEditText();
-        addressField = (TextInputEditText) addressLayout.getEditText();
 
     }
 
@@ -138,8 +114,6 @@ public class CompanyData1Fragment extends Fragment {
         companyEmail = companyEmailField != null ? companyEmailField.getText().toString().trim() : "";
         companyName = companyNameField != null ? companyNameField.getText().toString().trim() : "";
         companyPhoneNumber = companyPhoneNumberField != null ? companyPhoneNumberField.getText().toString().trim() : "";
-        city = cityField != null ? cityField.getText().toString().trim() : "";
-        address = addressField != null ? addressField.getText().toString().trim() : "";
     }
 
 }

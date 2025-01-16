@@ -98,40 +98,6 @@
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!--City -->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/BlueBackgroundInputField"
-            android:id="@+id/register_city_layout"
-            app:errorEnabled="true"
-            android:textAppearance="@style/WhiteRegularText"
-            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_city"
-                android:textAppearance="@style/WhiteRegularText" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!--Address -->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/BlueBackgroundInputField"
-            android:id="@+id/register_address_layout"
-            android:textAppearance="@style/WhiteRegularText"
-            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:errorEnabled="true"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_address"
-                android:textAppearance="@style/WhiteRegularText" />
-        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>

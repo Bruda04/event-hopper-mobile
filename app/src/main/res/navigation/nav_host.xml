@@ -262,16 +262,16 @@
             />
         <action
             android:id="@+id/action_to_image_upload"
-            app:destination="@id/pupImageUploadFragment"
+            app:destination="@id/pupImageUploadUpgradeFragment"
 
             />
     </fragment>
 
     <fragment
-        android:id="@+id/pupImageUploadFragment"
-        android:name="com.ftn.eventhopper.fragments.registration.PupImageUploadFragment"
-        android:label="PupImageUpload"
-        tools:layout="@layout/fragment_pup_image_upload">
+        android:id="@+id/pupImageUploadUpgradeFragment"
+        android:name="com.ftn.eventhopper.fragments.upgrades.PupImageUploadUpgradeFragment"
+        android:label="PupImageUploadUpgrade"
+        tools:layout="@layout/fragment_pup_image_upload_upgrade">
 
         <action
             android:id="@+id/action_to_success_pup"

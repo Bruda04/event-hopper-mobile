@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CompanyDetailsDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,8 +19,8 @@ public class UpgradeViewModel extends ViewModel {
         return upgradeSuccess;
     }
 
-    public void upgradeToPup() {
-        Call<Void> call = ClientUtils.profileService.upgradeToPUP();
+    public void upgradeToPup(CompanyDetailsDTO detailsDTO) {
+        Call<Void> call = ClientUtils.profileService.upgradeToPUP(detailsDTO);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
