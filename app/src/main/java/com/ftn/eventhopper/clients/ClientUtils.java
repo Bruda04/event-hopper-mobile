@@ -7,9 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
@@ -34,6 +31,8 @@ import com.google.gson.GsonBuilder;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import lombok.Getter;
+import lombok.Setter;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -98,17 +97,30 @@ public class ClientUtils {
                 .build();
     }
 
+    @Getter
+    @Setter
+    private static IChannelHandler messageHandler;
+    @Getter
+    @Setter
+    private static IChannelHandler notificationHandler;
+
     private static void subscribeToDefaultTopics() {
         subscribeToWebSocketTopic("/user/topic/notifications", new IChannelHandler() {
             @Override
             public void onMessage(String message) {
                 Log.d("WebSocket","Received notification: " + message);
+                if (notificationHandler != null) {
+                    notificationHandler.onMessage(message);
+                }
             }
         });
         subscribeToWebSocketTopic("/user/topic/chat", new IChannelHandler() {
             @Override
             public void onMessage(String message) {
                 Log.d("WebSocket","Received message: " + message);
+                if (messageHandler != null) {
+                    messageHandler.onMessage(message);
+                }
             }
         });
     }
