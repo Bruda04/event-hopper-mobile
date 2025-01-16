@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
         });
 
         view.findViewById(R.id.ListItemUpgradeProfile).setOnClickListener(v -> {
-            //navController.navigate(R.id.action_host_to_register);
+            navController.navigate(R.id.action_to_choose_role);
         });
 
 

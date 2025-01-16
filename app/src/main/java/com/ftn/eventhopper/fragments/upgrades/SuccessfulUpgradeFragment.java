@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.activities.MainActivity;
 
 
 public class SuccessfulUpgradeFragment extends Fragment {
@@ -25,8 +26,7 @@ public class SuccessfulUpgradeFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
 
         view.findViewById(R.id.login_btn).setOnClickListener(v -> {
-            navController.navigate(R.id.action_successful_to_login);
-
+            ((MainActivity) requireActivity()).navigateToAuthGraph();
 
         });
 

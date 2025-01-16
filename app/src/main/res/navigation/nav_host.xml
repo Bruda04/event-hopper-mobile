@@ -77,6 +77,12 @@
             app:destination="@id/login"
             app:popUpTo="@id/profile"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_to_choose_role"
+            app:destination="@id/choose_role"
+            />
+
     </fragment>
 
     <fragment
@@ -254,7 +260,25 @@
             app:destination="@id/successful_upgrading"
             app:popUpTo="@id/choose_role"
             />
+        <action
+            android:id="@+id/action_to_image_upload"
+            app:destination="@id/pupImageUploadFragment"
+
+            />
     </fragment>
+
+    <fragment
+        android:id="@+id/pupImageUploadFragment"
+        android:name="com.ftn.eventhopper.fragments.registration.PupImageUploadFragment"
+        android:label="PupImageUpload"
+        tools:layout="@layout/fragment_pup_image_upload">
+
+        <action
+            android:id="@+id/action_to_success_pup"
+            app:destination="@id/successful_upgrading"
+            app:popUpTo="@id/pupImageUploadFragment" />
+    </fragment>
+
 
 
 </navigation>

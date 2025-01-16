@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.invitations.viewmodels.InvitationsViewModel;
@@ -32,15 +33,23 @@ public class ChooseRoleFragment extends Fragment {
 
         navController = NavHostFragment.findNavController(this);
 
+        viewModel.getUpgradeSuccess().observe(getViewLifecycleOwner(), success -> {
+            if (success != null && success) {
+                navController.navigate(R.id.action_to_success);
+            } else if (success != null) {
+                Toast.makeText(getContext(), "Unsuccessful upgrading", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         view.findViewById(R.id.organizer_btn).setOnClickListener(v -> {
 
             viewModel.upgradeToOD();
-            navController.navigate(R.id.action_to_success);
         });
 
         view.findViewById(R.id.pup_btn).setOnClickListener(v -> {
 
             navController.navigate(R.id.action_to_company_data1);
+
         });
 
         return view;

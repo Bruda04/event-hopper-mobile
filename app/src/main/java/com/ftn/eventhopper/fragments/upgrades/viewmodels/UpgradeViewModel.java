@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.services.auth.UserService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +25,7 @@ public class UpgradeViewModel extends ViewModel {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     upgradeSuccess.postValue(true); // Notify success
+                    logout();
                 } else {
                     upgradeSuccess.postValue(false); // Notify failure
                 }
@@ -43,6 +45,7 @@ public class UpgradeViewModel extends ViewModel {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     upgradeSuccess.postValue(true); // Notify success
+                    logout();
                 } else {
                     upgradeSuccess.postValue(false); // Notify failure
                 }
@@ -53,5 +56,9 @@ public class UpgradeViewModel extends ViewModel {
                 upgradeSuccess.postValue(false); // Notify failure
             }
         });
+    }
+
+    public void logout(){
+        UserService.clearJwtToken();
     }
 }
