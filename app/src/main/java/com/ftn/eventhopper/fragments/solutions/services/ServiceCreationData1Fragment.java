@@ -51,7 +51,7 @@ public class ServiceCreationData1Fragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 viewModel.reset();
-                navController.popBackStack(R.id.pup_services, false);
+                navController.popBackStack(R.id.loginFragment, false);
             }
         });
     }
