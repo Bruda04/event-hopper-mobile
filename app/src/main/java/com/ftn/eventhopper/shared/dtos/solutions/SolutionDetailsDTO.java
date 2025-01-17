@@ -34,4 +34,6 @@ public class SolutionDetailsDTO {
     private int reservationWindowDays;
     private int cancellationWindowDays;
     private boolean favorite;
+    private boolean pendingRating;
+    private boolean pendingComment;
 }
