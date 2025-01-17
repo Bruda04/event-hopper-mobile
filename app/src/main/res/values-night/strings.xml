@@ -85,4 +85,10 @@
     <string name="provide_emails">Please, enter email addresses to invite</string>
     <string name="loading_services">Loading services...</string>
     <string name="images_are_required">Images are required</string>
+    <string name="rating">Rating</string>
+    <string name="comment">Comment</string>
+    <string name="close_chat">Close chat</string>
+    <string name="loading_conversations">Loading conversations...</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="send">Send</string>
 </resources>
