@@ -7,9 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
@@ -21,6 +18,7 @@ import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
 import com.ftn.eventhopper.clients.services.invitations.InvitationService;
 import com.ftn.eventhopper.clients.services.images.ImageService;
 import com.ftn.eventhopper.clients.services.locations.LocationService;
+import com.ftn.eventhopper.clients.services.messages.MessageService;
 import com.ftn.eventhopper.clients.services.solutions.ProductService;
 import com.ftn.eventhopper.clients.services.solutions.ServiceService;
 import com.ftn.eventhopper.clients.services.users.LoginService;
@@ -34,6 +32,8 @@ import com.google.gson.GsonBuilder;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import lombok.Getter;
+import lombok.Setter;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -79,7 +79,7 @@ public class ClientUtils {
             .client(setupClient())
             .build();
 
-    private static Gson setupGson() {
+    public static Gson setupGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -98,17 +98,30 @@ public class ClientUtils {
                 .build();
     }
 
+    @Getter
+    @Setter
+    private static IChannelHandler messageHandler;
+    @Getter
+    @Setter
+    private static IChannelHandler notificationHandler;
+
     private static void subscribeToDefaultTopics() {
         subscribeToWebSocketTopic("/user/topic/notifications", new IChannelHandler() {
             @Override
             public void onMessage(String message) {
                 Log.d("WebSocket","Received notification: " + message);
+                if (notificationHandler != null) {
+                    notificationHandler.onMessage(message);
+                }
             }
         });
         subscribeToWebSocketTopic("/user/topic/chat", new IChannelHandler() {
             @Override
             public void onMessage(String message) {
                 Log.d("WebSocket","Received message: " + message);
+                if (messageHandler != null) {
+                    messageHandler.onMessage(message);
+                }
             }
         });
     }
@@ -118,10 +131,9 @@ public class ClientUtils {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(message -> {
-                    Log.d("WebSocket","Received message: " + message.getPayload());
                     messageHandler.onMessage(message.getPayload());
                 }, throwable -> {
-                    Log.e("WebSocket","Error on subscribing to topic: " + throwable.getMessage());
+                    Log.e("WebSocket","Error on topic handler: " + topic + " " + throwable.getMessage());
                 });
     }
 
@@ -135,7 +147,11 @@ public class ClientUtils {
     }
 
     public static void disconnectStompClient() {
-        if (stompClient != null) {
+        if (stompClient == null) {
+            return;
+        }
+
+        if (stompClient.isConnected()) {
             stompClient.disconnect();
         }
     }
@@ -151,5 +167,6 @@ public class ClientUtils {
     public static ServiceService serviceService = retrofit.create(ServiceService.class);
     public static InvitationService invitationService = retrofit.create(InvitationService.class);
     public static ImageService ImageService = retrofit.create(ImageService.class);
+    public static MessageService messageService = retrofit.create(MessageService.class);
 
 }

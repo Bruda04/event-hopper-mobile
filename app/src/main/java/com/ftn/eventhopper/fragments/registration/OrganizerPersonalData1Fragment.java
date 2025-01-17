@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.registration;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,6 +36,18 @@ public class OrganizerPersonalData1Fragment extends Fragment {
     private TextInputLayout emailLayout, nameLayout, surnameLayout, passwordLayout, passwordAgainLayout;
     private String email, name, surname, password, passwordAgain;
     private Button nextButton;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.registerFragment, false);
+            }
+        });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

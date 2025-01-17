@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.registration;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
@@ -26,6 +28,20 @@ public class PupPersonalDataFragment extends Fragment {
     private TextInputEditText emailField, nameField, surnameField, phoneField, cityField, addressField;
     private TextInputLayout emailLayout, nameLayout, surnameLayout, phoneLayout, cityLayout, addressLayout;
     private String email, name, surname, phone, city, address;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.pupImageUploadFragment, false);
+            }
+        });
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +70,15 @@ public class PupPersonalDataFragment extends Fragment {
                         receivedBundle.putString("address", address);
 
                         viewModel.register(receivedBundle);
+
+                        viewModel.getRegistrationComplete().observe(getViewLifecycleOwner(), isComplete -> {
+                            if (isComplete != null && isComplete) {
+                                viewModel.cleanupCache(requireContext());  // Call the cleanupCache method here
+                                navController.navigate(R.id.action_to_confirm_email);
+                            } else {
+                                Toast.makeText(requireContext(), "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         navController.navigate(R.id.action_to_confirm_email);
                     }
                 });

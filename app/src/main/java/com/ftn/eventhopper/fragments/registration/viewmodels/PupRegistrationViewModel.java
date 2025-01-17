@@ -1,8 +1,12 @@
 package com.ftn.eventhopper.fragments.registration.viewmodels;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
@@ -17,10 +21,12 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CreateServiceProvid
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import lombok.Getter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -28,6 +34,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PupRegistrationViewModel extends ViewModel {
+    @Getter
+    private MutableLiveData<Boolean> registrationComplete = new MutableLiveData<>();
+
     public void checkEmail(String email, OrganizerRegistrationViewModel.EmailCheckCallback callback) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email);
         Call<Boolean> call = ClientUtils.registrationService.isEmailTaken(requestBody);
@@ -90,75 +99,101 @@ public class PupRegistrationViewModel extends ViewModel {
 
 
 
-    public void submitProfilePicture(CreateServiceProviderDTO pupDto, CreateServiceProviderAccountDTO createAccountDTO, Bundle bundle){
-        if(!bundle.containsKey("profilePicture")){
+    public void submitProfilePicture(CreateServiceProviderDTO pupDto, CreateServiceProviderAccountDTO createAccountDTO, Bundle bundle) {
+        if (!bundle.containsKey("profilePicturePath")) {
             submitCompanyPhotos(pupDto, createAccountDTO, bundle);
             return;
         }
 
-        ImagePreviewAdapter.ImagePreviewItem image = (ImagePreviewAdapter.ImagePreviewItem) bundle.getSerializable("profilePicture");
+        String imagePath = bundle.getString("profilePicturePath"); // Retrieve byte array
 
-        Call<String> call = ImageUtils.uploadImage(image.getBitmap());
+        if (imagePath == null || imagePath.isEmpty()) {
+            submitRegistrationData(createAccountDTO);
+            return;
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        if (bitmap == null) {
+            Log.e("Image Load Error", "Failed to load bitmap from file: " + imagePath);
+            submitCompanyPhotos(pupDto, createAccountDTO, bundle);
+        }
+
+        Call<String> call = ImageUtils.uploadImage(bitmap);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-
                     pupDto.setProfilePicture(response.body());
                     createAccountDTO.setPerson(pupDto);
                     submitCompanyPhotos(pupDto, createAccountDTO, bundle);
                 } else {
+                    Log.e("Image Upload", "Failed to upload profile picture");
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Log.e("Image Upload Error", t.getMessage());
             }
         });
 
-
     }
 
-    public void submitCompanyPhotos(CreateServiceProviderDTO pupDto, CreateServiceProviderAccountDTO createAccountDTO, Bundle bundle){
-        if(!bundle.containsKey("companyPictures")){
+
+    public void submitCompanyPhotos(CreateServiceProviderDTO pupDto, CreateServiceProviderAccountDTO createAccountDTO, Bundle bundle) {
+        if (!bundle.containsKey("companyPictures")) {
             submitRegistrationData(createAccountDTO);
             return;
         }
 
-        ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedImages = (ArrayList<ImagePreviewAdapter.ImagePreviewItem>) bundle.getSerializable("companyPictures");
-        AtomicInteger remainingUploads = new AtomicInteger(uploadedImages.size());
+        // Retrieve the file paths of the images from the bundle
+        ArrayList<String> imageFilePaths = bundle.getStringArrayList("companyPictures");
+        if (imageFilePaths == null || imageFilePaths.isEmpty()) {
+            submitRegistrationData(createAccountDTO);
+            return;
+        }
+
+        AtomicInteger remainingUploads = new AtomicInteger(imageFilePaths.size());
         AtomicBoolean hasUploadFailed = new AtomicBoolean(false);
 
-        if(uploadedImages == null){
-            submitRegistrationData(createAccountDTO);
-            return;
-        }
         pupDto.setCompanyPhotos(new ArrayList<>());
-        for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
-            Call<String> call = ImageUtils.uploadImage(image.getBitmap());
+
+        for (String filePath : imageFilePaths) {
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+            if (bitmap == null) {
+                Log.e("Image Load Error", "Failed to load bitmap from file: " + filePath);
+                continue;
+            }
+
+            Call<String> call = ImageUtils.uploadImage(bitmap);
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
                         pupDto.getCompanyPhotos().add(response.body());
-                        if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get())  {
+                        if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get()) {
                             createAccountDTO.setPerson(pupDto);
+                            registrationComplete.setValue(true);
                             submitRegistrationData(createAccountDTO);
                         }
-
                     } else {
-                        Log.d("Error uploading images", "Image failed");
-                        uploadedImages.clear();
+                        Log.e("Image Upload Error", "Failed to upload image: " + filePath);
+                        hasUploadFailed.set(true);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("Image upload failed", t.getMessage());
+                    Log.e("Image Upload Failure", "Error uploading image: " + filePath, t);
+                    hasUploadFailed.set(true);
+                    if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get()) {
+                        submitRegistrationData(createAccountDTO);
+                    }
                 }
             });
         }
     }
+
 
 
 
@@ -170,6 +205,7 @@ public class PupRegistrationViewModel extends ViewModel {
                 if (callResponse.isSuccessful()) {
                     Log.d("Pup registration", "User registered");
                 } else {
+                    registrationComplete.setValue(false);
                     Log.e("Pup registration", "Registration failed");
                 }
             }
@@ -178,6 +214,16 @@ public class PupRegistrationViewModel extends ViewModel {
                 Log.e("Pup registration", "Server error occurred.");
             }
         });
+    }
+
+
+    public void cleanupCache(Context context) {
+        File cacheDir = context.getCacheDir();
+        for (File file : cacheDir.listFiles()) {
+            if (file.getName().startsWith("image_")) {
+                file.delete();
+            }
+        }
     }
 
 }

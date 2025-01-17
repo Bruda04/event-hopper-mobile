@@ -7,23 +7,28 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
+import com.ftn.eventhopper.fragments.registration.viewmodels.PupImageUploadViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,6 +38,7 @@ import java.util.ArrayList;
      * create an instance of this fragment.
      */
 public class PupCompanyData2Fragment extends Fragment {
+    private PupImageUploadViewModel viewModel;
     private ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedProfilePicture = new ArrayList<>();
     private MaterialButton uploadImageButton;
     private ImagePreviewAdapter imagePreviewAdapter;
@@ -43,8 +49,22 @@ public class PupCompanyData2Fragment extends Fragment {
     private String description, city, address;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.pupCompanyData1Fragment, false);
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pup_company_data2, container, false);
+        viewModel = new ViewModelProvider(this).get(PupImageUploadViewModel.class);
+
+
         navController = NavHostFragment.findNavController(this);
         uploadImageButton = view.findViewById(R.id.upload_profile_picture);
         uploadImageButton.setOnClickListener(v -> selectImages());
@@ -65,8 +85,20 @@ public class PupCompanyData2Fragment extends Fragment {
                 receivedBundle.putString("description", description);
                 receivedBundle.putString("companyCity", city);
                 receivedBundle.putString("companyAddress", address);
-                if(!this.uploadedProfilePicture.isEmpty()){
-                    receivedBundle.putSerializable("profilePicture", this.uploadedProfilePicture.get(0));
+
+                if (!this.uploadedProfilePicture.isEmpty()) {
+                    Bitmap bitmap = this.uploadedProfilePicture.get(0).getBitmap();
+                    if (bitmap != null) {
+                        // Save the bitmap to a temporary file and pass its path
+                        String filePath = viewModel.saveSingleBitmapToCache(requireContext(), bitmap);
+
+                        // Add the file path to the bundle
+                        if (filePath != null) {
+                            receivedBundle.putString("profilePicturePath", filePath); // Store file path
+                        } else {
+                            Log.e("Bitmap Save Error", "Failed to save the profile picture to cache.");
+                        }
+                    }
                 }
 
                 navController.navigate(R.id.action_to_pup_image_upload, receivedBundle);

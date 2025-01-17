@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
-        if (!UserService.getJwtToken().isEmpty()) {
+        if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
         }
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 getInvitationById(UUID.fromString(invitationId));
             } else if (path.startsWith("/verify-email/")) {
                 String verificationToken = data.getLastPathSegment();
-                Log.d("DeepLink", "Opened from verify email link with token: " + verificationToken);
+                Log.d("Email verification", "Opened from verify email link with token: " + verificationToken);
                 Bundle bundle = new Bundle();
                 UserService.clearJwtToken();
                 bundle.putString("token", verificationToken);
@@ -165,5 +165,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ClientUtils.disconnectStompClient();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ClientUtils.connectWebSocket();
+    }
 
 }
