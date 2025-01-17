@@ -8,10 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.invitations.InviteFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class HomeFragment extends Fragment {
@@ -19,6 +24,8 @@ public class HomeFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     HomeTabsPagerAdapter adapter;
+
+    FloatingActionButton chatButton;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -44,6 +51,14 @@ public class HomeFragment extends Fragment {
         adapter = new HomeTabsPagerAdapter(getActivity());
         viewPager2.setAdapter(adapter);
 
+        chatButton  = view.findViewById(R.id.floating_action_button);
+
+
+        chatButton.setOnClickListener(v ->{
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.action_to_conversations);
+        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -67,8 +82,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
         return view;
     }
+
+
 
     @Override
     public void onStart() {

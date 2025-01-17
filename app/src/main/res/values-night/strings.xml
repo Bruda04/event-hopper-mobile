@@ -22,7 +22,7 @@
     <string name="backArrowButton">button for going back</string>
     <string name="forwardArrowButton">button for going forward</string>
     <string name="pageLabel">1/10</string>
-    <string name="commentsbutton">floating button for comments</string>
+    <string name="chatbutton">floating button for chat</string>
     <string name="all_solutions_title">Explore all services/products</string>
     <string name="service_card_image">service card image</string>
     <string name="pup_create_service">pup create service</string>
@@ -79,8 +79,16 @@
     <string name="choose_availability">Choose availability</string>
     <string name="loading_prices">Loading prices...</string>
     <string name="clear">Clear</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="new_user">New user</string>
+    <string name="invite_people">Invite people</string>
+    <string name="provide_emails">Please, enter email addresses to invite</string>
     <string name="loading_services">Loading services...</string>
     <string name="images_are_required">Images are required</string>
     <string name="rating">Rating</string>
     <string name="comment">Comment</string>
+    <string name="close_chat">Close chat</string>
+    <string name="loading_conversations">Loading conversations...</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="send">Send</string>
 </resources>
