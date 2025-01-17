@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -47,6 +48,17 @@ public class PupImageUploadUpgradeFragment extends Fragment {
     private MaterialButton uploadImageButton;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.company_information2, false);
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pup_image_upload_upgrade, container, false);
@@ -70,7 +82,6 @@ public class PupImageUploadUpgradeFragment extends Fragment {
 
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
             Bundle receivedBundle = getArguments();
-            receivedBundle.putSerializable("companyPictures", this.uploadedImages);
 
             CompanyDetailsDTO detailsDTO = new CompanyDetailsDTO();
 
@@ -83,7 +94,20 @@ public class PupImageUploadUpgradeFragment extends Fragment {
             companyLocation.setCity(receivedBundle.getString("city"));
 
             detailsDTO.setCompanyLocation(companyLocation);
-            //detailsDTO.setCompanyPhotos(this.uploadedImages);
+
+            if (!this.uploadedImages.isEmpty()) {
+                for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
+                    if (image.isBitmap()) {
+                        viewModel.saveBitmapToCache(requireContext(), image.getBitmap());
+                    }
+                }
+
+                ArrayList<String> imageFilePaths = new ArrayList<>(viewModel.getImageFilePaths());
+//                receivedBundle.putStringArrayList("companyPictures", imageFilePaths);
+                detailsDTO.setCompanyPhotos(imageFilePaths);
+            }
+
+
             viewModel.upgradeToPup(detailsDTO);
 
         });
