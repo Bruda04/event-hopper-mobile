@@ -3,9 +3,13 @@ package com.ftn.eventhopper.fragments.serviceProviderPage;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,13 +55,25 @@ public class ServiceProviderPageFragment extends Fragment {
     private TextView companyRating;
     private RecyclerView companyComments;
     private TextView statusMessage;
+    private NavController navController;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.service_provider_page, true);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_provider_page, container, false);
+        navController = NavHostFragment.findNavController(this);
 
         viewModel = new ViewModelProvider(this).get(ServiceProviderPageViewModel.class);
         statusMessage = view.findViewById(R.id.status_message);

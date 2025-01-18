@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.solutions;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -69,6 +70,17 @@ public class SolutionPageFragment extends Fragment {
     private TextView statusMessage;
     private MaterialButton reviewButton;
     private MaterialButton chatButton;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.solution_page, true);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,

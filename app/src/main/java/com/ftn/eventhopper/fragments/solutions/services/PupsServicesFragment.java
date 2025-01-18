@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,6 +47,7 @@ public class PupsServicesFragment extends Fragment {
     private TextView pager;
     private FloatingActionButton createServiceButton;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private NavController navController;
 
 
     public PupsServicesFragment() {
@@ -53,9 +55,21 @@ public class PupsServicesFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.pup_services, true);
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pups_services, container, false);
+        navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(this).get(PupsServicesViewModel.class);
 
         statusMessage = view.findViewById(R.id.status_message);
