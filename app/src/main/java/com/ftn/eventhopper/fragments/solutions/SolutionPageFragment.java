@@ -187,11 +187,16 @@ public class SolutionPageFragment extends Fragment {
         }
         rating.setText(ratingText.toString());
 
-        String[] imageUrls = solution.getPictures().toArray(String[]::new);
-        ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
-        imageSlider.setAdapter(imageSliderAdapter);
+        if (solution.getPictures().isEmpty()) {
+            imageSlider.setVisibility(View.GONE);
+        } else {
+            String[] imageUrls = solution.getPictures().toArray(String[]::new);
+            ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
+            imageSlider.setAdapter(imageSliderAdapter);
+            imageSlider.setVisibility(View.VISIBLE);
+        }
 
-        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(solution.getComments()));
+        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(solution.getComments()), getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         comments.setLayoutManager(layoutManager);
         comments.setItemAnimator(new DefaultItemAnimator());

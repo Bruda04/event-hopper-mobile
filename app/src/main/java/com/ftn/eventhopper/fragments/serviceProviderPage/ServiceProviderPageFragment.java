@@ -1,7 +1,9 @@
 package com.ftn.eventhopper.fragments.serviceProviderPage;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -101,16 +103,24 @@ public class ServiceProviderPageFragment extends Fragment {
     }
 
     private void setFieldValues(ServiceProviderDetailsDTO provider) {
-        Glide.with(this)
-                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, provider.getProfilePicture()))
-                .circleCrop()
-                .placeholder(R.drawable.baseline_image_placeholder_24)
-                .error(R.drawable.baseline_image_not_supported_24)
-                .into(profilePicture);
-
-        String[] imageUrls = provider.getCompanyPhotos().toArray(String[]::new);
-        ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
-        companyImagesSlider.setAdapter(imageSliderAdapter);
+        if (provider.getProfilePicture() == null || provider.getProfilePicture().isEmpty()) {
+            profilePicture.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.profile_pic_temp));
+        } else {
+            Glide.with(this)
+                    .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, provider.getProfilePicture()))
+                    .circleCrop()
+                    .placeholder(R.drawable.baseline_image_placeholder_24)
+                    .error(R.drawable.baseline_image_not_supported_24)
+                    .into(profilePicture);
+        }
+        if (provider.getCompanyPhotos().isEmpty()) {
+            companyImagesSlider.setVisibility(View.GONE);
+        } else {
+            String[] imageUrls = provider.getCompanyPhotos().toArray(String[]::new);
+            ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
+            companyImagesSlider.setAdapter(imageSliderAdapter);
+            companyImagesSlider.setVisibility(View.VISIBLE);
+        }
 
         companyName.setText(provider.getCompanyName());
 
@@ -140,7 +150,7 @@ public class ServiceProviderPageFragment extends Fragment {
         }
         companyRating.setText(ratingText.toString());
 
-        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(provider.getComments()));
+        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(provider.getComments()), getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         companyComments.setLayoutManager(layoutManager);
         companyComments.setItemAnimator(new DefaultItemAnimator());

@@ -3,6 +3,7 @@ package com.ftn.eventhopper.fragments.messages;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -158,12 +159,16 @@ public class SingleChatFragment extends Fragment {
     private void setReceiverFields() {
         receiverName.setText(String.format("%s %s", name, surname));
         receiverUsername.setText(username);
-        Glide.with(this)
-                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, profilePicture))
-                .circleCrop()
-                .placeholder(R.drawable.baseline_image_placeholder_24)
-                .error(R.drawable.baseline_image_not_supported_24)
-                .into(receiverProfilePicture);
+        if (profilePicture == null || profilePicture.isEmpty()) {
+            receiverProfilePicture.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.profile_pic_temp));
+        } else {
+            Glide.with(this)
+                    .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, profilePicture))
+                    .circleCrop()
+                    .placeholder(R.drawable.baseline_image_placeholder_24)
+                    .error(R.drawable.baseline_image_not_supported_24)
+                    .into(receiverProfilePicture);
+        }
     }
 
     @Override
