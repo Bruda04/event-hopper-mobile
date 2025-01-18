@@ -64,18 +64,10 @@ public class ProfileFragment extends Fragment {
 
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-
-            // Clear the back stack and start MainActivity as a new task
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            // Start MainActivity
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // Optional: Clear the activity stack
             startActivity(intent);
 
-
-
-            // Optionally, finish the current activity if needed
-            requireActivity().finish();
         });
 
 
