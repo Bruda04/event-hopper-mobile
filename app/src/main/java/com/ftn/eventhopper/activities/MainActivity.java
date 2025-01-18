@@ -81,14 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void navigateToAuthGraph() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_main_fragment, NavHostFragment.create(R.navigation.nav_auth))
-                .commit();
-    }
-
-
 
 
     private void getInvitationById(UUID id) {
