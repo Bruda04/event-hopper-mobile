@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import com.ftn.eventhopper.shared.models.users.PersonType;
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel viewModel;
+
+    private PersonType role = UserService.getUserRole();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -83,34 +86,47 @@ public class ProfileFragment extends Fragment {
         TextView companyDescription = view.findViewById(R.id.companyDescription);
         TextView companyEmail = view.findViewById(R.id.companyEmail);
 
+        TextView roleTitle = view.findViewById(R.id.role);
         TextView userName = view.findViewById(R.id.userName);
         TextView userAddress = view.findViewById(R.id.userAddress);
-        TextView userCity = view.findViewById(R.id.userCity);
         TextView userEmail = view.findViewById(R.id.userEmail);
 
         View companyInfoSection = view.findViewById(R.id.company_information);
         companyInfoSection.setVisibility(UserService.getUserRole() == PersonType.SERVICE_PROVIDER ? View.VISIBLE : View.GONE);
-        // Observe LiveData
+
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
             if (profile != null) {
-                // Populate Company Info
-                if(UserService.getUserRole() == PersonType.SERVICE_PROVIDER){
+                if(this.role == PersonType.SERVICE_PROVIDER){
                     companyName.setText(profile.getCompanyName());
                     companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");
                     companyDescription.setText(profile.getCompanyDescription());
                     companyEmail.setText(profile.getCompanyEmail());
                 }
 
+                if(this.role == PersonType.SERVICE_PROVIDER){
+                    roleTitle.setText("Service Provider");
+                }
+                if(this.role == PersonType.EVENT_ORGANIZER){
+                    roleTitle.setText("Organizer");
+                }
+                if(this.role == PersonType.ADMIN){
+                    roleTitle.setText("Admin");
+                }
+                if(this.role == PersonType.AUTHENTICATED_USER){
+                    roleTitle.setText("User");
+                }
+
+
+
                 // Populate User Info
                 userName.setText(String.format("%s %s", profile.getName(), profile.getSurname()));
-                userAddress.setText(profile.getLocation() != null ? profile.getLocation().getAddress() : "N/A");
-                userCity.setText(profile.getLocation() != null ? profile.getLocation().getCity() : "N/A");
+                userAddress.setText(profile.getLocation() != null ? profile.getLocation().getAddress() + "," +  profile.getLocation().getCity() : "N/A");
                 userEmail.setText(profile.getEmail());
 
 
                 String profilePicUrl = profile.getProfilePicture();
                 String fullProfileImageUrl = (profilePicUrl == null || profilePicUrl.isEmpty())
-                        ? String.format("%s/profile.png", ClientUtils.SERVICE_API_IMAGE_PATH)
+                        ? String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, "profile.png")
                         : String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, profilePicUrl);
 
                 Glide.with(requireContext())
