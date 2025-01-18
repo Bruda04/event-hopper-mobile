@@ -7,6 +7,7 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDeta
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -50,4 +51,20 @@ public interface ProfileService {
     })
     @GET("accounts/profile")
     Call<ProfileForPersonDTO> getProfile();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/change-profile-picture")
+    Call<Void> changeProfilePicture(@Body String newProfilePicture);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/remove-profile-picture")
+    Call<Void> removeProfilePicture();
+
+
 }

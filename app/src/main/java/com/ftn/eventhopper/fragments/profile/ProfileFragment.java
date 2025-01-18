@@ -1,6 +1,11 @@
 package com.ftn.eventhopper.fragments.profile;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +24,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.activities.MainActivity;
+import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.models.users.PersonType;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +45,7 @@ public class ProfileFragment extends Fragment {
 
     private PersonType role = UserService.getUserRole();
 
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -42,14 +54,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
 
         NavController navController = NavHostFragment.findNavController(this);
 
-        // Set up the click listener for the "View my services" button
         view.findViewById(R.id.ListItemMyServices).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_pup_services);
         });
@@ -73,6 +83,10 @@ public class ProfileFragment extends Fragment {
 
 
         ImageView profileImage = view.findViewById(R.id.profileImage);
+        profileImage.setOnClickListener(v -> {
+            showImageDialog(view);
+        });
+
         TextView companyName = view.findViewById(R.id.CompanyName);
         TextView companyAddress = view.findViewById(R.id.companyAddress);
         TextView companyDescription = view.findViewById(R.id.companyDescription);
@@ -134,4 +148,81 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
+
+    private void showImageDialog(View view) {
+        // Create the builder for the dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Inflate the custom layout
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_profile_picture, null);
+
+        // Set the dialog's content view before creating the dialog
+        builder.setView(dialogView);
+
+        // Create the dialog after setting the view
+        AlertDialog dialog = builder.create();
+
+        // Find the TextViews and set click listeners
+        TextView uploadOption = dialogView.findViewById(R.id.uploadOption);
+        TextView removeOption = dialogView.findViewById(R.id.removeOption);
+
+        uploadOption.setOnClickListener(v -> {
+            changeProfilePicture(view);
+            dialog.dismiss(); // Close the dialog after the option is selected
+        });
+
+        removeOption.setOnClickListener(v -> {
+            removeProfilePicture(view);
+            dialog.dismiss(); // Close the dialog after the option is selected
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
+
+
+    private void removeProfilePicture(View view){
+        ImageView profileImage = view.findViewById(R.id.profileImage);
+        Glide.with(requireContext())
+                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, "profile.png"))
+                .circleCrop()
+                .into(profileImage);
+        viewModel.removeProfilePicture();
+    }
+
+    private void changeProfilePicture(View view){
+        ImagePreviewAdapter.ImagePreviewItem image = selectImages();
+        if(image == null){
+            return;
+        }
+
+        ImageView profileImage = view.findViewById(R.id.profileImage);
+        viewModel.changeProfilePicture(image.getBitmap());
+        viewModel.getImageUrlLiveData().observe(getViewLifecycleOwner(), imageUrl -> {
+            if (imageUrl != null) {
+                Glide.with(this)
+                        .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, imageUrl))  // Use the new image URL
+                        .circleCrop()
+                        .into(profileImage);
+            }
+        });
+    }
+
+
+    private ImagePreviewAdapter.ImagePreviewItem selectImages() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), intent.getData());
+            ImagePreviewAdapter.ImagePreviewItem uploadedProfilePicture = new ImagePreviewAdapter.ImagePreviewItem(bitmap);
+            return uploadedProfilePicture;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }

@@ -141,5 +141,7 @@
     <string name="log_out">Log out</string>
     <string name="deactivate_profile">Deactivate profile</string>
     <string name="manage_categories">Manage categories</string>
+    <string name="remove_profile_picture">Remove profile picture</string>
+    <string name="upload_new_profile_picture">Upload New profile picture</string>
 
 </resources>
