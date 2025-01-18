@@ -130,8 +130,10 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HostFragment();
                         ClientUtils.profileService.addEventToAttending(invitationDTO.getValue().getEvent().getId());
                     }else{
-                        fragment = NavHostFragment.create(R.navigation.nav_auth);
-                        //kako da nakon logina se doda event u attending?
+                        Bundle bundle = new Bundle();
+                        bundle.putString("attending-event", invitationDTO.getValue().getEvent().getId().toString());
+                        fragment = NavHostFragment.create(R.navigation.nav_auth, bundle);
+
                     }
 
                     getSupportFragmentManager()

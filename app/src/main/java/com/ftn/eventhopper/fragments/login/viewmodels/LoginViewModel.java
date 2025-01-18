@@ -12,6 +12,7 @@ import com.ftn.eventhopper.shared.dtos.login.LoginResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import lombok.Getter;
 import retrofit2.Call;
@@ -66,6 +67,24 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 errorMessage.postValue("Error occurred on server, please try again later.");
+            }
+        });
+    }
+
+    public void addAttendingEventOnLogin(UUID eventId){
+        ClientUtils.profileService.addEventToAttending(eventId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i("Retrofit", "Event successfully added to attending.");
+                } else {
+                    Log.e("RetrofitError", "Response code: " + response.code() + ", message: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("RetrofitFailure", "Request failed: " + t.getMessage(), t);
             }
         });
     }
