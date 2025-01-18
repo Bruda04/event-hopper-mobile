@@ -66,7 +66,7 @@ public class SingleChatFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 viewModel.disconnectChat();
-                navController.popBackStack(R.id.conversations_fragment, false);
+                navController.popBackStack(R.id.single_chat_fragment, true);
             }
         });
     }

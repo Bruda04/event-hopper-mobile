@@ -68,6 +68,7 @@ public class SolutionPageFragment extends Fragment {
     private ImageView favoriteButton;
     private TextView statusMessage;
     private MaterialButton reviewButton;
+    private MaterialButton chatButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -103,6 +104,7 @@ public class SolutionPageFragment extends Fragment {
             comments = view.findViewById(R.id.solution_comments_recyclerview);
             favoriteButton = view.findViewById(R.id.solution_favorite);
             reviewButton = view.findViewById(R.id.solution_review_button);
+            chatButton = view.findViewById(R.id.solution_open_chat);
         }
 
         viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), solution -> {
@@ -195,7 +197,7 @@ public class SolutionPageFragment extends Fragment {
         comments.setItemAnimator(new DefaultItemAnimator());
         comments.setAdapter(commentsAdapter);
 
-        if(!UserService.getJwtToken().isEmpty()){
+        if(UserService.isTokenValid()){
             favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_star_24));
             if (solution.isFavorite()) {
                 favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
@@ -216,6 +218,21 @@ public class SolutionPageFragment extends Fragment {
             } else {
                 reviewButton.setVisibility(View.GONE);
             }
+
+            if (solution.getConversationInitialization() != null) {
+                chatButton.setVisibility(View.VISIBLE);
+                chatButton.setOnClickListener(v -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", solution.getConversationInitialization().getUsername());
+                    bundle.putString("name", solution.getConversationInitialization().getName());
+                    bundle.putString("surname", solution.getConversationInitialization().getSurname());
+                    bundle.putString("profilePicture", solution.getConversationInitialization().getProfilePictureUrl());
+                    navController.navigate(R.id.action_to_chat_with_provider, bundle);
+                });
+            } else {
+                chatButton.setVisibility(View.GONE);
+            }
+
         }
 
         providerName.setOnClickListener(v -> {

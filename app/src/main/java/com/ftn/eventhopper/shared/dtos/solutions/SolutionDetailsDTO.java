@@ -4,6 +4,7 @@ package com.ftn.eventhopper.shared.dtos.solutions;
 import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.comments.SimpleCommentDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
+import com.ftn.eventhopper.shared.dtos.messages.ConversationPreviewDTO;
 import com.ftn.eventhopper.shared.dtos.prices.SimplePriceDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.SimpleServiceProviderDTO;
 
@@ -36,4 +37,5 @@ public class SolutionDetailsDTO {
     private boolean favorite;
     private boolean pendingRating;
     private boolean pendingComment;
+    private ConversationPreviewDTO conversationInitialization;
 }

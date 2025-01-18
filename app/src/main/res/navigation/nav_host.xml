@@ -210,6 +210,11 @@
             app:destination="@id/service_provider_page"
             app:popUpTo="@id/solution_page"/>
 
+        <action
+            android:id="@+id/action_to_chat_with_provider"
+            app:destination="@id/single_chat_fragment"
+            app:popUpTo="@id/solution_page"/>
+
     </fragment>
 
     <fragment

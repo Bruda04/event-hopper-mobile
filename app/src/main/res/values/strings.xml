@@ -143,4 +143,6 @@
     <string name="loading_conversations">Loading conversations...</string>
     <string name="type_your_message">Type your message...</string>
     <string name="send">Send</string>
+    <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
+    <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
 </resources>
