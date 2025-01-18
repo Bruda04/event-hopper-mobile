@@ -11,7 +11,7 @@ import lombok.Getter;
 public class ProfileViewModel extends ViewModel {
     public void logout(){
         UserService.clearJwtToken();
-        ClientUtils.connectWebSocket();
+        ClientUtils.disconnectStompClient();
     }
 
 }
