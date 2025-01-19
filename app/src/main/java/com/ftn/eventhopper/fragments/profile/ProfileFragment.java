@@ -45,6 +45,8 @@ public class ProfileFragment extends Fragment {
 
     private PersonType role = UserService.getUserRole();
 
+    private ImageView profileImage;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -81,8 +83,7 @@ public class ProfileFragment extends Fragment {
         });
 
 
-
-        ImageView profileImage = view.findViewById(R.id.profileImage);
+        this.profileImage = view.findViewById(R.id.profileImage);
         profileImage.setOnClickListener(v -> {
             showImageDialog(view);
         });
@@ -142,7 +143,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Fetch profile data
         viewModel.fetchProfile();
 
 
@@ -151,33 +151,24 @@ public class ProfileFragment extends Fragment {
 
 
     private void showImageDialog(View view) {
-        // Create the builder for the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        // Inflate the custom layout
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_profile_picture, null);
-
-        // Set the dialog's content view before creating the dialog
         builder.setView(dialogView);
 
-        // Create the dialog after setting the view
         AlertDialog dialog = builder.create();
-
-        // Find the TextViews and set click listeners
         TextView uploadOption = dialogView.findViewById(R.id.uploadOption);
         TextView removeOption = dialogView.findViewById(R.id.removeOption);
 
         uploadOption.setOnClickListener(v -> {
             changeProfilePicture(view);
-            dialog.dismiss(); // Close the dialog after the option is selected
+            dialog.dismiss();
         });
 
         removeOption.setOnClickListener(v -> {
             removeProfilePicture(view);
-            dialog.dismiss(); // Close the dialog after the option is selected
+            dialog.dismiss();
         });
 
-        // Show the dialog
         dialog.show();
     }
 
@@ -191,36 +182,39 @@ public class ProfileFragment extends Fragment {
         viewModel.removeProfilePicture();
     }
 
-    private void changeProfilePicture(View view){
-        ImagePreviewAdapter.ImagePreviewItem image = selectImages();
-        if(image == null){
-            return;
-        }
-
-        ImageView profileImage = view.findViewById(R.id.profileImage);
-        viewModel.changeProfilePicture(image.getBitmap());
-        viewModel.getImageUrlLiveData().observe(getViewLifecycleOwner(), imageUrl -> {
-            if (imageUrl != null) {
-                Glide.with(this)
-                        .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, imageUrl))  // Use the new image URL
-                        .circleCrop()
-                        .into(profileImage);
-            }
-        });
+    private void changeProfilePicture(View view) {
+        // Open the gallery to allow the user to pick an image
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*"); // Restrict to image files
+        startActivityForResult(intent, 1);
     }
 
 
-    private ImagePreviewAdapter.ImagePreviewItem selectImages() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), intent.getData());
-            ImagePreviewAdapter.ImagePreviewItem uploadedProfilePicture = new ImagePreviewAdapter.ImagePreviewItem(bitmap);
-            return uploadedProfilePicture;
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+
+                viewModel.changeProfilePicture(bitmap);
+
+                viewModel.getImageUrlLiveData().observe(getViewLifecycleOwner(), newImageUrl -> {
+                    if (newImageUrl != null) {
+                        // Update the UI with the new profile picture
+                        Glide.with(requireContext())
+                                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, newImageUrl))
+                                .circleCrop()
+                                .into(profileImage);
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
     }
 
 

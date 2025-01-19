@@ -15,6 +15,8 @@ import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import lombok.Getter;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,8 +76,8 @@ public class ProfileViewModel extends ViewModel {
             public void onResponse(Call<String> imageUploadCall, Response<String> response) {
                 if (response.isSuccessful()) {
                     imageUrlLiveData.setValue(response.body());
-
-                    Call<Void> call = ClientUtils.profileService.changeProfilePicture(response.body());
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), response.body());
+                    Call<Void> call = ClientUtils.profileService.changeProfilePicture(requestBody);
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
