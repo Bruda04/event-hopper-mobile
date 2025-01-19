@@ -143,5 +143,7 @@
     <string name="manage_categories">Manage categories</string>
     <string name="remove_profile_picture">Remove profile picture</string>
     <string name="upload_new_profile_picture">Upload New profile picture</string>
+    <string name="favorites_no_events">You have not favorited any events yet.</string>
+    <string name="favorites_no_solutions">You haven\'t favorited any products/services yet.</string>
 
 </resources>

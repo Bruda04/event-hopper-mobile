@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.solutions.SolutionAdapter;
@@ -50,12 +51,17 @@ public class FavoriteSolutionsFragment extends Fragment {
         }
         allSolutionsRecyclerView.setLayoutTransition(null);
 
-
+        TextView emptyMessage = view.findViewById(R.id.emptyMessage);
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null) {
+            if (profile != null && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
                 allSolutionsRecyclerView.setVisibility(View.VISIBLE);
+                emptyMessage.setVisibility(View.GONE);
                 this.setAll(new ArrayList<>(profile.getFavoriteProducts()));
+            } else {
+                allSolutionsRecyclerView.setVisibility(View.GONE);
+                emptyMessage.setVisibility(View.VISIBLE);
             }
+
         });
         viewModel.fetchProfile();
 

@@ -14,13 +14,10 @@ import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.events.EventAdapter;
-import com.ftn.eventhopper.fragments.home.viewmodels.HomeViewModel;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
-import com.github.islamkhsh.CardSliderViewPager;
-
 import java.util.ArrayList;
-import java.util.UUID;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,11 +51,15 @@ public class FavoriteEventsFragment extends Fragment {
         }
         allEventsRecyclerView.setLayoutTransition(null);
 
-
+        TextView emptyMessage = view.findViewById(R.id.emptyMessage);
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null) {
+            if (profile != null && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
                 allEventsRecyclerView.setVisibility(View.VISIBLE);
+                emptyMessage.setVisibility(View.GONE);
                 this.setAll(new ArrayList<>(profile.getFavoriteEvents()));
+            } else {
+                allEventsRecyclerView.setVisibility(View.GONE);
+                emptyMessage.setVisibility(View.VISIBLE);
             }
         });
         viewModel.fetchProfile();
