@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -12,9 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.home.HomeEventsFragment;
 import com.ftn.eventhopper.fragments.home.HomeSolutionsFragment;
+import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
+import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -23,6 +28,9 @@ public class FavoritesFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     FavoritesTabPagerAdapter adapter;
+    private ProfileViewModel viewModel;
+
+
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -43,6 +51,7 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
 
 
@@ -50,6 +59,13 @@ public class FavoritesFragment extends Fragment {
         viewPager2 = view.findViewById(R.id.viewPager);
         adapter = new FavoritesTabPagerAdapter(getActivity());
         viewPager2.setAdapter(adapter);
+
+
+
+
+
+
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -106,11 +122,11 @@ public class FavoritesFragment extends Fragment {
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    return new HomeEventsFragment(); // Prvi fragment (za prvi tab)
+                    return new FavoriteEventsFragment(); // Prvi fragment (za prvi tab)
                 case 1:
-                    return new HomeSolutionsFragment(); // Drugi fragment (za drugi tab)
+                    return new FavoriteSolutionsFragment(); // Drugi fragment (za drugi tab)
                 default:
-                    return new HomeEventsFragment();
+                    return new FavoriteEventsFragment();
             }
         }
 
