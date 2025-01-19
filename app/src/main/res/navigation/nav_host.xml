@@ -32,6 +32,15 @@
             />
     </fragment>
 
+    <!--Not logged in-->
+    <fragment
+        android:id="@+id/notLoggedIn"
+        android:name="com.ftn.eventhopper.fragments.profile.NotLoggedInFragment"
+        android:label="Not logged in"
+        tools:layout="@layout/fragment_not_logged_in"
+        />
+
+
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"

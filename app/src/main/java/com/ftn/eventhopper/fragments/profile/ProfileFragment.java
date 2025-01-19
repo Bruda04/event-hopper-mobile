@@ -114,16 +114,16 @@ public class ProfileFragment extends Fragment {
                 }
 
                 if(this.role == PersonType.SERVICE_PROVIDER){
-                    roleTitle.setText("Service Provider");
+                    roleTitle.setText(R.string.pup);
                 }
                 if(this.role == PersonType.EVENT_ORGANIZER){
-                    roleTitle.setText("Organizer");
+                    roleTitle.setText(R.string.organizer);
                 }
                 if(this.role == PersonType.ADMIN){
-                    roleTitle.setText("Admin");
+                    roleTitle.setText(R.string.admin);
                 }
                 if(this.role == PersonType.AUTHENTICATED_USER){
-                    roleTitle.setText("User");
+                    roleTitle.setText(R.string.user);
                 }
 
 

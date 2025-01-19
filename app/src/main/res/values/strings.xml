@@ -1,6 +1,9 @@
 <resources>
     <string name="pup">Product/Service provider</string>
     <string name="organizer">Organizer</string>
+    <string name="admin">Admin</string>
+    <string name="user">User</string>
+
     <string name="upload_profile_picture">Upload profile picture (Optional)</string>
     <string name="upload_pictures">Upload images</string>
     <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
@@ -145,5 +148,7 @@
     <string name="upload_new_profile_picture">Upload New profile picture</string>
     <string name="favorites_no_events">You have not favorited any events yet.</string>
     <string name="favorites_no_solutions">You haven\'t favorited any products/services yet.</string>
+    <string name="log_in">Log in</string>
+    <string name="please_login">To view profile and access all \n user benefits, please login.</string>
 
 </resources>
