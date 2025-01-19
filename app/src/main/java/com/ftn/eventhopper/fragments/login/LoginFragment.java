@@ -37,19 +37,24 @@ public class LoginFragment extends Fragment {
         emailLayout = view.findViewById(R.id.login_email_layout);
         passwordLayout = view.findViewById(R.id.login_password_layout);
 
+
+        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+            if (errorMessage.isEmpty()) {
+                Log.d("Navigation", "Navigating to home");
+                navController.navigate(R.id.action_login_to_host);
+            } else {
+                MaterialTextView errorText = view.findViewById(R.id.error_text);
+                errorText.setText(errorMessage);
+            }
+        });
+
+
+
         Button loginButton = view.findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
             retrieveData();
             if (!validateFields()) {
                 viewModel.login(this.email, this.password);
-                viewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
-                    if (errorMessage.isEmpty()) {
-                        navController.navigate(R.id.action_login_to_host);
-                        return;
-                    }
-                    MaterialTextView errorText = view.findViewById(R.id.error_text);
-                    errorText.setText(errorMessage);
-                });
             }
         });
 

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
@@ -31,6 +32,7 @@ import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.models.users.PersonType;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,12 +76,14 @@ public class ProfileFragment extends Fragment {
             navController.navigate(R.id.action_to_manage_prices);
         });
 
+        view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
+            this.openDeactivateAccountDialog();
+        });
+
+
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // Optional: Clear the activity stack
-            startActivity(intent);
-
+            ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
 
 
@@ -122,7 +126,6 @@ public class ProfileFragment extends Fragment {
                 if(this.role == PersonType.AUTHENTICATED_USER){
                     roleTitle.setText("User");
                 }
-
 
 
                 // Populate User Info
@@ -173,6 +176,34 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    private void openDeactivateAccountDialog() {
+        MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(requireContext());
+        confirmDialog.setTitle("Are you sure you want to deactivate your account?");
+        confirmDialog.setMessage("This action can't be undone.");
+        confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+            viewModel.deactivateAccount();
+            viewModel.getDeactivateAccountSuccess().observe(getViewLifecycleOwner(), success -> {
+                if (success) {
+                    ((MainActivity) requireActivity()).navigateToAuthGraph();
+                }else{
+                    String failureMessage;
+                    if(this.role == PersonType.SERVICE_PROVIDER){
+                        failureMessage = "Failed: You have upcoming bookings.";
+                    }else if(this.role == PersonType.EVENT_ORGANIZER){
+                        failureMessage = "Failed: You have upcoming events.";
+                    }else{
+                        failureMessage = "Account deactivation failed, try again later.";
+                    }
+                    Toast.makeText(requireContext(), failureMessage, Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+        confirmDialog.setNegativeButton("No", (dialog, which) -> {
+        });
+        confirmDialog.show();
+    }
+
+
     private void removeProfilePicture(View view){
         ImageView profileImage = view.findViewById(R.id.profileImage);
         Glide.with(requireContext())
@@ -188,7 +219,6 @@ public class ProfileFragment extends Fragment {
         intent.setType("image/*"); // Restrict to image files
         startActivityForResult(intent, 1);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -216,7 +246,4 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-
-
-
 }

@@ -67,5 +67,10 @@ public interface ProfileService {
     @POST("accounts/remove-profile-picture")
     Call<Void> removeProfilePicture();
 
-
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/deactivate")
+    Call<Void> deactivateAccount();
 }

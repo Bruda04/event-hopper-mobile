@@ -32,6 +32,9 @@ public class ProfileViewModel extends ViewModel {
     @Getter
     private MutableLiveData<String> imageUrlLiveData = new MutableLiveData<>();
 
+    @Getter
+    private MutableLiveData<Boolean> deactivateAccountSuccess = new MutableLiveData<>();
+
     public LiveData<ProfileForPersonDTO> getProfileData() {
         return profileData;
     }
@@ -93,6 +96,24 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onFailure(Call<String> imageUploadCall, Throwable t) {
                 Log.d("Profile picture change", "FAILED");
+            }
+        });
+
+    }
+
+    public void deactivateAccount(){
+        Call<Void> call = ClientUtils.profileService.deactivateAccount();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("Account deactivation", "SUCCESS");
+                deactivateAccountSuccess.setValue(true);
+                UserService.clearJwtToken();
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                deactivateAccountSuccess.setValue(false);
+                Log.d("Account deactivation", "FAILED");
             }
         });
 
