@@ -23,10 +23,6 @@ import retrofit2.Response;
 
 @Getter
 public class ProfileViewModel extends ViewModel {
-    public void logout(){
-        UserService.clearJwtToken();
-    }
-
     private final MutableLiveData<ProfileForPersonDTO> profileData = new MutableLiveData<>();
 
     @Getter
@@ -39,6 +35,11 @@ public class ProfileViewModel extends ViewModel {
         return profileData;
     }
 
+    public void logout(){
+        UserService.clearJwtToken();
+        this.clearData();
+    }
+    
     public void fetchProfile() {
         Call<ProfileForPersonDTO> call = ClientUtils.profileService.getProfile();
         call.enqueue(new Callback<ProfileForPersonDTO>() {
@@ -117,5 +118,11 @@ public class ProfileViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void clearData() {
+        profileData.setValue(null);
+        imageUrlLiveData.setValue(null);
+        deactivateAccountSuccess.setValue(null);
     }
 }
