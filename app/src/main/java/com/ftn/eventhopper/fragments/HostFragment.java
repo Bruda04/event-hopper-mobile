@@ -18,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostFragment extends Fragment {
@@ -58,6 +59,7 @@ public class HostFragment extends Fragment {
             // Make sure the navigation component starts at the correct destination
             boolean isLoggedIn = UserService.isTokenValid(); // Assuming this method exists in UserService
             bottomNavigationView.getMenu().findItem(R.id.calendar).setVisible(isLoggedIn);
+            bottomNavigationView.getMenu().findItem(R.id.company).setVisible(isLoggedIn && UserService.getUserRole() == PersonType.SERVICE_PROVIDER);
             bottomNavigationView.getMenu().findItem(R.id.favorites).setVisible(isLoggedIn);
             bottomNavigationView.setSelectedItemId(R.id.home);
 
@@ -81,6 +83,10 @@ public class HostFragment extends Fragment {
                 } else if (item.getItemId() == R.id.favorites) {
                     navController.popBackStack(R.id.favorites, true); // Clear previous back stack if Profile exists
                     navController.navigate(R.id.favorites);
+                    return true;
+                }else if (item.getItemId() == R.id.company) {
+                    navController.popBackStack(R.id.company, true); // Clear previous back stack if Profile exists
+                    navController.navigate(R.id.company);
                     return true;
                 }
                 return false;

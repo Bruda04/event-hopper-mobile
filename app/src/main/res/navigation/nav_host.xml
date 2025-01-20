@@ -48,6 +48,13 @@
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
 
+    <!-- Company Fragment -->
+    <fragment
+        android:id="@+id/company"
+        android:name="com.ftn.eventhopper.fragments.profile.CompanyFragment"
+        android:label="Company"
+        tools:layout="@layout/fragment_company" />
+
     <!-- Favorites Fragment -->
     <fragment
         android:id="@+id/favorites"

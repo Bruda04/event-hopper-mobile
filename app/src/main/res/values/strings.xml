@@ -155,5 +155,6 @@
     <string name="view_my_events">View my events</string>
     <string name="upgrade_profile">Upgrade profile</string>
     <string name="role">Role</string>
+    <string name="manage_photos">Manage photos</string>
 
 </resources>

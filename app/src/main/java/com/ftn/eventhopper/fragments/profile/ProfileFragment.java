@@ -93,28 +93,14 @@ public class ProfileFragment extends Fragment {
             showImageDialog(view);
         });
 
-        TextView companyName = view.findViewById(R.id.CompanyName);
-        TextView companyAddress = view.findViewById(R.id.companyAddress);
-        TextView companyDescription = view.findViewById(R.id.companyDescription);
-        TextView companyEmail = view.findViewById(R.id.companyEmail);
 
         TextView roleTitle = view.findViewById(R.id.role);
         TextView userName = view.findViewById(R.id.userName);
         TextView userAddress = view.findViewById(R.id.userAddress);
         TextView userEmail = view.findViewById(R.id.userEmail);
 
-        View companyInfoSection = view.findViewById(R.id.company_information);
-        companyInfoSection.setVisibility(UserService.getUserRole() == PersonType.SERVICE_PROVIDER ? View.VISIBLE : View.GONE);
-
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
             if (profile != null) {
-                if(this.role == PersonType.SERVICE_PROVIDER){
-                    companyName.setText(profile.getCompanyName());
-                    companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");
-                    companyDescription.setText(profile.getCompanyDescription());
-                    companyEmail.setText(profile.getCompanyEmail());
-                }
-
                 if(this.role == PersonType.SERVICE_PROVIDER){
                     roleTitle.setText(R.string.provider);
                 }
@@ -170,29 +156,6 @@ public class ProfileFragment extends Fragment {
         eventTypesCard.setVisibility(View.GONE);
         myEventsCard.setVisibility(View.GONE);
         upgradeProfileCard.setVisibility(View.GONE);
-
-
-        //for pup to save space i want the image not centered, but on the left with the user information
-        //to its right
-        LinearLayout profileContainer = view.findViewById(R.id.profile_container);
-        LinearLayout userInfoLayout = view.findViewById(R.id.user_information);
-
-        // Adjust layout if the user is a service provider
-        if (role == PersonType.SERVICE_PROVIDER) {
-            profileContainer.setOrientation(LinearLayout.HORIZONTAL);
-            //the user info needs a little space from profile picture
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) userInfoLayout.getLayoutParams();
-            params.setMargins(20, 16, 0, 0); // left, top, right, bottom margins
-            userInfoLayout.setLayoutParams(params);
-
-            LinearLayout companyInformationLayout = view.findViewById(R.id.company_information);
-            // Remove top margin from company information layout
-            LinearLayout.LayoutParams paramsCompany = (LinearLayout.LayoutParams) companyInformationLayout.getLayoutParams();
-            paramsCompany.topMargin = 0;
-            companyInformationLayout.setLayoutParams(paramsCompany);
-
-        }
-
 
 
         switch (role.toString()) {

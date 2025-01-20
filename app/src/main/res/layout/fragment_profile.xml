@@ -22,143 +22,95 @@
 
 
         <!-- Container for Profile Image and User Information -->
-        <LinearLayout
-            android:id="@+id/profile_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="16dp">
-            <!-- Profile Image -->
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_information_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/profile_pic_temp"
-                android:layout_gravity="center_horizontal"/>
+                app:cardElevation="8dp"
+                app:cardCornerRadius="12dp"
+                android:background="@color/white">
 
-            <!-- User Information (Name, Address, etc.) -->
-            <LinearLayout
-                android:id="@+id/user_information"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <!-- Role Text and Edit Icon Container -->
                 <LinearLayout
-                    android:id="@+id/user_title"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/profile_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center_horizontal">
 
-                    <!-- Role Text -->
-                    <TextView
-                        android:id="@+id/role"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/role"
-                        android:textStyle="bold"
-                        android:textAppearance="@style/DarkLargerText" />
-
-                    <!-- Edit Pencil Icon -->
+                    <!-- Profile Image -->
                     <ImageView
-                        android:id="@+id/editPersonIcon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/edit"
-                        android:layout_marginStart="8dp"
-                        app:tint="@color/theme_blue" />
+                        android:id="@+id/profileImage"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/profile_pic_temp"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <!-- User Information (Name, Address, etc.) -->
+
+                        <!-- Role Text and Edit Icon Container -->
+                        <LinearLayout
+                            android:id="@+id/user_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center_horizontal"
+                            >
+
+                            <!-- Role Text -->
+                            <TextView
+                                android:id="@+id/role"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/role"
+                                android:textStyle="bold"
+                                android:textSize="24sp"
+                                android:layout_gravity="center_horizontal"
+                                android:textAppearance="@style/DarkLargerText" />
+
+                            <!-- Edit Pencil Icon -->
+                            <ImageView
+                                android:id="@+id/editPersonIcon"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/edit"
+                                android:layout_marginStart="8dp"
+                                app:tint="@color/theme_blue" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:id="@+id/userAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:id="@+id/userEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-
-                <TextView
-                    android:id="@+id/userAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-
-                <TextView
-                    android:id="@+id/userEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-            </LinearLayout>
-
-        </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-
-
-            <!-- Company Information -->
-            <LinearLayout
-                android:id="@+id/company_information"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <!-- Company Information Title and Edit Icon -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/CompanyInformationTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/company"
-                        android:textStyle="bold"
-                        android:textAppearance="@style/DarkLargerText" />
-
-                    <!-- Edit Pencil Icon -->
-                    <ImageView
-                        android:id="@+id/editCompanyIcon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/edit"
-                        android:layout_marginStart="8dp"
-                        app:tint="@color/theme_blue" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/CompanyName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-
-                <TextView
-                    android:id="@+id/companyAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-
-                <TextView
-                    android:id="@+id/companyEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-
-                <TextView
-                    android:id="@+id/companyDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading"
-                    android:textAppearance="@style/DarkLargerText" />
-            </LinearLayout>
 
             <!-- Item 2: Change password -->
             <androidx.cardview.widget.CardView
@@ -341,8 +293,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="2dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="15dp">
+                android:layout_marginTop="10dp"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -423,7 +375,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="2dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:backgroundTint="@color/md_theme_errorContainer_mediumContrast"
                 app:cardCornerRadius="15dp">
 
