@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,7 +116,7 @@ public class ProfileFragment extends Fragment {
                 }
 
                 if(this.role == PersonType.SERVICE_PROVIDER){
-                    roleTitle.setText(R.string.pup);
+                    roleTitle.setText(R.string.provider);
                 }
                 if(this.role == PersonType.EVENT_ORGANIZER){
                     roleTitle.setText(R.string.organizer);
@@ -129,7 +131,7 @@ public class ProfileFragment extends Fragment {
 
                 // Populate User Info
                 userName.setText(String.format("%s %s", profile.getName(), profile.getSurname()));
-                userAddress.setText(profile.getLocation() != null ? profile.getLocation().getAddress() + "," +  profile.getLocation().getCity() : "N/A");
+                userAddress.setText(profile.getLocation() != null ? profile.getLocation().getAddress() + ", " +  profile.getLocation().getCity() : "N/A");
                 userEmail.setText(profile.getEmail());
 
 
@@ -147,6 +149,76 @@ public class ProfileFragment extends Fragment {
 
         viewModel.fetchProfile();
 
+
+
+        CardView changePasswordCard = view.findViewById(R.id.ListItemChangePassword);
+        CardView myProductsCard = view.findViewById(R.id.ListItemMyProducts);
+        CardView myServicesCard = view.findViewById(R.id.ListItemMyServices);
+        CardView myPricesCard = view.findViewById(R.id.ListItemMyPrices);
+        CardView categoriesCard = view.findViewById(R.id.ListItemCategories);
+        CardView eventTypesCard = view.findViewById(R.id.ListItemEventTypes);
+        CardView myEventsCard = view.findViewById(R.id.ListItemMyEvents);
+        CardView logOutCard = view.findViewById(R.id.ListItemLogOut);
+        CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
+        CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
+
+
+        myProductsCard.setVisibility(View.GONE);
+        myServicesCard.setVisibility(View.GONE);
+        myPricesCard.setVisibility(View.GONE);
+        categoriesCard.setVisibility(View.GONE);
+        eventTypesCard.setVisibility(View.GONE);
+        myEventsCard.setVisibility(View.GONE);
+        upgradeProfileCard.setVisibility(View.GONE);
+
+
+        //for pup to save space i want the image not centered, but on the left with the user information
+        //to its right
+        LinearLayout profileContainer = view.findViewById(R.id.profile_container);
+        LinearLayout userInfoLayout = view.findViewById(R.id.user_information);
+
+        // Adjust layout if the user is a service provider
+        if (role == PersonType.SERVICE_PROVIDER) {
+            profileContainer.setOrientation(LinearLayout.HORIZONTAL);
+            //the user info needs a little space from profile picture
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) userInfoLayout.getLayoutParams();
+            params.setMargins(20, 16, 0, 0); // left, top, right, bottom margins
+            userInfoLayout.setLayoutParams(params);
+
+            LinearLayout companyInformationLayout = view.findViewById(R.id.company_information);
+            // Remove top margin from company information layout
+            LinearLayout.LayoutParams paramsCompany = (LinearLayout.LayoutParams) companyInformationLayout.getLayoutParams();
+            paramsCompany.topMargin = 0;
+            companyInformationLayout.setLayoutParams(paramsCompany);
+
+        }
+
+
+
+        switch (role.toString()) {
+            case "SERVICE_PROVIDER":
+                myProductsCard.setVisibility(View.VISIBLE);
+                myServicesCard.setVisibility(View.VISIBLE);
+                myPricesCard.setVisibility(View.VISIBLE);
+                break;
+
+            case "ADMIN":
+                categoriesCard.setVisibility(View.VISIBLE);
+                eventTypesCard.setVisibility(View.VISIBLE);
+                break;
+
+            case "EVENT_ORGANIZER":
+                myEventsCard.setVisibility(View.VISIBLE);
+                break;
+
+            default:    //authenticated user
+                upgradeProfileCard.setVisibility(View.VISIBLE);
+                break;
+        }
+
+        changePasswordCard.setVisibility(View.VISIBLE);
+        logOutCard.setVisibility(View.VISIBLE);
+        deactivateProfileCard.setVisibility(View.VISIBLE);
 
         return view;
     }
