@@ -63,6 +63,10 @@ public class ProfileFragment extends Fragment {
             navController.navigate(R.id.action_to_manage_prices);
         });
 
+        view.findViewById(R.id.ListItemManageComments).setOnClickListener( v -> {
+            //navController.navigate(R.id.action_to_manage_comments);
+        });
+
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
