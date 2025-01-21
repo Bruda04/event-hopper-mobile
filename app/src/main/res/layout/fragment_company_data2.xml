@@ -5,45 +5,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/theme_blue"
-    android:padding="0dp">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="760dp"
+        android:layout_height="674dp"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:padding="28dp">
 
+
+        <!-- Logo -->
         <ImageView
             android:layout_width="87dp"
             android:layout_height="74dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null"
-            android:paddingBottom="10dp"
             android:src="@drawable/logo" />
 
+        <!--Role -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/new_user"
+            android:text="@string/pup"
             android:textAlignment="center"
             android:textAppearance="@style/WhiteHeaderText" />
 
+        <!--Provide info -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/provide_personal_info"
+            android:text="@string/provide_company_info"
             android:textAlignment="center"
             android:textAppearance="@style/WhiteRegularText" />
 
+
+
+
+
+        <!--Description -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_city_layout"
             style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_description_layout"
+            app:errorEnabled="true"
+            android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:errorEnabled="true">
+            app:boxStrokeColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_description"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:hint="@string/input_description"
+                android:textAppearance="@style/WhiteRegularText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--City -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/BlueBackgroundInputField"
+            android:id="@+id/register_city_layout"
+            app:errorEnabled="true"
+            android:textAppearance="@style/WhiteRegularText"
+            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
+            app:boxStrokeColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_city"
@@ -53,9 +79,12 @@
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <!--Address -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/BlueBackgroundInputField"
             android:id="@+id/register_address_layout"
+            android:textAppearance="@style/WhiteRegularText"
             app:boxBackgroundColor="@color/md_theme_secondaryContainer"
             app:boxStrokeColor="@color/white"
             app:errorEnabled="true"
@@ -68,42 +97,7 @@
                 android:textAppearance="@style/WhiteRegularText" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/BlueBackgroundInputField"
-            android:id="@+id/register_phone_number_layout"
-            app:boxBackgroundColor="@color/md_theme_secondaryContainer"
-            app:boxStrokeColor="@color/white"
-            app:errorEnabled="true"
-            app:prefixText="+"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_phone_number"
-                android:inputType="number"
-                android:textAppearance="@style/WhiteRegularText" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/upload_profile_picture"
-            style="@style/DarkButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/upload_profile_picture"/>
-
-        <!-- RecyclerView for image previews -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/image_preview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_image_preview" />
-
-
+        <!--Error-->
         <TextView
             android:id="@+id/error_text"
             android:layout_width="wrap_content"
@@ -113,18 +107,22 @@
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/md_theme_error" />
 
+
     </LinearLayout>
 
+    <!--Next btn-->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/register_user_btn"
-        style="@style/DarkButton"
+        android:id="@+id/next_btn"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="25dp"
-        android:text="@string/register"
-        />
+        android:backgroundTint="@color/md_theme_primary"
+        android:text="@string/next"
+        android:textAppearance="@style/WhiteRegularText"
+        android:textColor="@color/white" />
+
 
 </RelativeLayout>

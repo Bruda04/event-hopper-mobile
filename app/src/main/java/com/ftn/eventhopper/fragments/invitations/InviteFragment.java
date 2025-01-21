@@ -53,8 +53,7 @@ public class InviteFragment extends Fragment {
                     addEmailToDialogList(email, emailsList);
                     emailField.setText("");
                 }
-
-            });
+        });
 
 
         inviteButton = view.findViewById(R.id.invite_people_button);

@@ -59,6 +59,11 @@ public class HomeFragment extends Fragment {
             navController.navigate(R.id.action_to_conversations);
         });
 
+//        chatButton.setOnClickListener(v ->{
+//            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+//            navController.navigate(R.id.action_to_invite);
+//        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

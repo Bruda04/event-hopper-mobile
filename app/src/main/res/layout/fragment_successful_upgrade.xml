@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_blue"
+    tools:context=".fragments.registration.VerifyEmailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="668dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:layout_marginTop="-80dp"
+        >
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:src="@drawable/logo" />
+
+        <!-- Welcome text -->
+        <TextView
+            android:id="@+id/announcement_text"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="24dp"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:text="@string/upgrading_successful"
+            android:textAppearance="@style/WhiteRegularText"
+            />
+
+        <!-- back to login -->
+        <com.google.android.material.button.MaterialButton
+            style="@style/DarkButton"
+            android:id="@+id/login_btn"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="22dp"
+            android:padding="5dp"
+            android:text="@string/back_to_login"
+            />
+
+
+
+    </LinearLayout>
+</RelativeLayout>
