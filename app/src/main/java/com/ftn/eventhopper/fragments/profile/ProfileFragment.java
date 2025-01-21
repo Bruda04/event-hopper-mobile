@@ -147,7 +147,7 @@ public class ProfileFragment extends Fragment {
         CardView logOutCard = view.findViewById(R.id.ListItemLogOut);
         CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
         CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
-
+        CardView commentsCard = view.findViewById(R.id.ListItemComments);
 
         myProductsCard.setVisibility(View.GONE);
         myServicesCard.setVisibility(View.GONE);
@@ -156,7 +156,7 @@ public class ProfileFragment extends Fragment {
         eventTypesCard.setVisibility(View.GONE);
         myEventsCard.setVisibility(View.GONE);
         upgradeProfileCard.setVisibility(View.GONE);
-
+        commentsCard.setVisibility(View.GONE);
 
         switch (role.toString()) {
             case "SERVICE_PROVIDER":
@@ -168,6 +168,7 @@ public class ProfileFragment extends Fragment {
             case "ADMIN":
                 categoriesCard.setVisibility(View.VISIBLE);
                 eventTypesCard.setVisibility(View.VISIBLE);
+                commentsCard.setVisibility(View.VISIBLE);
                 break;
 
             case "EVENT_ORGANIZER":
