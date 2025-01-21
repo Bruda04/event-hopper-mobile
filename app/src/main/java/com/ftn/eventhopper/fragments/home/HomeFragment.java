@@ -54,15 +54,15 @@ public class HomeFragment extends Fragment {
         chatButton  = view.findViewById(R.id.floating_action_button);
 
 
-//        chatButton.setOnClickListener(v ->{
-//            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-//            navController.navigate(R.id.action_to_conversations);
-//        });
-
         chatButton.setOnClickListener(v ->{
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.action_to_invite);
+            navController.navigate(R.id.action_to_conversations);
         });
+
+//        chatButton.setOnClickListener(v ->{
+//            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+//            navController.navigate(R.id.action_to_invite);
+//        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

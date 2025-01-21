@@ -3,6 +3,7 @@ package com.ftn.eventhopper.fragments.upgrades.viewmodels;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -33,6 +34,7 @@ public class UpgradeViewModel extends ViewModel {
 //    }
 
     public void upgradeToPup(CompanyDetailsDTO detailsDTO) {
+        //Log.i("NEXT", "usao u vm");
         Call<Void> call = ClientUtils.profileService.upgradeToPUP(detailsDTO);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -50,6 +52,7 @@ public class UpgradeViewModel extends ViewModel {
                 upgradeSuccess.postValue(false); // Notify failure
             }
         });
+        //Log.i("NEXT", "zavrsio vm");
     }
 
     public void upgradeToOD() {

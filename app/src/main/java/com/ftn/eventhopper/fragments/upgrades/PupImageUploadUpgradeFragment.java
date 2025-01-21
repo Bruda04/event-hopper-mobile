@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,7 @@ public class PupImageUploadUpgradeFragment extends Fragment {
         imagePreviewRecyclerView.setAdapter(imagePreviewAdapter);
 
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
+            //Log.i("NEXT", "Next steka");
             v.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             Bundle receivedBundle = getArguments();
@@ -112,7 +114,7 @@ public class PupImageUploadUpgradeFragment extends Fragment {
             companyLocation.setCity(receivedBundle.getString("city"));
 
             detailsDTO.setCompanyLocation(companyLocation);
-
+            //Log.i("NEXT", "prosao dto bundle");
             if (!this.uploadedImages.isEmpty()) {
                 for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages) {
                     if (image.isBitmap()) {
@@ -124,9 +126,9 @@ public class PupImageUploadUpgradeFragment extends Fragment {
                 detailsDTO.setCompanyPhotos(imageFilePaths);
             }
 
-
+            //Log.i("NEXT", "prosao slike");
             viewModel.upgradeToPup(detailsDTO);
-
+            //Log.i("NEXT", "zavrsio");
         });
 
         return view;
