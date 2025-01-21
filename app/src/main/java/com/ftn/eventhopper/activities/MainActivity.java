@@ -168,7 +168,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        ClientUtils.connectWebSocket();
+        if (UserService.isTokenValid()) {
+            ClientUtils.connectWebSocket();
+        }
     }
 
 }

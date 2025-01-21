@@ -55,6 +55,11 @@
             app:destination="@id/conversations_fragment"
             />
 
+        <action
+            android:id="@+id/action_to_solution_page"
+            app:destination="@id/solution_page"
+            />
+
     </fragment>
 
     <!-- Calendar Fragment -->
@@ -71,12 +76,6 @@
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
 
-    <!--  -->
-    <fragment
-        android:id="@+id/adminCatSugManagement"
-        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
-        android:label="Man"
-        tools:layout="@layout/fragment_admins_categories_suggestions_management" />
 
     <!-- Profile Fragment -->
     <fragment
@@ -122,12 +121,10 @@
             app:destination="@id/service_creation1"/>
         <action
             android:id="@+id/action_to_edit_service1"
-            app:destination="@id/service_edit1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_edit1"/>
         <action
             android:id="@+id/action_to_solution_page_fragment"
-            app:destination="@id/solution_page"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/solution_page"/>
     </fragment>
 
 
@@ -162,8 +159,7 @@
         tools:layout="@layout/fragment_service_edit_data1">
         <action
             android:id="@+id/action_to_edit_service2"
-            app:destination="@id/service_edit2"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_edit2"/>
     </fragment>
 
 
@@ -174,13 +170,11 @@
         tools:layout="@layout/fragment_service_edit_data2">
         <action
             android:id="@+id/action_to_pup_services"
-            app:destination="@id/pup_services"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/pup_services"/>
 
         <action
             android:id="@+id/back_to_edit_service_1"
-            app:destination="@id/service_edit1"
-            app:popUpTo="@id/pup_services"/>
+            app:destination="@id/service_edit1"/>
     </fragment>
 
     <fragment
@@ -207,8 +201,11 @@
 
         <action
             android:id="@+id/action_to_provider_page"
-            app:destination="@id/service_provider_page"
-            app:popUpTo="@id/solution_page"/>
+            app:destination="@id/service_provider_page"/>
+
+        <action
+            android:id="@+id/action_to_chat_with_provider"
+            app:destination="@id/single_chat_fragment"/>
 
     </fragment>
 

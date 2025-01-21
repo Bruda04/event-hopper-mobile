@@ -51,6 +51,9 @@ public class ClientUtils {
     private static final StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_PATH);
 
     public static void connectWebSocket() {
+        if (stompClient.isConnected()) {
+            return;
+        }
         ArrayList<StompHeader> headers = new ArrayList<>();
         headers.add(new StompHeader("Authorization", String.format("Bearer %s", UserService.getJwtToken())));
         stompClient.connect(headers);

@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.profile.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Getter;
 public class ProfileViewModel extends ViewModel {
     public void logout(){
         UserService.clearJwtToken();
+        ClientUtils.disconnectStompClient();
     }
 
 }

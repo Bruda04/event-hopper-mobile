@@ -33,6 +33,9 @@ public class LoginViewModel extends ViewModel {
                     LoginResponse response = callResponse.body();
                     if (response != null && response.isSuccessful()) {
                         UserService.setJwtToken(response.getToken());
+                        if (UserService.isTokenValid()) {
+                            ClientUtils.connectWebSocket();
+                        }
                         Log.d("Login", "User logged in successfully");
                         errorMessage.postValue("");
                     } else {
