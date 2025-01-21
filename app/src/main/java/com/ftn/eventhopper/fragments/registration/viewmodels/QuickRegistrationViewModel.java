@@ -5,13 +5,19 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.shared.dtos.location.CreateLocationDTO;
 import com.ftn.eventhopper.shared.dtos.registration.CreateRegistrationRequestDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.CreatePersonAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.person.CreatePersonDTO;
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
+import java.util.ArrayList;
+
+import lombok.Getter;
+import lombok.Setter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -19,6 +25,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuickRegistrationViewModel extends ViewModel {
+
+    @Getter
+    @Setter
+    private ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedImages = new ArrayList<>();
+
     public void checkEmail(String email, QuickRegistrationViewModel.EmailCheckCallback callback) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email);
         Call<Boolean> call = ClientUtils.registrationService.isEmailTaken(requestBody);
@@ -46,10 +57,40 @@ public class QuickRegistrationViewModel extends ViewModel {
 
 
     public void register(Bundle bundle){
+        CreatePersonAccountDTO createDTO = deconstructBundle(bundle);
+
+        if(this.uploadedImages.isEmpty()){
+            submitRegistration(createDTO);
+            return;
+        }
+
+        for (ImagePreviewAdapter.ImagePreviewItem image : uploadedImages){
+            Call<String> call = ImageUtils.uploadImage(image.getBitmap());
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        createDTO.getPerson().setProfilePicture(response.body());
+                        submitRegistration(createDTO);
+                    } else {
+                        uploadedImages.clear();
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    uploadedImages.clear();
+                }
+            });
+        }
+
+
+    }
+
+    public CreatePersonAccountDTO deconstructBundle(Bundle bundle){
         CreatePersonAccountDTO createDTO = new CreatePersonAccountDTO();
         createDTO.setEmail(bundle.getString("email"));
         createDTO.setPassword(bundle.getString("password"));
-        createDTO.setVerified(false);
+        createDTO.setVerified(true);
         createDTO.setType(PersonType.AUTHENTICATED_USER);
         createDTO.setRegistrationRequest(new CreateRegistrationRequestDTO());
 
@@ -64,9 +105,12 @@ public class QuickRegistrationViewModel extends ViewModel {
         locationDTO.setCity(bundle.getString("city"));
         locationDTO.setAddress(bundle.getString("address"));
         userDTO.setLocation(locationDTO);
-        userDTO.setProfilePicture("..");
 
         createDTO.setPerson(userDTO);
+        return createDTO;
+    }
+
+    public void submitRegistration(CreatePersonAccountDTO createDTO){
 
         Call<CreatePersonAccountDTO> call = ClientUtils.registrationService.registerPerson(createDTO);
         call.enqueue(new Callback<CreatePersonAccountDTO>() {

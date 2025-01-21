@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -19,6 +20,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
@@ -46,6 +48,7 @@ public class PupImageUploadUpgradeFragment extends Fragment {
     private ImagePreviewAdapter imagePreviewAdapter;
     private RecyclerView imagePreviewRecyclerView;
     private MaterialButton uploadImageButton;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,13 +68,26 @@ public class PupImageUploadUpgradeFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(this).get(UpgradeViewModel.class);
 
-        viewModel.getUpgradeSuccess().observe(getViewLifecycleOwner(), success -> {
-            if (success != null && success) {
-                navController.navigate(R.id.action_to_success_pup);
-            } else if (success != null) {
-                Toast.makeText(getContext(), "Unsuccessful upgrading", Toast.LENGTH_SHORT).show();
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
+        viewModel.getUpgradeSuccess().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean success) {
+                if (success != null) {
+                    if (success) {
+                        progressBar.setVisibility(View.GONE);
+                        navController.navigate(R.id.action_to_success_pup);
+                    } else {
+                        Toast.makeText(getContext(), "Unsuccessful upgrading", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                    // Remove observer to prevent multiple calls
+                    viewModel.getUpgradeSuccess().removeObservers(getViewLifecycleOwner());
+                }
             }
         });
+
 
         uploadImageButton = view.findViewById(R.id.upload_images_btn);
         uploadImageButton.setOnClickListener(v -> selectImages());
@@ -81,6 +97,8 @@ public class PupImageUploadUpgradeFragment extends Fragment {
         imagePreviewRecyclerView.setAdapter(imagePreviewAdapter);
 
         view.findViewById(R.id.next_btn).setOnClickListener(v -> {
+            v.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
             Bundle receivedBundle = getArguments();
 
             CompanyDetailsDTO detailsDTO = new CompanyDetailsDTO();
@@ -103,7 +121,6 @@ public class PupImageUploadUpgradeFragment extends Fragment {
                 }
 
                 ArrayList<String> imageFilePaths = new ArrayList<>(viewModel.getImageFilePaths());
-//                receivedBundle.putStringArrayList("companyPictures", imageFilePaths);
                 detailsDTO.setCompanyPhotos(imageFilePaths);
             }
 

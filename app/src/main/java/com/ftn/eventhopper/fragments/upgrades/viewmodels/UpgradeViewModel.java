@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.upgrades.viewmodels;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -30,10 +31,6 @@ public class UpgradeViewModel extends ViewModel {
 //    public MutableLiveData<Boolean> getUpgradeSuccess() {
 //        return upgradeSuccess;
 //    }
-
-    public ArrayList<String> getImageFilePaths() {
-        return new ArrayList<>(imageFilePaths);
-    }
 
     public void upgradeToPup(CompanyDetailsDTO detailsDTO) {
         Call<Void> call = ClientUtils.profileService.upgradeToPUP(detailsDTO);
@@ -79,6 +76,22 @@ public class UpgradeViewModel extends ViewModel {
         UserService.clearJwtToken();
     }
 
+    public void saveBitmapsToCache(Context context, ArrayList<Bitmap> bitmaps) {
+        File cacheDir = context.getCacheDir();
+        for (Bitmap bitmap : bitmaps) {
+            try {
+                File tempFile = File.createTempFile("image_", ".png", cacheDir);
+                FileOutputStream fos = new FileOutputStream(tempFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
+                imageFilePaths.add(tempFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //returns filepath
     public String saveBitmapToCache(Context context, Bitmap bitmap) {
         try {
             // Create a unique file name for the image
@@ -101,4 +114,31 @@ public class UpgradeViewModel extends ViewModel {
         }
         return "";
     }
+
+    public ArrayList<String> getImageFilePaths() {
+        return new ArrayList<>(imageFilePaths);
+    }
+
+    public ArrayList<Bitmap> loadBitmapsFromCache() {
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        for (String path : imageFilePaths) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            if (bitmap != null) {
+                bitmaps.add(bitmap);
+            }
+        }
+        return bitmaps;
+    }
+
+    public void cleanupCache(Context context) {
+        File cacheDir = context.getCacheDir();
+        for (File file : cacheDir.listFiles()) {
+            if (file.getName().startsWith("image_")) {
+                file.delete();
+            }
+        }
+        imageFilePaths.clear();
+    }
+
+
 }
