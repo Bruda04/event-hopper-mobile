@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.solutions.prices.viewmodels.PUPPricesManagementViewModel;
 import com.ftn.eventhopper.shared.dtos.login.LoginResponse;
@@ -21,6 +22,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import org.w3c.dom.Text;
+
+import java.util.UUID;
 
 public class LoginFragment extends Fragment {
     private LoginViewModel viewModel;
@@ -37,6 +40,8 @@ public class LoginFragment extends Fragment {
         emailLayout = view.findViewById(R.id.login_email_layout);
         passwordLayout = view.findViewById(R.id.login_password_layout);
 
+        Bundle attendingEventBundle = getArguments();
+
         Button loginButton = view.findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
             retrieveData();
@@ -45,6 +50,9 @@ public class LoginFragment extends Fragment {
                 viewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
                     if (errorMessage.isEmpty()) {
                         navController.navigate(R.id.action_login_to_host);
+                        if(attendingEventBundle != null && attendingEventBundle.containsKey("attending-event")){
+                            viewModel.addAttendingEventOnLogin(UUID.fromString(attendingEventBundle.getString("attending-event")));
+                        }
                         return;
                     }
                     MaterialTextView errorText = view.findViewById(R.id.error_text);

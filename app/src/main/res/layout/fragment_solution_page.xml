@@ -205,13 +205,25 @@
             app:layout_constraintTop_toBottomOf="@id/solution_rating" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/solution_open_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/you_need_more_info_chat_with_us"
+            app:layout_constraintTop_toBottomOf="@id/solution_availability"
+            style="@style/DarkButton"
+            android:visibility="gone"
+            />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/solution_review_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Want to share your opinion? Leave a review!"
-            app:layout_constraintTop_toBottomOf="@id/solution_availability"
+            android:text="@string/want_to_share_your_opinion_leave_a_review"
+            app:layout_constraintTop_toBottomOf="@id/solution_open_chat"
             style="@style/DarkButton"
             android:visibility="gone"
             />

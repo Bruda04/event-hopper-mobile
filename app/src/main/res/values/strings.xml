@@ -130,17 +130,20 @@
     <string name="provide_emails">Please, enter email addresses to invite</string>
     <string name="loading_services">Loading services...</string>
     <string name="images_are_required">Images are required</string>
+    <string name="upgrading_text">Choose what you want to become</string>
+    <string name="upgrading_successful">Upgrading successful!\n Please login</string>
     <string name="successful_email_confirmed_title">Congratulations!</string>
     <string name="successful_email_confirmed_text">Your account has been verified. You can now log in and start using your account.</string>
     <string name="expired_email_confirmed_title">Oops! Too late...!</string>
     <string name="expired_email_confirmed_text">Your verification expired, please re-register.</string>
     <string name="missing_email_confirmed_title">Oops! Something went wrong...</string>
     <string name="missing_email_confirmed_text">We couldn\'t find your account, your account may have been suspended or already verified.</string>
-
     <string name="rating">Rating</string>
     <string name="comment">Comment</string>
     <string name="close_chat">Close chat</string>
     <string name="loading_conversations">Loading conversations...</string>
     <string name="type_your_message">Type your message...</string>
     <string name="send">Send</string>
+    <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
+    <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
 </resources>

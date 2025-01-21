@@ -71,6 +71,12 @@ public class ProfileFragment extends Fragment {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
+
+        view.findViewById(R.id.ListItemUpgradeProfile).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_choose_role);
+        });
+
+
         return view;
     }
 }

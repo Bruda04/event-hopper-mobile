@@ -1,9 +1,15 @@
 package com.ftn.eventhopper.fragments.serviceProviderPage;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,13 +55,25 @@ public class ServiceProviderPageFragment extends Fragment {
     private TextView companyRating;
     private RecyclerView companyComments;
     private TextView statusMessage;
+    private NavController navController;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.service_provider_page, true);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_provider_page, container, false);
+        navController = NavHostFragment.findNavController(this);
 
         viewModel = new ViewModelProvider(this).get(ServiceProviderPageViewModel.class);
         statusMessage = view.findViewById(R.id.status_message);
@@ -101,16 +119,24 @@ public class ServiceProviderPageFragment extends Fragment {
     }
 
     private void setFieldValues(ServiceProviderDetailsDTO provider) {
-        Glide.with(this)
-                .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, provider.getProfilePicture()))
-                .circleCrop()
-                .placeholder(R.drawable.baseline_image_placeholder_24)
-                .error(R.drawable.baseline_image_not_supported_24)
-                .into(profilePicture);
-
-        String[] imageUrls = provider.getCompanyPhotos().toArray(String[]::new);
-        ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
-        companyImagesSlider.setAdapter(imageSliderAdapter);
+        if (provider.getProfilePicture() == null || provider.getProfilePicture().isEmpty()) {
+            profilePicture.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.profile_pic_temp));
+        } else {
+            Glide.with(this)
+                    .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, provider.getProfilePicture()))
+                    .circleCrop()
+                    .placeholder(R.drawable.baseline_image_placeholder_24)
+                    .error(R.drawable.baseline_image_not_supported_24)
+                    .into(profilePicture);
+        }
+        if (provider.getCompanyPhotos().isEmpty()) {
+            companyImagesSlider.setVisibility(View.GONE);
+        } else {
+            String[] imageUrls = provider.getCompanyPhotos().toArray(String[]::new);
+            ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
+            companyImagesSlider.setAdapter(imageSliderAdapter);
+            companyImagesSlider.setVisibility(View.VISIBLE);
+        }
 
         companyName.setText(provider.getCompanyName());
 
@@ -140,7 +166,7 @@ public class ServiceProviderPageFragment extends Fragment {
         }
         companyRating.setText(ratingText.toString());
 
-        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(provider.getComments()));
+        CommentAdapter commentsAdapter = new CommentAdapter(new ArrayList<>(provider.getComments()), getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         companyComments.setLayoutManager(layoutManager);
         companyComments.setItemAnimator(new DefaultItemAnimator());

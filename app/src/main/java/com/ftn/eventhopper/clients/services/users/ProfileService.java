@@ -1,15 +1,18 @@
 package com.ftn.eventhopper.clients.services.users;
 
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
+import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CompanyDetailsDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ProfileService {
@@ -42,4 +45,28 @@ public interface ProfileService {
     })
     @GET("accounts/active/{email}")
     Call<SimpleAccountDTO> getActiveByEmail(@Path("email") String email);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/attending-events/{eventId}")
+    Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/upgrade-to-OD")
+    Call<Void> upgradeToOd();
+
+    @Headers({
+                "User-Agent: Mobile-Android",
+                "Content-Type:application/json"
+        })
+    @PUT("accounts/upgrade-to-PUP")
+    Call<Void> upgradeToPUP(@Body CompanyDetailsDTO companyDetailsDTO);
+
+
+
 }

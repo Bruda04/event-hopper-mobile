@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,16 +42,17 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
     public void onBindViewHolder(@NonNull ConversationViewHolder holder, int position) {
         ConversationPreviewDTO conversation = conversations.get(position);
 
-        String profilePictureUrl = String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, conversation.getProfilePictureUrl());
-
-        // Set profile picture (using Glide for image loading)
-        Glide.with(holder.itemView.getContext())
-                .load(profilePictureUrl)
-                .circleCrop()
-                .placeholder(R.drawable.baseline_image_placeholder_24)  // Optional: Placeholder
-                .error(R.drawable.baseline_image_not_supported_24)        // Optional: Error image
-                .into(holder.profilePicture);
-
+        if (conversation.getProfilePictureUrl() == null || conversation.getProfilePictureUrl().isEmpty()) {
+            holder.profilePicture.setImageDrawable(ContextCompat.getDrawable(conversationsListFragment.requireContext(), R.drawable.profile_pic_temp));
+        } else {
+            String profilePictureUrl = String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, conversation.getProfilePictureUrl());
+            Glide.with(holder.itemView.getContext())
+                    .load(profilePictureUrl)
+                    .circleCrop()
+                    .placeholder(R.drawable.baseline_image_placeholder_24)  // Optional: Placeholder
+                    .error(R.drawable.baseline_image_not_supported_24)        // Optional: Error image
+                    .into(holder.profilePicture);
+        }
         holder.name.setText(String.format("%s %s",conversation.getName(), conversation.getSurname()));
         holder.username.setText(conversation.getUsername());
         holder.lastMessage.setText(conversation.getLastMessage());

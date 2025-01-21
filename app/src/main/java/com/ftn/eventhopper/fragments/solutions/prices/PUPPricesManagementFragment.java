@@ -2,9 +2,12 @@ package com.ftn.eventhopper.fragments.solutions.prices;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,11 +36,24 @@ public class PUPPricesManagementFragment extends Fragment {
     private TextView statusMessage;
     private FloatingActionButton exportButton;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private NavController navController;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.manage_prices, true);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_p_u_p_prices_management, container, false);
+        navController = NavHostFragment.findNavController(this);
 
         viewModel = new ViewModelProvider(this).get(PUPPricesManagementViewModel.class);
 

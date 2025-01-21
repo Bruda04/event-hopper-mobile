@@ -85,10 +85,14 @@
     <string name="provide_emails">Please, enter email addresses to invite</string>
     <string name="loading_services">Loading services...</string>
     <string name="images_are_required">Images are required</string>
+    <string name="upgrading_text">Choose what you want to become</string>
+    <string name="upgrading_successful">Upgrading successful!\n Please login</string>
     <string name="rating">Rating</string>
     <string name="comment">Comment</string>
     <string name="close_chat">Close chat</string>
     <string name="loading_conversations">Loading conversations...</string>
     <string name="type_your_message">Type your message...</string>
     <string name="send">Send</string>
+    <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
+    <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
 </resources>
