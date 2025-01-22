@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,10 @@ public class FavoriteEventsFragment extends Fragment {
 
     private ProfileViewModel viewModel;
     private RecyclerView allEventsRecyclerView;
+
+    private TextView emptyMessage;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public FavoriteEventsFragment() {
         // Required empty public constructor
@@ -51,18 +56,14 @@ public class FavoriteEventsFragment extends Fragment {
         }
         allEventsRecyclerView.setLayoutTransition(null);
 
-        TextView emptyMessage = view.findViewById(R.id.emptyMessage);
-        viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
-                allEventsRecyclerView.setVisibility(View.VISIBLE);
-                emptyMessage.setVisibility(View.GONE);
-                this.setAll(new ArrayList<>(profile.getFavoriteEvents()));
-            } else {
-                allEventsRecyclerView.setVisibility(View.GONE);
-                emptyMessage.setVisibility(View.VISIBLE);
-            }
+        this.emptyMessage = view.findViewById(R.id.emptyMessage);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchFavoriteEvents(true);
         });
-        viewModel.fetchProfile();
+
+        this.fetchFavoriteEvents(false);
+
 
         return view;
     }
@@ -77,6 +78,24 @@ public class FavoriteEventsFragment extends Fragment {
         super.onStop();
     }
 
+
+    private void fetchFavoriteEvents(boolean refresh){
+        //if you're told to refresh, or this is your first time and you have to
+        if(refresh || viewModel.getProfileData().getValue() == null){
+            viewModel.fetchProfile();
+        }
+        viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
+            if (profile != null && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
+                allEventsRecyclerView.setVisibility(View.VISIBLE);
+
+                emptyMessage.setVisibility(View.GONE);
+                this.setAll(new ArrayList<>(profile.getFavoriteEvents()));
+            } else {
+                allEventsRecyclerView.setVisibility(View.GONE);
+                emptyMessage.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 
     private void setAll(ArrayList<SimpleEventDTO> events){
         EventAdapter adapter = new EventAdapter(getContext(),events,this);

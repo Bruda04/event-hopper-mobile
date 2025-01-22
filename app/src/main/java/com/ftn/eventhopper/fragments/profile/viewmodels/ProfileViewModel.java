@@ -89,6 +89,7 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d("Profile picture removal", "SUCCESS");
+                profileData.setValue(null);
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
@@ -110,6 +111,7 @@ public class ProfileViewModel extends ViewModel {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Log.d("Profile picture change", "SUCCESS");
+                            profileData.setValue(null);
                         }
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
@@ -139,6 +141,7 @@ public class ProfileViewModel extends ViewModel {
             public void onResponse(Call<Void> updatePersonCall, Response<Void> response) {
                 editPersonProfileSuccess.setValue(true);
                 Log.d("Profile information change", "SUCCESS");
+                profileData.setValue(null);
             }
             @Override
             public void onFailure(Call<Void> updatePersonCall, Throwable t) {
@@ -163,6 +166,7 @@ public class ProfileViewModel extends ViewModel {
             public void onResponse(Call<Void> updateCompanyCall, Response<Void> response) {
                 editCompanyProfileSuccess.setValue(true);
                 Log.d("Company information change", "SUCCESS");
+                profileData.setValue(null);
             }
             @Override
             public void onFailure(Call<Void> updateCompanyCall, Throwable t) {
@@ -182,6 +186,7 @@ public class ProfileViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     errorMessagePassword.setValue("Password changed successfully!");
                     Log.d("SUCCESS", "in response success");
+                    profileData.setValue(null);
                 } else {
                     Log.d("BACK", String.valueOf(response));
                     try {

@@ -206,9 +206,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fetchProfileInformation(boolean refresh){
-        viewModel.fetchProfile();
+        //if you're told to refresh, or this is your first time and you have to
+        if(refresh || viewModel.getProfileData().getValue() == null){
+            viewModel.fetchProfile();
+        }
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null || refresh) {
+            if (profile != null) {
                 this.setRoleTitle();
 
                 // Populate User Info

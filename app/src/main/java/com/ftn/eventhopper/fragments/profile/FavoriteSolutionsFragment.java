@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,9 @@ import java.util.ArrayList;
 public class FavoriteSolutionsFragment extends Fragment {
 
     private ProfileViewModel viewModel;
+    private TextView emptyMessage;
     private RecyclerView allSolutionsRecyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public FavoriteSolutionsFragment() {
         // Required empty public constructor
@@ -51,7 +54,22 @@ public class FavoriteSolutionsFragment extends Fragment {
         }
         allSolutionsRecyclerView.setLayoutTransition(null);
 
-        TextView emptyMessage = view.findViewById(R.id.emptyMessage);
+        emptyMessage = view.findViewById(R.id.emptyMessage);
+        fetchFavoriteSolutions(false);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchFavoriteSolutions(true);
+        });
+
+        return view;
+    }
+
+    private void fetchFavoriteSolutions(boolean refresh){
+        //if you're told to refresh, or this is your first time and you have to
+        if(refresh || viewModel.getProfileData().getValue() == null){
+            viewModel.fetchProfile();
+        }
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
             if (profile != null && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
                 allSolutionsRecyclerView.setVisibility(View.VISIBLE);
@@ -63,10 +81,8 @@ public class FavoriteSolutionsFragment extends Fragment {
             }
 
         });
-        viewModel.fetchProfile();
-
-        return view;
     }
+
 
     @Override
     public void onStart() {
