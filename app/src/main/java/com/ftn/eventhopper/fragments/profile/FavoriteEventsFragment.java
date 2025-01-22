@@ -17,6 +17,8 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.events.EventAdapter;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
+import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+
 import java.util.ArrayList;
 import android.widget.TextView;
 
@@ -58,6 +60,10 @@ public class FavoriteEventsFragment extends Fragment {
 
         this.emptyMessage = view.findViewById(R.id.emptyMessage);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> {
+            // Prevent refresh if RecyclerView is not at the top
+            return allEventsRecyclerView.canScrollVertically(-1);
+        });
         swipeRefreshLayout.setOnRefreshListener(() -> {
             fetchFavoriteEvents(true);
         });
@@ -81,11 +87,12 @@ public class FavoriteEventsFragment extends Fragment {
 
     private void fetchFavoriteEvents(boolean refresh){
         //if you're told to refresh, or this is your first time and you have to
-        if(refresh || viewModel.getProfileData().getValue() == null){
+        if(refresh || viewModel.getProfile() == null){
             viewModel.fetchProfile();
         }
-        viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
+        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
+            ProfileForPersonDTO profile = viewModel.getProfile();
+            if (changed && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
                 allEventsRecyclerView.setVisibility(View.VISIBLE);
 
                 emptyMessage.setVisibility(View.GONE);

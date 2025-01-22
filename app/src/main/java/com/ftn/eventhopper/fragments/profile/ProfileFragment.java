@@ -67,7 +67,6 @@ public class ProfileFragment extends Fragment {
     private ImageView profileImage;
     private TextView userFullName, userAddress, userEmail, roleTitle, userPhoneNumber;
 
-    private String name, surname, address, city, phoneNumber;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -207,21 +206,16 @@ public class ProfileFragment extends Fragment {
 
     private void fetchProfileInformation(boolean refresh){
         //if you're told to refresh, or this is your first time and you have to
-        if(refresh || viewModel.getProfileData().getValue() == null){
+        if(refresh || viewModel.getProfile() == null){
             viewModel.fetchProfile();
         }
-        viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null) {
+        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
+            if (changed) {
                 this.setRoleTitle();
-
+                ProfileForPersonDTO profile = viewModel.getProfile();
                 // Populate User Info
                 userFullName.setText(String.format("%s %s", profile.getName(), profile.getSurname()));
-                this.name = profile.getName();
-                this.surname = profile.getSurname();
-                this.address = profile.getLocation().getAddress();
-                this.city = profile.getLocation().getCity();
-                this.phoneNumber = profile.getPhoneNumber();
-                userAddress.setText(String.format("%s, %s", this.address, this.city));
+                userAddress.setText(String.format("%s, %s", profile.getLocation().getAddress(), profile.getLocation().getCity()));
                 userEmail.setText(profile.getEmail());
                 userPhoneNumber.setText(String.format("+%s", profile.getPhoneNumber()));
 
@@ -405,11 +399,11 @@ public class ProfileFragment extends Fragment {
         TextInputEditText addressField = dialogView.findViewById(R.id.address_field);
         TextInputEditText cityField = dialogView.findViewById(R.id.city_field);
 
-        nameField.setText(this.name);
-        surnameField.setText(this.surname);
-        phoneNumberField.setText(this.phoneNumber);
-        addressField.setText(this.address);
-        cityField.setText(this.city);
+        nameField.setText(viewModel.getProfile().getName());
+        surnameField.setText(viewModel.getProfile().getSurname());
+        phoneNumberField.setText(viewModel.getProfile().getPhoneNumber());
+        addressField.setText(viewModel.getProfile().getLocation().getAddress());
+        cityField.setText(viewModel.getProfile().getLocation().getCity());
 
 
         Objects.requireNonNull(nameInput.getEditText());
@@ -428,9 +422,6 @@ public class ProfileFragment extends Fragment {
         });
         androidx.appcompat.app.AlertDialog changeDialog = dialogBuilder.create();
         changeDialog.show();
-
-        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-
 
         changeDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
             boolean isValid = true;
@@ -487,14 +478,9 @@ public class ProfileFragment extends Fragment {
                 viewModel.editPerson(name, surname, phoneNumber, address, city);
                 viewModel.getEditPersonProfileSuccess().observe(getViewLifecycleOwner(), success -> {
                     if(success){
-                        this.name = name;
-                        this.surname = surname;
-                        this.address = address;
-                        this.city = city;
-                        this.phoneNumber = phoneNumber;
                         this.userPhoneNumber.setText(String.format("+%s", phoneNumber));
                         this.userFullName.setText(String.format("%s %s", name, surname));
-                        this.userAddress.setText(String.format("%s, %s", this.address, this.city));
+                        this.userAddress.setText(String.format("%s, %s", address, city));
                     }
                     changeDialog.dismiss();
                 });

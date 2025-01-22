@@ -57,16 +57,10 @@ public class FavoritesFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.favorites_tab_layout);
         viewPager2 = view.findViewById(R.id.viewPager);
+
         adapter = new FavoritesTabPagerAdapter(getActivity());
         viewPager2.setAdapter(adapter);
-
-
-
-
-
-
-
-
+        
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

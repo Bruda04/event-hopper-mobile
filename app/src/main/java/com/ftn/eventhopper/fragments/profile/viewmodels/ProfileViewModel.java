@@ -32,7 +32,9 @@ import retrofit2.Response;
 @Getter
 public class ProfileViewModel extends ViewModel {
     @Getter
-    private final MutableLiveData<ProfileForPersonDTO> profileData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> profileChanged = new MutableLiveData<>();
+    @Getter
+    private ProfileForPersonDTO profile;
 
     @Getter
     private final MutableLiveData<String> errorMessagePassword = new MutableLiveData<>();
@@ -49,19 +51,16 @@ public class ProfileViewModel extends ViewModel {
     @Getter
     private MutableLiveData<Boolean> deactivateAccountSuccess = new MutableLiveData<>();
 
-    public LiveData<ProfileForPersonDTO> getProfileData() {
-        return profileData;
-    }
-
     public void logout(){
         UserService.clearJwtToken();
         this.clearData();
     }
     public void clearData() {
-        profileData.setValue(null);
+        profileChanged.setValue(null);
         imageUrlLiveData.setValue(null);
         deactivateAccountSuccess.setValue(null);
         errorMessagePassword.setValue(null);
+        profile = null;
     }
 
     public void fetchProfile() {
@@ -70,7 +69,9 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onResponse(Call<ProfileForPersonDTO> call, Response<ProfileForPersonDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    profileData.postValue(response.body());
+                    profile = response.body();
+                    Log.d("in viewmodel", String.valueOf(profile));
+                    profileChanged.setValue(true);
                 } else {
                     Log.e("Profile Fetch", "Failed to fetch profile: " + response.message());
                 }
@@ -89,7 +90,6 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d("Profile picture removal", "SUCCESS");
-                profileData.setValue(null);
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
@@ -105,13 +105,13 @@ public class ProfileViewModel extends ViewModel {
             public void onResponse(Call<String> imageUploadCall, Response<String> response) {
                 if (response.isSuccessful()) {
                     imageUrlLiveData.setValue(response.body());
+                    profile.setProfilePicture(response.body());
                     RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), response.body());
                     Call<Void> call = ClientUtils.profileService.changeProfilePicture(requestBody);
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Log.d("Profile picture change", "SUCCESS");
-                            profileData.setValue(null);
                         }
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
@@ -141,7 +141,10 @@ public class ProfileViewModel extends ViewModel {
             public void onResponse(Call<Void> updatePersonCall, Response<Void> response) {
                 editPersonProfileSuccess.setValue(true);
                 Log.d("Profile information change", "SUCCESS");
-                profileData.setValue(null);
+                profile.setName(name);
+                profile.setSurname(surname);
+                profile.setPhoneNumber(phoneNumber);
+                profile.setLocation(newLocation);
             }
             @Override
             public void onFailure(Call<Void> updatePersonCall, Throwable t) {
@@ -166,7 +169,12 @@ public class ProfileViewModel extends ViewModel {
             public void onResponse(Call<Void> updateCompanyCall, Response<Void> response) {
                 editCompanyProfileSuccess.setValue(true);
                 Log.d("Company information change", "SUCCESS");
-                profileData.setValue(null);
+                profile.setCompanyDescription(companyDescription);
+                SimpleLocationDTO location = new SimpleLocationDTO();
+                location.setCity(city);
+                location.setAddress(address);
+                profile.setCompanyLocation(location);
+                profile.setCompanyPhoneNumber(companyPhoneNumber);
             }
             @Override
             public void onFailure(Call<Void> updateCompanyCall, Throwable t) {
@@ -186,7 +194,6 @@ public class ProfileViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     errorMessagePassword.setValue("Password changed successfully!");
                     Log.d("SUCCESS", "in response success");
-                    profileData.setValue(null);
                 } else {
                     Log.d("BACK", String.valueOf(response));
                     try {

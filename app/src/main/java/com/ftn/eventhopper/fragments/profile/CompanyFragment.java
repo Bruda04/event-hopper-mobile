@@ -20,6 +20,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
+import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,8 +41,6 @@ public class CompanyFragment extends Fragment {
     private ViewPager2 companyImagesSlider;
 
     private TextView companyName, companyAddress, companyDescription, companyEmail, companyPhoneNumber;
-
-    private String address, city, phoneNumber;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -81,20 +80,18 @@ public class CompanyFragment extends Fragment {
 
     private void fetchCompanyData(boolean refresh){
         //if you're told to refresh, or this is your first time and you have to
-        if(refresh || viewModel.getProfileData().getValue() == null){
+        if(refresh || viewModel.getProfile() == null){
             viewModel.fetchProfile();
         }
-        viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null || !refresh) {
+        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
+            if (changed) {
+                ProfileForPersonDTO profile = viewModel.getProfile();
                 companyName.setText(profile.getCompanyName());
                 companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");
                 companyDescription.setText(profile.getCompanyDescription());
                 companyEmail.setText(profile.getCompanyEmail());
                 companyPhoneNumber.setText(String.format("+%s", profile.getCompanyPhoneNumber()));
 
-                this.address = profile.getCompanyLocation().getAddress();
-                this.city = profile.getCompanyLocation().getCity();
-                this.phoneNumber = profile.getCompanyPhoneNumber();
 
                 String[] imageUrls = profile.getCompanyPhotos().toArray(String[]::new);
                 ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
@@ -120,9 +117,9 @@ public class CompanyFragment extends Fragment {
         TextInputEditText cityField = dialogView.findViewById(R.id.city_field);
 
         //they have a custom format to display, that's why they can't be simply extracted from the layout fields
-        phoneNumberField.setText(this.phoneNumber);
-        addressField.setText(this.address);
-        cityField.setText(this.city);
+        phoneNumberField.setText(viewModel.getProfile().getCompanyPhoneNumber());
+        addressField.setText(viewModel.getProfile().getCompanyLocation().getAddress());
+        cityField.setText(viewModel.getProfile().getCompanyLocation().getCity());
         descriptionField.setText(this.companyDescription.getText());
 
 
@@ -141,9 +138,6 @@ public class CompanyFragment extends Fragment {
         });
         androidx.appcompat.app.AlertDialog changeDialog = dialogBuilder.create();
         changeDialog.show();
-
-        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-
 
         changeDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
             boolean isValid = true;
@@ -191,12 +185,10 @@ public class CompanyFragment extends Fragment {
                 viewModel.editCompany(description, phoneNumber, address, city);
                 viewModel.getEditCompanyProfileSuccess().observe(getViewLifecycleOwner(), success -> {
                     if(success){
-                        this.phoneNumber = phoneNumber;
-                        this.address = address;
-                        this.city = city;
                         this.companyPhoneNumber.setText(String.format("+%s", phoneNumber));
                         this.companyAddress.setText(String.format("%s, %s", address, city));
                         this.companyDescription.setText(description);
+                        this.fetchCompanyData(true);
                     }
                     changeDialog.dismiss();
                 });
