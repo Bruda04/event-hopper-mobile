@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.clients.services.users;
 
+import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
@@ -7,6 +8,7 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDeta
 import java.util.UUID;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -66,6 +68,13 @@ public interface ProfileService {
     })
     @POST("accounts/remove-profile-picture")
     Call<Void> removeProfilePicture();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/change-password")
+    Call<ResponseBody> changePassword(@Body ChangePasswordDTO changePasswordDTO);
 
     @Headers({
             "User-Agent: Mobile-Android",

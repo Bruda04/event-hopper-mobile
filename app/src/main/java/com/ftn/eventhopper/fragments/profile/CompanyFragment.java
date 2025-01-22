@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.adapters.ImageSliderAdapter;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.models.users.PersonType;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +29,8 @@ import com.ftn.eventhopper.shared.models.users.PersonType;
 public class CompanyFragment extends Fragment {
 
     private ProfileViewModel viewModel;
+
+    private ViewPager2 companyImagesSlider;
 
 
     public CompanyFragment() {
@@ -61,6 +67,12 @@ public class CompanyFragment extends Fragment {
                 companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");
                 companyDescription.setText(profile.getCompanyDescription());
                 companyEmail.setText(profile.getCompanyEmail());
+
+                companyImagesSlider = view.findViewById(R.id.provider_company_image_slider);
+                String[] imageUrls = profile.getCompanyPhotos().toArray(String[]::new);
+                ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
+                companyImagesSlider.setAdapter(imageSliderAdapter);
+
             }
         });
         viewModel.fetchProfile();

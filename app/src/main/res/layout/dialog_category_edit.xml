@@ -20,6 +20,7 @@
             android:id="@+id/category_name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/DarkLargerText"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,6 +41,7 @@
             android:id="@+id/category_description_field"
             android:layout_width="match_parent"
             android:layout_height="120dp"
+            android:textAppearance="@style/DarkLargerText"
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 

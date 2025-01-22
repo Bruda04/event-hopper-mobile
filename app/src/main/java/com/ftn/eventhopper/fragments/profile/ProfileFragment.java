@@ -1,20 +1,29 @@
 package com.ftn.eventhopper.fragments.profile;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.WIFI_AWARE_SERVICE;
+
+import static com.ftn.eventhopper.R.*;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.ChangedPackages;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +40,17 @@ import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
+import com.ftn.eventhopper.filters.MinMaxInputFilter;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
+import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +59,8 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel viewModel;
+    private TextView errorMessagePassword;
+
 
     private PersonType role = UserService.getUserRole();
 
@@ -81,6 +96,10 @@ public class ProfileFragment extends Fragment {
             this.openDeactivateAccountDialog();
         });
 
+        view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
+            this.openChangePasswordDialog();
+        });
+
 
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
@@ -92,6 +111,7 @@ public class ProfileFragment extends Fragment {
         profileImage.setOnClickListener(v -> {
             showImageDialog(view);
         });
+
 
 
         TextView roleTitle = view.findViewById(R.id.role);
@@ -158,6 +178,7 @@ public class ProfileFragment extends Fragment {
         upgradeProfileCard.setVisibility(View.GONE);
         commentsCard.setVisibility(View.GONE);
 
+        //set the title
         switch (role.toString()) {
             case "SERVICE_PROVIDER":
                 myProductsCard.setVisibility(View.VISIBLE);
@@ -237,6 +258,115 @@ public class ProfileFragment extends Fragment {
         });
         confirmDialog.show();
     }
+
+    private void openChangePasswordDialog(){
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_change_password, null);
+        this.errorMessagePassword = dialogView.findViewById(R.id.message_label);
+
+        TextInputLayout oldPasswordInput = dialogView.findViewById(R.id.old_password_layout);
+        TextInputLayout newPasswordInput = dialogView.findViewById(R.id.new_password_layout);
+        TextInputLayout newPasswordAgainInput = dialogView.findViewById(R.id.new_password_again_layout);
+        TextView message_label = dialogView.findViewById(R.id.message_label);
+
+        Objects.requireNonNull(oldPasswordInput.getEditText());
+        Objects.requireNonNull(newPasswordInput.getEditText());
+        Objects.requireNonNull(newPasswordAgainInput.getEditText());
+
+
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
+        dialogBuilder.setTitle("Change Password");
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setPositiveButton("Save", (dialogInterface, i) -> {
+        });
+        dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        });
+        androidx.appcompat.app.AlertDialog changeDialog = dialogBuilder.create();
+        changeDialog.show();
+
+
+
+
+
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+        // Observe the LiveData for message updates
+        viewModel.getErrorMessagePassword().observe(getViewLifecycleOwner(), message -> {
+            if (message != null) {
+                errorMessagePassword.setText(message);
+                errorMessagePassword.setVisibility(View.VISIBLE);
+            } else {
+                errorMessagePassword.setVisibility(View.GONE);
+            }
+        });
+
+        changeDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
+            // Validate the inputs
+            boolean isValid = true;
+
+            if (oldPasswordInput.getEditText().getText().toString().trim().isEmpty()) {
+                oldPasswordInput.setError("Old password is required");
+                isValid = false;
+            } else {
+                oldPasswordInput.setError(null);
+            }
+
+            String newPassword = newPasswordInput.getEditText().getText().toString().trim();
+            if (newPassword.isEmpty()) {
+                newPasswordInput.setError("New password is required");
+                isValid = false;
+            } else if (newPassword.length() < 8) {
+                newPasswordInput.setError("Must be at least 8 characters long");
+                isValid = false;
+            } else if (!newPassword.matches(".*[A-Z].*")) {
+                newPasswordInput.setError("Must contain at least one uppercase letter");
+                isValid = false;
+            } else if (!newPassword.matches(".*[0-9].*")) {
+                newPasswordInput.setError("Must contain at least one number");
+                isValid = false;
+            } else {
+                newPasswordInput.setError(null);
+            }
+
+            if (newPasswordAgainInput.getEditText().getText().toString().trim().isEmpty()) {
+                newPasswordAgainInput.setError("This field is required");
+                isValid = false;
+            } else if (!newPasswordInput.getEditText().getText().toString().trim()
+                    .equals(newPasswordAgainInput.getEditText().getText().toString().trim())) {
+                newPasswordAgainInput.setError("Passwords don't match.");
+                isValid = false;
+            } else {
+                newPasswordAgainInput.setError(null);
+            }
+
+            // Proceed if all inputs are valid
+            Log.d("VALID", String.valueOf(isValid));
+            if (isValid) {
+                String oldPasswordStr = oldPasswordInput.getEditText().getText().toString().trim();
+                String newPasswordStr = newPasswordInput.getEditText().getText().toString().trim();
+
+                // Call the ViewModel's changePassword method
+                viewModel.changePassword(oldPasswordStr, newPasswordStr);
+
+                // Observe changes to the error message
+                viewModel.getErrorMessagePassword().observe(getViewLifecycleOwner(), message -> {
+                    if (message != null) {
+                        message_label.setText(message);
+                        message_label.setVisibility(View.VISIBLE);
+                        if (!message.equals("Password changed successfully!")) {
+                            message_label.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_error));
+                        }
+                        if (message.equals("Password changed successfully!")) {
+                            message_label.setTextColor(ContextCompat.getColor(requireContext(), color.text_dark_blue));
+                            viewModel.getErrorMessagePassword().removeObservers(getViewLifecycleOwner());
+                            // Dismiss the dialog after 2 seconds so the user can see the message
+                            new Handler(Looper.getMainLooper()).postDelayed(changeDialog::dismiss, 2000);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 
 
     private void removeProfilePicture(View view){

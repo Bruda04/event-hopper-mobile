@@ -11,12 +11,16 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
+import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
+
+import org.json.JSONObject;
 
 import lombok.Getter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,6 +28,9 @@ import retrofit2.Response;
 @Getter
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<ProfileForPersonDTO> profileData = new MutableLiveData<>();
+
+    @Getter
+    private final MutableLiveData<String> errorMessagePassword = new MutableLiveData<>();
 
     @Getter
     private MutableLiveData<String> imageUrlLiveData = new MutableLiveData<>();
@@ -39,7 +46,13 @@ public class ProfileViewModel extends ViewModel {
         UserService.clearJwtToken();
         this.clearData();
     }
-    
+    public void clearData() {
+        profileData.setValue(null);
+        imageUrlLiveData.setValue(null);
+        deactivateAccountSuccess.setValue(null);
+        errorMessagePassword.setValue(null);
+    }
+
     public void fetchProfile() {
         Call<ProfileForPersonDTO> call = ClientUtils.profileService.getProfile();
         call.enqueue(new Callback<ProfileForPersonDTO>() {
@@ -102,6 +115,43 @@ public class ProfileViewModel extends ViewModel {
 
     }
 
+    public void changePassword(String oldPassword, String newPassword) {
+        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO(oldPassword, newPassword);
+        Call<ResponseBody> call = ClientUtils.profileService.changePassword(changePasswordDTO);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    errorMessagePassword.setValue("Password changed successfully!");
+                    Log.d("SUCCESS", "in response success");
+                } else {
+                    Log.d("BACK", String.valueOf(response));
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessage = jsonObject.getString("message");
+                        errorMessagePassword.setValue(errorMessage);
+                        Log.d("FAIL", "in custom message fail");
+
+                    } catch (Exception e) {
+                        errorMessagePassword.setValue("An unexpected error occurred.");
+                        Log.d("FAIL", "in unexpectedd errror ");
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                errorMessagePassword.setValue("Failed to connect to the server. Please try again later.");
+                Log.d("FAIL", "in on failure ");
+
+            }
+        });
+    }
+
+
+
     public void deactivateAccount(){
         Call<Void> call = ClientUtils.profileService.deactivateAccount();
         call.enqueue(new Callback<Void>() {
@@ -120,9 +170,5 @@ public class ProfileViewModel extends ViewModel {
 
     }
 
-    public void clearData() {
-        profileData.setValue(null);
-        imageUrlLiveData.setValue(null);
-        deactivateAccountSuccess.setValue(null);
-    }
+
 }

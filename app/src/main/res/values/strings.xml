@@ -157,5 +157,8 @@
     <string name="role">Role</string>
     <string name="manage_photos">Manage photos</string>
     <string name="manage_comments">Manage comments</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password_again">New Password (Again)</string>
 
 </resources>
