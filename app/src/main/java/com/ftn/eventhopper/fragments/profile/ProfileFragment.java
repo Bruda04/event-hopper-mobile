@@ -67,6 +67,7 @@ public class ProfileFragment extends Fragment {
     private TextView userFullName, userAddress, userEmail, roleTitle, userPhoneNumber;
 
     private String name, surname, address, city, phoneNumber;
+    private boolean refreshProfile = false;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -181,7 +182,7 @@ public class ProfileFragment extends Fragment {
 
     private void fillProfileInformation(){
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null) {
+            if (profile != null && !this.refreshProfile) {
                 if(this.role == PersonType.SERVICE_PROVIDER){
                     roleTitle.setText(R.string.provider);
                 }
@@ -218,6 +219,7 @@ public class ProfileFragment extends Fragment {
                         .into(profileImage);
             }
         });
+        this.refreshProfile = false;
 
     }
 
@@ -470,10 +472,12 @@ public class ProfileFragment extends Fragment {
                 viewModel.editPerson(name, surname, phoneNumber, address, city);
                 viewModel.getEditPersonProfileSuccess().observe(getViewLifecycleOwner(), success -> {
                     if(success){
+                        this.refreshProfile = true;
                         this.name = name;
                         this.surname = surname;
                         this.address = address;
                         this.city = city;
+                        this.phoneNumber = phoneNumber;
                         this.userPhoneNumber.setText(String.format("+%s", phoneNumber));
                         this.userFullName.setText(String.format("%s %s", name, surname));
                         this.userAddress.setText(String.format("%s, %s", this.address, this.city));

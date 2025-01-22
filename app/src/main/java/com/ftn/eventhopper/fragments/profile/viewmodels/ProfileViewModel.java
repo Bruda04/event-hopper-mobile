@@ -11,9 +11,11 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
+import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
 import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.ftn.eventhopper.shared.dtos.profile.UpdateCompanyAccountDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
@@ -37,6 +39,9 @@ public class ProfileViewModel extends ViewModel {
 
     @Getter
     private final MutableLiveData<Boolean> editPersonProfileSuccess = new MutableLiveData<>();
+
+    @Getter
+    private final MutableLiveData<Boolean> editCompanyProfileSuccess = new MutableLiveData<>();
 
     @Getter
     private MutableLiveData<String> imageUrlLiveData = new MutableLiveData<>();
@@ -126,7 +131,6 @@ public class ProfileViewModel extends ViewModel {
         SimpleLocationDTO newLocation = new SimpleLocationDTO();
         newLocation.setCity(city);
         newLocation.setAddress(address);
-
         UpdatePersonDTO updatePersonDTO = new UpdatePersonDTO(name, surname, phoneNumber, UserService.getUserRole(), newLocation);
 
         Call<Void> updatePersonCall = ClientUtils.profileService.editProfileInformation(updatePersonDTO);
@@ -134,13 +138,36 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Void> updatePersonCall, Response<Void> response) {
                 editPersonProfileSuccess.setValue(true);
-                profileData.setValue(null);
                 Log.d("Profile information change", "SUCCESS");
             }
             @Override
             public void onFailure(Call<Void> updatePersonCall, Throwable t) {
                 editPersonProfileSuccess.setValue(false);
                 Log.d("Profile information change", "FAILED");
+            }
+        });
+    }
+
+    public void editCompany(String companyDescription, String companyPhoneNumber, String address, String city){
+        LocationDTO newLocation = new LocationDTO();
+        newLocation.setCity(city);
+        newLocation.setAddress(address);
+        UpdateCompanyAccountDTO updateCompanyAccountDTO = new UpdateCompanyAccountDTO();
+        updateCompanyAccountDTO.setCompanyDescription(companyDescription);
+        updateCompanyAccountDTO.setCompanyPhoneNumber(companyPhoneNumber);
+        updateCompanyAccountDTO.setCompanyLocation(newLocation);
+
+        Call<Void> updateCompanyCall = ClientUtils.profileService.editCompanyInformation(updateCompanyAccountDTO);
+        updateCompanyCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> updateCompanyCall, Response<Void> response) {
+                editCompanyProfileSuccess.setValue(true);
+                Log.d("Company information change", "SUCCESS");
+            }
+            @Override
+            public void onFailure(Call<Void> updateCompanyCall, Throwable t) {
+                editCompanyProfileSuccess.setValue(false);
+                Log.d("Company information change", "FAILED");
             }
         });
     }

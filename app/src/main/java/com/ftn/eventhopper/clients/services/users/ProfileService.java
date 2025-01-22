@@ -2,6 +2,7 @@ package com.ftn.eventhopper.clients.services.users;
 
 import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.ftn.eventhopper.shared.dtos.profile.UpdateCompanyAccountDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
@@ -84,6 +85,14 @@ public interface ProfileService {
     })
     @PUT("accounts")
     Call<Void> editProfileInformation(@Body UpdatePersonDTO updatePersonDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/company")
+    Call<Void> editCompanyInformation(@Body UpdateCompanyAccountDTO updatePersonDTO);
+
 
     @Headers({
             "User-Agent: Mobile-Android",
