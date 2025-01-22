@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -41,20 +42,13 @@ public class CompanyFragment extends Fragment {
     private TextView companyName, companyAddress, companyDescription, companyEmail, companyPhoneNumber;
 
     private String address, city, phoneNumber;
-    private boolean refreshCompany = false;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public CompanyFragment() {
         // Required empty public constructor
     }
 
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +57,12 @@ public class CompanyFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
         NavController navController = NavHostFragment.findNavController(this);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchCompanyData(true);
+        });
+
 
         this.companyName = view.findViewById(R.id.CompanyName);
         this.companyAddress = view.findViewById(R.id.companyAddress);
@@ -74,15 +74,15 @@ public class CompanyFragment extends Fragment {
         ImageView editPersonIcon = view.findViewById(R.id.editCompanyIcon);
         editPersonIcon.setOnClickListener(v -> openEditCompanyDialog());
 
-        this.fillCompanyData();
-        viewModel.fetchProfile();
+        this.fetchCompanyData(false);
 
         return view;
     }
 
-    private void fillCompanyData(){
+    private void fetchCompanyData(boolean refresh){
+        viewModel.fetchProfile();
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null && !refreshCompany) {
+            if (profile != null || !refresh) {
                 companyName.setText(profile.getCompanyName());
                 companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");
                 companyDescription.setText(profile.getCompanyDescription());
@@ -97,7 +97,7 @@ public class CompanyFragment extends Fragment {
                 ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
                 companyImagesSlider.setAdapter(imageSliderAdapter);
             }
-            refreshCompany = false;
+            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
         });
 
     }
@@ -195,7 +195,6 @@ public class CompanyFragment extends Fragment {
                         this.companyAddress.setText(String.format("%s, %s", address, city));
                         this.companyDescription.setText(description);
                     }
-                    this.refreshCompany = true;
                     changeDialog.dismiss();
                 });
             }

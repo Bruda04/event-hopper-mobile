@@ -7,6 +7,11 @@
     tools:context=".fragments.profile.ProfileFragment"
     android:background="@color/background_beige">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <!-- ScrollView to make the content scrollable -->
     <ScrollView
         android:layout_width="match_parent"
@@ -436,4 +441,7 @@
 
         </LinearLayout>
     </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </FrameLayout>

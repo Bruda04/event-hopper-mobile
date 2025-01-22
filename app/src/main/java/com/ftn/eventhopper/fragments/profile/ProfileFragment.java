@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -67,7 +68,8 @@ public class ProfileFragment extends Fragment {
     private TextView userFullName, userAddress, userEmail, roleTitle, userPhoneNumber;
 
     private String name, surname, address, city, phoneNumber;
-    private boolean refreshProfile = false;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -82,6 +84,27 @@ public class ProfileFragment extends Fragment {
 
         NavController navController = NavHostFragment.findNavController(this);
 
+        this.assignButtons(view, navController);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchProfileInformation(true);
+        });
+
+        this.fetchProfileInformation(false);
+
+        this.roleTitle = view.findViewById(R.id.role);
+        this.userFullName = view.findViewById(id.userName);
+        this.userAddress = view.findViewById(R.id.userAddress);
+        this.userEmail = view.findViewById(R.id.userEmail);
+        this.userPhoneNumber = view.findViewById(R.id.phoneNumber);
+
+        this.handleCardVisibility(view);
+
+        return view;
+    }
+
+    private void assignButtons(View view, NavController navController){
         view.findViewById(R.id.ListItemMyServices).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_pup_services);
         });
@@ -102,15 +125,10 @@ public class ProfileFragment extends Fragment {
             this.openChangePasswordDialog();
         });
 
-
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
-
-        viewModel.fetchProfile();
-        this.fillProfileInformation();
-
 
         this.profileImage = view.findViewById(R.id.profileImage);
         profileImage.setOnClickListener(v -> {
@@ -120,14 +138,9 @@ public class ProfileFragment extends Fragment {
         ImageView editPersonIcon = view.findViewById(R.id.editPersonIcon);
         editPersonIcon.setOnClickListener(v -> openEditPersonDialog());
 
+    }
 
-        this.roleTitle = view.findViewById(R.id.role);
-        this.userFullName = view.findViewById(id.userName);
-        this.userAddress = view.findViewById(R.id.userAddress);
-        this.userEmail = view.findViewById(R.id.userEmail);
-        this.userPhoneNumber = view.findViewById(R.id.phoneNumber);
-
-
+    private void handleCardVisibility(View view){
         CardView changePasswordCard = view.findViewById(R.id.ListItemChangePassword);
         CardView myProductsCard = view.findViewById(R.id.ListItemMyProducts);
         CardView myServicesCard = view.findViewById(R.id.ListItemMyServices);
@@ -148,6 +161,10 @@ public class ProfileFragment extends Fragment {
         myEventsCard.setVisibility(View.GONE);
         upgradeProfileCard.setVisibility(View.GONE);
         commentsCard.setVisibility(View.GONE);
+
+        changePasswordCard.setVisibility(View.VISIBLE);
+        logOutCard.setVisibility(View.VISIBLE);
+        deactivateProfileCard.setVisibility(View.VISIBLE);
 
         //set the title
         switch (role.toString()) {
@@ -171,31 +188,28 @@ public class ProfileFragment extends Fragment {
                 upgradeProfileCard.setVisibility(View.VISIBLE);
                 break;
         }
-
-        changePasswordCard.setVisibility(View.VISIBLE);
-        logOutCard.setVisibility(View.VISIBLE);
-        deactivateProfileCard.setVisibility(View.VISIBLE);
-
-        return view;
     }
 
+    private void setRoleTitle(){
+        if(this.role == PersonType.SERVICE_PROVIDER){
+            roleTitle.setText(R.string.provider);
+        }
+        if(this.role == PersonType.EVENT_ORGANIZER){
+            roleTitle.setText(R.string.organizer);
+        }
+        if(this.role == PersonType.ADMIN){
+            roleTitle.setText(R.string.admin);
+        }
+        if(this.role == PersonType.AUTHENTICATED_USER){
+            roleTitle.setText(R.string.user);
+        }
+    }
 
-    private void fillProfileInformation(){
+    private void fetchProfileInformation(boolean refresh){
+        viewModel.fetchProfile();
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
-            if (profile != null && !this.refreshProfile) {
-                if(this.role == PersonType.SERVICE_PROVIDER){
-                    roleTitle.setText(R.string.provider);
-                }
-                if(this.role == PersonType.EVENT_ORGANIZER){
-                    roleTitle.setText(R.string.organizer);
-                }
-                if(this.role == PersonType.ADMIN){
-                    roleTitle.setText(R.string.admin);
-                }
-                if(this.role == PersonType.AUTHENTICATED_USER){
-                    roleTitle.setText(R.string.user);
-                }
-
+            if (profile != null || refresh) {
+                this.setRoleTitle();
 
                 // Populate User Info
                 userFullName.setText(String.format("%s %s", profile.getName(), profile.getSurname()));
@@ -218,9 +232,8 @@ public class ProfileFragment extends Fragment {
                         .circleCrop()
                         .into(profileImage);
             }
+            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
         });
-        this.refreshProfile = false;
-
     }
 
     private void showImageDialog(View view) {
@@ -244,7 +257,6 @@ public class ProfileFragment extends Fragment {
 
         dialog.show();
     }
-
 
     private void openDeactivateAccountDialog() {
         MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(requireContext());
@@ -472,7 +484,6 @@ public class ProfileFragment extends Fragment {
                 viewModel.editPerson(name, surname, phoneNumber, address, city);
                 viewModel.getEditPersonProfileSuccess().observe(getViewLifecycleOwner(), success -> {
                     if(success){
-                        this.refreshProfile = true;
                         this.name = name;
                         this.surname = surname;
                         this.address = address;
