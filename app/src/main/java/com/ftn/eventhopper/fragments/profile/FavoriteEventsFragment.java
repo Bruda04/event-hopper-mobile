@@ -94,6 +94,7 @@ public class FavoriteEventsFragment extends Fragment {
                 allEventsRecyclerView.setVisibility(View.GONE);
                 emptyMessage.setVisibility(View.VISIBLE);
             }
+            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
         });
     }
 

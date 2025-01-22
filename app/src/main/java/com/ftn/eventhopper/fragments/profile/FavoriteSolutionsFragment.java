@@ -79,7 +79,7 @@ public class FavoriteSolutionsFragment extends Fragment {
                 allSolutionsRecyclerView.setVisibility(View.GONE);
                 emptyMessage.setVisibility(View.VISIBLE);
             }
-
+            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
         });
     }
 
