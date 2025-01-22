@@ -11,8 +11,10 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.clients.services.users.ProfileService;
+import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import org.json.JSONObject;
@@ -27,10 +29,14 @@ import retrofit2.Response;
 
 @Getter
 public class ProfileViewModel extends ViewModel {
+    @Getter
     private final MutableLiveData<ProfileForPersonDTO> profileData = new MutableLiveData<>();
 
     @Getter
     private final MutableLiveData<String> errorMessagePassword = new MutableLiveData<>();
+
+    @Getter
+    private final MutableLiveData<Boolean> editPersonProfileSuccess = new MutableLiveData<>();
 
     @Getter
     private MutableLiveData<String> imageUrlLiveData = new MutableLiveData<>();
@@ -115,6 +121,31 @@ public class ProfileViewModel extends ViewModel {
 
     }
 
+
+    public void editPerson(String name, String surname, String phoneNumber, String address, String city){
+        SimpleLocationDTO newLocation = new SimpleLocationDTO();
+        newLocation.setCity(city);
+        newLocation.setAddress(address);
+
+        UpdatePersonDTO updatePersonDTO = new UpdatePersonDTO(name, surname, phoneNumber, UserService.getUserRole(), newLocation);
+
+        Call<Void> updatePersonCall = ClientUtils.profileService.editProfileInformation(updatePersonDTO);
+        updatePersonCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> updatePersonCall, Response<Void> response) {
+                editPersonProfileSuccess.setValue(true);
+                profileData.setValue(null);
+                Log.d("Profile information change", "SUCCESS");
+            }
+            @Override
+            public void onFailure(Call<Void> updatePersonCall, Throwable t) {
+                editPersonProfileSuccess.setValue(false);
+                Log.d("Profile information change", "FAILED");
+            }
+        });
+    }
+
+
     public void changePassword(String oldPassword, String newPassword) {
         ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO(oldPassword, newPassword);
         Call<ResponseBody> call = ClientUtils.profileService.changePassword(changePasswordDTO);
@@ -149,8 +180,6 @@ public class ProfileViewModel extends ViewModel {
             }
         });
     }
-
-
 
     public void deactivateAccount(){
         Call<Void> call = ClientUtils.profileService.deactivateAccount();

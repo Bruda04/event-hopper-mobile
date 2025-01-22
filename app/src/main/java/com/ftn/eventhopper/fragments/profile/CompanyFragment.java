@@ -32,6 +32,8 @@ public class CompanyFragment extends Fragment {
 
     private ViewPager2 companyImagesSlider;
 
+    private TextView companyName, companyAddress, companyDescription, companyEmail, companyPhoneNumber;
+
 
     public CompanyFragment() {
         // Required empty public constructor
@@ -53,34 +55,33 @@ public class CompanyFragment extends Fragment {
 
         NavController navController = NavHostFragment.findNavController(this);
 
-        TextView companyName = view.findViewById(R.id.CompanyName);
-        TextView companyAddress = view.findViewById(R.id.companyAddress);
-        TextView companyDescription = view.findViewById(R.id.companyDescription);
-        TextView companyEmail = view.findViewById(R.id.companyEmail);
+        this.companyName = view.findViewById(R.id.CompanyName);
+        this.companyAddress = view.findViewById(R.id.companyAddress);
+        this.companyDescription = view.findViewById(R.id.companyDescription);
+        this.companyEmail = view.findViewById(R.id.companyEmail);
+        this.companyPhoneNumber = view.findViewById(R.id.companyPhoneNumber);
+        this.companyImagesSlider = view.findViewById(R.id.provider_company_image_slider);
 
+        this.fillCompanyData();
+        viewModel.fetchProfile();
 
+        return view;
+    }
 
-
+    private void fillCompanyData(){
         viewModel.getProfileData().observe(getViewLifecycleOwner(), profile -> {
             if (profile != null) {
                 companyName.setText(profile.getCompanyName());
                 companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");
                 companyDescription.setText(profile.getCompanyDescription());
                 companyEmail.setText(profile.getCompanyEmail());
+                companyPhoneNumber.setText(String.format("+%s", profile.getCompanyPhoneNumber()));
 
-                companyImagesSlider = view.findViewById(R.id.provider_company_image_slider);
                 String[] imageUrls = profile.getCompanyPhotos().toArray(String[]::new);
                 ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(List.of(imageUrls));
                 companyImagesSlider.setAdapter(imageSliderAdapter);
-
             }
         });
-        viewModel.fetchProfile();
 
-
-
-
-
-        return view;
     }
 }

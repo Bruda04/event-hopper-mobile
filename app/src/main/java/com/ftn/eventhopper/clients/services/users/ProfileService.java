@@ -2,6 +2,7 @@ package com.ftn.eventhopper.clients.services.users;
 
 import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
@@ -15,6 +16,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ProfileService {
@@ -75,6 +77,13 @@ public interface ProfileService {
     })
     @POST("accounts/change-password")
     Call<ResponseBody> changePassword(@Body ChangePasswordDTO changePasswordDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts")
+    Call<Void> editProfileInformation(@Body UpdatePersonDTO updatePersonDTO);
 
     @Headers({
             "User-Agent: Mobile-Android",
