@@ -13,13 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.clients.ClientUtils;
-import com.ftn.eventhopper.fragments.home.HomeEventsFragment;
-import com.ftn.eventhopper.fragments.home.HomeSolutionsFragment;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
-import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.tabs.TabLayout;
 
 

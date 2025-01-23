@@ -5,6 +5,7 @@ import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdateCompanyAccountDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
+import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CompanyDetailsDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
 import java.util.UUID;
@@ -100,4 +101,27 @@ public interface ProfileService {
     })
     @POST("accounts/deactivate")
     Call<Void> deactivateAccount();
+
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/attending-events/{eventId}")
+    Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/upgrade-to-OD")
+    Call<Void> upgradeToOd();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/upgrade-to-PUP")
+    Call<Void> upgradeToPUP(@Body CompanyDetailsDTO companyDetailsDTO);
+
 }

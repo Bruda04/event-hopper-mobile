@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
+        if (UserService.isTokenValid()) {
+            ClientUtils.connectWebSocket();
+        }
 
         Log.d("MainActivity", "setContentView called");
 
@@ -125,17 +128,24 @@ public class MainActivity extends AppCompatActivity {
                     if(UserService.isTokenValid()){
 
                         fragment = new HostFragment();
+                        ClientUtils.profileService.addEventToAttending(invitationDTO.getValue().getEvent().getId());
                     }else{
-                        fragment = NavHostFragment.create(R.navigation.nav_auth);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("attending-event", invitationDTO.getValue().getEvent().getId().toString());
+                        fragment = NavHostFragment.create(R.navigation.nav_auth, bundle);
+
                     }
 
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.nav_main_fragment, fragment)
                             .commit();
-                    //redirect();
+
                 }else{
                     Log.i("redirect","register");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email", invitationDTO.getValue().getTargetEmail());
+                    bundle.putString("attending-event", invitationDTO.getValue().getEvent().getId().toString());
                     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.nav_main_fragment);
                     NavController navController = navHostFragment.getNavController();
@@ -143,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
                     NavInflater inflater = navController.getNavInflater();
                     NavGraph navGraph = inflater.inflate(R.navigation.nav_auth);
                     navGraph.setStartDestination(R.id.quickRegistrationData1Fragment);
-                    navController.setGraph(navGraph);
+                    navController.setGraph(navGraph,bundle);
+                    //kako da nakon registracije i logina se doda event u attending?
 
 
                 }
@@ -156,5 +167,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ClientUtils.disconnectStompClient();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (UserService.isTokenValid()) {
+            ClientUtils.connectWebSocket();
+        }
+    }
 
 }

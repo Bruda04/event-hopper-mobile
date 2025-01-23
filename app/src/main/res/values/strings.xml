@@ -6,7 +6,7 @@
     <string name="provider">Provider</string>
 
     <string name="upload_profile_picture">Upload profile picture (Optional)</string>
-    <string name="upload_pictures">Upload images</string>
+    <string name="upload_pictures">Upload images (Optional)</string>
     <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
     <string name="continue_without_an_account">Continue without an account</string>
     <string name="loading">Loading..</string>
@@ -47,7 +47,7 @@
     <string name="all_solutions_title">Explore all services/products</string>
     <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
     <string name="login_btn_text">Login</string>
-    <string name="next">Next</string>
+    <string name="next">Next ></string>
     <string name="register">Register</string>
     <string name="confirm_email">A verification email has been sent to the provided address. It may take a few minutes to arrive.
     Make sure to check you spam and junk folder!
@@ -134,12 +134,22 @@
     <string name="provide_emails">Please, enter email addresses to invite</string>
     <string name="loading_services">Loading services...</string>
     <string name="images_are_required">Images are required</string>
+    <string name="upgrading_text">Choose what you want to become</string>
+    <string name="upgrading_successful">Upgrading successful!\n Please login</string>
     <string name="successful_email_confirmed_title">Congratulations!</string>
     <string name="successful_email_confirmed_text">Your account has been verified. You can now log in and start using your account.</string>
     <string name="expired_email_confirmed_title">Oops! Too late...!</string>
     <string name="expired_email_confirmed_text">Your verification expired, please re-register.</string>
     <string name="missing_email_confirmed_title">Oops! Something went wrong...</string>
     <string name="missing_email_confirmed_text">We couldn\'t find your account, your account may have been suspended or already verified.</string>
+    <string name="rating">Rating</string>
+    <string name="comment">Comment</string>
+    <string name="close_chat">Close chat</string>
+    <string name="loading_conversations">Loading conversations...</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="send">Send</string>
+    <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
+    <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
     <string name="company">Company</string>
     <string name="change_password">Change password</string>
     <string name="log_out">Log out</string>

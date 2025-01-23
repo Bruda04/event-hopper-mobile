@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/theme_blue"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="674dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="87dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"
+            android:src="@drawable/logo" />
+
+        <!-- Welcome text -->
+        <TextView
+            android:layout_width="321dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="24dp"
+            android:text="@string/upload_pictures_text"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteRegularText" />
+
+        <!-- Upload images -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_images_btn"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="22dp"
+            android:padding="5dp"
+            android:text="@string/upload_pictures"
+            style="@style/DarkButton"
+            />
+
+        <!-- RecyclerView for image previews -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/image_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_image_preview" />
+
+    </LinearLayout>
+
+    <!--Next btn-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_btn"
+        style="@style/DarkButton"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/next"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

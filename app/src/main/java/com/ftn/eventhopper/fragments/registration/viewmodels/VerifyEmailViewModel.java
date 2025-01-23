@@ -7,12 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
-import com.ftn.eventhopper.clients.services.users.RegistrationService;
-import com.ftn.eventhopper.shared.dtos.users.account.CreateEventOrganizerAccountDTO;
 import com.ftn.eventhopper.shared.models.registration.VerificationTokenState;
 
-import lombok.Getter;
-import lombok.Setter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

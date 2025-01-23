@@ -1,5 +1,7 @@
 package com.ftn.eventhopper.clients.services.solutions;
 
+import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
+import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.ftn.eventhopper.shared.dtos.prices.PriceManagementDTO;
 import com.ftn.eventhopper.shared.dtos.prices.UpdatePriceDTO;
@@ -14,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -87,5 +90,19 @@ public interface ProductService {
     })
     @PUT("prices/{productId}")
     Call<Void> updateProductsPrice(@Path("productId") UUID productId, @Body UpdatePriceDTO updatePriceDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("ratings/solution")
+    Call<Void> rateProduct(@Body CreateProductRatingDTO createProductRatingDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("comments")
+    Call<Void> commentProduct(@Body CreateCommentDTO createCommentDTO);
 
 }

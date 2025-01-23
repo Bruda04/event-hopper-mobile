@@ -2,9 +2,12 @@ package com.ftn.eventhopper.fragments.categories;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -20,6 +23,7 @@ public class AdminsCategoriesSuggestionsManagementFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     CategoriesSuggestionsPagerAdapter pagerAdapter;
+    NavController navController;
 
     public AdminsCategoriesSuggestionsManagementFragment() {
         // Required empty public constructor
@@ -33,13 +37,20 @@ public class AdminsCategoriesSuggestionsManagementFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.manage_categories, true);
+            }
+        });
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admins_categories_suggestions_management, container, false);
-
+        navController= NavHostFragment.findNavController(this);
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager2 = view.findViewById(R.id.view_pager);
         pagerAdapter = new CategoriesSuggestionsPagerAdapter(getActivity());
