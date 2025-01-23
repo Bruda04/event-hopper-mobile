@@ -59,6 +59,10 @@
             android:id="@+id/action_to_solution_page"
             app:destination="@id/solution_page"
             />
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
 
     </fragment>
 
@@ -214,6 +218,15 @@
         tools:layout="@layout/fragment_p_u_p_prices_management">
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/event_page"
+        android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
+        android:label="Event Page"
+        tools:layout="@layout/fragment_event_page">
+    </fragment>
+
 
     <fragment
         android:id="@+id/solution_page"
