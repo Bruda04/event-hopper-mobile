@@ -18,6 +18,7 @@
         <AutoCompleteTextView
             android:id="@+id/category_select_autocomplete"
             android:layout_width="match_parent"
+            android:textAppearance="@style/DarkLargerText"
             android:layout_height="wrap_content"
             android:inputType="none"
             />

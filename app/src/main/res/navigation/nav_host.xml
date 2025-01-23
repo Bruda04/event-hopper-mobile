@@ -62,12 +62,28 @@
 
     </fragment>
 
+    <!--Not logged in-->
+    <fragment
+        android:id="@+id/notLoggedIn"
+        android:name="com.ftn.eventhopper.fragments.profile.NotLoggedInFragment"
+        android:label="Not logged in"
+        tools:layout="@layout/fragment_not_logged_in"
+        />
+
+
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
         android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
+
+    <!-- Company Fragment -->
+    <fragment
+        android:id="@+id/company"
+        android:name="com.ftn.eventhopper.fragments.profile.CompanyFragment"
+        android:label="Company"
+        tools:layout="@layout/fragment_company" />
 
     <!-- Favorites Fragment -->
     <fragment

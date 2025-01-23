@@ -1,11 +1,17 @@
 package com.ftn.eventhopper.clients.services.users;
 
+import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
+import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.ftn.eventhopper.shared.dtos.profile.UpdateCompanyAccountDTO;
+import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CompanyDetailsDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
 import java.util.UUID;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -50,8 +56,24 @@ public interface ProfileService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
+
     @POST("persons/attending-events/{eventId}")
     Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("accounts/profile")
+    Call<ProfileForPersonDTO> getProfile();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:text/plain"
+    })
+    @POST("accounts/change-profile-picture")
+    Call<Void> changeProfilePicture(@Body RequestBody newProfilePicture);
+
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -68,5 +90,40 @@ public interface ProfileService {
     Call<Void> upgradeToPUP(@Body CompanyDetailsDTO companyDetailsDTO);
 
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/remove-profile-picture")
+    Call<Void> removeProfilePicture();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/change-password")
+    Call<ResponseBody> changePassword(@Body ChangePasswordDTO changePasswordDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts")
+    Call<Void> editProfileInformation(@Body UpdatePersonDTO updatePersonDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/company")
+    Call<Void> editCompanyInformation(@Body UpdateCompanyAccountDTO updatePersonDTO);
+
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("accounts/deactivate")
+    Call<Void> deactivateAccount();
 
 }
