@@ -2,6 +2,7 @@ package com.ftn.eventhopper.clients.services.events;
 
 
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
+import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 
@@ -17,8 +18,6 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface EventService {
-
-
     @Headers({
         "User-Agent: Mobile-Android",
         "Content-Type:application/json"
@@ -31,7 +30,7 @@ public interface EventService {
             "Content-Type:application/json"
     })
     @GET("events/{id}")
-    Call<SimpleEventDTO> getEvent(@Path("id") UUID id);
+    Call<SinglePageEventDTO> getEvent(@Path("id") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -39,7 +38,6 @@ public interface EventService {
     })
     @GET("events/persons-top-5")
     Call<ArrayList<SimpleEventDTO>> getTop5Events();
-
 
 
     @Headers({

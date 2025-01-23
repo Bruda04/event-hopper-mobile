@@ -1,0 +1,30 @@
+package com.ftn.eventhopper.shared.dtos.events;
+
+
+import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
+import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class SinglePageEventDTO {
+    private UUID id;
+    private String name;
+    private String description;
+    private LocalDateTime time;
+    private String picture;
+    private SimpleEventTypeDTO eventType;
+    private SimpleLocationDTO location;
+    private com.ftn.event_hopper.models.shared.EventPrivacyType privacy;
+    private boolean eventOrganizerLoggedIn;
+    private boolean favorite;
+}
