@@ -94,7 +94,12 @@
         android:id="@+id/favorites"
         android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
         android:label="Favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+    <action
+        android:id="@+id/action_to_event_page"
+        app:destination="@id/event_page"
+        />
+    </fragment>
 
 
     <!-- Profile Fragment -->
