@@ -184,7 +184,6 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
     public void onDestroyView() {
         super.onDestroyView();
 
-        //binding = null;
         sensorManager.unregisterListener(this);
 
     }

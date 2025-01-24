@@ -59,6 +59,7 @@
             android:id="@+id/action_to_solution_page"
             app:destination="@id/solution_page"
             />
+        
 
     </fragment>
 

@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.adapters.solutions;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +18,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.github.islamkhsh.CardSliderAdapter;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -48,6 +52,7 @@ public class TopSolutionAdapter extends CardSliderAdapter<TopSolutionAdapter.Sol
         TextView titleView = holder.itemView.findViewById(R.id.card_title);
         TextView secondayView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
+        MaterialButton viewMoreButton = holder.itemView.findViewById(R.id.card_button);
 
     }
 
@@ -60,6 +65,8 @@ public class TopSolutionAdapter extends CardSliderAdapter<TopSolutionAdapter.Sol
         TextView titleView = holder.itemView.findViewById(R.id.card_title);
         TextView secondaryView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
+        MaterialButton viewMoreButton = holder.itemView.findViewById(R.id.card_button);
+
 
         titleView.setText(solution.getName());
         secondaryView.setText(solution.getCategory().getName() );
@@ -71,6 +78,13 @@ public class TopSolutionAdapter extends CardSliderAdapter<TopSolutionAdapter.Sol
                 .error(R.drawable.baseline_image_not_supported_24)
                 .into(holder.imageView);
         descriptionView.setText(solution.getDescription());
+
+        viewMoreButton.setOnClickListener(v ->{
+            NavController navController = Navigation.findNavController(v);
+            Bundle bundle = new Bundle();
+            bundle.putString("id", solutions.get(position).getId().toString());
+            navController.navigate(R.id.action_to_solution_page,bundle);
+        });
     }
 
 

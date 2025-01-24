@@ -15,6 +15,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.github.islamkhsh.CardSliderAdapter;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,7 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
         TextView secondayView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
 
+        MaterialButton seeMoreButton = holder.itemView.findViewById(R.id.card_button);
     }
 
 
@@ -59,6 +61,8 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
         TextView titleView = holder.itemView.findViewById(R.id.card_title);
         TextView secondaryView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
+        MaterialButton seeMoreButton = holder.itemView.findViewById(R.id.card_button);
+
 
         titleView.setText(event.getName());
         secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
@@ -70,6 +74,10 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
                 .error(R.drawable.baseline_image_not_supported_24) // Prikaz slike u slučaju greške
                 .into(holder.imageView);
         descriptionView.setText(event.getDescription());
+
+        seeMoreButton.setOnClickListener( v ->{
+
+        });
     }
 
 
