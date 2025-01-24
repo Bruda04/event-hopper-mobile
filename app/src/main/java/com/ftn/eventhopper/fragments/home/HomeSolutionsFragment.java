@@ -111,6 +111,8 @@ public class HomeSolutionsFragment extends Fragment implements SensorEventListen
         {
             if (topProducts != null && !topProducts.isEmpty()){
                 topSolutionsRecyclerView.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.textView3).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.textView4).setVisibility(View.VISIBLE);
                 this.setTop(topProducts);
             }else{
                 topSolutionsRecyclerView.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.adapters.events;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -76,7 +79,10 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
         descriptionView.setText(event.getDescription());
 
         seeMoreButton.setOnClickListener( v ->{
-
+            NavController navController = Navigation.findNavController(v);
+            Bundle bundle = new Bundle();
+            bundle.putString("id", events.get(position).getId().toString());
+            navController.navigate(R.id.action_to_event_page,bundle);
         });
     }
 
