@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
         });
 
         view.findViewById(R.id.ListItemManageComments).setOnClickListener( v -> {
-                    //navController.navigate(R.id.action_to_manage_comments);
+            navController.navigate(R.id.action_to_manage_comments);
         });
 
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
@@ -150,7 +150,7 @@ public class ProfileFragment extends Fragment {
         CardView logOutCard = view.findViewById(R.id.ListItemLogOut);
         CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
         CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
-        CardView commentsCard = view.findViewById(R.id.ListItemComments);
+        CardView commentsCard = view.findViewById(R.id.ListItemManageComments);
 
         myProductsCard.setVisibility(View.GONE);
         myServicesCard.setVisibility(View.GONE);
