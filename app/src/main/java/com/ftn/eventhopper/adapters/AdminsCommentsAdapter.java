@@ -41,7 +41,7 @@ public class AdminsCommentsAdapter extends RecyclerView.Adapter<AdminsCommentsAd
     @NonNull
     @Override
     public AdminsCommentsAdapter.AdminsSimpleCommentsDTOViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new AdminsCommentsAdapter.AdminsSimpleCommentsDTOViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pups_service, parent, false));
+        return new AdminsCommentsAdapter.AdminsSimpleCommentsDTOViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pending_comment, parent, false));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class AdminsCommentsAdapter extends RecyclerView.Adapter<AdminsCommentsAd
         approveDialog.setTitle("Delete comment");
         approveDialog.setMessage("Are you sure you want to Delete this comment?");
         approveDialog.setPositiveButton("Delete", (dialog, which) -> {
-            viewModel.approveComment(comments.get(position).getId());
+            viewModel.deleteComment(comments.get(position).getId());
         });
         approveDialog.setNegativeButton("Cancel", (dialog, which) -> {
         });
@@ -98,7 +98,7 @@ public class AdminsCommentsAdapter extends RecyclerView.Adapter<AdminsCommentsAd
         public AdminsSimpleCommentsDTOViewHolder(@NonNull View itemView){
             super(itemView);
             this.author = itemView.findViewById(R.id.admins_pending_comment_card_author);
-            this.commentContent = itemView.findViewById(R.id.admins_pending_comment_content);
+            this.commentContent = itemView.findViewById(R.id.admins_pending_comment_card_content);
             this.approveButton = itemView.findViewById(R.id.admins_pending_comment_card_approve_button);
             this.deleteButton = itemView.findViewById(R.id.admins_pending_comment_card_delete_button);
         }
