@@ -150,7 +150,7 @@ public class ServiceCreationData1Fragment extends Fragment {
         if (descriptionInput.getEditText().getText().toString().trim().isEmpty()) {
             descriptionInput.setError("Description is required");
             return false;
-        } else if (descriptionInput.getEditText().getText().toString().trim().length() > 255) {
+        } else if (descriptionInput.getEditText().getText().toString().trim().length() > 1000) {
             descriptionInput.setError("Description is too long");
             return false;
 

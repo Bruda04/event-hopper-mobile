@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -89,20 +90,20 @@ public interface ProductService {
             "Content-Type:application/json"
     })
     @PUT("prices/{productId}")
-    Call<Void> updateProductsPrice(@Path("productId") UUID productId, @Body UpdatePriceDTO updatePriceDTO);
+    Call<ResponseBody> updateProductsPrice(@Path("productId") UUID productId, @Body UpdatePriceDTO updatePriceDTO);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
     @POST("ratings/solution")
-    Call<Void> rateProduct(@Body CreateProductRatingDTO createProductRatingDTO);
+    Call<ResponseBody> rateProduct(@Body CreateProductRatingDTO createProductRatingDTO);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
     @POST("comments")
-    Call<Void> commentProduct(@Body CreateCommentDTO createCommentDTO);
+    Call<ResponseBody> commentProduct(@Body CreateCommentDTO createCommentDTO);
 
 }

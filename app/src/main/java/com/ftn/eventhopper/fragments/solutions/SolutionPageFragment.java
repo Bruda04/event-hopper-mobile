@@ -128,9 +128,12 @@ public class SolutionPageFragment extends Fragment {
 
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                Log.e("EventHopper", "Error fetching solution details: " + error);
-                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
-                statusMessage.setVisibility(View.VISIBLE);
+                Log.e("Solution Details", error);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Error")
+                        .setMessage(error)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             }
         });
 
@@ -262,7 +265,7 @@ public class SolutionPageFragment extends Fragment {
 
         TextInputLayout ratingInput = dialogView.findViewById(R.id.rating_layout);
         TextInputLayout commentInput = dialogView.findViewById(R.id.comment_layout);
-//
+
         Objects.requireNonNull(ratingInput.getEditText())
                 .setFilters(new InputFilter[]{new MinMaxInputFilter(1, 5)});
 
@@ -291,7 +294,7 @@ public class SolutionPageFragment extends Fragment {
                 }
             }
 
-            if (commentInput.getEditText().getText().toString().trim().length() > 255) {
+            if (commentInput.getEditText().getText().toString().trim().length() > 1000) {
                 commentInput.setError("Comment is too long");
             } else {
                 commentInput.setError(null);

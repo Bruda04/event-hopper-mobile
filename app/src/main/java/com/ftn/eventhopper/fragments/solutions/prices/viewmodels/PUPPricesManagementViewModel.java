@@ -26,10 +26,13 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 
+import org.json.JSONObject;
+
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,20 +75,28 @@ public class PUPPricesManagementViewModel extends ViewModel {
         updatePriceDTO.setBasePrice(basePrice);
         updatePriceDTO.setDiscount(discount);
 
-        Call<Void> call = ClientUtils.productService.updateProductsPrice(productId, updatePriceDTO);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = ClientUtils.productService.updateProductsPrice(productId, updatePriceDTO);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     fetchPrices();
                     errorMessage.postValue(null);
                 } else {
-                    errorMessage.postValue("Failed to edit price. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue(errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
