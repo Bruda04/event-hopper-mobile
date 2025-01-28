@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.ftn.eventhopper.shared.models.users.PersonType;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -135,5 +137,39 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Retrieves the user's role from the JWT token.
+     *
+     * @return The role of the user, or null if the role claim is not found or decoding fails.
+     */
+    public static PersonType getUserRole() {
+        String jwtToken = getJwtToken(); // Retrieve the stored JWT token
+
+        if (jwtToken == null || jwtToken.isEmpty()) {
+            return null; // No token found
+        }
+
+        try {
+            // Decode the payload and extract the "role" claim
+            JSONObject payload = decodeJwtPayload(jwtToken);
+            if (payload != null && payload.has("role")) {
+                String role = payload.getString("role");
+                if(role.equals("SERVICE_PROVIDER")){
+                    return PersonType.SERVICE_PROVIDER;
+                }else if(role.equals("ADMIN")){
+                    return PersonType.ADMIN;
+                }else if(role.equals("EVENT_ORGANIZER")){
+                    return PersonType.EVENT_ORGANIZER;
+                }else if(role.equals("AUTHENTICATED_USER")){
+                    return PersonType.AUTHENTICATED_USER;
+                }
+                return null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Role not found or decoding failed
+    }
 
 }
