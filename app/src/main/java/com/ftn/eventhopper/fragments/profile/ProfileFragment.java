@@ -210,7 +210,7 @@ public class ProfileFragment extends Fragment {
             viewModel.fetchProfile();
         }
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
-            if (changed) {
+            if (changed != null && changed) {
                 this.setRoleTitle();
                 ProfileForPersonDTO profile = viewModel.getProfile();
                 // Populate User Info
