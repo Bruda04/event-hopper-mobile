@@ -3,21 +3,18 @@ package com.ftn.eventhopper.fragments.profile.viewmodels;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
-import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
 import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdateCompanyAccountDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
-import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import org.json.JSONObject;
 

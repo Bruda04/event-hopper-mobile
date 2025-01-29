@@ -1,13 +1,11 @@
 package com.ftn.eventhopper.fragments.profile;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.WIFI_AWARE_SERVICE;
 
 import static com.ftn.eventhopper.R.*;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.ChangedPackages;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,29 +21,20 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.activities.MainActivity;
-import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
-import com.ftn.eventhopper.clients.services.users.ProfileService;
-import com.ftn.eventhopper.filters.MinMaxInputFilter;
-import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
-import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
-import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -53,7 +42,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -116,6 +104,10 @@ public class ProfileFragment extends Fragment {
             navController.navigate(R.id.action_to_manage_prices);
         });
 
+        view.findViewById(R.id.ListItemManageComments).setOnClickListener( v -> {
+            navController.navigate(R.id.action_to_manage_comments);
+        });
+
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
@@ -127,6 +119,10 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
+        });
+
+        view.findViewById(R.id.ListItemUpgradeProfile).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_choose_role);
         });
 
         this.profileImage = view.findViewById(R.id.profileImage);
@@ -150,7 +146,7 @@ public class ProfileFragment extends Fragment {
         CardView logOutCard = view.findViewById(R.id.ListItemLogOut);
         CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
         CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
-        CardView commentsCard = view.findViewById(R.id.ListItemComments);
+        CardView commentsCard = view.findViewById(R.id.ListItemManageComments);
 
         myProductsCard.setVisibility(View.GONE);
         myServicesCard.setVisibility(View.GONE);

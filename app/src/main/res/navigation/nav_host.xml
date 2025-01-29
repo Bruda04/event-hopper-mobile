@@ -113,6 +113,11 @@
             app:destination="@id/manage_prices" />
 
         <action
+            android:id="@+id/action_to_manage_comments"
+            app:destination="@id/manage_comments"
+            />
+
+        <action
             android:id="@+id/action_to_login"
             app:destination="@id/login"
             app:popUpTo="@id/profile"
@@ -212,6 +217,15 @@
         android:name="com.ftn.eventhopper.fragments.solutions.prices.PUPPricesManagementFragment"
         android:label="Manage Categories"
         tools:layout="@layout/fragment_p_u_p_prices_management">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_comments"
+        android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
+        android:label="Manage Comments"
+        tools:layout="@layout/fragment_admins_comments_management"
+        >
 
     </fragment>
 
