@@ -12,34 +12,31 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.adapters.events.EventAdapter;
+import com.ftn.eventhopper.adapters.solutions.SolutionAdapter;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
-import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 
 import java.util.ArrayList;
-import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FavoriteEventsFragment#} factory method to
+ * Use the {@link FavoriteSolutionsFragment#} factory method to
  * create an instance of this fragment.
  */
-public class FavoriteEventsFragment extends Fragment {
+public class FavoriteSolutionsFragment extends Fragment {
 
     private ProfileViewModel viewModel;
-    private RecyclerView allEventsRecyclerView;
-
     private TextView emptyMessage;
-
+    private RecyclerView allSolutionsRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public FavoriteEventsFragment() {
+    public FavoriteSolutionsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,30 +46,49 @@ public class FavoriteEventsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorite_events, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorite_solutions, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
-        this.allEventsRecyclerView = view.findViewById(R.id.recyclerView_allevents);
-        if (allEventsRecyclerView.getParent() instanceof ViewGroup) {
-            ((ViewGroup) allEventsRecyclerView.getParent()).setLayoutTransition(null);
+        this.allSolutionsRecyclerView = view.findViewById(R.id.recyclerView_allsolutions);
+        if (allSolutionsRecyclerView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) allSolutionsRecyclerView.getParent()).setLayoutTransition(null);
         }
-        allEventsRecyclerView.setLayoutTransition(null);
+        allSolutionsRecyclerView.setLayoutTransition(null);
 
-        this.emptyMessage = view.findViewById(R.id.emptyMessage);
+        emptyMessage = view.findViewById(R.id.emptyMessage);
+        fetchFavoriteSolutions(false);
+
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> {
             // Prevent refresh if RecyclerView is not at the top
-            return allEventsRecyclerView.canScrollVertically(-1);
+            return allSolutionsRecyclerView.canScrollVertically(-1);
         });
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            fetchFavoriteEvents(true);
+            fetchFavoriteSolutions(true);
         });
-
-        this.fetchFavoriteEvents(false);
-
 
         return view;
     }
+
+    private void fetchFavoriteSolutions(boolean refresh){
+        //if you're told to refresh, or this is your first time and you have to
+        if(refresh || viewModel.getProfile() == null){
+            viewModel.fetchProfile();
+        }
+        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
+            ProfileForPersonDTO profile = viewModel.getProfile();
+            if (changed && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
+                allSolutionsRecyclerView.setVisibility(View.VISIBLE);
+                emptyMessage.setVisibility(View.GONE);
+                this.setAll(new ArrayList<>(profile.getFavoriteProducts()));
+            } else {
+                allSolutionsRecyclerView.setVisibility(View.GONE);
+                emptyMessage.setVisibility(View.VISIBLE);
+            }
+            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
+        });
+    }
+
 
     @Override
     public void onStart() {
@@ -84,32 +100,11 @@ public class FavoriteEventsFragment extends Fragment {
         super.onStop();
     }
 
-
-    private void fetchFavoriteEvents(boolean refresh){
-        //if you're told to refresh, or this is your first time and you have to
-        if(refresh || viewModel.getProfile() == null){
-            viewModel.fetchProfile();
-        }
-        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
-            ProfileForPersonDTO profile = viewModel.getProfile();
-            if (changed && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
-                allEventsRecyclerView.setVisibility(View.VISIBLE);
-
-                emptyMessage.setVisibility(View.GONE);
-                this.setAll(new ArrayList<>(profile.getFavoriteEvents()));
-            } else {
-                allEventsRecyclerView.setVisibility(View.GONE);
-                emptyMessage.setVisibility(View.VISIBLE);
-            }
-            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
-        });
-    }
-
-    private void setAll(ArrayList<SimpleEventDTO> events){
-        EventAdapter adapter = new EventAdapter(getContext(),events,this);
+    private void setAll(ArrayList<SimpleProductDTO> solutions){
+        SolutionAdapter adapter = new SolutionAdapter(getContext(),solutions,this);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
-        this.allEventsRecyclerView.setLayoutManager(layoutManager);
-        this.allEventsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        this.allEventsRecyclerView.setAdapter(adapter);
+        this.allSolutionsRecyclerView.setLayoutManager(layoutManager);
+        this.allSolutionsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        this.allSolutionsRecyclerView.setAdapter(adapter);
     }
 }

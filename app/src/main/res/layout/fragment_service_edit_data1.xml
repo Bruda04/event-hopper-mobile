@@ -25,6 +25,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -38,6 +39,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,6 +81,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +97,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,6 +112,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,18 +132,23 @@
             <CheckBox
                 android:id="@+id/visibility_checkbox"
                 android:layout_width="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:layout_height="wrap_content"
                 android:text="@string/visible" />
 
             <CheckBox
                 android:id="@+id/availability_checkbox"
                 android:layout_width="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
                 android:layout_height="wrap_content"
                 android:text="@string/available" />
 
             <CheckBox
                 android:id="@+id/auto_accept_checkbox"
                 android:layout_width="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:layout_height="wrap_content"
                 android:text="@string/auto_accept" />
         </LinearLayout>
