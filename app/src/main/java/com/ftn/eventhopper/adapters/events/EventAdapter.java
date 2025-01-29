@@ -19,6 +19,8 @@ import com.google.android.material.button.MaterialButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -28,11 +30,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     ArrayList<SimpleEventDTO> events;
     Context context;
     private final Fragment fragment;
-    private final NavController navController;
 
 
-    public EventAdapter(Context context, ArrayList<SimpleEventDTO> events, NavController navController, Fragment fragment){
-     this.navController = navController;
+    public EventAdapter(Context context, ArrayList<SimpleEventDTO> events, Fragment fragment){
      this.events = events;
      this.context = context;
      this.fragment = fragment;
@@ -63,6 +63,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.viewMoreButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("event_id", events.get(position).getId().toString());
+            NavController navController = NavHostFragment.findNavController(this.fragment);
             navController.navigate(R.id.action_to_event_page, bundle);
         });
     }

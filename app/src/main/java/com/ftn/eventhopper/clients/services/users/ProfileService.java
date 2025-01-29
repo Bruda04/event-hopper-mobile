@@ -22,7 +22,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ProfileService {
-
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
@@ -66,6 +65,22 @@ public interface ProfileService {
     @POST("accounts/change-profile-picture")
     Call<Void> changeProfilePicture(@Body RequestBody newProfilePicture);
 
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/upgrade-to-OD")
+    Call<Void> upgradeToOd();
+
+    @Headers({
+                "User-Agent: Mobile-Android",
+                "Content-Type:application/json"
+        })
+    @PUT("accounts/upgrade-to-PUP")
+    Call<Void> upgradeToPUP(@Body CompanyDetailsDTO companyDetailsDTO);
+
+
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
@@ -103,25 +118,12 @@ public interface ProfileService {
     Call<Void> deactivateAccount();
 
 
+
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
     @POST("persons/attending-events/{eventId}")
     Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
-
-    @Headers({
-            "User-Agent: Mobile-Android",
-            "Content-Type:application/json"
-    })
-    @PUT("accounts/upgrade-to-OD")
-    Call<Void> upgradeToOd();
-
-    @Headers({
-            "User-Agent: Mobile-Android",
-            "Content-Type:application/json"
-    })
-    @PUT("accounts/upgrade-to-PUP")
-    Call<Void> upgradeToPUP(@Body CompanyDetailsDTO companyDetailsDTO);
 
 }

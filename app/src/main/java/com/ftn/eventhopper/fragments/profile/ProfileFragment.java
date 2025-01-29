@@ -92,36 +92,31 @@ public class ProfileFragment extends Fragment {
     }
 
     private void assignButtons(View view, NavController navController){
-        view.findViewById(R.id.ListItemMyServices).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_pup_services);
-        });
-
-        view.findViewById(R.id.ListItemCategories).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_manage_categories);
-        });
-
-        view.findViewById(R.id.ListItemMyPrices).setOnClickListener(v -> {
-            navController.navigate(R.id.action_to_manage_prices);
-        });
-
-        view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
-            this.openDeactivateAccountDialog();
-        });
-
         view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
             this.openChangePasswordDialog();
         });
-
+        view.findViewById(R.id.ListItemMyServices).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_pup_services);
+        });
+        view.findViewById(R.id.ListItemCategories).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_manage_categories);
+        });
+        view.findViewById(R.id.ListItemMyPrices).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_manage_prices);
+        });
+        view.findViewById(R.id.ListItemManageComments).setOnClickListener( v -> {
+            navController.navigate(R.id.action_to_manage_comments);
+        });
+        view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
+            this.openDeactivateAccountDialog();
+        });
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
-
         view.findViewById(R.id.ListItemUpgradeProfile).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_choose_role);
         });
-
-
 
         this.profileImage = view.findViewById(R.id.profileImage);
         profileImage.setOnClickListener(v -> {
@@ -143,7 +138,7 @@ public class ProfileFragment extends Fragment {
         CardView logOutCard = view.findViewById(R.id.ListItemLogOut);
         CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
         CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
-        CardView commentsCard = view.findViewById(R.id.ListItemComments);
+        CardView commentsCard = view.findViewById(R.id.ListItemManageComments);
 
         myProductsCard.setVisibility(View.GONE);
         myServicesCard.setVisibility(View.GONE);
@@ -458,6 +453,7 @@ public class ProfileFragment extends Fragment {
 
 
             // Proceed if all inputs are valid
+            Log.d("VALID", String.valueOf(isValid));
             if (isValid) {
                 String name = nameInput.getEditText().getText().toString().trim();
                 String surname = surnameInput.getEditText().getText().toString().trim();

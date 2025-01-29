@@ -237,7 +237,7 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
 
 
     private void setAll(ArrayList<SimpleEventDTO> events){
-        EventAdapter adapter = new EventAdapter(getContext(), events, NavHostFragment.findNavController(this), this);
+        EventAdapter adapter = new EventAdapter(getContext(), events, this);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
         this.allEventsRecyclerView.setLayoutManager(layoutManager);
         this.allEventsRecyclerView.setItemAnimator(new DefaultItemAnimator());
