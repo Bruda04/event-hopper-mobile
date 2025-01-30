@@ -12,6 +12,10 @@
         android:title="Profile"
         android:icon="@drawable/account"/>
     <item
+        android:id="@+id/company"
+        android:title="Company"
+        android:icon="@drawable/company"/>
+    <item
         android:id="@+id/favorites"
         android:title="Favorites"
         android:icon="@drawable/star"/>

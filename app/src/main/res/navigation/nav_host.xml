@@ -68,12 +68,28 @@
 
     </fragment>
 
+    <!--Not logged in-->
+    <fragment
+        android:id="@+id/notLoggedIn"
+        android:name="com.ftn.eventhopper.fragments.profile.NotLoggedInFragment"
+        android:label="Not logged in"
+        tools:layout="@layout/fragment_not_logged_in"
+        />
+
+
     <!-- Calendar Fragment -->
     <fragment
         android:id="@+id/calendar"
         android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
+
+    <!-- Company Fragment -->
+    <fragment
+        android:id="@+id/company"
+        android:name="com.ftn.eventhopper.fragments.profile.CompanyFragment"
+        android:label="Company"
+        tools:layout="@layout/fragment_company" />
 
     <!-- Favorites Fragment -->
     <fragment
@@ -101,6 +117,11 @@
         <action
             android:id="@+id/action_to_manage_prices"
             app:destination="@id/manage_prices" />
+
+        <action
+            android:id="@+id/action_to_manage_comments"
+            app:destination="@id/manage_comments"
+            />
 
         <action
             android:id="@+id/action_to_login"
@@ -211,7 +232,16 @@
         android:label="Event page"
         tools:layout="@layout/fragment_event_page"
         >
+
     </fragment>
+    <fragment android:id="@+id/manage_comments"
+        android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
+        android:label="Manage Comments"
+        tools:layout="@layout/fragment_admins_comments_management"
+        >
+
+    </fragment>
+
 
     <fragment
         android:id="@+id/solution_page"

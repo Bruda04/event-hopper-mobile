@@ -1,11 +1,15 @@
 <resources>
     <string name="pup">Product/Service provider</string>
     <string name="organizer">Organizer</string>
+    <string name="admin">Admin</string>
+    <string name="user">User</string>
+    <string name="provider">Provider</string>
+
     <string name="upload_profile_picture">Upload profile picture (Optional)</string>
     <string name="upload_pictures">Upload images (Optional)</string>
     <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
     <string name="continue_without_an_account">Continue without an account</string>
-
+    <string name="loading">Loading..</string>
     <string name="edit_profile">Edit profile</string>
     <string name="my_events">My events</string>
     <string name="my_products">My products</string>
@@ -146,4 +150,25 @@
     <string name="send">Send</string>
     <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
     <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
+    <string name="company">Company</string>
+    <string name="change_password">Change password</string>
+    <string name="log_out">Log out</string>
+    <string name="deactivate_profile">Deactivate profile</string>
+    <string name="manage_categories">Manage categories</string>
+    <string name="remove_profile_picture">Remove profile picture</string>
+    <string name="upload_new_profile_picture">Upload New profile picture</string>
+    <string name="favorites_no_events">You have not favorited any events yet.</string>
+    <string name="favorites_no_solutions">You haven\'t favorited any products/services yet.</string>
+    <string name="log_in">Log in</string>
+    <string name="please_login">To view profile and access all \n user benefits, please login.</string>
+    <string name="manage_event_types">Manage event types</string>
+    <string name="view_my_events">View my events</string>
+    <string name="upgrade_profile">Upgrade profile</string>
+    <string name="role">Role</string>
+    <string name="manage_photos">Manage photos</string>
+    <string name="manage_comments">Manage comments</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password_again">New Password (Again)</string>
+    <string name="loading_comments">Loading comments...</string>
 </resources>

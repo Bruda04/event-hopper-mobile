@@ -49,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void navigateToAuthGraph() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_main_fragment, NavHostFragment.create(R.navigation.nav_auth))
+                .commit();
+    }
+
     private void handleIntent(Intent intent) {
         Uri data = intent.getData();
         if (data != null ) {
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.nav_main_fragment, new VerifyEmailFragment(bundle))
                         .commit();
             }
+            Log.d("FUCKING IMPORTANT", String.valueOf(data));
         }else{
             Fragment fragment;
             if(UserService.isTokenValid()){
@@ -81,14 +89,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.nav_main_fragment, fragment)
                     .commit();
         }
-    }
-
-
-    public void navigateToAuthGraph() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_main_fragment, NavHostFragment.create(R.navigation.nav_auth))
-                .commit();
     }
 
 
