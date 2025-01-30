@@ -131,6 +131,12 @@ public interface ProfileService {
             "Content-Type:application/json"
     })
     @POST("persons/favorite-events/{eventId}")
-    Call<Void> addEventToFavorites(@Path("eventId") UUID eventId, @Body RequestBody emptyBody);
+    Call<Void> addEventToFavorites(@Path("eventId") UUID eventId);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("persons/favorite-events/{eventId}")
+    Call<Void> removeEventFromFavorites(@Path("eventId") UUID eventId);
 }

@@ -23,16 +23,18 @@
             android:id="@+id/event_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
             android:textAppearance="@style/DarkHeaderText"
             />
 
         <ImageView
             android:id="@+id/favorite_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/star" />
+			android:src="@drawable/star"
+			app:tint="@color/theme_blue" />
     </RelativeLayout>
 
     <!-- Event Description -->
@@ -69,6 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/poppins_bold"
             android:drawablePadding="8dp"
             android:textAppearance="@style/DarkLargerText" />
 

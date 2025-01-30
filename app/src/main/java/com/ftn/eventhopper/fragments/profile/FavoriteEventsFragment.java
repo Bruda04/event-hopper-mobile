@@ -92,7 +92,7 @@ public class FavoriteEventsFragment extends Fragment {
         }
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
             ProfileForPersonDTO profile = viewModel.getProfile();
-            if (changed && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
+            if (changed != null && changed && profile.getFavoriteEvents() != null && !profile.getFavoriteEvents().isEmpty()) {
                 allEventsRecyclerView.setVisibility(View.VISIBLE);
 
                 emptyMessage.setVisibility(View.GONE);

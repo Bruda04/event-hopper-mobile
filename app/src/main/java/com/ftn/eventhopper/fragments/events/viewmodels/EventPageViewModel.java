@@ -12,6 +12,7 @@ import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.Setter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -22,6 +23,9 @@ public class EventPageViewModel extends ViewModel {
     @Getter
     private final MutableLiveData<SinglePageEventDTO> eventLiveData = new MutableLiveData<>();
 
+    @Getter
+    @Setter
+    private boolean isFavorited;
 
     public void loadEventById(String eventId) {
         UUID id = UUID.fromString(eventId);
@@ -31,6 +35,7 @@ public class EventPageViewModel extends ViewModel {
             public void onResponse(Call<SinglePageEventDTO> call, Response<SinglePageEventDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     eventLiveData.setValue(response.body());
+                    setFavorited(response.body().isFavorite());
                 }
             }
             @Override
@@ -46,28 +51,45 @@ public class EventPageViewModel extends ViewModel {
 
     public void toggleFavorite() {
         SinglePageEventDTO currentEvent = eventLiveData.getValue();
+        isFavorited = !isFavorited;
         if (currentEvent != null) {
             currentEvent.setFavorite(!currentEvent.isFavorite());
             eventLiveData.setValue(currentEvent);
 
-            RequestBody emptyBody = RequestBody.create(
-                    MediaType.parse("application/json"), "{}"
-            );
-            Call<Void> call = ClientUtils.profileService.addEventToFavorites(currentEvent.getId(), emptyBody);
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        Log.d("Favorite event", "SUCCESS");
-                    } else {
-                        Log.d("Favorite event", "FAILURE");
+            if(currentEvent.isFavorite()){
+                Call<Void> call = ClientUtils.profileService.addEventToFavorites(currentEvent.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Log.d("Adding favorite event", "SUCCESS");
+                        } else {
+                            Log.d("Adding favorite event", "FAILURE");
+                        }
                     }
-                }
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Log.d("Favorite event", "ERROR");
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("Adding favorite event", "ERROR");
+                    }
+                });
+            }else{
+                Call<Void> call = ClientUtils.profileService.removeEventFromFavorites(currentEvent.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Log.d("Removing favorite event", "SUCCESS");
+                        } else {
+                            Log.d("Removing favorite event", "FAILURE");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("Removing favorite event", "ERROR");
+                    }
+                });
+            }
+
         }
     }
 }

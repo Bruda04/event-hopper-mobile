@@ -138,8 +138,7 @@ public class EventPageFragment extends Fragment {
 
     private void toggleFavorite(){
         this.viewModel.toggleFavorite();
-        favorited = !favorited;
-        favoriteIcon.setImageResource(favorited ? R.drawable.baseline_star_24 : R.drawable.star);
+        favoriteIcon.setImageResource(this.viewModel.isFavorited() ? R.drawable.baseline_star_24 : R.drawable.star);
     }
 
 
