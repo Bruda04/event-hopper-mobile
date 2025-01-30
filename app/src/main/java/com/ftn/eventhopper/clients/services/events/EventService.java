@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.clients.services.events;
 
 
+import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
@@ -46,6 +47,13 @@ public interface EventService {
     })
     @GET("events/search")
     Call<PagedResponse<SimpleEventDTO>> getEventsPage(@QueryMap Map<String, String> queryParams);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("events/{id}/agenda")
+    Call<GetEventAgendasDTO> getAgendaForEvent(@Path("id") UUID id);
 }
 
 

@@ -1,5 +1,12 @@
 package com.ftn.eventhopper.fragments.events.viewmodels;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -7,8 +14,27 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.shared.dtos.events.CreateAgendaActivityDTO;
+import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.LineSeparator;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
 
+import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -92,4 +118,171 @@ public class EventPageViewModel extends ViewModel {
 
         }
     }
+
+
+    public void exportToPDF(Context context){
+        SinglePageEventDTO currentEvent = eventLiveData.getValue();
+        Call<GetEventAgendasDTO> call = ClientUtils.eventService.getAgendaForEvent(currentEvent.getId());
+        call.enqueue(new Callback<GetEventAgendasDTO>() {
+            @Override
+            public void onResponse(Call<GetEventAgendasDTO> call, Response<GetEventAgendasDTO> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Fetching agenda", "SUCCESS");
+                    generatePdf(response.body(), context);
+                } else {
+                    Log.d("Fetching agenda", "FAILURE");
+                }
+            }
+            @Override
+            public void onFailure(Call<GetEventAgendasDTO> call, Throwable t) {
+                Log.d("Fetching agenda", "ERROR");
+            }
+        });
+    }
+
+    private void generatePdf(GetEventAgendasDTO eventAgendasDTO, Context context){
+        try {
+            SinglePageEventDTO eventDetails = eventLiveData.getValue();
+
+            String fileName = eventDetails.getName() + ".pdf";
+
+            // Save the PDF using MediaStore
+            Uri pdfUri = savePdfToMediaStore(fileName, context);
+            if (pdfUri == null) {
+                Log.e("PDF", "Failed to create PDF URI.");
+                return;
+            }
+
+            // Open OutputStream using the URI
+            OutputStream outputStream = context.getContentResolver().openOutputStream(pdfUri);
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdfDocument = new PdfDocument(writer);
+            Document document = new Document(pdfDocument);
+
+            // Title
+            document.add(new Paragraph(eventDetails.getName())
+                    .setFontSize(24)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(new DeviceRgb(0, 51, 102))); // Dark Blue
+
+            // Description
+            document.add(new Paragraph(eventDetails.getDescription())
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.LEFT));
+
+            // Line Separator
+            document.add(new LineSeparator(new SolidLine()).setMarginTop(10).setMarginBottom(10));
+
+            // Location & Time
+            document.add(new Paragraph("Location: " + eventDetails.getLocation().getAddress() + ", " + eventDetails.getLocation().getCity())
+                    .setFontSize(14)
+                    .setBold()
+                    .setFontColor(new DeviceRgb(7, 59, 76)));
+
+            LocalDateTime eventTimeValue = eventDetails.getTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            document.add(new Paragraph("Time: " + eventTimeValue.format(formatter))
+                    .setFontSize(12));
+
+            // Privacy
+            document.add(new Paragraph("Privacy: " +
+                    (eventDetails.getPrivacy().equals("PUBLIC") ? "Public" :
+                            eventDetails.getPrivacy().equals("PRIVATE") ? "Private" : "Unknown"))
+                    .setFontSize(12)
+                    .setBold());
+
+            // Sort Agendas by Start Time
+            List<CreateAgendaActivityDTO> sortedAgendas = eventAgendasDTO.getAgendas();
+            Collections.sort(sortedAgendas, Comparator.comparing(CreateAgendaActivityDTO::getStartTime));
+
+            // Agenda Table
+            float[] columnWidths = {100f, 200f, 200f, 200f};
+            Table table = new Table(columnWidths);
+
+            // Header Styling
+            Color headerColor = new DeviceRgb(229, 249, 255);
+            Color headerTextColor = new DeviceRgb(0, 0, 0);
+
+            table.addHeaderCell(new Cell().add(new Paragraph("Time"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.LEFT));
+            table.addHeaderCell(new Cell().add(new Paragraph("Activity Name"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.addHeaderCell(new Cell().add(new Paragraph("Description"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.addHeaderCell(new Cell().add(new Paragraph("Location"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            // Add agenda items
+            for (CreateAgendaActivityDTO agenda : sortedAgendas) {
+                String startTime = formatTime(agenda.getStartTime());
+                String endTime = formatTime(agenda.getEndTime());
+                table.addCell(new Paragraph(startTime + " - " + endTime));
+                table.addCell(new Paragraph(agenda.getName()));
+                table.addCell(new Paragraph(agenda.getDescription()));
+                table.addCell(new Paragraph(agenda.getLocationName()));
+            }
+
+            if(!sortedAgendas.isEmpty()){
+                document.add(table);
+            }
+
+            // Footer
+            document.add(new Paragraph("Generated by EventHopper")
+                    .setFontSize(10)
+                    .setFontColor(new DeviceRgb(150, 150, 150))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            // Close Document
+            document.close();
+
+            // Open the PDF after generation
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(pdfUri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            context.startActivity(intent);
+
+        } catch (Exception e) {
+            Log.e("PDF", "Error generating PDF", e);
+        }
+
+    }
+
+    private Uri savePdfToMediaStore(String fileName, Context context) {
+        Uri pdfUri = null;
+
+        try {
+            // Define content values for the MediaStore entry
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+
+            // Save to the Documents directory
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS);
+            }
+
+            // Insert the content values into MediaStore
+            pdfUri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
+
+        } catch (Exception e) {
+            Log.d("Saving pdf", "ERROR");
+        }
+
+        return pdfUri;
+    }
+
+    private String formatTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return dateTime.format(formatter);
+    }
+
 }

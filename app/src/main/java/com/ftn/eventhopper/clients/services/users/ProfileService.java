@@ -118,7 +118,6 @@ public interface ProfileService {
     Call<Void> deactivateAccount();
 
 
-
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
@@ -139,4 +138,5 @@ public interface ProfileService {
     })
     @DELETE("persons/favorite-events/{eventId}")
     Call<Void> removeEventFromFavorites(@Path("eventId") UUID eventId);
+
 }

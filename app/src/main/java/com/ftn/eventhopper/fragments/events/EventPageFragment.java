@@ -22,13 +22,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.ftn.event_hopper.models.shared.EventPrivacyType;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.events.viewmodels.EventPageViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +47,9 @@ public class EventPageFragment extends Fragment {
     private NavController navController;
     private ImageView eventImage, favoriteIcon;
     private TextView eventTitle, eventDescription, eventLocation, eventTime, eventPrivacy;
-    private Button exportPdfButton, inviteBtn;
+    private Button inviteBtn;
+    private FloatingActionButton exportPdfButton;
+    private MaterialButton chatButton;
 
     private boolean favorited;
 
@@ -86,6 +91,9 @@ public class EventPageFragment extends Fragment {
         eventPrivacy = view.findViewById(R.id.event_privacy);
         favoriteIcon = view.findViewById(R.id.favorite_icon);
         exportPdfButton = view.findViewById(R.id.export_pdf_button);
+        chatButton = view.findViewById(R.id.chat_with_us);
+
+        exportPdfButton.setOnClickListener(v -> viewModel.exportToPDF(getContext()));
 
         inviteBtn = view.findViewById(R.id.invite_people_button);
 //        emailField = view.findViewById(R.id.invite_email_field);
@@ -118,8 +126,22 @@ public class EventPageFragment extends Fragment {
                 eventTime.setText(eventTimeValue.format(formatter));
 
 
-                if(!event.isEventOrganizerLoggedIn()){
-                    inviteBtn.setVisibility(View.GONE);
+                if(event.isEventOrganizerLoggedIn()){
+                    inviteBtn.setVisibility(View.VISIBLE);
+                }
+
+                if (event.getConversationInitialization() != null) {
+                    chatButton.setVisibility(View.VISIBLE);
+                    chatButton.setOnClickListener(v -> {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username", event.getConversationInitialization().getUsername());
+                        bundle.putString("name", event.getConversationInitialization().getName());
+                        bundle.putString("surname", event.getConversationInitialization().getSurname());
+                        bundle.putString("profilePicture", event.getConversationInitialization().getProfilePictureUrl());
+                        navController.navigate(R.id.action_to_chat_with_provider, bundle);
+                    });
+                } else {
+                    chatButton.setVisibility(View.GONE);
                 }
 
                 favorited = event.isFavorite();

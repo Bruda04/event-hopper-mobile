@@ -3,6 +3,8 @@ package com.ftn.eventhopper.shared.dtos.events;
 
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
+import com.ftn.eventhopper.shared.dtos.messages.ConversationPreviewDTO;
+import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -24,7 +26,8 @@ public class SinglePageEventDTO {
     private String picture;
     private SimpleEventTypeDTO eventType;
     private SimpleLocationDTO location;
-    private com.ftn.event_hopper.models.shared.EventPrivacyType privacy;
+    private EventPrivacyType privacy;
     private boolean eventOrganizerLoggedIn;
     private boolean favorite;
+    private ConversationPreviewDTO conversationInitialization;
 }

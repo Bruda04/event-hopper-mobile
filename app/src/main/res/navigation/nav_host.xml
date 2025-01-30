@@ -235,6 +235,9 @@
         android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
         android:label="Event Page"
         tools:layout="@layout/fragment_event_page">
+        <action
+            android:id="@+id/action_to_chat_with_provider"
+            app:destination="@id/single_chat_fragment"/>
     </fragment>
 
 
