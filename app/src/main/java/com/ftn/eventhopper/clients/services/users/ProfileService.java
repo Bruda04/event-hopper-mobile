@@ -126,4 +126,11 @@ public interface ProfileService {
     @POST("persons/attending-events/{eventId}")
     Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/favorite-events/{eventId}")
+    Call<Void> addEventToFavorites(@Path("eventId") UUID eventId, @Body RequestBody emptyBody);
+
 }

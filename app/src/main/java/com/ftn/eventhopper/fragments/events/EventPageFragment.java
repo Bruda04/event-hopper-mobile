@@ -11,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.ftn.event_hopper.models.shared.EventPrivacyType;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.events.viewmodels.EventPageViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class EventPageFragment extends Fragment {
@@ -35,14 +42,11 @@ public class EventPageFragment extends Fragment {
     private LinearLayout emailsList;
     private EventPageViewModel viewModel;
     private NavController navController;
-    private ImageView eventImage;
-    private TextView eventTitle;
-    private TextView eventDescription;
-    private TextView eventLocation;
-    private TextView eventTime;
-    private ImageView favoriteIcon;
-    private Button exportPdfButton;
-    private Button inviteBtn;
+    private ImageView eventImage, favoriteIcon;
+    private TextView eventTitle, eventDescription, eventLocation, eventTime, eventPrivacy;
+    private Button exportPdfButton, inviteBtn;
+
+    private boolean favorited;
 
 
     public EventPageFragment() {
@@ -74,12 +78,12 @@ public class EventPageFragment extends Fragment {
                 viewModel.loadEventById(eventId);
             }
         }
-
         eventImage = view.findViewById(R.id.event_image);
         eventTitle = view.findViewById(R.id.event_title);
         eventDescription = view.findViewById(R.id.event_description);
         eventLocation = view.findViewById(R.id.event_location);
         eventTime = view.findViewById(R.id.event_time);
+        eventPrivacy = view.findViewById(R.id.event_privacy);
         favoriteIcon = view.findViewById(R.id.favorite_icon);
         exportPdfButton = view.findViewById(R.id.export_pdf_button);
 
@@ -101,16 +105,42 @@ public class EventPageFragment extends Fragment {
 
                 eventTitle.setText(event.getName());
                 eventDescription.setText(event.getDescription());
-                eventLocation.setText(event.getLocation().getAddress());
+                eventLocation.setText(String.format("%s, %s", event.getLocation().getAddress(), event.getLocation().getCity()));
                 eventTime.setText(event.getTime().toString());
+                if(event.getPrivacy().equals(EventPrivacyType.PRIVATE)){
+                    eventPrivacy.setText("Private");
+                }else{
+                    eventPrivacy.setText("Public");
+                }
 
-                favoriteIcon.setImageResource(event.isFavorite() ? R.drawable.star : R.drawable.star);
-                favoriteIcon.setOnClickListener(v -> viewModel.toggleFavorite());
+                LocalDateTime eventTimeValue = event.getTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                eventTime.setText(eventTimeValue.format(formatter));
+
+
+                if(!event.isEventOrganizerLoggedIn()){
+                    inviteBtn.setVisibility(View.GONE);
+                }
+
+                favorited = event.isFavorite();
+                favoriteIcon.setImageResource(event.isFavorite() ? R.drawable.baseline_star_24 : R.drawable.star);
+                favoriteIcon.setOnClickListener(v -> toggleFavorite());
+
+                //no one is logged in
+                if(!UserService.isTokenValid()){
+                    favoriteIcon.setVisibility(View.GONE);
+                }
             }
         });
         return view;
     }
 
+
+    private void toggleFavorite(){
+        this.viewModel.toggleFavorite();
+        favorited = !favorited;
+        favoriteIcon.setImageResource(favorited ? R.drawable.baseline_star_24 : R.drawable.star);
+    }
 
 
     private void showInviteDialog() {
@@ -141,7 +171,7 @@ public class EventPageFragment extends Fragment {
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
-            if (invitePoeple(dialogView)) {
+            if (invitePeople(dialogView)) {
                 alertDialog.dismiss();
             }
         });
@@ -159,7 +189,7 @@ public class EventPageFragment extends Fragment {
         emailsList.addView(emailView);
     }
 
-    private boolean invitePoeple(View dialogView){
+    private boolean invitePeople(View dialogView){
         boolean isValid = true;
 
         //dodati logiku za poziv ljudi

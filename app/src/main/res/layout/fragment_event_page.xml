@@ -4,92 +4,107 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/background_beige">
 
-<!-- Event Image -->
-<ImageView
-    android:id="@+id/event_image"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:scaleType="centerCrop" />
-
-<!-- Title and Favorites -->
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/event_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/text_dark_blue" />
-
+    <!-- Event Image -->
     <ImageView
-        android:id="@+id/favorite_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/star" />
-</RelativeLayout>
+        android:id="@+id/event_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
 
-<!-- Event Description -->
-<TextView
-    android:id="@+id/event_description"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:textColor="@color/text_dark_blue"
-    android:textSize="16sp" />
+    <!-- Title and Favorites -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-<!-- Location and Time -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp">
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/DarkHeaderText"
+            />
 
+        <ImageView
+            android:id="@+id/favorite_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/star" />
+    </RelativeLayout>
+
+    <!-- Event Description -->
+    <TextView
+        android:id="@+id/event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="@style/DarkLargerText"
+         />
+
+
+    <!-- Event Location -->
     <TextView
         android:id="@+id/event_location"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawableStart="@drawable/location"
-        android:drawablePadding="8dp"
-        android:textColor="@color/text_dark_blue" />
-
-    <TextView
-        android:id="@+id/event_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/clock"
-        android:drawablePadding="8dp"
-        android:textColor="@color/darker_blue" />
-</LinearLayout>
-
-<!-- Buttons -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="end"
-    android:padding="16dp">
-
-    <Button
-        android:id="@+id/export_pdf_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/export_to_pdf" />
-
-    <Button
-        android:id="@+id/invite_people_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/add"
+        android:layout_margin="16dp"
+        android:textAppearance="@style/DarkLargerText"
+        app:drawableStartCompat="@drawable/location"
         />
-</LinearLayout>
+
+
+
+    <!-- Location and Time -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/event_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:textAppearance="@style/DarkLargerText" />
+
+        <TextView
+            android:id="@+id/event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:textAppearance="@style/DarkLargerText"
+            app:drawableStartCompat="@drawable/clock" />
+    </LinearLayout>
+
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/export_pdf_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            style="@style/DarkButton"
+            android:text="@string/export_to_pdf" />
+
+        <Button
+            android:id="@+id/invite_people_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/add"
+            style="@style/DarkButton"
+            android:text="@string/invite_people"
+            />
+    </LinearLayout>
 </LinearLayout>
