@@ -80,7 +80,12 @@
         android:id="@+id/calendar"
         android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+    </fragment>
 
     <!-- Company Fragment -->
     <fragment

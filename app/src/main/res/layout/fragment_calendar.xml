@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <!-- Month Navigation Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
         <Button
-            android:id="@+id/prevButton"
+            style="@style/DarkButton"
+            android:id="@+id/prevMonthButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Previous" />
+            android:text="@string/previous" />
 
         <TextView
-            android:id="@+id/viewTitle"
+            android:id="@+id/currentMonthText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Calendar"
+            android:textAppearance="@style/DarkHeaderText"
             android:textSize="18sp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:text="@string/month_year"/>
 
         <Button
-            android:id="@+id/nextButton"
+            android:id="@+id/nextMonthButton"
+            style="@style/DarkButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next" />
+            android:text="@string/next" />
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/todayButton"
-        android:layout_width="wrap_content"
+    <!-- Calendar View -->
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Today" />
+        app:mcv_showOtherDates="all"
+        app:mcv_firstDayOfWeek="monday"
+        app:mcv_dateTextAppearance="@style/DarkLargerText"
+        app:mcv_headerTextAppearance="@style/DarkLargerText"
+        app:mcv_arrowColor="@color/text_dark_blue"
+        app:mcv_selectionColor="@color/theme_blue"
+        app:mcv_tileSize="50dp"/>
+
 </LinearLayout>
