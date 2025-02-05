@@ -93,31 +93,6 @@ public class ReportsViewModel extends ViewModel {
         });
     }
 
-    public void create(String reason, SimpleAccountDTO reporter, SimpleAccountDTO reported){
-
-        CreateReportDTO createReportDTO = new CreateReportDTO();
-        createReportDTO.setReason(reason);
-        createReportDTO.setReporter(reporter);
-        createReportDTO.setReported(reported);
-
-        Call<Void> call = ClientUtils.reportService.create(createReportDTO);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if(response.isSuccessful()){
-                    fetchReports();
-                    errorMessage.postValue(null);
-                }else{
-                    errorMessage.postValue("Failed to create report. Code: "+ response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                errorMessage.postValue(t.getMessage());
-            }
-        });
-    }
 
 
 

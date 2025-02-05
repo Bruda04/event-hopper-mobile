@@ -46,17 +46,31 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/manage_user_button"
+            android:id="@+id/block_user_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:background="#F8F7FC"
-            android:contentDescription="@string/troubled_user"
+            android:contentDescription="@string/block_user"
             android:padding="8dp"
             android:paddingEnd="2dp"
-            android:src="@drawable/dangerous_24dp_073_b4_c_fill0_wght400_grad0_opsz24"
+            android:src="@drawable/block"
+            app:tint="@color/darker_blue" />
+
+        <ImageButton
+            android:id="@+id/report_user_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="7dp"
+            android:background="#F8F7FC"
+            android:contentDescription="@string/report_user"
+            android:padding="8dp"
+            android:paddingEnd="2dp"
+            android:src="@drawable/report"
             app:tint="@color/darker_blue" />
 
     </LinearLayout>

@@ -102,4 +102,6 @@
     <string name="reason">"Reason: "</string>
     <string name="manage_reports">Manage reports</string>
     <string name="troubled_user">If user want to report or block user</string>
+    <string name="block_user">Block user</string>
+    <string name="report_user">Report user</string>
 </resources>
