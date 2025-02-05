@@ -27,6 +27,7 @@ import com.ftn.eventhopper.adapters.ChatMessagesAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.messages.viewmodels.SingleChatViewModel;
 import com.ftn.eventhopper.shared.dtos.messages.ChatMessageDTO;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class SingleChatFragment extends Fragment {
     private ImageView receiverProfilePicture;
     private RecyclerView messagesRecyclerView;
     private ImageButton sendMessageButton;
+    private ImageButton manageUserButton;
     private TextInputLayout messageInput;
     private boolean initializedHistory = false;
 
@@ -87,7 +89,13 @@ public class SingleChatFragment extends Fragment {
         receiverProfilePicture = view.findViewById(R.id.profile_picture);
         messagesRecyclerView = view.findViewById(R.id.chat_messages);
         sendMessageButton = view.findViewById(R.id.send_button);
+        manageUserButton = view.findViewById(R.id.manage_user_button);
         messageInput = view.findViewById(R.id.message_input_layout);
+
+        manageUserButton.setOnClickListener(v ->
+        {
+
+        });
         
         viewModel.getHistory().observe(getViewLifecycleOwner(), messages -> {
             if (!initializedHistory) {

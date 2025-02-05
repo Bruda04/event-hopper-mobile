@@ -176,4 +176,5 @@
     <string name="reported">"Reported: "</string>
     <string name="reason">"Reason: "</string>
     <string name="manage_reports">Manage reports</string>
+    <string name="troubled_user">If user want to report or block user</string>
 </resources>

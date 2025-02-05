@@ -76,16 +76,16 @@ public class AdminsReportsAdapter extends RecyclerView.Adapter<AdminsReportsAdap
     }
 
     private void setupDeleteDialog(int position) {
-        MaterialAlertDialogBuilder approveDialog = new MaterialAlertDialogBuilder(context);
-        approveDialog.setTitle("Delete report");
-        approveDialog.setMessage("Are you sure you want to Delete this report and not to suspend user\n"
+        MaterialAlertDialogBuilder deleteDialog = new MaterialAlertDialogBuilder(context);
+        deleteDialog.setTitle("Delete report");
+        deleteDialog.setMessage("Are you sure you want to Delete this report and not to suspend user\n"
                         + reports.get(position).getReported().getEmail() + " ?");
-        approveDialog.setPositiveButton("Delete", (dialog, which) -> {
+        deleteDialog.setPositiveButton("Delete", (dialog, which) -> {
             viewModel.deleteReport(reports.get(position).getId());
         });
-        approveDialog.setNegativeButton("Cancel", (dialog, which) -> {
+        deleteDialog.setNegativeButton("Cancel", (dialog, which) -> {
         });
-        approveDialog.show();
+        deleteDialog.show();
     }
 
     @Override
