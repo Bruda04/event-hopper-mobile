@@ -3,64 +3,91 @@ package com.ftn.eventhopper.fragments.reports;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.adapters.AdminsReportsAdapter;
+import com.ftn.eventhopper.fragments.reports.viewmodels.ReportsViewModel;
+import com.ftn.eventhopper.shared.dtos.reports.GetReportDTO;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminsReportsManagementFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+
 public class AdminsReportsManagementFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ReportsViewModel viewModel;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<GetReportDTO> reports;
+    private TextView statusMessage;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AdminsReportsManagementFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminsReportsManagementFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminsReportsManagementFragment newInstance(String param1, String param2) {
-        AdminsReportsManagementFragment fragment = new AdminsReportsManagementFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admins_reports_management, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_admins_reports_management, container, false);
+        viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
+
+        recyclerView = view.findViewById(R.id.recycler_view_reports);
+
+        statusMessage = view.findViewById(R.id.status_message);
+        statusMessage.setText(R.string.loading_reports);
+        statusMessage.setVisibility(View.VISIBLE);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            statusMessage.setText(R.string.loading_suggestions);
+            statusMessage.setVisibility(View.VISIBLE);
+            viewModel.fetchReports();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        viewModel.fetchReports();
+        viewModel.getReports().observe(getViewLifecycleOwner(), reports -> {
+            if( reports != null){
+                statusMessage.setVisibility(View.GONE);
+                this.reports = reports;
+                this.setFieldValues(reports);
+            }
+        });
+
+        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
+            if (error != null) {
+                Log.e("EventHopper", "Error fetching comments: " + error);
+                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
+                recyclerView.setVisibility(View.GONE);
+                statusMessage.setVisibility(View.VISIBLE);
+            } else {
+                statusMessage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        return view;
+    }
+
+    private void setFieldValues(ArrayList<GetReportDTO> reports){
+        AdminsReportsAdapter adapter = new AdminsReportsAdapter(getContext(), reports, this, viewModel);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
     }
 }

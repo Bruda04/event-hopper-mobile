@@ -111,6 +111,10 @@ public class ProfileFragment extends Fragment {
             navController.navigate(R.id.action_to_manage_comments);
         });
 
+        view.findViewById(R.id.ListItemManageReports).setOnClickListener( v -> {
+            navController.navigate(R.id.action_to_manage_reports);
+        });
+
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
@@ -151,6 +155,7 @@ public class ProfileFragment extends Fragment {
         CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
         CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
         CardView commentsCard = view.findViewById(R.id.ListItemManageComments);
+        CardView reportsCard = view.findViewById(R.id.ListItemManageReports);
 
         myProductsCard.setVisibility(View.GONE);
         myServicesCard.setVisibility(View.GONE);
@@ -160,6 +165,7 @@ public class ProfileFragment extends Fragment {
         myEventsCard.setVisibility(View.GONE);
         upgradeProfileCard.setVisibility(View.GONE);
         commentsCard.setVisibility(View.GONE);
+        reportsCard.setVisibility(View.GONE);
 
         changePasswordCard.setVisibility(View.VISIBLE);
         logOutCard.setVisibility(View.VISIBLE);
@@ -177,6 +183,7 @@ public class ProfileFragment extends Fragment {
                 categoriesCard.setVisibility(View.VISIBLE);
                 eventTypesCard.setVisibility(View.VISIBLE);
                 commentsCard.setVisibility(View.VISIBLE);
+                reportsCard.setVisibility(View.VISIBLE);
                 break;
 
             case "EVENT_ORGANIZER":

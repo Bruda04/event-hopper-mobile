@@ -118,6 +118,11 @@
             />
 
         <action
+            android:id="@+id/action_to_manage_reports"
+            app:destination="@id/manage_reports"
+            />
+
+        <action
             android:id="@+id/action_to_login"
             app:destination="@id/login"
             app:popUpTo="@id/profile"
@@ -225,6 +230,15 @@
         android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
         android:label="Manage Comments"
         tools:layout="@layout/fragment_admins_comments_management"
+        >
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_reports"
+        android:name="com.ftn.eventhopper.fragments.reports.AdminsReportsManagementFragment"
+        android:label="Manage Reports"
+        tools:layout="@layout/fragment_admins_reports_management"
         >
 
     </fragment>

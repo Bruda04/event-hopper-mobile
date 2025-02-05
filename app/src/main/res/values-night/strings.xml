@@ -96,4 +96,9 @@
     <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
     <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
     <string name="loading_comments">Loading comments...</string>
+    <string name="loading_reports">Loading reports...</string>
+    <string name="reporter">Reporter:</string>
+    <string name="reported">"Reported: "</string>
+    <string name="reason">"Reason: "</string>
+    <string name="manage_reports">Manage reports</string>
 </resources>
