@@ -95,6 +95,7 @@ public class SolutionPageFragment extends Fragment {
         statusMessage.setVisibility(View.VISIBLE);
 
         if (getArguments() != null) {
+            Log.i("solutin","upao");
             id = UUID.fromString(getArguments().getString(ARG_ID));
             viewModel.fetchSolutionDetailsById(id);
 
