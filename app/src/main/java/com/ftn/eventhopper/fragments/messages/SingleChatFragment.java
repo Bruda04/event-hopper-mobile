@@ -189,7 +189,7 @@ public class SingleChatFragment extends Fragment {
         viewModel.getReceiverLiveData().observe((LifecycleOwner) dialogView.getContext(), receiver ->{
 
             if (receiver != null) {
-                viewModel.createReport(reason, receiver);
+                viewModel.createReport(reason, receiver.getId());
             } else {
                 Toast.makeText(dialogView.getContext(), "Failed to fetch user.", Toast.LENGTH_SHORT).show();
             }

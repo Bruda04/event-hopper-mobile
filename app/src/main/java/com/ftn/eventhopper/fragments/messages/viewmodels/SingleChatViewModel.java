@@ -25,6 +25,7 @@ import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -112,7 +113,7 @@ public class SingleChatViewModel extends ViewModel {
     }
 
 
-    public void createReport(String reason, SimpleAccountDTO reported){
+    public void createReport(String reason, UUID reported){
 
         CreateReportDTO createReportDTO = new CreateReportDTO();
         createReportDTO.setReason(reason);
