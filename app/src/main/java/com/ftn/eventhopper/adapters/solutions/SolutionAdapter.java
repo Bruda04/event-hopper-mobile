@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.adapters.solutions;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -44,12 +48,18 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         holder.descriptionView.setText(solutions.get(position).getDescription());
         holder.secondaryView.setText(solutions.get(position).getCategory().getName() );
 
-
         Glide.with(holder.imageView.getContext())
                 .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, solutions.get(position).getPictures().get(0)))
                 .placeholder(R.drawable.baseline_image_placeholder_24)
                 .error(R.drawable.baseline_image_not_supported_24)
                 .into(holder.imageView);
+
+        holder.viewMoreButton.setOnClickListener(v->{
+            NavController navController = Navigation.findNavController(v);
+            Bundle bundle = new Bundle();
+            bundle.putString("id", solutions.get(position).getId().toString());
+            navController.navigate(R.id.action_to_solution_page,bundle);
+        });
     }
 
     @Override
@@ -63,6 +73,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         TextView titleView;
         TextView secondaryView;
         TextView descriptionView;
+        MaterialButton viewMoreButton;
 
         public SolutionViewHolder(View view) {
             super(view);
@@ -70,6 +81,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
             titleView = view.findViewById(R.id.card_title);
             secondaryView = view.findViewById(R.id.card_secondary);
             descriptionView = view.findViewById(R.id.card_description);
+            viewMoreButton = view.findViewById(R.id.card_button);
         }
     }
 

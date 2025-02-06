@@ -116,8 +116,7 @@ public interface ProfileService {
     })
     @POST("accounts/deactivate")
     Call<Void> deactivateAccount();
-
-
+  
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"

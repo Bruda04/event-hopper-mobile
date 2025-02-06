@@ -104,17 +104,20 @@ public class HomeSolutionsFragment extends Fragment implements SensorEventListen
         this.previousPage = view.findViewById(R.id.back_arrow_button_solutions);
         this.pager = view.findViewById(R.id.pager_solutions);
 
-        //viewModel.fetchAllSolutions();
-//        UUID usersId = UUID.fromString(UserService.getJwtClaim(
-//                UserService.getJwtToken(),"id"
-//        ));
+
         viewModel.fetchTopSolutions();
 
         viewModel.getTop5Products().observe(getViewLifecycleOwner(), topProducts ->
         {
-            if (topProducts != null){
+            if (topProducts != null && !topProducts.isEmpty()){
                 topSolutionsRecyclerView.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.textView3).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.textView4).setVisibility(View.VISIBLE);
                 this.setTop(topProducts);
+            }else{
+                topSolutionsRecyclerView.setVisibility(View.GONE);
+                view.findViewById(R.id.textView3).setVisibility(View.GONE);
+                view.findViewById(R.id.textView4).setVisibility(View.GONE);
             }
         });
 
