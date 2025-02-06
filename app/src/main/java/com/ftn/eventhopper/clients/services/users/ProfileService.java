@@ -125,5 +125,4 @@ public interface ProfileService {
     })
     @POST("accounts/deactivate")
     Call<Void> deactivateAccount();
-
 }

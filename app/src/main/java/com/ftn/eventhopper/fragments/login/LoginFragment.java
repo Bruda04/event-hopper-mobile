@@ -13,7 +13,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.solutions.prices.viewmodels.PUPPricesManagementViewModel;
 import com.ftn.eventhopper.shared.dtos.login.LoginResponse;
