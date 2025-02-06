@@ -75,10 +75,12 @@ public class AdminsCategoriesManagementFragment extends Fragment {
 
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                Log.e("EventHopper", "Error fetching categories: " + error);
-                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
-                recyclerView.setVisibility(View.GONE);
-                statusMessage.setVisibility(View.VISIBLE);
+                Log.e("Manage Categories", error);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Error")
+                        .setMessage(error)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             } else {
                 statusMessage.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -140,6 +142,9 @@ public class AdminsCategoriesManagementFragment extends Fragment {
         // Check category description validation
         if (categoryDescriptionLayout != null && categoryDescription.isEmpty()) {
             categoryDescriptionLayout.setError("Category description is required");
+            isValid = false;
+        } else if (categoryDescription.length() > 1000) {
+            categoryDescriptionLayout.setError("Category description is too long");
             isValid = false;
         } else {
             categoryDescriptionLayout.setError(null); // Clear previous error if any

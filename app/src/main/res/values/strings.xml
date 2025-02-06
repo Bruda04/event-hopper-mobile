@@ -6,7 +6,7 @@
     <string name="provider">Provider</string>
 
     <string name="upload_profile_picture">Upload profile picture (Optional)</string>
-    <string name="upload_pictures">Upload images (Optional)</string>
+    <string name="upload_pictures">Upload images</string>
     <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
     <string name="continue_without_an_account">Continue without an account</string>
     <string name="loading">Loading..</string>

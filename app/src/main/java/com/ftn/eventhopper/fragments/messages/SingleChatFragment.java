@@ -139,7 +139,7 @@ public class SingleChatFragment extends Fragment {
             String message = messageInput.getEditText().getText().toString().trim();
             if (message.isEmpty()) {
                 return;
-            } else if (message.length() > 255) {
+            } else if (message.length() > 1000) {
                 messageInput.setError("Message is too long");
                 return;
             }

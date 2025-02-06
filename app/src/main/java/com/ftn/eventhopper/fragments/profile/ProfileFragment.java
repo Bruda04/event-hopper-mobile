@@ -21,14 +21,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,7 +118,6 @@ public class ProfileFragment extends Fragment {
 
         view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
             this.openChangePasswordDialog();
-
         });
 
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
@@ -217,7 +213,8 @@ public class ProfileFragment extends Fragment {
             viewModel.fetchProfile();
         }
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
-            if (changed!= null && changed) {
+            if (changed != null && changed) {
+
                 this.setRoleTitle();
                 ProfileForPersonDTO profile = viewModel.getProfile();
                 // Populate User Info

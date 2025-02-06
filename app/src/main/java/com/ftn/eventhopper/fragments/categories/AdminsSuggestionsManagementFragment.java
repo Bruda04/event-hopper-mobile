@@ -20,6 +20,7 @@ import com.ftn.eventhopper.adapters.AdminsSuggestionsAdapter;
 import com.ftn.eventhopper.fragments.categories.viewmodels.AdminsSuggestionsManagementViewModel;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -74,10 +75,12 @@ public class AdminsSuggestionsManagementFragment extends Fragment {
 
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                Log.e("EventHopper", "Error fetching category suggestions: " + error);
-                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
-                recyclerView.setVisibility(View.GONE);
-                statusMessage.setVisibility(View.VISIBLE);
+                Log.e("Category Suggestions", error);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Error")
+                        .setMessage(error)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             } else {
                 statusMessage.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
