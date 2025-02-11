@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
@@ -23,11 +25,18 @@ import com.ftn.eventhopper.adapters.AdminsSuggestionsAdapter;
 import com.ftn.eventhopper.adapters.BudgetItemsAdapter;
 import com.ftn.eventhopper.fragments.budgets.viewmodels.BudgetingViewModel;
 import com.ftn.eventhopper.shared.dtos.budgets.BudgetManagementDTO;
+import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
+import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
+import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BudgetingFragment extends Fragment {
 
@@ -99,12 +108,49 @@ public class BudgetingFragment extends Fragment {
     private void setFieldValues(BudgetManagementDTO budget) {
         header.setText(String.format("Budget for %s", budget.getEvent().getName()));
 
-        BudgetItemsAdapter adapter = new BudgetItemsAdapter(getContext(), budget);
+        BudgetItemsAdapter recyclerViewAdapter = new BudgetItemsAdapter(getContext(), budget, viewModel);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+
+        List<SimpleCategoryDTO> availableCategories = getAvailableCategories(budget);
+        List<String> categoryNames = availableCategories.stream().map(SimpleCategoryDTO::getName).collect(Collectors.toList());
+        ArrayAdapter<String> categoryOptionAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames);
+        ((AutoCompleteTextView) categoryInput.getEditText()).setAdapter(categoryOptionAdapter);
+
+        addBudgetItemButton.setOnClickListener(v -> {
+            String categoryName = categoryInput.getEditText().getText().toString();
+            SimpleCategoryDTO selectedCategory = availableCategories.stream()
+                    .filter(category -> category.getName().equals(categoryName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedCategory == null) {
+                categoryInput.setError("Invalid category");
+                return;
+            }
+
+            viewModel.addBudgetItem(selectedCategory);
+            categoryInput.getEditText().setText("");
+        });
+
+        saveButton.setOnClickListener(v -> {
+            viewModel.saveBudget(recyclerViewAdapter.getItems());
+        });
+    }
+
+    private List<SimpleCategoryDTO> getAvailableCategories(BudgetManagementDTO budget) {
+        Set<UUID> selectedCategoriesUUID = new HashSet<>();
+        budget.getBudgetItems().forEach(budgetItem -> {
+            selectedCategoriesUUID.add(budgetItem.getCategory().getId());
+        });
+
+        return budget.getEvent().getEventType().getSuggestedCategories().stream()
+                .filter(category -> !selectedCategoriesUUID.contains(category.getId()))
+                .collect(Collectors.toList());
     }
 
 }

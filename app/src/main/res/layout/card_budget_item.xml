@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/category_name"
@@ -23,7 +23,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="@color/md_theme_scrim" />
+                android:textColor="@color/md_theme_scrim"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/amount_layout"
