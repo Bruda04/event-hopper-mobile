@@ -56,6 +56,11 @@
             />
 
         <action
+            android:id="@+id/action_to_budgeting"
+            app:destination="@id/budgeting"
+            />
+
+        <action
             android:id="@+id/action_to_solution_page"
             app:destination="@id/solution_page"
             />
@@ -351,6 +356,12 @@
         android:label="Budgeting"
         tools:layout="@layout/fragment_budgeting">
 
+        <action
+            android:id="@+id/action_to_solution_page"
+            app:destination="@id/solution_page"
+            />
+
     </fragment>
+
 
 </navigation>

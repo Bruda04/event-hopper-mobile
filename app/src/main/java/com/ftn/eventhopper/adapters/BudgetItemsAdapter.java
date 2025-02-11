@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.navigation.NavController;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
@@ -17,6 +21,7 @@ import com.ftn.eventhopper.filters.MinMaxInputFilter;
 import com.ftn.eventhopper.fragments.budgets.viewmodels.BudgetingViewModel;
 import com.ftn.eventhopper.shared.dtos.budgets.BudgetItemManagementDTO;
 import com.ftn.eventhopper.shared.dtos.budgets.BudgetManagementDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,15 +39,19 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
     @Getter
     private ArrayList<BudgetItemManagementDTO> items;
     private BudgetingViewModel viewModel;
+    private NavController navController;
 
     public BudgetItemsAdapter(Context context,
                               BudgetManagementDTO budget,
-                              BudgetingViewModel viewModel) {
+                              BudgetingViewModel viewModel,
+                              NavController navController
+    ) {
 
         this.budget = budget;
         this.context = context;
         this.items = new ArrayList<>(budget.getBudgetItems());
         this.viewModel = viewModel;
+        this.navController = navController;
     }
 
     @NonNull
@@ -56,7 +65,7 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
         holder.categoryName.setText(items.get(position).getCategory().getName());
 
         Objects.requireNonNull(holder.amount.getEditText())
-                .setFilters(new InputFilter[]{new MinMaxInputFilter(0.0, 10000000.0)});
+                .setFilters(new InputFilter[]{new MinMaxInputFilter(items.get(position).getMinAmount(), 10000000.0)});
         Objects.requireNonNull(holder.amount.getEditText()).setText(String.format("%.2f", items.get(position).getAmount()));
         TextWatcher priceWatcher = setupAmountWatcher(holder.amount, position);
         (holder.amount.getEditText()).addTextChangedListener(priceWatcher);
@@ -76,6 +85,7 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
 
         if (!this.items.get(position).getPurchasedProducts().isEmpty()) {
             holder.productsButton.setOnClickListener(v -> {
+                setupProductsButton(position);
             });
             holder.productsButton.setEnabled(true);
             holder.productsButton.setBackgroundColor(context.getResources().getColor(R.color.darker_blue));
@@ -86,6 +96,30 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
 
         }
 
+
+    }
+
+    private void setupProductsButton(int position) {
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_purchased_products, null);
+
+        MaterialAlertDialogBuilder productsDialog = new MaterialAlertDialogBuilder(context);
+        productsDialog.setTitle("Purchased products for " + items.get(position).getCategory().getName());
+        productsDialog.setView(dialogView);
+        productsDialog.setNegativeButton("Close", (dialog, which) -> {
+        });
+        AlertDialog dialog = productsDialog.create();
+
+        RecyclerView productsRecyclerView = dialogView.findViewById(R.id.products_recycle_view);
+
+        ArrayList<SimpleProductDTO> products = new ArrayList<>(items.get(position).getPurchasedProducts());
+        PurchasedProductsDialogAdapter recyclerViewAdapter = new PurchasedProductsDialogAdapter(context, products, navController, dialog);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        productsRecyclerView.setLayoutManager(layoutManager);
+        productsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        productsRecyclerView.setAdapter(recyclerViewAdapter);
+
+        dialog.show();
 
     }
 
@@ -128,15 +162,15 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
     }
 
     private void setupDeleteDialog(int position) {
-        MaterialAlertDialogBuilder approveDialog = new MaterialAlertDialogBuilder(context);
-        approveDialog.setTitle("Delete Budget Item");
-        approveDialog.setMessage("Are you sure you want to Delete this budget item?");
-        approveDialog.setPositiveButton("Delete", (dialog, which) -> {
+        MaterialAlertDialogBuilder deleteDialog = new MaterialAlertDialogBuilder(context);
+        deleteDialog.setTitle("Delete Budget Item");
+        deleteDialog.setMessage("Are you sure you want to Delete this budget item?");
+        deleteDialog.setPositiveButton("Delete", (dialog, which) -> {
             this.viewModel.removeBudgetItem(this.items.get(position).getId());
         });
-        approveDialog.setNegativeButton("Cancel", (dialog, which) -> {
+        deleteDialog.setNegativeButton("Cancel", (dialog, which) -> {
         });
-        approveDialog.show();
+        deleteDialog.show();
     }
 
     @Override
@@ -146,17 +180,17 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
 
     public class BudgetItemViewHolder extends RecyclerView.ViewHolder {
 
-    private final TextView categoryName;
-    private final TextInputLayout amount;
-    public MaterialButton productsButton;
-    public MaterialButton deleteButton;
+        private final TextView categoryName;
+        private final TextInputLayout amount;
+        public MaterialButton productsButton;
+        public MaterialButton deleteButton;
 
-    public BudgetItemViewHolder(@NonNull View itemView){
-        super(itemView);
-        this.categoryName = itemView.findViewById(R.id.category_name);
-        this.amount = itemView.findViewById(R.id.amount_layout);
-        this.productsButton = itemView.findViewById(R.id.products_button);
-        this.deleteButton = itemView.findViewById(R.id.delete_button);
+        public BudgetItemViewHolder(@NonNull View itemView){
+            super(itemView);
+            this.categoryName = itemView.findViewById(R.id.category_name);
+            this.amount = itemView.findViewById(R.id.amount_layout);
+            this.productsButton = itemView.findViewById(R.id.products_button);
+            this.deleteButton = itemView.findViewById(R.id.delete_button);
+        }
     }
-}
 }

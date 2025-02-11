@@ -108,7 +108,7 @@ public class BudgetingFragment extends Fragment {
     private void setFieldValues(BudgetManagementDTO budget) {
         header.setText(String.format("Budget for %s", budget.getEvent().getName()));
 
-        BudgetItemsAdapter recyclerViewAdapter = new BudgetItemsAdapter(getContext(), budget, viewModel);
+        BudgetItemsAdapter recyclerViewAdapter = new BudgetItemsAdapter(getContext(), budget, viewModel, navController);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
