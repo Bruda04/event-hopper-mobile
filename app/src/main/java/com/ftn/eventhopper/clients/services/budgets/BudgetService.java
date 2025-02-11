@@ -19,13 +19,13 @@ public interface BudgetService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @GET("categories/budgets/{eventId}/management")
+    @GET("budgets/{eventId}/management")
     Call<BudgetManagementDTO> getManagement(@Path("eventId") UUID eventId);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @PUT("categories/budgets/{eventId}")
+    @PUT("budgets/{eventId}")
     Call<BudgetManagementDTO> update(@Path("eventId") UUID eventId, @Body Collection<UpdateBudgetItemDTO> budgetItems);
 }
