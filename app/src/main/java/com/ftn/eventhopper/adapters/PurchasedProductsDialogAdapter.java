@@ -2,6 +2,7 @@ package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,7 +43,7 @@ public class PurchasedProductsDialogAdapter extends RecyclerView.Adapter<Purchas
     @NonNull
     @Override
     public PurchasedProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PurchasedProductsDialogAdapter.PurchasedProductViewHolder(View.inflate(context, R.layout.card_purchased_product, null));
+        return new PurchasedProductsDialogAdapter.PurchasedProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_purchased_product, parent, false));
     }
 
     @Override

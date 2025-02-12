@@ -9,8 +9,8 @@
         android:id="@+id/products_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        tools:listitem="@layout/card_purchased_product" />
-
-
+        tools:listitem="@layout/card_purchased_product"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="16dp"
+        />
 </RelativeLayout>

@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 import lombok.Getter;
 
@@ -116,9 +117,7 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         productsRecyclerView.setLayoutManager(layoutManager);
-        productsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         productsRecyclerView.setAdapter(recyclerViewAdapter);
-
         dialog.show();
 
     }
