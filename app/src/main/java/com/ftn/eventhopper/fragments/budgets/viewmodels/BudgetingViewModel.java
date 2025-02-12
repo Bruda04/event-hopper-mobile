@@ -12,6 +12,8 @@ import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -42,7 +44,15 @@ public class BudgetingViewModel extends ViewModel {
                     budgetLiveData.postValue(response.body());
 
                 } else {
-                    errorMessage.postValue("Failed to fetch budget data. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue(errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
@@ -84,7 +94,15 @@ public class BudgetingViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     budgetLiveData.postValue(response.body());
                 } else {
-                    errorMessage.postValue("Failed to save budget data. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue(errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
