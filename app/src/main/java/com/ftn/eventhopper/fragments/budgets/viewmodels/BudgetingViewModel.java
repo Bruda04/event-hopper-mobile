@@ -35,6 +35,8 @@ public class BudgetingViewModel extends ViewModel {
         return budgetLiveData;
     }
 
+    private Double spentAmount = 0.0;
+
     public void fetchBudget(UUID eventId) {
         Call<BudgetManagementDTO> call = ClientUtils.budgetService.getManagement(eventId);
         call.enqueue(new Callback<BudgetManagementDTO>() {
@@ -42,6 +44,8 @@ public class BudgetingViewModel extends ViewModel {
             public void onResponse(Call<BudgetManagementDTO> call, Response<BudgetManagementDTO> response) {
                 if (response.isSuccessful()) {
                     budgetLiveData.postValue(response.body());
+                    spentAmount = response.body().getBudgetItems().stream().mapToDouble(BudgetItemManagementDTO::getAmount).sum() - response.body().getLeftAmount();
+
 
                 } else {
                     try {
@@ -131,6 +135,16 @@ public class BudgetingViewModel extends ViewModel {
             return;
         }
         budget.getBudgetItems().removeIf(item -> item.getId().equals(id));
+        budgetLiveData.postValue(budget);
+    }
+
+    public void updateLeftAmount(ArrayList<BudgetItemManagementDTO> items) {
+        BudgetManagementDTO budget = budgetLiveData.getValue();
+        if (budget == null) {
+            return;
+        }
+        double totalAmount = items.stream().mapToDouble(BudgetItemManagementDTO::getAmount).sum();
+        budget.setLeftAmount(totalAmount - spentAmount);
         budgetLiveData.postValue(budget);
     }
 }

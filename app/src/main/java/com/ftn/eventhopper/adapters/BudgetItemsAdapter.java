@@ -41,6 +41,8 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
     private ArrayList<BudgetItemManagementDTO> items;
     private BudgetingViewModel viewModel;
     private NavController navController;
+    @Getter
+    private int errors;
 
     public BudgetItemsAdapter(Context context,
                               BudgetManagementDTO budget,
@@ -53,6 +55,7 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
         this.items = new ArrayList<>(budget.getBudgetItems());
         this.viewModel = viewModel;
         this.navController = navController;
+        this.errors = 0;
     }
 
     @NonNull
@@ -66,7 +69,7 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
         holder.categoryName.setText(items.get(position).getCategory().getName());
 
         Objects.requireNonNull(holder.amount.getEditText())
-                .setFilters(new InputFilter[]{new MinMaxInputFilter(items.get(position).getMinAmount(), 10000000.0)});
+                .setFilters(new InputFilter[]{new MinMaxInputFilter(0, 10000000.0)});
         Objects.requireNonNull(holder.amount.getEditText()).setText(String.format("%.2f", items.get(position).getAmount()));
         TextWatcher priceWatcher = setupAmountWatcher(holder.amount, position);
         (holder.amount.getEditText()).addTextChangedListener(priceWatcher);
@@ -138,8 +141,25 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
                 // Ensure values are not empty before parsing
                 double amountDouble = parseDouble(amount);
 
-                items.get(position).setAmount(amountDouble);
-                Log.d("BudgetItemsAdapter", "Amount changed to: " + amountDouble);
+                boolean errorPresent = amountInputLayout.getError() != null;
+
+                if (amountDouble < items.get(position).getMinAmount()) {
+                    amountInputLayout.setError("Amount must be greater than " + items.get(position).getMinAmount());
+                } else {
+                    amountInputLayout.setError(null);
+                }
+
+                if (amountInputLayout.getError() == null) {
+                    if (errorPresent) {
+                        errors--;
+                    }
+                    items.get(position).setAmount(amountDouble);
+                    viewModel.updateLeftAmount(items);
+                } else {
+                    if (!errorPresent) {
+                        errors++;
+                    }
+                }
             }
         };
     }

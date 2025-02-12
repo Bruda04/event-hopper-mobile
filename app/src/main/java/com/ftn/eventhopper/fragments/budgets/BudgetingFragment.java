@@ -48,6 +48,7 @@ public class BudgetingFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private TextView header;
+    private TextView leftAmount;
     private MaterialButton addBudgetItemButton;
     private MaterialButton saveButton;
     private TextInputLayout categoryInput;
@@ -81,6 +82,7 @@ public class BudgetingFragment extends Fragment {
         addBudgetItemButton = view.findViewById(R.id.add_budget_item_button);
         saveButton = view.findViewById(R.id.save_button);
         categoryInput = view.findViewById(R.id.category_select_budgeting);
+        leftAmount = view.findViewById(R.id.left_to_spend_text);
 
 
 
@@ -107,6 +109,8 @@ public class BudgetingFragment extends Fragment {
 
     private void setFieldValues(BudgetManagementDTO budget) {
         header.setText(String.format("Budget for %s", budget.getEvent().getName()));
+
+        leftAmount.setText(String.format("Left to spend: %.2f €", budget.getLeftAmount()));
 
         BudgetItemsAdapter recyclerViewAdapter = new BudgetItemsAdapter(getContext(), budget, viewModel, navController);
 
@@ -138,7 +142,15 @@ public class BudgetingFragment extends Fragment {
         });
 
         saveButton.setOnClickListener(v -> {
-            viewModel.saveBudget(recyclerViewAdapter.getItems());
+            if (recyclerViewAdapter.getErrors() > 0) {
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Error")
+                        .setMessage("Please fill in all the fields with valid values.")
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            } else {
+                viewModel.saveBudget(recyclerViewAdapter.getItems());
+            }
         });
     }
 

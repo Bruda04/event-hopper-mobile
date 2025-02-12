@@ -12,7 +12,7 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 public class BudgetManagementDTO {
-    private double totalAmount;
+    private double leftAmount;
     private Collection<BudgetItemManagementDTO> budgetItems;
     private SimpleEventDTO event;
 }
