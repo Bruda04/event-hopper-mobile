@@ -100,8 +100,15 @@ public class SingleChatFragment extends Fragment {
         messageInput = view.findViewById(R.id.message_input_layout);
 
         blockUserButton.setOnClickListener(v -> {
-
-
+            MaterialAlertDialogBuilder blockDialog = new MaterialAlertDialogBuilder(getContext());
+            blockDialog.setTitle("Block user");
+            blockDialog.setMessage("Are you sure you want to block user?");
+            blockDialog.setPositiveButton("Block", (dialog, which) -> {
+                blockUser();
+            });
+            blockDialog.setNegativeButton("Cancel", (dialog, which) -> {
+            });
+            blockDialog.show();
         });
 
         reportUserButton.setOnClickListener(v -> {
@@ -197,6 +204,20 @@ public class SingleChatFragment extends Fragment {
 
 
         return true;
+    }
+
+    private void blockUser(){
+
+        viewModel.fetchReceiverByEmail(username);
+
+        viewModel.getReceiverLiveData().observe(getViewLifecycleOwner(), receiver ->{
+
+            if (receiver != null) {
+                viewModel.createBlock(receiver.getId());
+            } else {
+                Toast.makeText(getContext(), "Failed to fetch user.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void messageArrived(ArrayList<ChatMessageDTO> messages) {
