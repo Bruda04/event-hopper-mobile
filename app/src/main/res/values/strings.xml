@@ -170,5 +170,10 @@
     <string name="new_password">New Password</string>
     <string name="old_password">Old Password</string>
     <string name="new_password_again">New Password (Again)</string>
+    <string name="export_to_pdf">Export to PDF</string>
+
     <string name="loading_comments">Loading comments...</string>
+	<string name="export_event_data_to_pdf">Export event data to pdf</string>
+    <string name="export_prices_to_pdf">Export prices to PDF</string>
+    <string name="chat_with_organizer">Chat with Organizer</string>
 </resources>

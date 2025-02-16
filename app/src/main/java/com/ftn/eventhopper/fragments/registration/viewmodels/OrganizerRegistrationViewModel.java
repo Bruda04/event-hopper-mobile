@@ -3,8 +3,6 @@ package com.ftn.eventhopper.fragments.registration.viewmodels;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
@@ -12,7 +10,6 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.shared.dtos.location.CreateLocationDTO;
 import com.ftn.eventhopper.shared.dtos.registration.CreateRegistrationRequestDTO;
-import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.CreateEventOrganizerAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.eventOrganizer.CreateEventOrganizerDTO;
 import com.ftn.eventhopper.shared.models.users.PersonType;

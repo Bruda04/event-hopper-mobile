@@ -14,7 +14,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CompanyDetailsDTO {
-
     private String companyName;
     private String companyEmail;
     private String companyPhoneNumber;

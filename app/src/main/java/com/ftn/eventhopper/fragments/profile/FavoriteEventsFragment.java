@@ -106,7 +106,7 @@ public class FavoriteEventsFragment extends Fragment {
     }
 
     private void setAll(ArrayList<SimpleEventDTO> events){
-        EventAdapter adapter = new EventAdapter(getContext(),events,this);
+        EventAdapter adapter = new EventAdapter(getContext(), events, this);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
         this.allEventsRecyclerView.setLayoutManager(layoutManager);
         this.allEventsRecyclerView.setItemAnimator(new DefaultItemAnimator());

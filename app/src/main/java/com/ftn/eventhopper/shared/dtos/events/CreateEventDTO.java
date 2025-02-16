@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.shared.dtos.events;
 
-import  com.ftn.event_hopper.models.shared.EventPrivacyType;
+import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
+
 import lombok.*;
 
 import java.time.LocalDateTime;

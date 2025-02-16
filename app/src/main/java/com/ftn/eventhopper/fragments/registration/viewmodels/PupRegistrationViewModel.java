@@ -9,14 +9,11 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.shared.dtos.location.CreateLocationDTO;
 import com.ftn.eventhopper.shared.dtos.registration.CreateRegistrationRequestDTO;
-import com.ftn.eventhopper.shared.dtos.users.account.CreateEventOrganizerAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.CreateServiceProviderAccountDTO;
-import com.ftn.eventhopper.shared.dtos.users.eventOrganizer.CreateEventOrganizerDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CreateServiceProviderDTO;
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
