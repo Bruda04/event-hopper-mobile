@@ -224,7 +224,7 @@ public class SolutionPageFragment extends Fragment {
             favoriteButton.setVisibility(View.VISIBLE);
 
             favoriteButton.setOnClickListener(v -> {
-                viewModel.toggleFavorite();
+                viewModel.toggleFavorite(requireContext());
             });
 
             if (solution.isPendingRating() || solution.isPendingComment()) {

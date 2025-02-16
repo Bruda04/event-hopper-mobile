@@ -48,6 +48,8 @@ public class FavoriteSolutionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_solutions, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        disableLayoutTransitions(view);
+
 
         this.allSolutionsRecyclerView = view.findViewById(R.id.recyclerView_allsolutions);
         if (allSolutionsRecyclerView.getParent() instanceof ViewGroup) {
@@ -68,6 +70,16 @@ public class FavoriteSolutionsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void disableLayoutTransitions(View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            viewGroup.setLayoutTransition(null);
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                disableLayoutTransitions(viewGroup.getChildAt(i));
+            }
+        }
     }
 
     private void fetchFavoriteSolutions(boolean refresh){

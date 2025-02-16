@@ -1,55 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:backgroundTint="@color/background_beige"
+    android:padding="0dp">
 
-    <!-- Month Navigation Buttons -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
 
+        <!-- Toggle Button for Week/Month View -->
         <Button
             style="@style/DarkButton"
-            android:id="@+id/prevMonthButton"
+            android:id="@+id/toggleViewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/previous" />
+            android:text="@string/week_view"
+            android:padding="8dp"/>
 
-        <TextView
-            android:id="@+id/currentMonthText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/DarkHeaderText"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="16dp"
-            android:text="@string/month_year"/>
-
-        <Button
-            android:id="@+id/nextMonthButton"
-            style="@style/DarkButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next" />
+        <!-- Expanded Calendar View -->
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:mcv_showOtherDates="all"
+            app:mcv_firstDayOfWeek="monday"
+            app:mcv_dateTextAppearance="@style/DarkLargerText"
+            app:mcv_headerTextAppearance="@style/DarkLargerText"
+            app:mcv_arrowColor="@color/text_dark_blue"
+            app:mcv_selectionColor="@color/theme_blue"/>
     </LinearLayout>
 
-    <!-- Calendar View -->
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mcv_showOtherDates="all"
-        app:mcv_firstDayOfWeek="monday"
-        app:mcv_dateTextAppearance="@style/DarkLargerText"
-        app:mcv_headerTextAppearance="@style/DarkLargerText"
-        app:mcv_arrowColor="@color/text_dark_blue"
-        app:mcv_selectionColor="@color/theme_blue"
-        app:mcv_tileSize="50dp"/>
-
-</LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</FrameLayout>

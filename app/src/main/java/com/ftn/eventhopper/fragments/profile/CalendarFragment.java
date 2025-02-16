@@ -2,19 +2,25 @@ package com.ftn.eventhopper.fragments.profile;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
+import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
+import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -24,13 +30,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CalendarFragment extends Fragment {
-
+    private ProfileViewModel viewModel;
     private MaterialCalendarView calendarView;
-    private Button prevMonthButton, nextMonthButton;
-    private TextView currentMonthText;
     private List<LocalDateTime> eventDates;
+    private Button toggleViewButton;
+    private boolean isWeekView = false;
+
+    private Set<SimpleEventDTO> attendingEvents;
+    private List<SimpleEventDTO> myEvents;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -40,23 +51,27 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        this.fetchEvents(false);
 
         calendarView = view.findViewById(R.id.calendarView);
-        prevMonthButton = view.findViewById(R.id.prevMonthButton);
-        nextMonthButton = view.findViewById(R.id.nextMonthButton);
-        currentMonthText = view.findViewById(R.id.currentMonthText);
+
+        adjustTileSize();
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchEvents(true);
+        });
 
         // Example List of Event Dates
         eventDates = new ArrayList<>();
         eventDates.add(LocalDateTime.of(2025, 2, 10, 14, 0));
-        eventDates.add(LocalDateTime.of(2025, 2, 15, 9, 30));
+        eventDates.add(LocalDateTime.of(2025, 2, 10, 9, 30));
         eventDates.add(LocalDateTime.of(2025, 2, 20, 17, 45));
-
-        // Set the initial month
-        updateMonthText();
 
         // Highlight events
         calendarView.addDecorator(new EventDecorator(Color.RED, eventDates));
+
 
         // Handle date selection
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
@@ -64,25 +79,54 @@ public class CalendarFragment extends Fragment {
             openEventFragment(selectedDate);
         });
 
-        // Previous Month Button
-        prevMonthButton.setOnClickListener(v -> {
-            calendarView.goToPrevious();
-            updateMonthText();
-        });
+        toggleViewButton = view.findViewById(R.id.toggleViewButton);
 
-        // Next Month Button
-        nextMonthButton.setOnClickListener(v -> {
-            calendarView.goToNext();
-            updateMonthText();
-        });
+        toggleViewButton.setOnClickListener(v -> toggleCalendarView());
 
         return view;
     }
 
-    private void updateMonthText() {
-        CalendarDay currentDate = calendarView.getCurrentDate();
-        String monthYear = currentDate.getMonth() + " " + currentDate.getYear();
-        currentMonthText.setText(monthYear);
+
+    private void fetchEvents(boolean refresh){
+        //if you're told to refresh, or this is your first time and you have to
+        if(refresh || viewModel.getProfile() == null){
+            viewModel.fetchProfile();
+        }
+        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
+            if (changed) {
+                ProfileForPersonDTO profile = viewModel.getProfile();
+                this.attendingEvents = profile.getAttendingEvents();
+                this.myEvents = profile.getMyEvents();
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+    }
+
+    private void toggleCalendarView() {
+        if (isWeekView) {
+            // Switch to Month View
+            calendarView.state().edit()
+                    .setCalendarDisplayMode(CalendarMode.MONTHS)
+                    .commit();
+            toggleViewButton.setText("Week View");
+        } else {
+            // Switch to Week View
+            calendarView.state().edit()
+                    .setCalendarDisplayMode(CalendarMode.WEEKS)
+                    .commit();
+            toggleViewButton.setText("Month View");
+        }
+        isWeekView = !isWeekView;
+    }
+
+    private void adjustTileSize() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+
+        int tileSize = screenWidth / 7;
+        calendarView.setTileSize(tileSize);
     }
 
     private void openEventFragment(LocalDateTime date) {
@@ -97,6 +141,14 @@ public class CalendarFragment extends Fragment {
         private final HashSet<CalendarDay> dates;
 
         public EventDecorator(int color, List<LocalDateTime> dateTimes) {
+            this.color = color;
+            this.dates = new HashSet<>();
+            for (LocalDateTime dateTime : dateTimes) {
+                dates.add(CalendarDay.from(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()));
+            }
+        }
+
+        public EventDecorator(int color, Set<LocalDateTime> dateTimes) {
             this.color = color;
             this.dates = new HashSet<>();
             for (LocalDateTime dateTime : dateTimes) {

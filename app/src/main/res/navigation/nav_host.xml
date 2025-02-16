@@ -104,6 +104,11 @@
         android:id="@+id/action_to_event_page"
         app:destination="@id/event_page"
         />
+    <action
+        android:id="@+id/action_to_solution_page"
+        app:destination="@id/solution_page"
+        />
+
     </fragment>
 
 
