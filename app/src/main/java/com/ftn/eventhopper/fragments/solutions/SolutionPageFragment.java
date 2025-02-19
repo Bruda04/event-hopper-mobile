@@ -276,7 +276,11 @@ public class SolutionPageFragment extends Fragment {
 
     private void setupPurchaseFlow(SolutionDetailsDTO solution) {
         if (solution.getApplicableEvents().size() == 1) {
-            setupBuyProductDialog(solution, solution.getApplicableEvents().iterator().next());
+            if (solution.isService()) {
+                setupBookServiceDialog(solution, solution.getApplicableEvents().iterator().next());
+            } else {
+                setupBuyProductDialog(solution, solution.getApplicableEvents().iterator().next());
+            }
         } else {
             setupChoseEventDialog(solution);
         }
