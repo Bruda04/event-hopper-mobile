@@ -59,6 +59,10 @@
             android:id="@+id/action_to_solution_page"
             app:destination="@id/solution_page"
             />
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
 
         <action
             android:id="@+id/action_to_event_page"
@@ -96,7 +100,12 @@
         android:id="@+id/favorites"
         android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
         android:label="Favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+    <action
+        android:id="@+id/action_to_event_page"
+        app:destination="@id/event_page"
+        />
+    </fragment>
 
 
     <!-- Profile Fragment -->
@@ -225,6 +234,18 @@
         tools:layout="@layout/fragment_p_u_p_prices_management">
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/event_page"
+        android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
+        android:label="Event Page"
+        tools:layout="@layout/fragment_event_page">
+        <action
+            android:id="@+id/action_to_chat_with_provider"
+            app:destination="@id/single_chat_fragment"/>
+    </fragment>
+
 
     <fragment
         android:id="@+id/event_page"

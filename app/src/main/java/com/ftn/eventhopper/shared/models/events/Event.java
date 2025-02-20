@@ -1,8 +1,6 @@
 package com.ftn.eventhopper.shared.models.events;
 
-
 import com.ftn.eventhopper.shared.models.agendaActivities.AgendaActivity;
-import com.ftn.event_hopper.models.shared.EventPrivacyType;
 import com.ftn.eventhopper.shared.models.eventTypes.EventType;
 import com.ftn.eventhopper.shared.models.locations.Location;
 

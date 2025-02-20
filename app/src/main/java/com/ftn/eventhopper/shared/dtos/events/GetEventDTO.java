@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.shared.dtos.events;
 
-import  com.ftn.event_hopper.models.shared.EventPrivacyType;
+import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @NoArgsConstructor
 
 public class GetEventDTO {
-
     private UUID id;
     private String name;
     private int maxAttendance;

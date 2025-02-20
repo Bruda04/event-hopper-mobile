@@ -3,7 +3,6 @@ package com.ftn.eventhopper.fragments.upgrades.viewmodels;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

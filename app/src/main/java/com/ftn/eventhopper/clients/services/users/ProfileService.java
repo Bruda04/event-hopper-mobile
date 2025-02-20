@@ -22,7 +22,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ProfileService {
-
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
@@ -51,14 +50,6 @@ public interface ProfileService {
     })
     @GET("accounts/active/{email}")
     Call<SimpleAccountDTO> getActiveByEmail(@Path("email") String email);
-
-    @Headers({
-            "User-Agent: Mobile-Android",
-            "Content-Type:application/json"
-    })
-
-    @POST("persons/attending-events/{eventId}")
-    Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -125,4 +116,26 @@ public interface ProfileService {
     })
     @POST("accounts/deactivate")
     Call<Void> deactivateAccount();
+  
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/attending-events/{eventId}")
+    Call<Void> addEventToAttending(@Path("eventId") UUID eventId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("persons/favorite-events/{eventId}")
+    Call<Void> addEventToFavorites(@Path("eventId") UUID eventId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("persons/favorite-events/{eventId}")
+    Call<Void> removeEventFromFavorites(@Path("eventId") UUID eventId);
+
 }
