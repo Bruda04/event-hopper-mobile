@@ -17,6 +17,8 @@ import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
 import okhttp3.ResponseBody;
@@ -216,4 +218,7 @@ public class SolutionPageViewModel extends ViewModel {
         });
     }
 
+    public void bookService(UUID eventId, UUID productId, LocalDateTime startTime, LocalDateTime endTime){
+
+    }
 }
