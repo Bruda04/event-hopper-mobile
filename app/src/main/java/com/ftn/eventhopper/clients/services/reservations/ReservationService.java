@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.clients.services.reservations;
 
 import com.ftn.eventhopper.shared.dtos.reservations.CreateReservationProductDTO;
+import com.ftn.eventhopper.shared.dtos.reservations.CreateReservationServiceDTO;
 import com.ftn.eventhopper.shared.dtos.reservations.CreatedReservationProductDTO;
 
 
@@ -17,4 +18,13 @@ public interface ReservationService {
     })
     @POST("reservations/products")
     Call<ResponseBody> buyProduct(@Body CreateReservationProductDTO createReservationProductDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("reservations/services")
+    Call<ResponseBody> bookService(@Body CreateReservationServiceDTO createReservationServiceDTO);
+
+
 }

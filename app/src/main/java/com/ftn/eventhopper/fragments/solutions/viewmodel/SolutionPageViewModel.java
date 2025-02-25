@@ -12,6 +12,7 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
 import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
 import com.ftn.eventhopper.shared.dtos.reservations.CreateReservationProductDTO;
+import com.ftn.eventhopper.shared.dtos.reservations.CreateReservationServiceDTO;
 import com.ftn.eventhopper.shared.dtos.reservations.CreatedReservationProductDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
@@ -218,7 +219,43 @@ public class SolutionPageViewModel extends ViewModel {
         });
     }
 
-    public void bookService(UUID eventId, UUID productId, LocalDateTime startTime, LocalDateTime endTime){
+    public void bookService(UUID eventId, LocalDateTime startTime, LocalDateTime endTime){
+        CreateReservationServiceDTO reservationRequest = new CreateReservationServiceDTO();
+        SolutionDetailsDTO solutionDetailsDTO = getSolutionDetails().getValue();
+        if (solutionDetailsDTO == null){
+            errorMessage.postValue("Failed to book a service.");
+            return;
+        }
+        reservationRequest.setProductId(solutionDetailsDTO.getId());
+        reservationRequest.setEventId(eventId);
+        reservationRequest.setFrom(startTime);
+        reservationRequest.setTo(endTime);
+
+        Call<ResponseBody> call = ClientUtils.reservationService.bookService(reservationRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    fetchSolutionDetailsById(getSolutionDetails().getValue().getId());
+                }else{
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue("Error booking a service: " + errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+
 
     }
 }

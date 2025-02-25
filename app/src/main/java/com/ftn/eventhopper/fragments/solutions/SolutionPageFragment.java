@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.fragments.solutions;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -15,12 +16,16 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
@@ -37,7 +42,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -287,6 +294,51 @@ public class SolutionPageFragment extends Fragment {
     }
 
     private void setupBookServiceDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogBuilder.setTitle("Book a service");
+
+        LinearLayout layout = new LinearLayout(requireContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20);
+
+        Button chooseDateButton = new Button(requireContext());
+        chooseDateButton.setText("Choose Date");
+
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        buttonParams.gravity = Gravity.START;
+        chooseDateButton.setLayoutParams(buttonParams);
+
+        final Calendar selectedDate = Calendar.getInstance();
+
+        chooseDateButton.setOnClickListener(v -> {
+            int year = selectedDate.get(Calendar.YEAR);
+            int month = selectedDate.get(Calendar.MONTH);
+            int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+
+                        selectedDate.set(selectedYear, selectedMonth, selectedDay);
+
+                        String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
+                        chooseDateButton.setText(formattedDate);
+                    }, year, month, day);
+
+            datePickerDialog.show();
+        });
+
+        layout.addView(chooseDateButton);
+        dialogBuilder.setView(layout);
+
+        dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {
+            //viewModel.bookService(event.getId(), datePicker.getda);
+        });
+        dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        });
+        dialogBuilder.show();
     }
 
     private void setupBuyProductDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
