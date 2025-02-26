@@ -27,6 +27,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
@@ -41,8 +42,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -304,6 +309,13 @@ public class SolutionPageFragment extends Fragment {
         Button chooseDateButton = new Button(requireContext());
         chooseDateButton.setText("Choose Date");
 
+        AutoCompleteTextView timeSlotDropdown = new AutoCompleteTextView(requireContext());
+        timeSlotDropdown.setHint("Choose a time slot");
+
+        List<LocalDateTime> availableTimeSlots = new ArrayList<>();
+        ArrayAdapter<LocalDateTime> timeSlotAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, availableTimeSlots);
+        timeSlotDropdown.setAdapter(timeSlotAdapter);
+
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -325,12 +337,31 @@ public class SolutionPageFragment extends Fragment {
 
                         String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
                         chooseDateButton.setText(formattedDate);
+                        String dateString = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay+ "T00:00:00";
+                        String encodedDate = URLEncoder.encode(dateString, StandardCharsets.UTF_8);
+                        availableTimeSlots.clear();
+                        viewModel.fetchFreeTerms(encodedDate);
+                        Collection<LocalDateTime> terms = viewModel.getFreeTerms().getValue();
+                        if (terms != null) {
+                            availableTimeSlots.addAll(terms);
+                            timeSlotAdapter.notifyDataSetChanged();
+                            timeSlotDropdown.showDropDown();
+                        } else {
+                            Log.e("fetchFreeTerms", "API response is null or empty.");
+                            Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
+                        }
+                        availableTimeSlots.addAll(viewModel.getFreeTerms().getValue());
+                        timeSlotAdapter.notifyDataSetChanged();
+
+
+                        timeSlotDropdown.showDropDown();
                     }, year, month, day);
 
             datePickerDialog.show();
         });
 
         layout.addView(chooseDateButton);
+        layout.addView(timeSlotDropdown);
         dialogBuilder.setView(layout);
 
         dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {

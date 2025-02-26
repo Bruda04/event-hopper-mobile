@@ -19,6 +19,8 @@ import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -29,11 +31,14 @@ import retrofit2.Response;
 
 public class SolutionPageViewModel extends ViewModel {
     private final MutableLiveData<SolutionDetailsDTO> solutionDetailsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Collection<LocalDateTime>> freeTerms = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public LiveData<SolutionDetailsDTO> getSolutionDetails() {
         return solutionDetailsLiveData;
     }
+
+    public LiveData<Collection<LocalDateTime>> getFreeTerms() {return freeTerms; }
 
     public LiveData<String> getErrorMessage() {
         return errorMessage;
@@ -256,6 +261,33 @@ public class SolutionPageViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void fetchFreeTerms(String date){
+
+        SolutionDetailsDTO solutionDetailsDTO = getSolutionDetails().getValue();
+        if (solutionDetailsDTO == null){
+            errorMessage.postValue("Failed to book a service.");
+            return;
+        }
+
+        Call<List<LocalDateTime>> call = ClientUtils.reservationService.getAvailableTerms(solutionDetailsDTO.getId(), date);
+        call.enqueue(new Callback<List<LocalDateTime>>() {
+            @Override
+            public void onResponse(Call<List<LocalDateTime>> call, Response<List<LocalDateTime>> response) {
+                if(response.isSuccessful()){
+                    freeTerms.postValue(response.body());
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to fetch free terms. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LocalDateTime>> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
 
     }
 }
