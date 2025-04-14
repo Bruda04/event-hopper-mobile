@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/background_beige"
+    android:background="@color/background_beige"
     android:padding="0dp">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -11,36 +11,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="16dp">
-
-        <!-- Toggle Button for Week/Month View -->
-        <Button
-            style="@style/DarkButton"
-            android:id="@+id/toggleViewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/week_view"
-            android:padding="8dp"/>
-
-        <!-- Expanded Calendar View -->
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendarView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:mcv_showOtherDates="all"
-            app:mcv_firstDayOfWeek="monday"
-            app:mcv_dateTextAppearance="@style/DarkLargerText"
-            app:mcv_headerTextAppearance="@style/DarkLargerText"
-            app:mcv_arrowColor="@color/text_dark_blue"
-            app:mcv_selectionColor="@color/theme_blue"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp">
+
+            <Button
+                style="@style/DarkButton"
+                android:id="@+id/toggleViewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/week_view"
+                android:padding="8dp"/>
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:mcv_showOtherDates="none"
+                app:mcv_firstDayOfWeek="monday"
+                app:mcv_dateTextAppearance="@style/DarkLargerText"
+                app:mcv_headerTextAppearance="@style/DarkLargerText"
+                app:mcv_arrowColor="@color/text_dark_blue"
+                app:mcv_selectionColor="@color/theme_blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/events_calendar_colors"/>
+        </LinearLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

@@ -1,12 +1,16 @@
 package com.ftn.eventhopper.fragments.profile;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,102 +23,125 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.*;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 public class CalendarFragment extends Fragment {
     private ProfileViewModel viewModel;
     private MaterialCalendarView calendarView;
-    private List<LocalDateTime> eventDates;
     private Button toggleViewButton;
     private boolean isWeekView = false;
-
-    private Set<SimpleEventDTO> attendingEvents;
-    private List<SimpleEventDTO> myEvents;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public CalendarFragment() {
-        // Required empty public constructor
-    }
+    private List<SimpleEventDTO> myEvents = new ArrayList<>(), attendingEvents = new ArrayList<>();
+    private HashMap<CalendarDay, List<SimpleEventDTO>> eventsByDate = new HashMap<>();
+
+    public CalendarFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
-        this.fetchEvents(false);
-
         calendarView = view.findViewById(R.id.calendarView);
 
         adjustTileSize();
 
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            fetchEvents(true);
+        calendarView.setOnMonthChangedListener((widget, date) -> {
+            Log.d("CalendarView", "Visible month: " + date.getMonth() + "/" + date.getYear());
         });
 
-        // Example List of Event Dates
-        eventDates = new ArrayList<>();
-        eventDates.add(LocalDateTime.of(2025, 2, 10, 14, 0));
-        eventDates.add(LocalDateTime.of(2025, 2, 10, 9, 30));
-        eventDates.add(LocalDateTime.of(2025, 2, 20, 17, 45));
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> fetchProfileInformation(true));
+        fetchProfileInformation(false);
 
-        // Highlight events
-        calendarView.addDecorator(new EventDecorator(Color.RED, eventDates));
-
-
-        // Handle date selection
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
-            LocalDateTime selectedDate = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDay(), 0, 0);
-            openEventFragment(selectedDate);
+            CalendarDay selectedDay = CalendarDay.from(date.getYear(), date.getMonth(), date.getDay());
+            List<SimpleEventDTO> eventsOnDate = eventsByDate.get(selectedDay);
+            if (eventsOnDate != null) {
+                if (eventsOnDate.size() == 1) {
+                    openEventFragment(eventsOnDate.get(0));
+                } else {
+                    showEventSelectionDialog(eventsOnDate);
+                }
+            }
         });
 
         toggleViewButton = view.findViewById(R.id.toggleViewButton);
-
         toggleViewButton.setOnClickListener(v -> toggleCalendarView());
 
         return view;
     }
 
-
-    private void fetchEvents(boolean refresh){
-        //if you're told to refresh, or this is your first time and you have to
-        if(refresh || viewModel.getProfile() == null){
+    private void fetchProfileInformation(boolean refresh) {
+        if (refresh || viewModel.getProfile() == null) {
             viewModel.fetchProfile();
         }
+
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
-            if (changed) {
+            if (changed != null && changed) {
                 ProfileForPersonDTO profile = viewModel.getProfile();
-                this.attendingEvents = profile.getAttendingEvents();
-                this.myEvents = profile.getMyEvents();
+                attendingEvents = new ArrayList<>(profile.getAttendingEvents());
+                myEvents = profile.getMyEvents() != null ? new ArrayList<>(profile.getMyEvents()) : new ArrayList<>();
+                updateEventDecorators(attendingEvents, myEvents);
             }
             swipeRefreshLayout.setRefreshing(false);
         });
+    }
 
+    private void updateEventDecorators(List<SimpleEventDTO> attendingEvents, List<SimpleEventDTO> myEvents) {
+        eventsByDate.clear();
+        Map<CalendarDay, List<SimpleEventDTO>> allEventsByDay = new HashMap<>();
+
+        Set<CalendarDay> organizerDays = new HashSet<>();
+        Set<CalendarDay> attendeeDays = new HashSet<>();
+        Set<CalendarDay> multiEventDays = new HashSet<>();
+
+        // Track how many events on each day
+        for (SimpleEventDTO event : attendingEvents) {
+            LocalDate date = event.getTime().toLocalDate();
+            CalendarDay day = CalendarDay.from(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+            allEventsByDay.computeIfAbsent(day, k -> new ArrayList<>()).add(event);
+            attendeeDays.add(day);
+        }
+
+        for (SimpleEventDTO event : myEvents) {
+            LocalDate date = event.getTime().toLocalDate();
+            CalendarDay day = CalendarDay.from(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+            allEventsByDay.computeIfAbsent(day, k -> new ArrayList<>()).add(event);
+            organizerDays.add(day);
+        }
+
+        for (Map.Entry<CalendarDay, List<SimpleEventDTO>> entry : allEventsByDay.entrySet()) {
+            CalendarDay day = entry.getKey();
+            List<SimpleEventDTO> events = entry.getValue();
+            eventsByDate.put(day, events);
+            if (events.size() > 1) {
+                multiEventDays.add(day);
+            }
+        }
+
+        // Remove overlap so we don't double-decorate
+        organizerDays.removeAll(multiEventDays);
+        attendeeDays.removeAll(organizerDays);
+        attendeeDays.removeAll(multiEventDays);
+
+        calendarView.removeDecorators();
+        calendarView.addDecorator(new DotDecorator(Color.parseColor("#9C27B0"), multiEventDays)); // Purple for multiple
+        calendarView.addDecorator(new DotDecorator(Color.YELLOW, organizerDays)); // Yellow for organizing
+        calendarView.addDecorator(new DotDecorator(Color.BLUE, attendeeDays)); // Blue for attending
+        calendarView.invalidateDecorators();
     }
 
     private void toggleCalendarView() {
         if (isWeekView) {
-            // Switch to Month View
-            calendarView.state().edit()
-                    .setCalendarDisplayMode(CalendarMode.MONTHS)
-                    .commit();
+            calendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
             toggleViewButton.setText("Week View");
         } else {
-            // Switch to Week View
-            calendarView.state().edit()
-                    .setCalendarDisplayMode(CalendarMode.WEEKS)
-                    .commit();
+            calendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
             toggleViewButton.setText("Month View");
         }
         isWeekView = !isWeekView;
@@ -124,36 +151,50 @@ public class CalendarFragment extends Fragment {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
-
         int tileSize = screenWidth / 7;
         calendarView.setTileSize(tileSize);
     }
 
-    private void openEventFragment(LocalDateTime date) {
+    private void openEventFragment(SimpleEventDTO eventDTO) {
         Bundle bundle = new Bundle();
-        bundle.putString("selectedDate", date.toString());
+        bundle.putString("event_id", eventDTO.getId().toString());
         NavHostFragment.findNavController(this).navigate(R.id.action_to_event_page, bundle);
     }
 
-    // Event Decorator Class for Highlighting Event Dates
-    private static class EventDecorator implements DayViewDecorator {
+    private void showEventSelectionDialog(List<SimpleEventDTO> events) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Select an Event");
+
+        ListView eventListView = new ListView(requireContext());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
+        for (SimpleEventDTO event : events) {
+            String label = event.getName();
+            if (myEvents.contains(event)) {
+                label += " ⭐ (Organizing)";
+            } else {
+                label += " 👤 (Attending)";
+            }
+            adapter.add(label);
+        }
+        eventListView.setAdapter(adapter);
+        builder.setView(eventListView);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        eventListView.setOnItemClickListener((parent, view, position, id) -> {
+            openEventFragment(events.get(position));
+            dialog.dismiss();
+        });
+    }
+
+    private static class DotDecorator implements DayViewDecorator {
         private final int color;
         private final HashSet<CalendarDay> dates;
 
-        public EventDecorator(int color, List<LocalDateTime> dateTimes) {
+        public DotDecorator(int color, Collection<CalendarDay> dates) {
             this.color = color;
-            this.dates = new HashSet<>();
-            for (LocalDateTime dateTime : dateTimes) {
-                dates.add(CalendarDay.from(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()));
-            }
-        }
-
-        public EventDecorator(int color, Set<LocalDateTime> dateTimes) {
-            this.color = color;
-            this.dates = new HashSet<>();
-            for (LocalDateTime dateTime : dateTimes) {
-                dates.add(CalendarDay.from(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()));
-            }
+            this.dates = new HashSet<>(dates);
         }
 
         @Override
@@ -163,7 +204,7 @@ public class CalendarFragment extends Fragment {
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.addSpan(new DotSpan(8, color));
+            view.addSpan(new DotSpan(12, color));
         }
     }
 }
