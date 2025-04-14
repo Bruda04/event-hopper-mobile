@@ -110,6 +110,10 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
+        view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
+            this.openChangePasswordDialog();
+        });
+
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();

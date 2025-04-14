@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,18 +49,18 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         holder.descriptionView.setText(solutions.get(position).getDescription());
         holder.secondaryView.setText(solutions.get(position).getCategory().getName() );
 
-
         Glide.with(holder.imageView.getContext())
                 .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, solutions.get(position).getPictures().get(0)))
                 .placeholder(R.drawable.baseline_image_placeholder_24)
                 .error(R.drawable.baseline_image_not_supported_24)
                 .into(holder.imageView);
 
-        holder.viewMoreButton.setOnClickListener(v -> {
+
+        holder.viewMoreButton.setOnClickListener(v->{
+            NavController navController = Navigation.findNavController(v);
             Bundle bundle = new Bundle();
             bundle.putString("id", solutions.get(position).getId().toString());
-            NavController navController = NavHostFragment.findNavController(this.fragment);
-            navController.navigate(R.id.action_to_solution_page, bundle);
+            navController.navigate(R.id.action_to_solution_page,bundle);
         });
     }
 
@@ -76,6 +77,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         TextView descriptionView;
         public MaterialButton viewMoreButton;
 
+
         public SolutionViewHolder(View view) {
             super(view);
             this.viewMoreButton = view.findViewById(R.id.card_button);
@@ -84,6 +86,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
             titleView = view.findViewById(R.id.card_title);
             secondaryView = view.findViewById(R.id.card_secondary);
             descriptionView = view.findViewById(R.id.card_description);
+            viewMoreButton = view.findViewById(R.id.card_button);
         }
     }
 

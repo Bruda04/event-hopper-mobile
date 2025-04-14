@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.adapters.events;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +18,7 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.github.islamkhsh.CardSliderAdapter;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -48,6 +52,7 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
         TextView secondayView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
 
+        MaterialButton seeMoreButton = holder.itemView.findViewById(R.id.card_button);
     }
 
 
@@ -59,6 +64,8 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
         TextView titleView = holder.itemView.findViewById(R.id.card_title);
         TextView secondaryView = holder.itemView.findViewById(R.id.card_secondary);
         TextView descriptionView = holder.itemView.findViewById(R.id.card_description);
+        MaterialButton seeMoreButton = holder.itemView.findViewById(R.id.card_button);
+
 
         titleView.setText(event.getName());
         secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
@@ -70,6 +77,13 @@ public class TopEventAdapter extends CardSliderAdapter<TopEventAdapter.EventView
                 .error(R.drawable.baseline_image_not_supported_24) // Prikaz slike u slučaju greške
                 .into(holder.imageView);
         descriptionView.setText(event.getDescription());
+
+        seeMoreButton.setOnClickListener( v ->{
+            NavController navController = Navigation.findNavController(v);
+            Bundle bundle = new Bundle();
+            bundle.putString("id", events.get(position).getId().toString());
+            navController.navigate(R.id.action_to_event_page,bundle);
+        });
     }
 
 

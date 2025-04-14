@@ -15,8 +15,11 @@ import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
 import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
+import org.json.JSONObject;
+
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +45,7 @@ public class SolutionPageViewModel extends ViewModel {
                     solutionDetailsLiveData.postValue(response.body());
 
                 } else {
-                    errorMessage.postValue("Failed to fetch products. Code: " + response.code());
+                    errorMessage.postValue("Failed to fetch products details.");
                 }
             }
 
@@ -122,19 +125,27 @@ public class SolutionPageViewModel extends ViewModel {
         createCommentDTO.setProductId(getSolutionDetails().getValue().getId());
         createCommentDTO.setContent(comment);
 
-        Call<Void> call = ClientUtils.productService.commentProduct(createCommentDTO);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = ClientUtils.productService.commentProduct(createCommentDTO);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     fetchSolutionDetailsById(getSolutionDetails().getValue().getId());
                 } else {
-                    errorMessage.postValue("Failed to comment product. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue("Error commenting solution: " + errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
@@ -145,19 +156,27 @@ public class SolutionPageViewModel extends ViewModel {
         createProductRatingDTO.setProductId(getSolutionDetails().getValue().getId());
         createProductRatingDTO.setValue(rating);
 
-        Call<Void> call = ClientUtils.productService.rateProduct(createProductRatingDTO);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = ClientUtils.productService.rateProduct(createProductRatingDTO);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     fetchSolutionDetailsById(getSolutionDetails().getValue().getId());
                 } else {
-                    errorMessage.postValue("Failed to rate product. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue("Error rating solution: " + errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
