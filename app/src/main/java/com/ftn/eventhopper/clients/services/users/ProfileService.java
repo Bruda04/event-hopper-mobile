@@ -8,6 +8,7 @@ import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CompanyDetailsDTO;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 
+import java.util.List;
 import java.util.UUID;
 
 import okhttp3.RequestBody;
@@ -43,6 +44,13 @@ public interface ProfileService {
     @GET("service-providers/{id}/details")
     Call<ServiceProviderDetailsDTO> getServiceProviderDetailsById(@Path("id") UUID id);
 
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("service-providers/change-company-pictures")
+    Call<Void> changeCompanyPictures(@Body List<String> newPictures);
 
     @Headers({
             "User-Agent: Mobile-Android",
