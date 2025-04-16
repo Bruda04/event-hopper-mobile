@@ -25,6 +25,7 @@ public class AdminsEventTypeManagementViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<SimpleEventTypeDTO>> eventTypes = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<SimpleCategoryDTO>> categories = new MutableLiveData<>();
 
+    private final MutableLiveData<Boolean> dataLoaded = new MutableLiveData<>(Boolean.FALSE);
 
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
@@ -34,6 +35,10 @@ public class AdminsEventTypeManagementViewModel extends ViewModel {
 
     public LiveData<ArrayList<SimpleCategoryDTO>> getCategories(){
         return categories;
+    }
+
+    public LiveData<Boolean> isLoaded(){
+        return dataLoaded;
     }
 
     public LiveData<String> getErrorMessage() {
@@ -47,8 +52,9 @@ public class AdminsEventTypeManagementViewModel extends ViewModel {
             public void onResponse(Call<EventTypeManagementDTO> call, Response<EventTypeManagementDTO> response) {
                 if (response.isSuccessful()) {
                     EventTypeManagementDTO res = response.body();
-                    eventTypes.postValue((ArrayList<SimpleEventTypeDTO>) res.getEventTypes());
                     categories.postValue((ArrayList<SimpleCategoryDTO>) res.getAllCategories());
+                    eventTypes.postValue((ArrayList<SimpleEventTypeDTO>) res.getEventTypes());
+                    dataLoaded.postValue(Boolean.TRUE);
                     errorMessage.postValue(null);
                 } else {
                     errorMessage.postValue("Failed to fetch approved categories. Code: " + response.code());

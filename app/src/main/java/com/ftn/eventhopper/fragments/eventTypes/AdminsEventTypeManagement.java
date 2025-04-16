@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.AdminsEventTypesAdapter;
 import com.ftn.eventhopper.fragments.eventTypes.viewmodels.AdminsEventTypeManagementViewModel;
+import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -88,11 +89,11 @@ public class AdminsEventTypeManagement extends Fragment {
         viewModel.fetchEventTypes();
         btnAddEventType = view.findViewById(R.id.floating_add_button);
 
-        viewModel.getEventTypes().observe(getViewLifecycleOwner(), eventTypes -> {
-            if (eventTypes != null) {
+        viewModel.isLoaded().observe(getViewLifecycleOwner(), isLoaded -> {
+            if (isLoaded == Boolean.TRUE) {
                 statusMessage.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                this.setComponents(eventTypes);
+                this.setComponents(viewModel.getEventTypes().getValue(), viewModel.getCategories().getValue());
             }
         });
 
@@ -113,9 +114,8 @@ public class AdminsEventTypeManagement extends Fragment {
 
 
 
-    private void setComponents(ArrayList<SimpleEventTypeDTO> eventTypes) {
-
-        AdminsEventTypesAdapter adapter = new AdminsEventTypesAdapter(getContext(), eventTypes, this, viewModel);
+    private void setComponents(ArrayList<SimpleEventTypeDTO> eventTypes, ArrayList<SimpleCategoryDTO> categories) {
+        AdminsEventTypesAdapter adapter = new AdminsEventTypesAdapter(getContext(), eventTypes, categories, this, viewModel);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);

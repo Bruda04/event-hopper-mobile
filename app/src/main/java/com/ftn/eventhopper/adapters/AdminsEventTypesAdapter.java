@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.eventTypes.viewmodels.AdminsEventTypeManagementViewModel;
+import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -23,13 +24,15 @@ import java.util.Objects;
 
 public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTypesAdapter.AdminsEventTypeViewHolder> {
     ArrayList<SimpleEventTypeDTO> eventTypes;
+    ArrayList<SimpleCategoryDTO> categories;
     Context context;
     private final Fragment fragment;
 
     private final AdminsEventTypeManagementViewModel viewmodel;
 
-    public AdminsEventTypesAdapter(Context context, ArrayList<SimpleEventTypeDTO> eventTypes, Fragment fragment, AdminsEventTypeManagementViewModel viewModel) {
+    public AdminsEventTypesAdapter(Context context, ArrayList<SimpleEventTypeDTO> eventTypes, ArrayList<SimpleCategoryDTO> categories, Fragment fragment, AdminsEventTypeManagementViewModel viewModel) {
         this.eventTypes = eventTypes;
+        this.categories = categories;
         this.context = context;
         this.fragment = fragment;
         this.viewmodel = viewModel;
@@ -44,13 +47,29 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
     @Override
     public void onBindViewHolder(@NonNull AdminsEventTypesAdapter.AdminsEventTypeViewHolder holder, int position) {
         holder.eventTypeName.setText(eventTypes.get(position).getName());
-        holder.eventTypeDescription.setText(eventTypes.get(position).getDescription());
+        String description = eventTypes.get(position).getDescription();
+        if(!description.isEmpty()){
+            holder.eventTypeDescription.setText(String.format("%s%s", "Description: ", description));
+        }
+
+        StringBuilder suggestedCategories = new StringBuilder("Suggested categories: ");
+        for (SimpleCategoryDTO category : eventTypes.get(position).getSuggestedCategories()) {
+            suggestedCategories.append(category.getName()).append(", ");
+        }
+
+        if (suggestedCategories.length() > 20) { // 20 = "Suggested categories: ".length()
+            suggestedCategories.setLength(suggestedCategories.length() - 2); // remove last ", "
+        }
+
+        holder.eventTypeSuggestedCategories.setText(suggestedCategories.toString());
 
         if (!eventTypes.get(position).isDeactivated()) {
+            holder.eventTypeActive.setText("Active: Yes");
             holder.deleteButton.setOnClickListener(v -> {
                 setupDeleteDialog(position);
             });
         } else {
+            holder.eventTypeActive.setText("Active: No");
             holder.deleteButton.setActivated(false);
             holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
         }
@@ -126,6 +145,8 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
     public class AdminsEventTypeViewHolder extends RecyclerView.ViewHolder {
         private final TextView eventTypeName;
         private final TextView eventTypeDescription;
+        private TextView eventTypeActive;
+        private TextView eventTypeSuggestedCategories;
         public MaterialButton deleteButton;
         public MaterialButton editButton;
 
@@ -133,6 +154,8 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
             super(itemView);
             this.eventTypeName = itemView.findViewById(R.id.admins_event_type_card_title);
             this.eventTypeDescription = itemView.findViewById(R.id.admins_event_type_card_description);
+            this.eventTypeActive = itemView.findViewById(R.id.admins_event_type_card_active);
+            this.eventTypeSuggestedCategories = itemView.findViewById(R.id.admins_event_type_card_suggested_categories);
             this.deleteButton = itemView.findViewById(R.id.admins_event_type_card_delete_button);
             this.editButton = itemView.findViewById(R.id.admins_event_type_card_edit_button);
         }

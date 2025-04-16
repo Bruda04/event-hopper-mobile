@@ -33,6 +33,22 @@
 				android:textAppearance="?attr/textAppearanceBodyMedium"
 				android:textColor="?android:attr/textColorSecondary" />
 
+			<TextView
+				android:id="@+id/admins_event_type_card_active"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:textAppearance="?attr/textAppearanceBodyMedium"
+				android:textColor="?android:attr/textColorSecondary" />
+
+			<TextView
+				android:id="@+id/admins_event_type_card_suggested_categories"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:textAppearance="?attr/textAppearanceBodyMedium"
+				android:textColor="?android:attr/textColorSecondary" />
+
 		</LinearLayout>
 
 		<androidx.constraintlayout.widget.ConstraintLayout
