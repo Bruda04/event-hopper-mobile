@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +49,6 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         holder.descriptionView.setText(solutions.get(position).getDescription());
         holder.secondaryView.setText(solutions.get(position).getCategory().getName() );
 
-
         Glide.with(holder.imageView.getContext())
                 .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, solutions.get(position).getPictures().get(0)))
                 .placeholder(R.drawable.baseline_image_placeholder_24)
@@ -76,6 +76,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         TextView descriptionView;
         public MaterialButton viewMoreButton;
 
+
         public SolutionViewHolder(View view) {
             super(view);
             this.viewMoreButton = view.findViewById(R.id.card_button);
@@ -84,6 +85,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
             titleView = view.findViewById(R.id.card_title);
             secondaryView = view.findViewById(R.id.card_secondary);
             descriptionView = view.findViewById(R.id.card_description);
+            viewMoreButton = view.findViewById(R.id.card_button);
         }
     }
 

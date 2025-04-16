@@ -87,7 +87,7 @@
                 android:gravity="top|start"
                 android:imeOptions="actionSend"
                 android:inputType="text"
-                android:maxLength="255"
+                android:maxLength="1000"
                 android:padding="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 

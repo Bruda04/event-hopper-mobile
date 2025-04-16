@@ -84,10 +84,9 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home_events, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-
 
         this.searchView = view.findViewById(R.id.search_view_events);
         this.searchBar = view.findViewById(R.id.search_bar_events);
@@ -110,18 +109,19 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
         this.pager = view.findViewById(R.id.pager);
 
 
-
-        //viewModel.fetchAllEvents();
-//        UUID usersId = UUID.fromString(UserService.getJwtClaim(
-//                UserService.getJwtToken(),"id"
-//        ));
         viewModel.fetchTopEvents();
 
         viewModel.getTop5Events().observe(getViewLifecycleOwner(), topEvents ->
         {
-            if (topEvents!=null){
+            if (topEvents!=null && !topEvents.isEmpty()){
                 topEventsRecyclerView.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.textView).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.textView2).setVisibility(View.VISIBLE);
                 this.setTop5(topEvents);
+            }else{
+                topEventsRecyclerView.setVisibility(View.GONE);
+                view.findViewById(R.id.textView).setVisibility(View.GONE);
+                view.findViewById(R.id.textView2).setVisibility(View.GONE);
             }
         });
 
@@ -189,7 +189,6 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
     public void onDestroyView() {
         super.onDestroyView();
 
-        //binding = null;
         sensorManager.unregisterListener(this);
 
     }

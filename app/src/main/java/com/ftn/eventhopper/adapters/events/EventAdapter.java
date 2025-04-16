@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     ArrayList<SimpleEventDTO> events;
     Context context;
     private final Fragment fragment;
-
 
     public EventAdapter(Context context, ArrayList<SimpleEventDTO> events, Fragment fragment){
      this.events = events;
@@ -50,9 +50,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.titleView.setText(events.get(position).getName());
         holder.descriptionView.setText(events.get(position).getDescription());
         holder.secondaryView.setText(String.format("%s, %s", events.get(position).getLocation().getAddress(), events.get(position).getLocation().getCity()));
-        //holder.imageView.setImageDrawable(Drawable.createFromPath(events.get(position).getPicture()));
 
-        //String imageUrl = events.get(position).getPicture();
 
         Glide.with(holder.imageView.getContext())
                 .load(String.format("%s/%s", ClientUtils.SERVICE_API_IMAGE_PATH, events.get(position).getPicture()))
@@ -89,6 +87,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             titleView = view.findViewById(R.id.card_title);
             secondaryView = view.findViewById(R.id.card_secondary);
             descriptionView = view.findViewById(R.id.card_description);
+            viewMoreButton = view.findViewById(R.id.card_button);
         }
     }
 

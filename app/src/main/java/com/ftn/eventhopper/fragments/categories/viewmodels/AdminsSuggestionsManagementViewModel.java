@@ -8,9 +8,12 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CategorySuggestionDTO;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,19 +76,27 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
     }
 
     public void approveSuggestion(UUID id) {
-        Call<Void> call = ClientUtils.categoriesService.approveCategory(id);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = ClientUtils.categoriesService.approveCategory(id);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     fetchSuggestions();
                 } else {
-                    errorMessage.postValue("Failed to approve suggestion. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue(errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });
@@ -93,19 +104,27 @@ public class AdminsSuggestionsManagementViewModel extends ViewModel {
 
 
     public void rejectSuggestion(UUID id, UUID selectedCategoryId) {
-        Call<Void> call = ClientUtils.categoriesService.rejectCategory(id, selectedCategoryId);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = ClientUtils.categoriesService.rejectCategory(id, selectedCategoryId);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     fetchSuggestions();
                 } else {
-                    errorMessage.postValue("Failed to reject suggestion. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue(errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });

@@ -64,6 +64,12 @@
             app:destination="@id/event_page"
             />
 
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+
+
     </fragment>
 
     <!--Not logged in-->
@@ -271,13 +277,21 @@
 
 
     <fragment
-        android:id="@+id/manage_comments"
+        android:id="@+id/event_page"
+        android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
+        android:label="Event page"
+        tools:layout="@layout/fragment_event_page"
+        >
+
+    </fragment>
+    <fragment android:id="@+id/manage_comments"
         android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
         android:label="Manage Comments"
         tools:layout="@layout/fragment_admins_comments_management"
         >
 
     </fragment>
+
 
     <fragment
         android:id="@+id/manage_event_types"
