@@ -5,14 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
-import com.ftn.eventhopper.shared.dtos.categories.CreateCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
-import com.ftn.eventhopper.shared.dtos.categories.UpdateCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.CreateEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.EventTypeManagementDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.UpdateEventTypeDTO;
-import com.ftn.eventhopper.shared.models.categories.CategoryStatus;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -46,6 +43,7 @@ public class AdminsEventTypeManagementViewModel extends ViewModel {
     }
 
     public void fetchEventTypes() {
+        dataLoaded.postValue(Boolean.FALSE);
         Call<EventTypeManagementDTO> call = ClientUtils.eventTypeService.getEventTypes();
         call.enqueue(new Callback<EventTypeManagementDTO>() {
             @Override

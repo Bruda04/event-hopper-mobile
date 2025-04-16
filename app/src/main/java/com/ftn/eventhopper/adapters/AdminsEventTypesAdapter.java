@@ -68,15 +68,21 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
             holder.deleteButton.setOnClickListener(v -> {
                 setupDeleteDialog(position);
             });
+
+            holder.editButton.setOnClickListener(v -> {
+                setupEditDialog(position);
+            });
         } else {
             holder.eventTypeActive.setText("Active: No");
             holder.deleteButton.setActivated(false);
             holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
+
+
+            holder.editButton.setActivated(false);
+            holder.editButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
         }
 
-        holder.editButton.setOnClickListener(v -> {
-            setupEditDialog(position);
-        });
+
     }
 
     private void setupDeleteDialog(int position) {
