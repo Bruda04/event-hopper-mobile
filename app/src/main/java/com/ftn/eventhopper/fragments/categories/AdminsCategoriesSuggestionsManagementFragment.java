@@ -43,7 +43,6 @@ public class AdminsCategoriesSuggestionsManagementFragment extends Fragment {
                 navController.popBackStack(R.id.manage_categories, true);
             }
         });
-
     }
 
     @Override

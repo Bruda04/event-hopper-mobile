@@ -1,19 +1,21 @@
 package com.ftn.eventhopper.shared.dtos.eventTypes;
 
+import com.ftn.eventhopper.shared.dtos.categories.SimpleCategoryDTO;
+
+
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleEventTypeDTO {
-    private UUID id;
+public class CreateEventTypeDTO {
     private String name;
     private String description;
-    private boolean deactivated;
+    private List<SimpleCategoryDTO> suggestedCategories;
 }

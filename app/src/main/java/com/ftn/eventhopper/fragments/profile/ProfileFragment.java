@@ -107,6 +107,11 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemManageComments).setOnClickListener( v -> {
             navController.navigate(R.id.action_to_manage_comments);
         });
+
+        view.findViewById(R.id.ListItemEventTypes).setOnClickListener( v -> {
+            navController.navigate(R.id.action_to_manage_event_types);
+        });
+
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
