@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,14 +23,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTypesAdapter.AdminsEventTypeViewHolder> {
     ArrayList<SimpleEventTypeDTO> eventTypes;
     ArrayList<SimpleCategoryDTO> categories;
     Context context;
     private final Fragment fragment;
-
     private final AdminsEventTypeManagementViewModel viewmodel;
 
     public AdminsEventTypesAdapter(Context context, ArrayList<SimpleEventTypeDTO> eventTypes, ArrayList<SimpleCategoryDTO> categories, Fragment fragment, AdminsEventTypeManagementViewModel viewModel) {
@@ -41,15 +45,16 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
     @NonNull
     @Override
     public AdminsEventTypesAdapter.AdminsEventTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AdminsEventTypesAdapter.AdminsEventTypeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_event_type, parent, false));
+        return new AdminsEventTypeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_event_type, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdminsEventTypesAdapter.AdminsEventTypeViewHolder holder, int position) {
         holder.eventTypeName.setText(eventTypes.get(position).getName());
+
         String description = eventTypes.get(position).getDescription();
-        if(!description.isEmpty()){
-            holder.eventTypeDescription.setText(String.format("%s%s", "Description: ", description));
+        if (!description.isEmpty()) {
+            holder.eventTypeDescription.setText("Description: " + description);
         }
 
         StringBuilder suggestedCategories = new StringBuilder("Suggested categories: ");
@@ -57,43 +62,31 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
             suggestedCategories.append(category.getName()).append(", ");
         }
 
-        if (suggestedCategories.length() > 20) { // 20 = "Suggested categories: ".length()
-            suggestedCategories.setLength(suggestedCategories.length() - 2); // remove last ", "
+        if (suggestedCategories.length() > 20) {
+            suggestedCategories.setLength(suggestedCategories.length() - 2); // remove trailing comma
         }
 
         holder.eventTypeSuggestedCategories.setText(suggestedCategories.toString());
 
         if (!eventTypes.get(position).isDeactivated()) {
             holder.eventTypeActive.setText("Active: Yes");
-            holder.deleteButton.setOnClickListener(v -> {
-                setupDeleteDialog(position);
-            });
-
-            holder.editButton.setOnClickListener(v -> {
-                setupEditDialog(position);
-            });
+            holder.deleteButton.setOnClickListener(v -> setupDeleteDialog(position));
+            holder.editButton.setOnClickListener(v -> setupEditDialog(position));
         } else {
             holder.eventTypeActive.setText("Active: No");
             holder.deleteButton.setActivated(false);
             holder.deleteButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
-
-
             holder.editButton.setActivated(false);
             holder.editButton.setBackgroundColor(context.getResources().getColor(R.color.grey));
         }
-
-
     }
 
     private void setupDeleteDialog(int position) {
         MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
         confirmDialog.setTitle("Delete event type");
         confirmDialog.setMessage("Are you sure you want to delete this event type?");
-        confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
-            viewmodel.deleteEventType(eventTypes.get(position).getId());
-        });
-        confirmDialog.setNegativeButton("No", (dialog, which) -> {
-        });
+        confirmDialog.setPositiveButton("Yes", (dialog, which) -> viewmodel.deleteEventType(eventTypes.get(position).getId()));
+        confirmDialog.setNegativeButton("No", null);
         confirmDialog.show();
     }
 
@@ -105,56 +98,113 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
     private void setupEditDialog(int position) {
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_event_type_edit, null);
 
-        TextInputLayout nameInput = dialogView.findViewById(R.id.event_type_name_layout);
         TextInputLayout descriptionInput = dialogView.findViewById(R.id.event_type_description_layout);
+        AutoCompleteTextView categoryDropdown = dialogView.findViewById(R.id.category_dropdown);
+        LinearLayout selectedContainer = dialogView.findViewById(R.id.selected_categories_container);
 
-        Objects.requireNonNull(nameInput.getEditText()).setText(eventTypes.get(position).getName());
         Objects.requireNonNull(descriptionInput.getEditText()).setText(eventTypes.get(position).getDescription());
 
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
-        dialogBuilder.setTitle("Edit event type");
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setPositiveButton("Save", (dialogInterface, i) -> {
-        });
-        dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
-        });
-        AlertDialog editDialog = dialogBuilder.create();
-        editDialog.show();
-        editDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
-            if (nameInput.getEditText().getText().toString().trim().isEmpty()) {
-                nameInput.setError("Event type name is required");
-            } else {
-                nameInput.setError(null);
+        List<SimpleCategoryDTO> allCategories = this.categories;
+        List<SimpleCategoryDTO> selectedCategories = new ArrayList<>(eventTypes.get(position).getSuggestedCategories());
+
+
+        categoryDropdown.setOnItemClickListener((parent, view, pos, id) -> {
+            String selectedName = (String) parent.getItemAtPosition(pos);
+            SimpleCategoryDTO selected = allCategories.stream()
+                    .filter(cat -> cat.getName().equals(selectedName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selected != null && !selectedCategories.contains(selected)) {
+                selectedCategories.add(selected);
+                refreshSelectedCategoriesUI(selectedContainer, selectedCategories, categoryDropdown, allCategories);
+                updateCategoryDropdown(categoryDropdown, allCategories, selectedCategories);
             }
 
-            if (descriptionInput.getEditText().getText().toString().trim().isEmpty()) {
+            categoryDropdown.setText("");
+        });
+
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+        dialogBuilder.setTitle("Edit " + eventTypes.get(position).getName());
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setPositiveButton("Save", null);
+        dialogBuilder.setNegativeButton("Cancel", null);
+
+        updateCategoryDropdown(categoryDropdown, allCategories, selectedCategories);
+
+        AlertDialog editDialog = dialogBuilder.create();
+        editDialog.show();
+
+        refreshSelectedCategoriesUI(selectedContainer, selectedCategories, categoryDropdown, allCategories);
+
+        editDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String description = descriptionInput.getEditText().getText().toString().trim();
+
+            if (description.isEmpty()) {
                 descriptionInput.setError("Event type description is required");
+                return;
             } else {
                 descriptionInput.setError(null);
             }
 
-            String name = nameInput.getEditText().getText().toString().trim();
-            String description = descriptionInput.getEditText().getText().toString().trim();
+            viewmodel.updateEventType(
+                    eventTypes.get(position).getId(),
+                    description,
+                    selectedCategories
+            );
 
-
-            if (nameInput.getError() == null && descriptionInput.getError() == null) {
-                viewmodel.updateEventType(
-                        eventTypes.get(position).getId(),
-                        name
-                );
-
-                editDialog.dismiss();
-            }
+            editDialog.dismiss();
         });
     }
 
-    public class AdminsEventTypeViewHolder extends RecyclerView.ViewHolder {
+    private void updateCategoryDropdown(AutoCompleteTextView dropdown, List<SimpleCategoryDTO> allCategories, List<SimpleCategoryDTO> selectedCategories) {
+        List<String> availableNames = allCategories.stream()
+                .filter(cat -> selectedCategories.stream()
+                        .noneMatch(selected -> selected.getId().equals(cat.getId())))
+                .map(SimpleCategoryDTO::getName)
+                .collect(Collectors.toList());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                context,
+                R.layout.item_dropdown,
+                availableNames
+        );
+
+        dropdown.setAdapter(adapter);
+    }
+
+    private void refreshSelectedCategoriesUI(
+            LinearLayout container,
+            List<SimpleCategoryDTO> selectedCategories,
+            AutoCompleteTextView dropdown,
+            List<SimpleCategoryDTO> allCategories
+    ) {
+        container.removeAllViews();
+        for (SimpleCategoryDTO cat : selectedCategories) {
+            View catView = LayoutInflater.from(context).inflate(R.layout.item_selected_category, container, false);
+            TextView name = catView.findViewById(R.id.category_name);
+            TextView remove = catView.findViewById(R.id.remove_button);
+
+            name.setText(cat.getName());
+            remove.setOnClickListener(v -> {
+                selectedCategories.remove(cat);
+                refreshSelectedCategoriesUI(container, selectedCategories, dropdown, allCategories);
+                updateCategoryDropdown(dropdown, allCategories, selectedCategories);
+            });
+
+            container.addView(catView);
+        }
+        updateCategoryDropdown(dropdown, allCategories, selectedCategories);
+
+    }
+
+    public static class AdminsEventTypeViewHolder extends RecyclerView.ViewHolder {
         private final TextView eventTypeName;
         private final TextView eventTypeDescription;
-        private TextView eventTypeActive;
-        private TextView eventTypeSuggestedCategories;
-        public MaterialButton deleteButton;
-        public MaterialButton editButton;
+        private final TextView eventTypeActive;
+        private final TextView eventTypeSuggestedCategories;
+        public final MaterialButton deleteButton;
+        public final MaterialButton editButton;
 
         public AdminsEventTypeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -166,5 +216,4 @@ public class AdminsEventTypesAdapter extends RecyclerView.Adapter<AdminsEventTyp
             this.editButton = itemView.findViewById(R.id.admins_event_type_card_edit_button);
         }
     }
-
 }

@@ -12,6 +12,7 @@ import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.ftn.eventhopper.shared.dtos.eventTypes.UpdateEventTypeDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -86,10 +87,10 @@ public class AdminsEventTypeManagementViewModel extends ViewModel {
         });
     }
 
-    public void updateEventType(UUID id, String description) {
+    public void updateEventType(UUID id, String description, List<SimpleCategoryDTO> suggestedCategories) {
         UpdateEventTypeDTO updateEventTypeDTO  = new UpdateEventTypeDTO();
         updateEventTypeDTO.setDescription(description);
-        //ADD suggested categories
+        updateEventTypeDTO.setSuggestedCategories(suggestedCategories);
 
         Call<Void> call = ClientUtils.eventTypeService.updateEventType(id, updateEventTypeDTO);
         call.enqueue(new Callback<Void>() {
