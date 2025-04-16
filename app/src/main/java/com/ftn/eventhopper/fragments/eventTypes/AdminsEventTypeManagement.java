@@ -1,7 +1,6 @@
 package com.ftn.eventhopper.fragments.eventTypes;
 
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -12,13 +11,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.AdminsEventTypesAdapter;
 import com.ftn.eventhopper.fragments.eventTypes.viewmodels.AdminsEventTypeManagementViewModel;
@@ -27,14 +27,10 @@ import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminsEventTypeManagement#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AdminsEventTypeManagement extends Fragment {
     private AdminsEventTypeManagementViewModel viewModel;
     private RecyclerView recyclerView;
@@ -43,9 +39,7 @@ public class AdminsEventTypeManagement extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private NavController navController;
 
-    public AdminsEventTypeManagement() {
-        // Required empty public constructor
-    }
+    public AdminsEventTypeManagement() {}
 
     public static AdminsEventTypeManagement newInstance() {
         return new AdminsEventTypeManagement();
@@ -63,10 +57,8 @@ public class AdminsEventTypeManagement extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        navController= NavHostFragment.findNavController(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        navController = NavHostFragment.findNavController(this);
         View view = inflater.inflate(R.layout.fragment_admins_event_type_management, container, false);
         viewModel = new ViewModelProvider(this).get(AdminsEventTypeManagementViewModel.class);
 
@@ -74,10 +66,10 @@ public class AdminsEventTypeManagement extends Fragment {
         statusMessage.setText(R.string.loading_event_types);
         statusMessage.setVisibility(View.VISIBLE);
 
-        // Set up the RecyclerView with an adapter
         recyclerView = view.findViewById(R.id.recycler_view_event_types);
-
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        btnAddEventType = view.findViewById(R.id.floating_add_button);
+
         swipeRefreshLayout.setOnRefreshListener(() -> {
             recyclerView.setVisibility(View.GONE);
             statusMessage.setText(R.string.loading_event_types);
@@ -87,13 +79,12 @@ public class AdminsEventTypeManagement extends Fragment {
         });
 
         viewModel.fetchEventTypes();
-        btnAddEventType = view.findViewById(R.id.floating_add_button);
 
         viewModel.isLoaded().observe(getViewLifecycleOwner(), isLoaded -> {
             if (isLoaded == Boolean.TRUE) {
                 statusMessage.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                this.setComponents(viewModel.getEventTypes().getValue(), viewModel.getCategories().getValue());
+                setComponents(viewModel.getEventTypes().getValue(), viewModel.getCategories().getValue());
             }
         });
 
@@ -112,8 +103,6 @@ public class AdminsEventTypeManagement extends Fragment {
         return view;
     }
 
-
-
     private void setComponents(ArrayList<SimpleEventTypeDTO> eventTypes, ArrayList<SimpleCategoryDTO> categories) {
         AdminsEventTypesAdapter adapter = new AdminsEventTypesAdapter(getContext(), eventTypes, categories, this, viewModel);
 
@@ -123,60 +112,108 @@ public class AdminsEventTypeManagement extends Fragment {
         recyclerView.setAdapter(adapter);
 
         btnAddEventType.setOnClickListener(v -> {
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_category_creation, null);
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_event_type_creation, null);
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
             dialog.setTitle("Create Event Type");
             dialog.setView(dialogView);
-            dialog.setPositiveButton("Create", (dialogInterface, i) -> {
-            });
-            dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-            });
+            dialog.setPositiveButton("Create", (dialogInterface, i) -> {});
+            dialog.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
             AlertDialog alertDialog = dialog.create();
             alertDialog.show();
+
+            AutoCompleteTextView categoryDropdown = dialogView.findViewById(R.id.category_dropdown);
+            LinearLayout selectedContainer = dialogView.findViewById(R.id.selected_categories_container);
+            List<SimpleCategoryDTO> allCategories = new ArrayList<>(categories);
+            List<SimpleCategoryDTO> selectedCategories = new ArrayList<>();
+
+            ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<>(getContext(), R.layout.item_dropdown, new ArrayList<>());
+            categoryDropdown.setAdapter(dropdownAdapter);
+            updateDropdownAdapter(dropdownAdapter, allCategories, selectedCategories);
+
+            categoryDropdown.setOnItemClickListener((parent, view1, pos, id) -> {
+                String selectedName = (String) parent.getItemAtPosition(pos);
+                SimpleCategoryDTO selected = allCategories.stream()
+                        .filter(cat -> cat.getName().equals(selectedName))
+                        .findFirst()
+                        .orElse(null);
+
+                if (selected != null && selectedCategories.stream().noneMatch(sc -> sc.getId().equals(selected.getId()))) {
+                    selectedCategories.add(selected);
+                    refreshSelectedCategoriesUI(selectedContainer, selectedCategories, categoryDropdown, allCategories, dropdownAdapter);
+                }
+
+                categoryDropdown.setText("");
+            });
+
+            refreshSelectedCategoriesUI(selectedContainer, selectedCategories, categoryDropdown, allCategories, dropdownAdapter);
+
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
-                if (createEventType(dialogView)) {
+                if (createEventType(dialogView, selectedCategories)) {
                     alertDialog.dismiss();
                 }
             });
         });
     }
 
+    private boolean createEventType(View dialogView, List<SimpleCategoryDTO> selectedCategories) {
+        TextInputLayout nameLayout = dialogView.findViewById(R.id.event_type_name_layout);
+        String name = nameLayout != null ? nameLayout.getEditText().getText().toString().trim() : "";
+        TextInputLayout descriptionLayout = dialogView.findViewById(R.id.event_type_description_layout);
+        String description = descriptionLayout != null ? descriptionLayout.getEditText().getText().toString().trim() : "";
 
-
-    private boolean createEventType(View dialogView) {
         boolean isValid = true;
-
-        // Get references to the input fields
-        TextInputLayout categoryNameLayout = dialogView.findViewById(R.id.category_name_layout);
-        String categoryName = categoryNameLayout != null ? categoryNameLayout.getEditText().getText().toString().trim() : "";
-
-        // Check category name validation
-        if (categoryNameLayout != null && categoryName.isEmpty()) {
-            categoryNameLayout.setError("Category name is required");
+        if (nameLayout != null && name.isEmpty()) {
+            nameLayout.setError("Name is required");
             isValid = false;
         } else {
-            categoryNameLayout.setError(null); // Clear previous error if any
+            nameLayout.setError(null);
         }
 
-        TextInputLayout categoryDescriptionLayout = dialogView.findViewById(R.id.category_description_layout);
-        String categoryDescription = categoryDescriptionLayout != null ? categoryDescriptionLayout.getEditText().getText().toString().trim() : "";
-
-        // Check category description validation
-        if (categoryDescriptionLayout != null && categoryDescription.isEmpty()) {
-            categoryDescriptionLayout.setError("Category description is required");
+        if (descriptionLayout != null && description.isEmpty()) {
+            descriptionLayout.setError("Description is required");
             isValid = false;
         } else {
-            categoryDescriptionLayout.setError(null); // Clear previous error if any
+            descriptionLayout.setError(null);
         }
 
-        // If validation fails, do not close the dialog
         if (!isValid) {
-            return false; // Do not dismiss the dialog, keep it open
+            return false;
         }
 
-        // If validation passes, proceed to create the category
-        viewModel.createEventType(categoryName, categoryDescription);
+        viewModel.createEventType(name, description, selectedCategories);
         return true;
+    }
+
+    private void updateDropdownAdapter(ArrayAdapter<String> adapter, List<SimpleCategoryDTO> allCategories, List<SimpleCategoryDTO> selectedCategories) {
+        List<String> availableNames = allCategories.stream()
+                .filter(cat -> selectedCategories.stream()
+                        .noneMatch(selected -> selected.getId().equals(cat.getId())))
+                .map(SimpleCategoryDTO::getName)
+                .collect(Collectors.toList());
+
+        adapter.clear();
+        adapter.addAll(availableNames);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void refreshSelectedCategoriesUI(LinearLayout container, List<SimpleCategoryDTO> selectedCategories, AutoCompleteTextView dropdown, List<SimpleCategoryDTO> allCategories, ArrayAdapter<String> adapter) {
+        container.removeAllViews();
+        for (SimpleCategoryDTO cat : selectedCategories) {
+            View catView = LayoutInflater.from(getContext()).inflate(R.layout.item_selected_category, container, false);
+            TextView name = catView.findViewById(R.id.category_name);
+            TextView remove = catView.findViewById(R.id.remove_button);
+
+            name.setText(cat.getName());
+            remove.setOnClickListener(v -> {
+                selectedCategories.remove(cat);
+                refreshSelectedCategoriesUI(container, selectedCategories, dropdown, allCategories, adapter);
+            });
+
+            container.addView(catView);
+        }
+
+        updateDropdownAdapter(adapter, allCategories, selectedCategories);
+        dropdown.setText("");
+        dropdown.clearFocus();
     }
 }

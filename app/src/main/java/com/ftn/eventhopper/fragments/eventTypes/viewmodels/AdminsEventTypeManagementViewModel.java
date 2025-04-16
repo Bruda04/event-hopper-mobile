@@ -111,10 +111,11 @@ public class AdminsEventTypeManagementViewModel extends ViewModel {
         });
     }
 
-    public void createEventType(String eventTypeName, String eventTypeDescription) {
+    public void createEventType(String eventTypeName, String eventTypeDescription, List<SimpleCategoryDTO> suggestedCategories) {
         CreateEventTypeDTO createEventTypeDTO = new CreateEventTypeDTO();
         createEventTypeDTO.setName(eventTypeName);
         createEventTypeDTO.setDescription(eventTypeDescription);
+        createEventTypeDTO.setSuggestedCategories(suggestedCategories);
 
         Call<Void> call = ClientUtils.eventTypeService.addEventType(createEventTypeDTO);
         call.enqueue(new Callback<Void>() {
