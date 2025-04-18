@@ -184,4 +184,6 @@
 	<string name="events_calendar_colors">Your events are colored yellow, your attending events are blue and when multiple events are scheduled theyre purple.</string>
 	<string name="done">Done</string>
 	<string name="create_event_type_button">Create Event Type button</string>
+	<string name="you_have_not_created_any_events_yet">You have not created any events yet.</string>
+	<string name="check_out_all_the_amazing_events_you_ve_created_with_eventhopper">Check out all the amazing events you\'ve created with EventHopper!</string>
 </resources>

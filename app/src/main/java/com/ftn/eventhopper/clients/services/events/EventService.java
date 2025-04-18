@@ -30,6 +30,13 @@ public interface EventService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
+    @GET("events/organizer")
+    Call<ArrayList<SimpleEventDTO>> getOrganizerEvents();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
     @GET("events/{id}")
     Call<SinglePageEventDTO> getEvent(@Path("id") UUID id);
 

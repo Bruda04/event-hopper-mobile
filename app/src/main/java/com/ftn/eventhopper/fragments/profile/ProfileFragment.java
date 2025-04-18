@@ -112,6 +112,10 @@ public class ProfileFragment extends Fragment {
             navController.navigate(R.id.action_to_manage_event_types);
         });
 
+        view.findViewById(R.id.ListItemMyEvents).setOnClickListener( v -> {
+            navController.navigate(R.id.action_to_view_my_events);
+        });
+
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
