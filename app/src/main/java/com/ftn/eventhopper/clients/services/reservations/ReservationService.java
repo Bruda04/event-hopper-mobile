@@ -34,7 +34,7 @@ public interface ReservationService {
     Call<ResponseBody> bookService(@Body CreateReservationServiceDTO createReservationServiceDTO);
 
     @Headers("User-Agent: Mobile-Android")
-    @GET("services/{id}/terms/")
+    @GET("reservations/services/{id}/terms/")
     Call<List<LocalDateTime>> getAvailableTerms(@Path("id") UUID serviceId, @Query(value = "date", encoded = true) String date);
 
 
