@@ -44,6 +44,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -326,21 +327,25 @@ public class SolutionPageFragment extends Fragment {
         final Calendar selectedDate = Calendar.getInstance();
 
         chooseDateButton.setOnClickListener(v -> {
-            int year = selectedDate.get(Calendar.YEAR);
-            int month = selectedDate.get(Calendar.MONTH);
-            int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+            LocalDate eventDate = event.getTime().toLocalDate();
+            Calendar eventCalendar = Calendar.getInstance();
+            eventCalendar.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+
+            int year = eventCalendar.get(Calendar.YEAR);
+            int month = eventCalendar.get(Calendar.MONTH);
+            int day = eventCalendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-
                         selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
                         String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
                         chooseDateButton.setText(formattedDate);
-                        String dateString = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay+ "T00:00:00";
-                        String encodedDate = URLEncoder.encode(dateString, StandardCharsets.UTF_8);
+                        String dateString = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay + "T00:00:00";
+
+
                         availableTimeSlots.clear();
-                        viewModel.fetchFreeTerms(encodedDate);
+                        viewModel.fetchFreeTerms(dateString);
                         Collection<LocalDateTime> terms = viewModel.getFreeTerms().getValue();
                         if (terms != null) {
                             availableTimeSlots.addAll(terms);
@@ -350,15 +355,23 @@ public class SolutionPageFragment extends Fragment {
                             Log.e("fetchFreeTerms", "API response is null or empty.");
                             Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
                         }
-                        availableTimeSlots.addAll(viewModel.getFreeTerms().getValue());
-                        timeSlotAdapter.notifyDataSetChanged();
-
-
-                        timeSlotDropdown.showDropDown();
                     }, year, month, day);
+
+
+            Calendar minDate = Calendar.getInstance();
+            minDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+            minDate.add(Calendar.DAY_OF_MONTH, -3);
+
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+            maxDate.add(Calendar.DAY_OF_MONTH, 2);
+
+            datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+            datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
 
             datePickerDialog.show();
         });
+
 
         layout.addView(chooseDateButton);
         layout.addView(timeSlotDropdown);

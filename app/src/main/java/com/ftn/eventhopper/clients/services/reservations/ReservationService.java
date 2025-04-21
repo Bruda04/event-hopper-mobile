@@ -35,7 +35,7 @@ public interface ReservationService {
 
     @Headers("User-Agent: Mobile-Android")
     @GET("services/{id}/terms/")
-    Call<List<LocalDateTime>> getAvailableTerms(@Path("id") UUID serviceId, @Query("date") String date);
+    Call<List<LocalDateTime>> getAvailableTerms(@Path("id") UUID serviceId, @Query(value = "date", encoded = true) String date);
 
 
 }

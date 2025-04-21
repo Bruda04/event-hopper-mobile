@@ -1,6 +1,7 @@
 package com.ftn.eventhopper.fragments.solutions.viewmodel;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -265,6 +266,7 @@ public class SolutionPageViewModel extends ViewModel {
 
     public void fetchFreeTerms(String date){
 
+        Log.i("vm",date);
         SolutionDetailsDTO solutionDetailsDTO = getSolutionDetails().getValue();
         if (solutionDetailsDTO == null){
             errorMessage.postValue("Failed to book a service.");
