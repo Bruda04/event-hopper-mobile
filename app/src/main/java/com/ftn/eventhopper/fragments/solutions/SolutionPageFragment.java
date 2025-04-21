@@ -46,6 +46,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -314,7 +315,11 @@ public class SolutionPageFragment extends Fragment {
         timeSlotDropdown.setHint("Choose a time slot");
 
         List<LocalDateTime> availableTimeSlots = new ArrayList<>();
-        ArrayAdapter<LocalDateTime> timeSlotAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, availableTimeSlots);
+        ArrayAdapter<String> timeSlotAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>()
+        );
         timeSlotDropdown.setAdapter(timeSlotAdapter);
 
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
@@ -325,6 +330,7 @@ public class SolutionPageFragment extends Fragment {
         chooseDateButton.setLayoutParams(buttonParams);
 
         final Calendar selectedDate = Calendar.getInstance();
+        final LocalDateTime[] selectedTerm = new LocalDateTime[1];
 
         chooseDateButton.setOnClickListener(v -> {
             LocalDate eventDate = event.getTime().toLocalDate();
@@ -343,18 +349,30 @@ public class SolutionPageFragment extends Fragment {
                         chooseDateButton.setText(formattedDate);
                         String dateString = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay + "T00:00:00";
 
-
                         availableTimeSlots.clear();
+                        timeSlotAdapter.clear();
+
                         viewModel.fetchFreeTerms(dateString);
-                        Collection<LocalDateTime> terms = viewModel.getFreeTerms().getValue();
-                        if (terms != null) {
-                            availableTimeSlots.addAll(terms);
-                            timeSlotAdapter.notifyDataSetChanged();
-                            timeSlotDropdown.showDropDown();
-                        } else {
-                            Log.e("fetchFreeTerms", "API response is null or empty.");
-                            Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
-                        }
+                        viewModel.getFreeTerms().observe(getViewLifecycleOwner(),terms-> {
+
+                            if (terms != null && !terms.isEmpty()) {
+                                availableTimeSlots.addAll(terms);
+
+                                List<String> formattedTerms = new ArrayList<>();
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+                                for (LocalDateTime term : terms) {
+                                    formattedTerms.add(term.format(formatter));
+                                }
+
+                                timeSlotAdapter.addAll(formattedTerms);
+                                timeSlotAdapter.notifyDataSetChanged();
+                                timeSlotDropdown.showDropDown();
+                            } else {
+                                Log.e("fetchFreeTerms", "API response is null or empty.");
+                                Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }, year, month, day);
 
 
@@ -372,6 +390,11 @@ public class SolutionPageFragment extends Fragment {
             datePickerDialog.show();
         });
 
+        timeSlotDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedTerm[0] = availableTimeSlots.get(position);
+            Log.d("SelectedTerm", "User selected: " + selectedTerm[0]);
+        });
+
 
         layout.addView(chooseDateButton);
         layout.addView(timeSlotDropdown);
@@ -380,8 +403,10 @@ public class SolutionPageFragment extends Fragment {
         dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {
             //viewModel.bookService(event.getId(), datePicker.getda);
         });
+
         dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
         });
+
         dialogBuilder.show();
     }
 
