@@ -65,6 +65,8 @@ public class SolutionPageFragment extends Fragment {
     private NavController navController;
 
     private UUID id;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     private ViewPager2 imageSlider;
     private TextView name;
@@ -302,6 +304,7 @@ public class SolutionPageFragment extends Fragment {
     }
 
     private void setupBookServiceDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         dialogBuilder.setTitle("Book a service");
 
@@ -383,7 +386,7 @@ public class SolutionPageFragment extends Fragment {
 
                                 timeSlotAdapter.addAll(formattedTerms);
                                 timeSlotAdapter.notifyDataSetChanged();
-                                //timeSlotDropdown.post(timeSlotDropdown::showDropDown);
+
                             } else {
                                 Log.e("fetchFreeTerms", "API response is null or empty.");
                                 Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
@@ -408,7 +411,19 @@ public class SolutionPageFragment extends Fragment {
 
         timeSlotDropdown.setOnItemClickListener((parent, view, position, id) -> {
             selectedTerm[0] = availableTimeSlots.get(position);
-            Log.d("SelectedTerm", "User selected: " + selectedTerm[0]);
+
+            int year = selectedDate.get(Calendar.YEAR);
+            int month = selectedDate.get(Calendar.MONTH) + 1;
+            int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+            int hours = selectedTerm[0].getHour();
+            int minutes = selectedTerm[0].getMinute();
+
+            startTime = LocalDateTime.of(year,month,day,hours,minutes);
+            endTime = LocalDateTime.of(year,month,day,hours,minutes);
+            endTime = endTime.plusMinutes(solution.getDurationMinutes());
+            Log.d("StartTerm", String.valueOf(startTime));
+            Log.d("EndTerm", String.valueOf(endTime));
+            Log.d("duration", String.valueOf(solution.getDurationMinutes()));
         });
 
 
@@ -417,7 +432,9 @@ public class SolutionPageFragment extends Fragment {
         dialogBuilder.setView(layout);
 
         dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {
-            //viewModel.bookService(event.getId(), datePicker.getda);
+            viewModel.bookService(event.getId(),startTime, endTime );
+            timeSlotDropdown.clearListSelection();
+            availableTimeSlots.clear();
         });
 
         dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
