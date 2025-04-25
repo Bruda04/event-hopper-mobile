@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -314,6 +315,19 @@ public class SolutionPageFragment extends Fragment {
         AutoCompleteTextView timeSlotDropdown = new AutoCompleteTextView(requireContext());
         timeSlotDropdown.setHint("Choose a time slot");
 
+        timeSlotDropdown.setInputType(InputType.TYPE_NULL);
+        timeSlotDropdown.setKeyListener(null);
+
+
+        timeSlotDropdown.setOnClickListener(v -> timeSlotDropdown.showDropDown());
+
+
+        LinearLayout.LayoutParams dropdownParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        timeSlotDropdown.setLayoutParams(dropdownParams);
+
         List<LocalDateTime> availableTimeSlots = new ArrayList<>();
         ArrayAdapter<String> timeSlotAdapter = new ArrayAdapter<>(
                 requireContext(),
@@ -352,6 +366,8 @@ public class SolutionPageFragment extends Fragment {
                         availableTimeSlots.clear();
                         timeSlotAdapter.clear();
 
+                        viewModel.getFreeTerms().removeObservers(getViewLifecycleOwner());
+
                         viewModel.fetchFreeTerms(dateString);
                         viewModel.getFreeTerms().observe(getViewLifecycleOwner(),terms-> {
 
@@ -367,7 +383,7 @@ public class SolutionPageFragment extends Fragment {
 
                                 timeSlotAdapter.addAll(formattedTerms);
                                 timeSlotAdapter.notifyDataSetChanged();
-                                timeSlotDropdown.showDropDown();
+                                //timeSlotDropdown.post(timeSlotDropdown::showDropDown);
                             } else {
                                 Log.e("fetchFreeTerms", "API response is null or empty.");
                                 Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
