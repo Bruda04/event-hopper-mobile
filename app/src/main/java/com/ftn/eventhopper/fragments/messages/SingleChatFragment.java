@@ -3,8 +3,10 @@ package com.ftn.eventhopper.fragments.messages;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,13 +22,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ChatMessagesAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.messages.viewmodels.SingleChatViewModel;
+import com.ftn.eventhopper.fragments.reports.viewmodels.ReportsViewModel;
 import com.ftn.eventhopper.shared.dtos.messages.ChatMessageDTO;
+import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -50,6 +56,8 @@ public class SingleChatFragment extends Fragment {
     private ImageView receiverProfilePicture;
     private RecyclerView messagesRecyclerView;
     private ImageButton sendMessageButton;
+    private ImageButton blockUserButton;
+    private ImageButton reportUserButton;
     private TextInputLayout messageInput;
     private boolean initializedHistory = false;
 
@@ -87,8 +95,36 @@ public class SingleChatFragment extends Fragment {
         receiverProfilePicture = view.findViewById(R.id.profile_picture);
         messagesRecyclerView = view.findViewById(R.id.chat_messages);
         sendMessageButton = view.findViewById(R.id.send_button);
+        blockUserButton = view.findViewById(R.id.block_user_button);
+        reportUserButton = view.findViewById(R.id.report_user_button);
         messageInput = view.findViewById(R.id.message_input_layout);
-        
+
+        blockUserButton.setOnClickListener(v -> {
+
+
+        });
+
+        reportUserButton.setOnClickListener(v -> {
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_report_user, null);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+            dialog.setTitle("Report user");
+            dialog.setView(dialogView);
+            dialog.setPositiveButton("Report", (dialogInterface, i) -> {
+            });
+            dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            });
+            androidx.appcompat.app.AlertDialog alertDialog = dialog.create();
+            alertDialog.show();
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
+                if (reportUser(dialogView)) {
+                    alertDialog.dismiss();
+                }
+            });
+
+        });
+
+
         viewModel.getHistory().observe(getViewLifecycleOwner(), messages -> {
             if (!initializedHistory) {
                 initializedHistory = true;
@@ -128,6 +164,39 @@ public class SingleChatFragment extends Fragment {
         viewModel.connectToChat();
 
         return view;
+    }
+
+    private boolean reportUser(View dialogView) {
+        boolean isValid = true;
+
+        TextInputLayout reasonLayout = dialogView.findViewById(R.id.reason_layout);
+        String reason = reasonLayout != null ? reasonLayout.getEditText().getText().toString().trim() : "";
+
+
+        if (reasonLayout != null && reason.isEmpty()) {
+            reasonLayout.setError("Reason for reporting is required");
+            isValid = false;
+        } else {
+            reasonLayout.setError(null);
+        }
+
+        if (!isValid) {
+            return false;
+        }
+
+        viewModel.fetchReceiverByEmail(username);
+
+        viewModel.getReceiverLiveData().observe((LifecycleOwner) dialogView.getContext(), receiver ->{
+
+            if (receiver != null) {
+                viewModel.createReport(reason, receiver.getId());
+            } else {
+                Toast.makeText(dialogView.getContext(), "Failed to fetch user.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        return true;
     }
 
     private void messageArrived(ArrayList<ChatMessageDTO> messages) {
