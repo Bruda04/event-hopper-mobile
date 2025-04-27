@@ -364,7 +364,8 @@ public class SolutionPageFragment extends Fragment {
 
                         String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
                         chooseDateButton.setText(formattedDate);
-                        String dateString = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay + "T00:00:00";
+                        String dateString = String.format(Locale.getDefault(), "%04d-%02d-%02dT00:00:00", selectedYear, selectedMonth + 1, selectedDay);
+
 
                         availableTimeSlots.clear();
                         timeSlotAdapter.clear();
