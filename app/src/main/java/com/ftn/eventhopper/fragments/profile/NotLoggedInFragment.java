@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.activities.MainActivity;
-import com.ftn.eventhopper.clients.services.auth.UserService;
 
 public class NotLoggedInFragment extends Fragment {
 

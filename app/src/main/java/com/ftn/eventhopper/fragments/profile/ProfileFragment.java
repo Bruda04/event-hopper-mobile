@@ -92,18 +92,18 @@ public class ProfileFragment extends Fragment {
     }
 
     private void assignButtons(View view, NavController navController){
+        view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
+            this.openChangePasswordDialog();
+        });
         view.findViewById(R.id.ListItemMyServices).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_pup_services);
         });
-
         view.findViewById(R.id.ListItemCategories).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_manage_categories);
         });
-
         view.findViewById(R.id.ListItemMyPrices).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_manage_prices);
         });
-
         view.findViewById(R.id.ListItemManageComments).setOnClickListener( v -> {
             navController.navigate(R.id.action_to_manage_comments);
         });
@@ -115,7 +115,6 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
-
         view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
             this.openChangePasswordDialog();
         });
@@ -124,7 +123,6 @@ public class ProfileFragment extends Fragment {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
-
         view.findViewById(R.id.ListItemUpgradeProfile).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_choose_role);
         });
@@ -136,7 +134,6 @@ public class ProfileFragment extends Fragment {
 
         ImageView editPersonIcon = view.findViewById(R.id.editPersonIcon);
         editPersonIcon.setOnClickListener(v -> openEditPersonDialog());
-
     }
 
     private void handleCardVisibility(View view){

@@ -12,48 +12,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- ScrollView to make the content scrollable -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <!-- ScrollView to make the content scrollable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <!-- LinearLayout for the main layout -->
-            <LinearLayout
+        <!-- LinearLayout for the main layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+
+        <!-- Container for Profile Image and User Information -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_information_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="12dp"
+                android:background="@color/white">
 
-
-
-                <!-- Container for Profile Image and User Information -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/profile_information_card"
+                <LinearLayout
+                    android:id="@+id/profile_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:cardElevation="8dp"
-                    app:cardCornerRadius="12dp"
-                    android:background="@color/white">
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center_horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/profile_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:gravity="center_horizontal">
+                    <!-- Profile Image -->
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/profile_pic_temp"
+                        android:layout_gravity="center_horizontal"/>
 
-                        <!-- Profile Image -->
-                        <ImageView
-                            android:id="@+id/profileImage"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginTop="16dp"
-                            android:src="@drawable/profile_pic_temp"
-                            android:layout_gravity="center_horizontal"/>
-
-                        <!-- User Information (Name, Address, etc.) -->
+                    <!-- User Information (Name, Address, etc.) -->
 
                         <!-- Role Text and Edit Icon Container -->
                         <LinearLayout
@@ -120,261 +120,262 @@
                             android:textAppearance="@style/DarkLargerText"
                             android:layout_marginBottom="8dp"
                             android:layout_gravity="center_horizontal"/>
-                    </LinearLayout>
+                </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
 
-                <!-- Item 2: Change password -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemChangePassword"
+            <!-- Item 2: Change password -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                android:backgroundTint="@color/light_blue">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="15dp"
-                    android:backgroundTint="@color/light_blue">
+                    android:padding="16dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/changePassword"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="16dp">
+                        android:text="@string/change_password"
+                        android:textAppearance="@style/DarkLargerText"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <TextView
-                            android:id="@+id/changePassword"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/change_password"
-                            android:textAppearance="@style/DarkLargerText"
-                            android:layout_centerInParent="true" />
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
+            <!-- Item 3: View my products -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="5dp">
 
-                <!-- Item 3: View my products -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemMyProducts"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="5dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/myProducts"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="@string/my_products"
+                        android:textAppearance="@style/DarkLargerText" />
 
-                        <TextView
-                            android:id="@+id/myProducts"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/my_products"
-                            android:textAppearance="@style/DarkLargerText" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+            <!-- Item 4: View my services -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyServices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="5dp">
 
-                <!-- Item 4: View my services -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemMyServices"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="5dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/myServices"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="@string/my_services"
+                        android:textAppearance="@style/DarkLargerText" />
 
-                        <TextView
-                            android:id="@+id/myServices"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/my_services"
-                            android:textAppearance="@style/DarkLargerText" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+            <!-- Item 5: View my prices -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyPrices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="5dp">
 
-                <!-- Item 5: View my prices -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemMyPrices"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="5dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/myPrices"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="My prices"
+                        android:textAppearance="@style/DarkLargerText" />
 
-                        <TextView
-                            android:id="@+id/myPrices"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="My prices"
-                            android:textAppearance="@style/DarkLargerText" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+            <!-- Item 6: Manage categories -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp">
 
-                <!-- Item 6: Manage categories -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemCategories"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/categories"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="@string/manage_categories"
+                        android:textAppearance="@style/DarkLargerText" />
 
-                        <TextView
-                            android:id="@+id/categories"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/manage_categories"
-                            android:textAppearance="@style/DarkLargerText" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+            <!-- Item 7: Manage event types -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemEventTypes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp">
 
-                <!-- Item 7: Manage event types -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemEventTypes"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/eventTypes"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="@string/manage_event_types"
+                        android:textAppearance="@style/DarkLargerText" />
 
-                        <TextView
-                            android:id="@+id/eventTypes"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/manage_event_types"
-                            android:textAppearance="@style/DarkLargerText" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Item 8: Manage comments -->
-                <androidx.cardview.widget.CardView
+            <!-- Item 8: Manage comments -->
+            <androidx.cardview.widget.CardView
                     android:id="@+id/ListItemManageComments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="2dp"
                     android:layout_marginTop="10dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/comments"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/manage_comments"
-                            android:textAppearance="@style/DarkLargerText" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Item 9: Manage reports  -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemManageReports"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/comments"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="@string/manage_comments"
+                        android:textAppearance="@style/DarkLargerText" />
 
-                        <TextView
-                            android:id="@+id/reports"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/manage_reports"
-                            android:textAppearance="@style/DarkLargerText" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/arrow_forward"
-                            app:tint="@color/darker_blue" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+            <!-- Item 9: Manage reports  -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemManageReports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp">
 
-                <!-- Item 10: View my events -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ListItemMyEvents"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:layout_marginTop="10dp"
-                    >
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/reports"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:text="@string/manage_reports"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- Item 10: View my events -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                         <TextView
                             android:id="@+id/myEvents"
