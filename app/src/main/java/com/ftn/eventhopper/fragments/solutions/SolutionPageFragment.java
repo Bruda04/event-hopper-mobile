@@ -373,6 +373,8 @@ public class SolutionPageFragment extends Fragment {
 
                         viewModel.fetchFreeTerms(dateString);
                         viewModel.getFreeTerms().observe(getViewLifecycleOwner(),terms-> {
+                            availableTimeSlots.clear();
+                            timeSlotAdapter.clear();
 
                             if (terms != null && !terms.isEmpty()) {
                                 availableTimeSlots.addAll(terms);
