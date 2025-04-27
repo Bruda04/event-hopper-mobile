@@ -50,15 +50,17 @@ public class ClientUtils {
     public static final String SERVICE_API_IMAGE_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/images";
     public static final String WEBSOCKET_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/socket"; // WebSocket path
 
-    private static final StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_PATH);
+    private static StompClient stompClient = null;
 
     public static void connectWebSocket() {
+        if (stompClient == null) {
+            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_PATH);
+        }
         if (stompClient.isConnected()) {
             return;
         }
         ArrayList<StompHeader> headers = new ArrayList<>();
         headers.add(new StompHeader("Authorization", String.format("Bearer %s", UserService.getJwtToken())));
-        stompClient.connect(headers);
         Disposable d = stompClient.lifecycle().subscribe(
                 lifecycleEvent -> {
                     switch (lifecycleEvent.getType()) {
@@ -75,6 +77,7 @@ public class ClientUtils {
                     }
                 }
         );
+        stompClient.connect(headers);
 
     }
 
@@ -156,9 +159,10 @@ public class ClientUtils {
             return;
         }
 
-        if (stompClient.isConnected()) {
-            stompClient.disconnect();
-        }
+        stompClient.disconnect();
+        stompClient = null;
+
+
     }
 
     public static EventService eventService = retrofit.create(EventService.class);
