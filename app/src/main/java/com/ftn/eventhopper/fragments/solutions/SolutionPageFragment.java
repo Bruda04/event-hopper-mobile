@@ -318,12 +318,20 @@ public class SolutionPageFragment extends Fragment {
         AutoCompleteTextView timeSlotDropdown = new AutoCompleteTextView(requireContext());
         timeSlotDropdown.setHint("Choose a time slot");
 
+        TextView duration = new TextView(requireContext());
+        duration.setTextSize(16);
+        duration.setPadding(0, 20, 0, 20);
+        duration.setText("This service lasts " + solution.getDurationMinutes() + " minutes.");
+
+        TextView info = new TextView(requireContext());
+        info.setTextSize(16);
+        info.setPadding(0, 20, 0, 20);
+        info.setText("");
+
         timeSlotDropdown.setInputType(InputType.TYPE_NULL);
         timeSlotDropdown.setKeyListener(null);
 
-
         timeSlotDropdown.setOnClickListener(v -> timeSlotDropdown.showDropDown());
-
 
         LinearLayout.LayoutParams dropdownParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -366,7 +374,6 @@ public class SolutionPageFragment extends Fragment {
                         chooseDateButton.setText(formattedDate);
                         String dateString = String.format(Locale.getDefault(), "%04d-%02d-%02dT00:00:00", selectedYear, selectedMonth + 1, selectedDay);
 
-
                         availableTimeSlots.clear();
                         timeSlotAdapter.clear();
 
@@ -397,7 +404,6 @@ public class SolutionPageFragment extends Fragment {
                         });
                     }, year, month, day);
 
-
             Calendar minDate = Calendar.getInstance();
             minDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
             minDate.add(Calendar.DAY_OF_MONTH, -3);
@@ -424,14 +430,17 @@ public class SolutionPageFragment extends Fragment {
             startTime = LocalDateTime.of(year,month,day,hours,minutes);
             endTime = LocalDateTime.of(year,month,day,hours,minutes);
             endTime = endTime.plusMinutes(solution.getDurationMinutes());
-            Log.d("StartTerm", String.valueOf(startTime));
-            Log.d("EndTerm", String.valueOf(endTime));
-            Log.d("duration", String.valueOf(solution.getDurationMinutes()));
+
+            info.setText(
+                    "This term lasts until " + String.format(Locale.getDefault(), "%02d:%02d", endTime.getHour(), endTime.getMinute())
+            );
+
         });
 
-
+        layout.addView(duration);
         layout.addView(chooseDateButton);
         layout.addView(timeSlotDropdown);
+        layout.addView(info);
         dialogBuilder.setView(layout);
 
         dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {
