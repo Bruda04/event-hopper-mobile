@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.fragments.events.EventPageFragment;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.google.android.material.button.MaterialButton;
 
@@ -18,6 +19,8 @@ import com.google.android.material.button.MaterialButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +32,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     Context context;
     private final Fragment fragment;
 
-    public  EventAdapter(Context context, ArrayList<SimpleEventDTO> events, Fragment fragment){
+    public EventAdapter(Context context, ArrayList<SimpleEventDTO> events, Fragment fragment){
      this.events = events;
      this.context = context;
      this.fragment = fragment;
@@ -46,7 +49,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
         holder.titleView.setText(events.get(position).getName());
         holder.descriptionView.setText(events.get(position).getDescription());
-        holder.secondaryView.setText(events.get(position).getLocation().getAddress() + " ,"+ events.get(position).getLocation().getCity() );
+        holder.secondaryView.setText(String.format("%s, %s", events.get(position).getLocation().getAddress(), events.get(position).getLocation().getCity()));
 
 
         Glide.with(holder.imageView.getContext())
@@ -55,11 +58,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 .error(R.drawable.baseline_image_not_supported_24) // Prikaz slike u slučaju greške
                 .into(holder.imageView);
 
-        holder.viewMoreButton.setOnClickListener(v->{
-            NavController navController = Navigation.findNavController(v);
+        holder.viewMoreButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", events.get(position).getId().toString());
-            navController.navigate(R.id.action_to_event_page,bundle);
+            bundle.putString("event_id", events.get(position).getId().toString());
+            NavController navController = NavHostFragment.findNavController(this.fragment);
+            navController.navigate(R.id.action_to_event_page, bundle);
         });
     }
 
@@ -74,10 +77,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         TextView titleView;
         TextView secondaryView;
         TextView descriptionView;
-        MaterialButton viewMoreButton;
+        public MaterialButton viewMoreButton;
 
         public EventViewHolder(View view) {
             super(view);
+            this.viewMoreButton = view.findViewById(R.id.card_button);
+
             imageView = view.findViewById(R.id.card_image);
             titleView = view.findViewById(R.id.card_title);
             secondaryView = view.findViewById(R.id.card_secondary);

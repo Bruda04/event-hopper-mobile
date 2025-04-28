@@ -11,6 +11,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +43,7 @@ import java.util.UUID;
 public class HomeEventsFragment extends Fragment implements SensorEventListener {
 
     private HomeViewModel viewModel;
+    private NavController navController;
     private CardSliderViewPager topEventsRecyclerView;
     private RecyclerView allEventsRecyclerView;
     private Button filterButton;
@@ -233,7 +236,7 @@ public class HomeEventsFragment extends Fragment implements SensorEventListener 
 
 
     private void setAll(ArrayList<SimpleEventDTO> events){
-        EventAdapter adapter = new EventAdapter(getContext(),events,this);
+        EventAdapter adapter = new EventAdapter(getContext(), events, this);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
         this.allEventsRecyclerView.setLayoutManager(layoutManager);
         this.allEventsRecyclerView.setItemAnimator(new DefaultItemAnimator());

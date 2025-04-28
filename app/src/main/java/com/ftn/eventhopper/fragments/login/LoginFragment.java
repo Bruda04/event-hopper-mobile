@@ -14,13 +14,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
-import com.ftn.eventhopper.fragments.solutions.prices.viewmodels.PUPPricesManagementViewModel;
-import com.ftn.eventhopper.shared.dtos.login.LoginResponse;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
-
-import org.w3c.dom.Text;
 
 import java.util.UUID;
 

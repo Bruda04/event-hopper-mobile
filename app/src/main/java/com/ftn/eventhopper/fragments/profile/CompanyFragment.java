@@ -18,10 +18,8 @@ import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
-import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
-import com.ftn.eventhopper.shared.models.users.PersonType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
