@@ -14,6 +14,7 @@ import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.clients.services.blocks.BlockService;
+import com.ftn.eventhopper.clients.services.budgets.BudgetService;
 import com.ftn.eventhopper.clients.services.categories.CategoriesService;
 import com.ftn.eventhopper.clients.services.comments.CommentsService;
 import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
@@ -51,15 +52,17 @@ public class ClientUtils {
     public static final String SERVICE_API_IMAGE_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/images";
     public static final String WEBSOCKET_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/socket"; // WebSocket path
 
-    private static final StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_PATH);
+    private static StompClient stompClient = null;
 
     public static void connectWebSocket() {
+        if (stompClient == null) {
+            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_PATH);
+        }
         if (stompClient.isConnected()) {
             return;
         }
         ArrayList<StompHeader> headers = new ArrayList<>();
         headers.add(new StompHeader("Authorization", String.format("Bearer %s", UserService.getJwtToken())));
-        stompClient.connect(headers);
         Disposable d = stompClient.lifecycle().subscribe(
                 lifecycleEvent -> {
                     switch (lifecycleEvent.getType()) {
@@ -76,6 +79,7 @@ public class ClientUtils {
                     }
                 }
         );
+        stompClient.connect(headers);
 
     }
 
@@ -157,9 +161,10 @@ public class ClientUtils {
             return;
         }
 
-        if (stompClient.isConnected()) {
-            stompClient.disconnect();
-        }
+        stompClient.disconnect();
+        stompClient = null;
+
+
     }
 
     public static EventService eventService = retrofit.create(EventService.class);
@@ -175,6 +180,8 @@ public class ClientUtils {
     public static ImageService ImageService = retrofit.create(ImageService.class);
     public static MessageService messageService = retrofit.create(MessageService.class);
     public static CommentsService commentsService = retrofit.create(CommentsService.class);
+    public static BudgetService budgetService = retrofit.create(BudgetService.class);
     public static ReportService reportService = retrofit.create(ReportService.class);
     public static BlockService blockService = retrofit.create(BlockService.class);
+
 }

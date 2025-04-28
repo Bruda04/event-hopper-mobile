@@ -77,7 +77,7 @@ public class FavoriteSolutionsFragment extends Fragment {
         }
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
             ProfileForPersonDTO profile = viewModel.getProfile();
-            if (changed && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
+            if (changed != null && changed && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
                 allSolutionsRecyclerView.setVisibility(View.VISIBLE);
                 emptyMessage.setVisibility(View.GONE);
                 this.setAll(new ArrayList<>(profile.getFavoriteProducts()));

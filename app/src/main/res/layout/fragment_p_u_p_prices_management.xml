@@ -33,7 +33,7 @@
         android:id="@+id/floating_export_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="export prices to PDF"
+        android:contentDescription="@string/export_prices_to_pdf"
         android:layout_margin="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

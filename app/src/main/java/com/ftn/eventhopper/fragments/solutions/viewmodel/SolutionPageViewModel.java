@@ -9,7 +9,6 @@ import androidx.navigation.NavController;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
-import com.ftn.eventhopper.clients.services.users.ProfileService;
 import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
 import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;

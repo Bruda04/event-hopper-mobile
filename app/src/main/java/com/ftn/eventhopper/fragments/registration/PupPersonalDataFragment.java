@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.fragments.login.viewmodels.LoginViewModel;
 import com.ftn.eventhopper.fragments.registration.viewmodels.PupRegistrationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
