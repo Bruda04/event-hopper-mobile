@@ -17,6 +17,7 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.clients.webSockets.channelHandlers.IChannelHandler;
 import com.ftn.eventhopper.fragments.HostFragment;
+import com.ftn.eventhopper.shared.dtos.blocks.CreateBlockDTO;
 import com.ftn.eventhopper.shared.dtos.messages.ChatMessageDTO;
 import com.ftn.eventhopper.shared.dtos.messages.ConversationPreviewDTO;
 import com.ftn.eventhopper.shared.dtos.messages.NewChatMessageDTO;
@@ -135,6 +136,30 @@ public class SingleChatViewModel extends ViewModel {
                 errorMessage.postValue(t.getMessage());
             }
         });
+    }
+
+    public void createBlock(UUID blocked){
+
+        CreateBlockDTO createBlockDTO = new CreateBlockDTO();
+        createBlockDTO.setBlocked(blocked);
+
+        Call<Void> call = ClientUtils.blockService.create(createBlockDTO);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    errorMessage.postValue(null);
+                }else{
+                    errorMessage.postValue("Failed to create block. Code: "+ response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+
     }
 
 
