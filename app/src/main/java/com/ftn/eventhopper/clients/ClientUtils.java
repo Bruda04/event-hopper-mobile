@@ -13,6 +13,7 @@ import com.ftn.eventhopper.clients.deserializers.LocalDateAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalDateTimeAdapter;
 import com.ftn.eventhopper.clients.deserializers.LocalTimeAdapter;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+import com.ftn.eventhopper.clients.services.budgets.BudgetService;
 import com.ftn.eventhopper.clients.services.categories.CategoriesService;
 import com.ftn.eventhopper.clients.services.comments.CommentsService;
 import com.ftn.eventhopper.clients.services.eventTypes.EventTypeService;
@@ -178,6 +179,6 @@ public class ClientUtils {
     public static ImageService ImageService = retrofit.create(ImageService.class);
     public static MessageService messageService = retrofit.create(MessageService.class);
     public static CommentsService commentsService = retrofit.create(CommentsService.class);
+    public static BudgetService budgetService = retrofit.create(BudgetService.class);
     public static ReportService reportService = retrofit.create(ReportService.class);
-
 }

@@ -380,6 +380,18 @@
             app:popUpTo="@id/pupImageUploadFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/budgeting"
+        android:name="com.ftn.eventhopper.fragments.budgets.BudgetingFragment"
+        android:label="Budgeting"
+        tools:layout="@layout/fragment_budgeting">
+
+        <action
+            android:id="@+id/action_to_solution_page"
+            app:destination="@id/solution_page"
+            />
+
+    </fragment>
 
 
 </navigation>

@@ -172,6 +172,7 @@
     <string name="new_password_again">New Password (Again)</string>
     <string name="export_to_pdf">Export to PDF</string>
     <string name="loading_comments">Loading comments...</string>
+    <string name="amount">Amount (€)</string>
     <string name="loading_reports">Loading reports...</string>
     <string name="reporter">Reporter:</string>
     <string name="reported">"Reported: "</string>
