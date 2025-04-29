@@ -1,6 +1,8 @@
 package com.ftn.eventhopper.fragments.solutions.viewmodel;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -56,7 +58,7 @@ public class SolutionPageViewModel extends ViewModel {
         });
     }
 
-    public void toggleFavorite() {
+    public void toggleFavorite(Context context) {
         SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
         if (solutionDetails != null) {
             if (!solutionDetails.isFavorite())  {
@@ -66,6 +68,7 @@ public class SolutionPageViewModel extends ViewModel {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
                             solutionDetails.setFavorite(true);
+                            Toast.makeText(context, "Added to favorites!", Toast.LENGTH_SHORT).show();
                             solutionDetailsLiveData.postValue(solutionDetails);
                         } else {
                             errorMessage.postValue("Failed to add solution to favorites. Code: " + response.code());
@@ -84,6 +87,7 @@ public class SolutionPageViewModel extends ViewModel {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
                             solutionDetails.setFavorite(false);
+                            Toast.makeText(context, "Removed from favorites.", Toast.LENGTH_SHORT).show();
                             solutionDetailsLiveData.postValue(solutionDetails);
                         } else {
                             errorMessage.postValue("Failed to remove solution from favorites. Code: " + response.code());

@@ -35,6 +35,7 @@ import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -160,6 +161,12 @@ public class EventPageFragment extends Fragment {
 
     private void toggleFavorite(){
         this.viewModel.toggleFavorite();
+        if(this.viewModel.isFavorited()){
+            Toast.makeText(requireContext(), "Added to favorites!", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(requireContext(), "Removed from favorites.", Toast.LENGTH_SHORT).show();
+        }
+
         favoriteIcon.setImageResource(this.viewModel.isFavorited() ? R.drawable.baseline_star_24 : R.drawable.star);
     }
 

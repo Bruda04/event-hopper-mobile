@@ -47,7 +47,7 @@
     <string name="all_solutions_title">Explore all services/products</string>
     <string name="login_welcome">Effortlessly Bringing Plans to Life, one step away</string>
     <string name="login_btn_text">Login</string>
-    <string name="next">Next ></string>
+    <string name="next">Next</string>
     <string name="register">Register</string>
     <string name="confirm_email">A verification email has been sent to the provided address. It may take a few minutes to arrive.
     Make sure to check you spam and junk folder!
@@ -185,4 +185,9 @@
 	<string name="export_event_data_to_pdf">Export event data to pdf</string>
     <string name="export_prices_to_pdf">Export prices to PDF</string>
     <string name="chat_with_organizer">Chat with Organizer</string>
+	<string name="previous">Previous</string>
+    <string name="month_year">Month Year</string>
+	<string name="week_view">Week View</string>
+	<string name="events_calendar_colors">Your events are colored yellow, your attending events are blue and when multiple events are scheduled theyre purple.</string>
+    <string name="done">Done</string>
 </resources>
