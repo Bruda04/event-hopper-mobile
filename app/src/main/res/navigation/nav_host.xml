@@ -64,12 +64,6 @@
             app:destination="@id/event_page"
             />
 
-        <action
-            android:id="@+id/action_to_event_page"
-            app:destination="@id/event_page"
-            />
-
-
     </fragment>
 
     <!--Not logged in-->
@@ -159,6 +153,11 @@
         <action
             android:id="@+id/action_to_manage_comments"
             app:destination="@id/manage_comments"
+            />
+
+        <action
+            android:id="@+id/action_to_manage_reports"
+            app:destination="@id/manage_reports"
             />
 
         <action
@@ -276,14 +275,6 @@
     </fragment>
 
 
-    <fragment
-        android:id="@+id/event_page"
-        android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
-        android:label="Event page"
-        tools:layout="@layout/fragment_event_page"
-        >
-
-    </fragment>
     <fragment android:id="@+id/manage_comments"
         android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
         android:label="Manage Comments"
@@ -299,7 +290,13 @@
         android:label="Manage Event Types"
         tools:layout="@layout/fragment_admins_event_type_management"
         >
+    </fragment>
 
+    <fragment
+        android:id="@+id/manage_reports"
+        android:name="com.ftn.eventhopper.fragments.reports.AdminsReportsManagementFragment"
+        android:label="Manage Reports"
+        tools:layout="@layout/fragment_admins_reports_management">
     </fragment>
 
     <fragment
@@ -404,6 +401,18 @@
             app:popUpTo="@id/pupImageUploadFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/budgeting"
+        android:name="com.ftn.eventhopper.fragments.budgets.BudgetingFragment"
+        android:label="Budgeting"
+        tools:layout="@layout/fragment_budgeting">
+
+        <action
+            android:id="@+id/action_to_solution_page"
+            app:destination="@id/solution_page"
+            />
+
+    </fragment>
 
 
 </navigation>

@@ -13,6 +13,8 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
 import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
+import com.ftn.eventhopper.shared.dtos.reservations.CreateReservationProductDTO;
+import com.ftn.eventhopper.shared.dtos.reservations.CreatedReservationProductDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 
 import org.json.JSONObject;
@@ -181,4 +183,41 @@ public class SolutionPageViewModel extends ViewModel {
             }
         });
     }
+
+    public void buyProduct(UUID eventId) {
+        CreateReservationProductDTO reservationRequest = new CreateReservationProductDTO();
+        SolutionDetailsDTO solutionDetails = getSolutionDetails().getValue();
+        if (solutionDetails == null) {
+            errorMessage.postValue("Failed to buy product.");
+            return;
+        }
+        reservationRequest.setProductId(solutionDetails.getId());
+        reservationRequest.setEventId(eventId);
+
+        Call<ResponseBody> call = ClientUtils.reservationService.buyProduct(reservationRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    fetchSolutionDetailsById(getSolutionDetails().getValue().getId());
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue("Error buying product: " + errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                errorMessage.postValue(t.getMessage());
+            }
+        });
+    }
+
 }

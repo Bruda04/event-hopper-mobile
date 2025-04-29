@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
@@ -30,6 +30,7 @@ import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.filters.MinMaxInputFilter;
 import com.ftn.eventhopper.fragments.solutions.viewmodel.SolutionPageViewModel;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
+import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class SolutionPageFragment extends Fragment {
@@ -70,6 +72,7 @@ public class SolutionPageFragment extends Fragment {
     private TextView statusMessage;
     private MaterialButton reviewButton;
     private MaterialButton chatButton;
+    private MaterialButton buyButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +121,7 @@ public class SolutionPageFragment extends Fragment {
             favoriteButton = view.findViewById(R.id.solution_favorite);
             reviewButton = view.findViewById(R.id.solution_review_button);
             chatButton = view.findViewById(R.id.solution_open_chat);
+            buyButton = view.findViewById(R.id.solution_buy_button);
         }
 
         viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), solution -> {
@@ -253,6 +257,94 @@ public class SolutionPageFragment extends Fragment {
 
         providerName.setOnClickListener(v -> {
             viewModel.goToProviderPage(navController);
+        });
+
+        if (solution.getApplicableEvents() != null && !solution.getApplicableEvents().isEmpty() && solution.isAvailable()) {
+            buyButton.setVisibility(View.VISIBLE);
+            buyButton.setOnClickListener(v -> {
+                setupPurchaseFlow(solution);
+            });
+        } else {
+            buyButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void setupPurchaseFlow(SolutionDetailsDTO solution) {
+        if (solution.getApplicableEvents().size() == 1) {
+            if (solution.isService()) {
+                setupBookServiceDialog(solution, solution.getApplicableEvents().iterator().next());
+            } else {
+                setupBuyProductDialog(solution, solution.getApplicableEvents().iterator().next());
+            }
+        } else {
+            setupChoseEventDialog(solution);
+        }
+    }
+
+    private void setupBookServiceDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+    }
+
+    private void setupBuyProductDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogBuilder.setTitle("Buy Product");
+        dialogBuilder.setMessage(String.format("Are you sure you want to buy %s from %s for your event %s?",
+                solution.getName(), solution.getProvider().getCompanyName(), event.getName()));
+        dialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            viewModel.buyProduct(event.getId());
+        });
+        dialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
+        dialogBuilder.show();
+    }
+
+    private void setupChoseEventDialog(SolutionDetailsDTO solution) {
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_buy_product_select_event, null);
+
+        TextInputLayout select = dialogView.findViewById(R.id.event_select);
+        AutoCompleteTextView selectEvent = dialogView.findViewById(R.id.event_select_autocomplete);
+
+        ArrayList<String> eventNames = new ArrayList<>();
+        for (SimpleEventDTO event : solution.getApplicableEvents()) {
+            eventNames.add(event.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, eventNames);
+        selectEvent.setAdapter(adapter);
+
+        MaterialAlertDialogBuilder editDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        editDialogBuilder.setView(dialogView);
+        editDialogBuilder.setTitle("Select Event");
+        editDialogBuilder.setPositiveButton("Chose", (dialog, which) -> {
+        });
+        editDialogBuilder.setNegativeButton("Cancel", (dialog, which) -> {
+        });
+
+        AlertDialog choseEventDialog = editDialogBuilder.create();
+        choseEventDialog.show();
+        choseEventDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String selectedEvent = selectEvent.getText().toString();
+            if (selectedEvent.isEmpty()) {
+                select.setError("Please select an event");
+            } else {
+                select.setError(null);
+                int index = eventNames.indexOf(selectedEvent);
+                if (index == -1) {
+                    select.setError("Invalid event");
+                } else {
+                    select.setError(null);
+                }
+                ArrayList<SimpleEventDTO> applicableEvents = new ArrayList<>(solution.getApplicableEvents());
+                choseEventDialog.dismiss();
+                SimpleEventDTO event = applicableEvents.get(index);
+                if (event == null){
+                    return;
+                }
+                if (solution.isService()) {
+                    setupBookServiceDialog(solution, event);
+                } else {
+                    setupBuyProductDialog(solution, event);
+                }
+            }
         });
     }
 

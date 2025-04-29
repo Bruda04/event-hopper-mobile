@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,11 +54,13 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
                 .error(R.drawable.baseline_image_not_supported_24)
                 .into(holder.imageView);
 
-        holder.viewMoreButton.setOnClickListener(v -> {
+
+
+        holder.viewMoreButton.setOnClickListener(v->{
+            NavController navController = Navigation.findNavController(v);
             Bundle bundle = new Bundle();
             bundle.putString("id", solutions.get(position).getId().toString());
-            NavController navController = NavHostFragment.findNavController(this.fragment);
-            navController.navigate(R.id.action_to_solution_page, bundle);
+            navController.navigate(R.id.action_to_solution_page,bundle);
         });
     }
 

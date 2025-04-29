@@ -18,7 +18,6 @@ public class SimpleEventTypeDTO {
     private UUID id;
     private String name;
     private String description;
-    private boolean deactivated;
+    private boolean isDeactivated;
     private List<SimpleCategoryDTO> suggestedCategories;
-
 }
