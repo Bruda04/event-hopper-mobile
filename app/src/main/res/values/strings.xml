@@ -149,7 +149,7 @@
     <string name="type_your_message">Type your message...</string>
     <string name="send">Send</string>
     <string name="you_need_more_info_chat_with_us">You need more info? Chat with us!</string>
-    <string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>
+    <string name="want_to_share_your_opinion_leave_a_review">Leave a review!</string>
     <string name="company">Company</string>
     <string name="change_password">Change password</string>
     <string name="log_out">Log out</string>
@@ -173,6 +173,7 @@
     <string name="export_to_pdf">Export to PDF</string>
     <string name="loading_comments">Loading comments...</string>
     <string name="amount">Amount (€)</string>
+    <string name="buy_now">Buy now!</string>
     <string name="loading_reports">Loading reports...</string>
     <string name="reporter">Reporter:</string>
     <string name="reported">"Reported: "</string>
