@@ -86,14 +86,34 @@
         android:id="@+id/calendar"
         android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
         android:label="Calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+    </fragment>
 
     <!-- Company Fragment -->
     <fragment
         android:id="@+id/company"
         android:name="com.ftn.eventhopper.fragments.profile.CompanyFragment"
         android:label="Company"
-        tools:layout="@layout/fragment_company" />
+        tools:layout="@layout/fragment_company">
+
+
+    <action
+        android:id="@+id/action_to_manage_company_images"
+        app:destination="@id/manage_company_pictures"
+        />
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_company_pictures"
+        android:name="com.ftn.eventhopper.fragments.profile.ManageCompanyPhotosFragment"
+        android:label="Manage Company Photos"
+        tools:layout="@layout/fragment_edit_company_photos">
+
+    </fragment>
 
     <!-- Favorites Fragment -->
     <fragment
@@ -105,6 +125,11 @@
         android:id="@+id/action_to_event_page"
         app:destination="@id/event_page"
         />
+    <action
+        android:id="@+id/action_to_solution_page"
+        app:destination="@id/solution_page"
+        />
+
     </fragment>
 
 
@@ -130,6 +155,11 @@
         <action
             android:id="@+id/action_to_manage_comments"
             app:destination="@id/manage_comments"
+            />
+
+        <action
+            android:id="@+id/action_to_manage_reports"
+            app:destination="@id/manage_reports"
             />
 
         <action
@@ -263,6 +293,15 @@
 
     </fragment>
 
+
+    <fragment
+        android:id="@+id/manage_reports"
+        android:name="com.ftn.eventhopper.fragments.reports.AdminsReportsManagementFragment"
+        android:label="Manage Reports"
+        tools:layout="@layout/fragment_admins_reports_management"
+        >
+
+    </fragment>
 
     <fragment
         android:id="@+id/solution_page"

@@ -23,9 +23,6 @@ public class FavoritesFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     FavoritesTabPagerAdapter adapter;
-    private ProfileViewModel viewModel;
-
-
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -44,11 +41,7 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
-        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-
-
 
         tabLayout = view.findViewById(R.id.favorites_tab_layout);
         viewPager2 = view.findViewById(R.id.viewPager);
@@ -82,7 +75,6 @@ public class FavoritesFragment extends Fragment {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -109,9 +101,9 @@ public class FavoritesFragment extends Fragment {
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    return new FavoriteEventsFragment(); // Prvi fragment (za prvi tab)
+                    return new FavoriteEventsFragment();
                 case 1:
-                    return new FavoriteSolutionsFragment(); // Drugi fragment (za drugi tab)
+                    return new FavoriteSolutionsFragment();
                 default:
                     return new FavoriteEventsFragment();
             }
@@ -119,7 +111,7 @@ public class FavoritesFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 2; // Broj tabova
+            return 2;
         }
     }
 }

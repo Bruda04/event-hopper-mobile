@@ -1,14 +1,24 @@
 package com.ftn.eventhopper.fragments.profile;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +27,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
+import com.ftn.eventhopper.fragments.registration.viewmodels.PupImageUploadViewModel;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,10 +54,14 @@ public class CompanyFragment extends Fragment {
 
     private ProfileViewModel viewModel;
 
+    private PupImageUploadViewModel imageUploadViewModel;
+
     private ViewPager2 companyImagesSlider;
 
-    private TextView companyName, companyAddress, companyDescription, companyEmail, companyPhoneNumber;
+    private TextView companyName, companyAddress, companyDescription, companyEmail, companyPhoneNumber, editImagesBtn;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private NavController navController;
 
 
     public CompanyFragment() {
@@ -50,6 +72,8 @@ public class CompanyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        navController = NavHostFragment.findNavController(this);
+
         View view = inflater.inflate(R.layout.fragment_company, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
@@ -71,9 +95,33 @@ public class CompanyFragment extends Fragment {
         ImageView editPersonIcon = view.findViewById(R.id.editCompanyIcon);
         editPersonIcon.setOnClickListener(v -> openEditCompanyDialog());
 
+        this.editImagesBtn = view.findViewById(R.id.manageImages);
+        this.editImagesBtn.setOnClickListener(v ->  editCompanyImages());
+        CardView manageImagesCard = view.findViewById(R.id.ListItemManageImages);
+        manageImagesCard.setOnClickListener(v -> {
+            editCompanyImages();
+        });
+
         this.fetchCompanyData(false);
 
+        NavBackStackEntry backStackEntry = navController.getPreviousBackStackEntry();
+        if (backStackEntry != null) {
+            fetchCompanyData(true);
+        }
+
         return view;
+    }
+
+    private void editCompanyImages(){
+        List<String> companyPhotos = viewModel.getProfile().getCompanyPhotos();
+
+        // Create a Bundle to pass the images
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("existingImages", new ArrayList<>(companyPhotos));
+
+        // Navigate to the ManageCompanyPhotosFragment and pass the bundle
+        navController.navigate(R.id.action_to_manage_company_images, bundle);
+
     }
 
     private void fetchCompanyData(boolean refresh){
@@ -99,7 +147,6 @@ public class CompanyFragment extends Fragment {
         });
 
     }
-
 
     private void openEditCompanyDialog(){
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_company, null);

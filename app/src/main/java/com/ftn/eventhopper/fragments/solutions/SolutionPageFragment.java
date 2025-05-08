@@ -240,16 +240,11 @@ public class SolutionPageFragment extends Fragment {
         comments.setAdapter(commentsAdapter);
 
         if(UserService.isTokenValid()){
-            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_star_24));
-            if (solution.isFavorite()) {
-                favoriteButton.setColorFilter(getResources().getColor(R.color.md_theme_secondary));
-            } else {
-                favoriteButton.setColorFilter(getResources().getColor(R.color.grey));
-            }
+            favoriteButton.setImageResource(solution.isFavorite() ? R.drawable.baseline_star_24 : R.drawable.star);
             favoriteButton.setVisibility(View.VISIBLE);
 
             favoriteButton.setOnClickListener(v -> {
-                viewModel.toggleFavorite();
+                viewModel.toggleFavorite(requireContext());
             });
 
             if (solution.isPendingRating() || solution.isPendingComment()) {

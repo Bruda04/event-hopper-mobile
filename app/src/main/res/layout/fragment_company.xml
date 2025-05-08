@@ -47,7 +47,11 @@
                 android:elevation="4dp"
                 android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/light_blue"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"

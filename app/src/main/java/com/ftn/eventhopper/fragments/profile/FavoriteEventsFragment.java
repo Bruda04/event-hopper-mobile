@@ -52,6 +52,8 @@ public class FavoriteEventsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite_events, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
+        disableLayoutTransitions(view);
+
         this.allEventsRecyclerView = view.findViewById(R.id.recyclerView_allevents);
         if (allEventsRecyclerView.getParent() instanceof ViewGroup) {
             ((ViewGroup) allEventsRecyclerView.getParent()).setLayoutTransition(null);
@@ -70,8 +72,17 @@ public class FavoriteEventsFragment extends Fragment {
 
         this.fetchFavoriteEvents(false);
 
-
         return view;
+    }
+
+    private void disableLayoutTransitions(View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            viewGroup.setLayoutTransition(null);
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                disableLayoutTransitions(viewGroup.getChildAt(i));
+            }
+        }
     }
 
     @Override

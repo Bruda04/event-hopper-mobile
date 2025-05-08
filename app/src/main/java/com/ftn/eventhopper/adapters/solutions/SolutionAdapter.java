@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -54,6 +55,7 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
                 .error(R.drawable.baseline_image_not_supported_24)
                 .into(holder.imageView);
 
+
         holder.viewMoreButton.setOnClickListener(v->{
             NavController navController = Navigation.findNavController(v);
             Bundle bundle = new Bundle();
@@ -73,10 +75,13 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.Soluti
         TextView titleView;
         TextView secondaryView;
         TextView descriptionView;
-        MaterialButton viewMoreButton;
+        public MaterialButton viewMoreButton;
+
 
         public SolutionViewHolder(View view) {
             super(view);
+            this.viewMoreButton = view.findViewById(R.id.card_button);
+
             imageView = view.findViewById(R.id.card_image);
             titleView = view.findViewById(R.id.card_title);
             secondaryView = view.findViewById(R.id.card_secondary);
