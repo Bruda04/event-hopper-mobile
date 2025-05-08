@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.fragments.solutions;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -14,14 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
@@ -36,8 +43,16 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,6 +65,8 @@ public class SolutionPageFragment extends Fragment {
     private NavController navController;
 
     private UUID id;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     private ViewPager2 imageSlider;
     private TextView name;
@@ -282,6 +299,155 @@ public class SolutionPageFragment extends Fragment {
     }
 
     private void setupBookServiceDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogBuilder.setTitle("Book a service");
+
+        LinearLayout layout = new LinearLayout(requireContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20);
+
+        Button chooseDateButton = new Button(requireContext());
+        chooseDateButton.setText("Choose Date");
+
+        AutoCompleteTextView timeSlotDropdown = new AutoCompleteTextView(requireContext());
+        timeSlotDropdown.setHint("Choose a time slot");
+
+        TextView duration = new TextView(requireContext());
+        duration.setTextSize(16);
+        duration.setPadding(0, 20, 0, 20);
+        duration.setText("This service lasts " + solution.getDurationMinutes() + " minutes.");
+
+        TextView info = new TextView(requireContext());
+        info.setTextSize(16);
+        info.setPadding(0, 20, 0, 20);
+        info.setText("");
+
+        timeSlotDropdown.setInputType(InputType.TYPE_NULL);
+        timeSlotDropdown.setKeyListener(null);
+
+        timeSlotDropdown.setOnClickListener(v -> timeSlotDropdown.showDropDown());
+
+        LinearLayout.LayoutParams dropdownParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        timeSlotDropdown.setLayoutParams(dropdownParams);
+
+        List<LocalDateTime> availableTimeSlots = new ArrayList<>();
+        ArrayAdapter<String> timeSlotAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>()
+        );
+        timeSlotDropdown.setAdapter(timeSlotAdapter);
+
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        buttonParams.gravity = Gravity.START;
+        chooseDateButton.setLayoutParams(buttonParams);
+
+        final Calendar selectedDate = Calendar.getInstance();
+        final LocalDateTime[] selectedTerm = new LocalDateTime[1];
+
+        chooseDateButton.setOnClickListener(v -> {
+            LocalDate eventDate = event.getTime().toLocalDate();
+            Calendar eventCalendar = Calendar.getInstance();
+            eventCalendar.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+
+            int year = eventCalendar.get(Calendar.YEAR);
+            int month = eventCalendar.get(Calendar.MONTH);
+            int day = eventCalendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+                        selectedDate.set(selectedYear, selectedMonth, selectedDay);
+
+                        String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
+                        chooseDateButton.setText(formattedDate);
+                        String dateString = String.format(Locale.getDefault(), "%04d-%02d-%02dT00:00:00", selectedYear, selectedMonth + 1, selectedDay);
+
+                        availableTimeSlots.clear();
+                        timeSlotAdapter.clear();
+
+                        viewModel.getFreeTerms().removeObservers(getViewLifecycleOwner());
+
+                        viewModel.fetchFreeTerms(dateString);
+                        viewModel.getFreeTerms().observe(getViewLifecycleOwner(),terms-> {
+                            availableTimeSlots.clear();
+                            timeSlotAdapter.clear();
+
+                            if (terms != null && !terms.isEmpty()) {
+                                availableTimeSlots.addAll(terms);
+
+                                List<String> formattedTerms = new ArrayList<>();
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+                                for (LocalDateTime term : terms) {
+                                    formattedTerms.add(term.format(formatter));
+                                }
+
+                                timeSlotAdapter.addAll(formattedTerms);
+                                timeSlotAdapter.notifyDataSetChanged();
+
+                            } else {
+                                Log.e("fetchFreeTerms", "API response is null or empty.");
+                                Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }, year, month, day);
+
+            Calendar minDate = Calendar.getInstance();
+            minDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+            minDate.add(Calendar.DAY_OF_MONTH, -3);
+
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+            maxDate.add(Calendar.DAY_OF_MONTH, 2);
+
+            datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+            datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
+            datePickerDialog.show();
+        });
+
+        timeSlotDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedTerm[0] = availableTimeSlots.get(position);
+
+            int year = selectedDate.get(Calendar.YEAR);
+            int month = selectedDate.get(Calendar.MONTH) + 1;
+            int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+            int hours = selectedTerm[0].getHour();
+            int minutes = selectedTerm[0].getMinute();
+
+            startTime = LocalDateTime.of(year,month,day,hours,minutes);
+            endTime = LocalDateTime.of(year,month,day,hours,minutes);
+            endTime = endTime.plusMinutes(solution.getDurationMinutes());
+
+            info.setText(
+                    "This term lasts until " + String.format(Locale.getDefault(), "%02d:%02d", endTime.getHour(), endTime.getMinute())
+            );
+
+        });
+
+        layout.addView(duration);
+        layout.addView(chooseDateButton);
+        layout.addView(timeSlotDropdown);
+        layout.addView(info);
+        dialogBuilder.setView(layout);
+
+        dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {
+            viewModel.bookService(event.getId(),startTime, endTime );
+            timeSlotDropdown.clearListSelection();
+            availableTimeSlots.clear();
+        });
+
+        dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        });
+
+        dialogBuilder.show();
     }
 
     private void setupBuyProductDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
