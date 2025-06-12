@@ -103,6 +103,15 @@
 			</androidx.constraintlayout.widget.ConstraintLayout >
 		</ScrollView>
 	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
+		android:id="@+id/floating_add_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:contentDescription="@string/create_new_event"
+		android:layout_gravity="bottom|end"
+		android:layout_margin="18dp"
+		app:srcCompat="@drawable/add" />
+
 
 </FrameLayout>
 

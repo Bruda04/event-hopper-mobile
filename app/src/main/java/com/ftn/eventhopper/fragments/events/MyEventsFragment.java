@@ -24,6 +24,7 @@ import com.ftn.eventhopper.fragments.events.viewmodels.MyEventsViewModel;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class MyEventsFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private NavController navController;
 
+    private FloatingActionButton createEventButton;
 
     public MyEventsFragment() {
         // Required empty public constructor
@@ -70,6 +72,7 @@ public class MyEventsFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
 
         this.emptyMessage = view.findViewById(R.id.emptyMessage);
+        createEventButton = view.findViewById(R.id.floating_add_button);
 
         disableLayoutTransitions(view);
 
@@ -90,6 +93,10 @@ public class MyEventsFragment extends Fragment {
 
         this.fetchMyEvents(true);
 
+        createEventButton.setOnClickListener(v -> {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_to_create_event);
+        });
         return view;
     }
 

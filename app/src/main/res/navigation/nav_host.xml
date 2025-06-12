@@ -182,9 +182,49 @@
             android:id="@+id/action_to_event_page"
             app:destination="@id/event_page"
             />
+
+        <action
+            android:id="@+id/action_to_create_event"
+            app:destination="@id/event_creation_1"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_creation_1"
+        android:name="com.ftn.eventhopper.fragments.events.EventCreationData1Fragment"
+        android:label="Event Creation 1"
+        tools:layout="@layout/fragment_event_creation_data1">
+        <action
+            android:id="@+id/action_to_event_creation2"
+            app:destination="@id/event_creation_2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_creation_2"
+        android:name="com.ftn.eventhopper.fragments.events.EventCreationData2Fragment"
+        android:label="Event Creation 2"
+        tools:layout="@layout/fragment_event_creation_data2">
+        <action
+            android:id="@+id/action_to_add_agenda"
+            app:destination="@id/create_agenda"/>
+
+        <action
+            android:id="@+id/back_to_event_creation_1"
+            app:destination="@id/pup_services"/>
+
     </fragment>
 
 
+    <fragment
+        android:id="@+id/create_agenda"
+        android:name="com.ftn.eventhopper.fragments.events.AgendaCreationFragment"
+        android:label="Agenda creation"
+        tools:layout="@layout/fragment_agenda_creation">
+
+        <action
+            android:id="@+id/back_to_my_events"
+            app:destination="@id/view_my_events"/>
+    </fragment>
 
     <fragment
         android:id="@+id/login"

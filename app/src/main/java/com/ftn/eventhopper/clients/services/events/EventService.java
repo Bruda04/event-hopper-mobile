@@ -1,9 +1,11 @@
 package com.ftn.eventhopper.clients.services.events;
 
 
+import com.ftn.eventhopper.shared.dtos.events.CreateEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 
@@ -12,8 +14,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -32,6 +36,13 @@ public interface EventService {
     })
     @GET("events/organizer")
     Call<ArrayList<SimpleEventDTO>> getOrganizerEvents();
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("events")
+    Call<Void> create(@Body CreateEventDTO event);
 
     @Headers({
             "User-Agent: Mobile-Android",
