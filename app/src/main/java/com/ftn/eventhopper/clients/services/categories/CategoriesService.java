@@ -10,6 +10,7 @@ import com.ftn.eventhopper.shared.dtos.categories.UpdateCategoryDTO;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -53,21 +54,21 @@ public interface CategoriesService {
             "Content-Type:application/json"
     })
     @PUT("categories/{id}")
-    Call<Void> updateCategory(@Path("id") UUID id, @Body UpdateCategoryDTO category);
+    Call<ResponseBody> updateCategory(@Path("id") UUID id, @Body UpdateCategoryDTO category);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
     @PUT("categories/suggestions/{id}/approve")
-    Call<Void> approveCategory(@Path("id") UUID id);
+    Call<ResponseBody> approveCategory(@Path("id") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
     @PUT("categories/suggestions/{id}/reject/{substituteCategoryId}")
-    Call<Void> rejectCategory(@Path("id") UUID id, @Path("substituteCategoryId") UUID substituteCategoryId);
+    Call<ResponseBody> rejectCategory(@Path("id") UUID id, @Path("substituteCategoryId") UUID substituteCategoryId);
 
     @Headers({
             "User-Agent: Mobile-Android",

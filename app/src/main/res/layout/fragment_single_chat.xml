@@ -44,6 +44,35 @@
                 android:textColor="@color/theme_blue"
                 android:textSize="14sp" />
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/block_user_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="20dp"
+            android:background="#F8F7FC"
+            android:contentDescription="@string/block_user"
+            android:padding="8dp"
+            android:paddingEnd="2dp"
+            android:src="@drawable/block"
+            app:tint="@color/darker_blue" />
+
+        <ImageButton
+            android:id="@+id/report_user_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="7dp"
+            android:background="#F8F7FC"
+            android:contentDescription="@string/report_user"
+            android:padding="8dp"
+            android:paddingEnd="2dp"
+            android:src="@drawable/report"
+            app:tint="@color/darker_blue" />
+
     </LinearLayout>
 
     <View
@@ -87,7 +116,7 @@
                 android:gravity="top|start"
                 android:imeOptions="actionSend"
                 android:inputType="text"
-                android:maxLength="255"
+                android:maxLength="1000"
                 android:padding="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 

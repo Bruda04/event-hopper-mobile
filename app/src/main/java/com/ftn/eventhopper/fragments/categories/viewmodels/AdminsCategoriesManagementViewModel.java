@@ -10,9 +10,12 @@ import com.ftn.eventhopper.shared.dtos.categories.CreateCategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.UpdateCategoryDTO;
 import com.ftn.eventhopper.shared.models.categories.CategoryStatus;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,20 +80,28 @@ public class AdminsCategoriesManagementViewModel extends ViewModel {
         updateCategoryDTO.setEventTypesIds(eventTypesIds);
         updateCategoryDTO.setStatus(status);
 
-        Call<Void> call = ClientUtils.categoriesService.updateCategory(id, updateCategoryDTO);
-        call.enqueue(new Callback<Void>() {
+        Call<ResponseBody> call = ClientUtils.categoriesService.updateCategory(id, updateCategoryDTO);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     fetchApprovedCategories();
                     errorMessage.postValue(null);
                 } else {
-                    errorMessage.postValue("Failed to edit category. Code: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessageString = jsonObject.getString("message");
+                        errorMessage.postValue(errorMessageString);
+
+                    } catch (Exception e) {
+                        errorMessage.postValue("An unexpected error occurred.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 errorMessage.postValue(t.getMessage());
             }
         });

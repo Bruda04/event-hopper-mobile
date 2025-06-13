@@ -72,9 +72,7 @@ public class EventsFilterSort extends BottomSheetDialogFragment {
         viewModel.getEventTypes().observe(getViewLifecycleOwner(), eventTypes -> {
             ArrayList<String> eventTypesNames = new ArrayList<>();
             if(eventTypes != null && !eventTypes.isEmpty()) {
-                Log.i("if","upao");
                 for(SimpleEventTypeDTO eventTypeDTO: eventTypes){
-                    Log.i("for",eventTypeDTO.getName());
                     eventTypesNames.add(eventTypeDTO.getName());
                 }
                 ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_dropdown_item_1line, eventTypesNames);

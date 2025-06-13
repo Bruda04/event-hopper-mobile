@@ -115,10 +115,18 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemMyEvents).setOnClickListener( v -> {
             navController.navigate(R.id.action_to_view_my_events);
         });
+        
+        view.findViewById(R.id.ListItemManageReports).setOnClickListener( v -> {
+            navController.navigate(R.id.action_to_manage_reports);
+        });        
 
         view.findViewById(R.id.ListItemDeactivateProfile).setOnClickListener(v -> {
             this.openDeactivateAccountDialog();
         });
+        view.findViewById(R.id.ListItemChangePassword).setOnClickListener(v -> {
+            this.openChangePasswordDialog();
+        });
+
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
             viewModel.logout();
             ((MainActivity) requireActivity()).navigateToAuthGraph();
@@ -148,6 +156,7 @@ public class ProfileFragment extends Fragment {
         CardView deactivateProfileCard = view.findViewById(R.id.ListItemDeactivateProfile);
         CardView upgradeProfileCard = view.findViewById(R.id.ListItemUpgradeProfile);
         CardView commentsCard = view.findViewById(R.id.ListItemManageComments);
+        CardView reportsCard = view.findViewById(R.id.ListItemManageReports);
 
         myProductsCard.setVisibility(View.GONE);
         myServicesCard.setVisibility(View.GONE);
@@ -157,6 +166,7 @@ public class ProfileFragment extends Fragment {
         myEventsCard.setVisibility(View.GONE);
         upgradeProfileCard.setVisibility(View.GONE);
         commentsCard.setVisibility(View.GONE);
+        reportsCard.setVisibility(View.GONE);
 
         changePasswordCard.setVisibility(View.VISIBLE);
         logOutCard.setVisibility(View.VISIBLE);
@@ -174,6 +184,7 @@ public class ProfileFragment extends Fragment {
                 categoriesCard.setVisibility(View.VISIBLE);
                 eventTypesCard.setVisibility(View.VISIBLE);
                 commentsCard.setVisibility(View.VISIBLE);
+                reportsCard.setVisibility(View.VISIBLE);
                 break;
 
             case "EVENT_ORGANIZER":
@@ -208,6 +219,7 @@ public class ProfileFragment extends Fragment {
         }
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
             if (changed != null && changed) {
+
                 this.setRoleTitle();
                 ProfileForPersonDTO profile = viewModel.getProfile();
                 // Populate User Info

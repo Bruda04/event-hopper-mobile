@@ -207,7 +207,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/solution_open_chat"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -215,18 +215,39 @@
             app:layout_constraintTop_toBottomOf="@id/solution_availability"
             style="@style/DarkButton"
             android:visibility="gone"
+            app:icon="@drawable/message"
+            app:iconTint="@color/white"
+            app:iconGravity="textStart"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/solution_buy_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/buy_now"
+            app:layout_constraintTop_toBottomOf="@id/solution_open_chat"
+            style="@style/DarkButton"
+            android:visibility="gone"
+            app:icon="@drawable/baseline_shopping_bag_24"
+            app:iconTint="@color/white"
+            app:iconGravity="textStart"
             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/solution_review_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/want_to_share_your_opinion_leave_a_review"
-            app:layout_constraintTop_toBottomOf="@id/solution_open_chat"
+            app:layout_constraintTop_toBottomOf="@id/solution_buy_button"
             style="@style/DarkButton"
             android:visibility="gone"
+            app:icon="@drawable/baseline_edit_note_24"
+            app:iconTint="@color/white"
+            app:iconGravity="textStart"
             />
 
         <!-- Comments Section -->

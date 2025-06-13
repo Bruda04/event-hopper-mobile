@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.fragments.solutions;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -14,12 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
-import android.text.TextWatcher;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,15 +37,25 @@ import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.filters.MinMaxInputFilter;
 import com.ftn.eventhopper.fragments.solutions.viewmodel.SolutionPageViewModel;
 import com.ftn.eventhopper.shared.dtos.eventTypes.SimpleEventTypeDTO;
+import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class SolutionPageFragment extends Fragment {
@@ -48,6 +65,8 @@ public class SolutionPageFragment extends Fragment {
     private NavController navController;
 
     private UUID id;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     private ViewPager2 imageSlider;
     private TextView name;
@@ -70,6 +89,7 @@ public class SolutionPageFragment extends Fragment {
     private TextView statusMessage;
     private MaterialButton reviewButton;
     private MaterialButton chatButton;
+    private MaterialButton buyButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +115,7 @@ public class SolutionPageFragment extends Fragment {
         statusMessage.setVisibility(View.VISIBLE);
 
         if (getArguments() != null) {
+            Log.i("solutin","upao");
             id = UUID.fromString(getArguments().getString(ARG_ID));
             viewModel.fetchSolutionDetailsById(id);
 
@@ -117,6 +138,7 @@ public class SolutionPageFragment extends Fragment {
             favoriteButton = view.findViewById(R.id.solution_favorite);
             reviewButton = view.findViewById(R.id.solution_review_button);
             chatButton = view.findViewById(R.id.solution_open_chat);
+            buyButton = view.findViewById(R.id.solution_buy_button);
         }
 
         viewModel.getSolutionDetails().observe(getViewLifecycleOwner(), solution -> {
@@ -128,9 +150,12 @@ public class SolutionPageFragment extends Fragment {
 
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                Log.e("EventHopper", "Error fetching solution details: " + error);
-                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
-                statusMessage.setVisibility(View.VISIBLE);
+                Log.e("Solution Details", error);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Error")
+                        .setMessage(error)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             }
         });
 
@@ -250,6 +275,243 @@ public class SolutionPageFragment extends Fragment {
         providerName.setOnClickListener(v -> {
             viewModel.goToProviderPage(navController);
         });
+
+        if (solution.getApplicableEvents() != null && !solution.getApplicableEvents().isEmpty() && solution.isAvailable()) {
+            buyButton.setVisibility(View.VISIBLE);
+            buyButton.setOnClickListener(v -> {
+                setupPurchaseFlow(solution);
+            });
+        } else {
+            buyButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void setupPurchaseFlow(SolutionDetailsDTO solution) {
+        if (solution.getApplicableEvents().size() == 1) {
+            if (solution.isService()) {
+                setupBookServiceDialog(solution, solution.getApplicableEvents().iterator().next());
+            } else {
+                setupBuyProductDialog(solution, solution.getApplicableEvents().iterator().next());
+            }
+        } else {
+            setupChoseEventDialog(solution);
+        }
+    }
+
+    private void setupBookServiceDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogBuilder.setTitle("Book a service");
+
+        LinearLayout layout = new LinearLayout(requireContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20);
+
+        Button chooseDateButton = new Button(requireContext());
+        chooseDateButton.setText("Choose Date");
+
+        AutoCompleteTextView timeSlotDropdown = new AutoCompleteTextView(requireContext());
+        timeSlotDropdown.setHint("Choose a time slot");
+
+        TextView duration = new TextView(requireContext());
+        duration.setTextSize(16);
+        duration.setPadding(0, 20, 0, 20);
+        duration.setText("This service lasts " + solution.getDurationMinutes() + " minutes.");
+
+        TextView info = new TextView(requireContext());
+        info.setTextSize(16);
+        info.setPadding(0, 20, 0, 20);
+        info.setText("");
+
+        timeSlotDropdown.setInputType(InputType.TYPE_NULL);
+        timeSlotDropdown.setKeyListener(null);
+
+        timeSlotDropdown.setOnClickListener(v -> timeSlotDropdown.showDropDown());
+
+        LinearLayout.LayoutParams dropdownParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        timeSlotDropdown.setLayoutParams(dropdownParams);
+
+        List<LocalDateTime> availableTimeSlots = new ArrayList<>();
+        ArrayAdapter<String> timeSlotAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>()
+        );
+        timeSlotDropdown.setAdapter(timeSlotAdapter);
+
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        buttonParams.gravity = Gravity.START;
+        chooseDateButton.setLayoutParams(buttonParams);
+
+        final Calendar selectedDate = Calendar.getInstance();
+        final LocalDateTime[] selectedTerm = new LocalDateTime[1];
+
+        chooseDateButton.setOnClickListener(v -> {
+            LocalDate eventDate = event.getTime().toLocalDate();
+            Calendar eventCalendar = Calendar.getInstance();
+            eventCalendar.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+
+            int year = eventCalendar.get(Calendar.YEAR);
+            int month = eventCalendar.get(Calendar.MONTH);
+            int day = eventCalendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+                        selectedDate.set(selectedYear, selectedMonth, selectedDay);
+
+                        String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
+                        chooseDateButton.setText(formattedDate);
+                        String dateString = String.format(Locale.getDefault(), "%04d-%02d-%02dT00:00:00", selectedYear, selectedMonth + 1, selectedDay);
+
+                        availableTimeSlots.clear();
+                        timeSlotAdapter.clear();
+
+                        viewModel.getFreeTerms().removeObservers(getViewLifecycleOwner());
+
+                        viewModel.fetchFreeTerms(dateString);
+                        viewModel.getFreeTerms().observe(getViewLifecycleOwner(),terms-> {
+                            availableTimeSlots.clear();
+                            timeSlotAdapter.clear();
+
+                            if (terms != null && !terms.isEmpty()) {
+                                availableTimeSlots.addAll(terms);
+
+                                List<String> formattedTerms = new ArrayList<>();
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+                                for (LocalDateTime term : terms) {
+                                    formattedTerms.add(term.format(formatter));
+                                }
+
+                                timeSlotAdapter.addAll(formattedTerms);
+                                timeSlotAdapter.notifyDataSetChanged();
+
+                            } else {
+                                Log.e("fetchFreeTerms", "API response is null or empty.");
+                                Toast.makeText(requireContext(), "No available terms", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }, year, month, day);
+
+            Calendar minDate = Calendar.getInstance();
+            minDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+            minDate.add(Calendar.DAY_OF_MONTH, -3);
+
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.set(eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+            maxDate.add(Calendar.DAY_OF_MONTH, 2);
+
+            datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+            datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
+            datePickerDialog.show();
+        });
+
+        timeSlotDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedTerm[0] = availableTimeSlots.get(position);
+
+            int year = selectedDate.get(Calendar.YEAR);
+            int month = selectedDate.get(Calendar.MONTH) + 1;
+            int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+            int hours = selectedTerm[0].getHour();
+            int minutes = selectedTerm[0].getMinute();
+
+            startTime = LocalDateTime.of(year,month,day,hours,minutes);
+            endTime = LocalDateTime.of(year,month,day,hours,minutes);
+            endTime = endTime.plusMinutes(solution.getDurationMinutes());
+
+            info.setText(
+                    "This term lasts until " + String.format(Locale.getDefault(), "%02d:%02d", endTime.getHour(), endTime.getMinute())
+            );
+
+        });
+
+        layout.addView(duration);
+        layout.addView(chooseDateButton);
+        layout.addView(timeSlotDropdown);
+        layout.addView(info);
+        dialogBuilder.setView(layout);
+
+        dialogBuilder.setPositiveButton("Book", (dialogInterface, i) -> {
+            viewModel.bookService(event.getId(),startTime, endTime );
+            timeSlotDropdown.clearListSelection();
+            availableTimeSlots.clear();
+        });
+
+        dialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        });
+
+        dialogBuilder.show();
+    }
+
+    private void setupBuyProductDialog(SolutionDetailsDTO solution, SimpleEventDTO event) {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogBuilder.setTitle("Buy Product");
+        dialogBuilder.setMessage(String.format("Are you sure you want to buy %s from %s for your event %s?",
+                solution.getName(), solution.getProvider().getCompanyName(), event.getName()));
+        dialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            viewModel.buyProduct(event.getId());
+        });
+        dialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
+        dialogBuilder.show();
+    }
+
+    private void setupChoseEventDialog(SolutionDetailsDTO solution) {
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_buy_product_select_event, null);
+
+        TextInputLayout select = dialogView.findViewById(R.id.event_select);
+        AutoCompleteTextView selectEvent = dialogView.findViewById(R.id.event_select_autocomplete);
+
+        ArrayList<String> eventNames = new ArrayList<>();
+        for (SimpleEventDTO event : solution.getApplicableEvents()) {
+            eventNames.add(event.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, eventNames);
+        selectEvent.setAdapter(adapter);
+
+        MaterialAlertDialogBuilder editDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        editDialogBuilder.setView(dialogView);
+        editDialogBuilder.setTitle("Select Event");
+        editDialogBuilder.setPositiveButton("Chose", (dialog, which) -> {
+        });
+        editDialogBuilder.setNegativeButton("Cancel", (dialog, which) -> {
+        });
+
+        AlertDialog choseEventDialog = editDialogBuilder.create();
+        choseEventDialog.show();
+        choseEventDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String selectedEvent = selectEvent.getText().toString();
+            if (selectedEvent.isEmpty()) {
+                select.setError("Please select an event");
+            } else {
+                select.setError(null);
+                int index = eventNames.indexOf(selectedEvent);
+                if (index == -1) {
+                    select.setError("Invalid event");
+                } else {
+                    select.setError(null);
+                }
+                ArrayList<SimpleEventDTO> applicableEvents = new ArrayList<>(solution.getApplicableEvents());
+                choseEventDialog.dismiss();
+                SimpleEventDTO event = applicableEvents.get(index);
+                if (event == null){
+                    return;
+                }
+                if (solution.isService()) {
+                    setupBookServiceDialog(solution, event);
+                } else {
+                    setupBuyProductDialog(solution, event);
+                }
+            }
+        });
     }
 
     private void setupReviewDialog() {
@@ -257,7 +519,7 @@ public class SolutionPageFragment extends Fragment {
 
         TextInputLayout ratingInput = dialogView.findViewById(R.id.rating_layout);
         TextInputLayout commentInput = dialogView.findViewById(R.id.comment_layout);
-//
+
         Objects.requireNonNull(ratingInput.getEditText())
                 .setFilters(new InputFilter[]{new MinMaxInputFilter(1, 5)});
 
@@ -286,7 +548,7 @@ public class SolutionPageFragment extends Fragment {
                 }
             }
 
-            if (commentInput.getEditText().getText().toString().trim().length() > 255) {
+            if (commentInput.getEditText().getText().toString().trim().length() > 1000) {
                 commentInput.setError("Comment is too long");
             } else {
                 commentInput.setError(null);
