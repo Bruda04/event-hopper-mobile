@@ -98,6 +98,9 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.ListItemMyServices).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_pup_services);
         });
+        view.findViewById(id.ListItemMyProducts).setOnClickListener(v -> {
+            navController.navigate(R.id.action_to_pup_products);
+        });
         view.findViewById(R.id.ListItemCategories).setOnClickListener(v -> {
             navController.navigate(R.id.action_to_manage_categories);
         });

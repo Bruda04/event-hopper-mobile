@@ -142,6 +142,11 @@
             app:destination="@id/pup_services" />
 
         <action
+            android:id="@+id/action_to_pup_products"
+            app:destination="@id/pup_products" />
+
+
+        <action
             android:id="@+id/action_to_manage_categories"
             app:destination="@id/manage_categories" />
 
@@ -243,6 +248,31 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
     </fragment>
+
+
+    <fragment
+        android:id="@+id/pup_products"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.PupsProductsFragment"
+        android:label="Pup products"
+        tools:layout="@layout/fragment_pups_products" >
+        <action
+            android:id="@+id/action_to_create_product1"
+            app:destination="@id/service_creation1"/>
+        <action
+            android:id="@+id/action_to_edit_product1"
+            app:destination="@id/service_edit1"/>
+        <action
+            android:id="@+id/action_to_solution_page_fragment"
+            app:destination="@id/solution_page"/>
+    </fragment>
+
+
+
+
+
+
+
+
 
 
     <fragment
