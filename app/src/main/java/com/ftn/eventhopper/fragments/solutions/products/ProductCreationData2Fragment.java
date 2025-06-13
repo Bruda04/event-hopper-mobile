@@ -1,4 +1,4 @@
-package com.ftn.eventhopper.fragments.solutions.services;
+package com.ftn.eventhopper.fragments.solutions.products;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -27,17 +27,18 @@ import android.widget.Toast;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
 import com.ftn.eventhopper.filters.MinMaxInputFilter;
+import com.ftn.eventhopper.fragments.solutions.products.viewmodels.ProductCreationViewModel;
 import com.ftn.eventhopper.fragments.solutions.services.viewmodels.ServiceCreationViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
-public class ServiceCreationData2Fragment extends Fragment {
+
+public class ProductCreationData2Fragment extends Fragment {
     private NavController navController;
-    private ServiceCreationViewModel viewModel;
+    private ProductCreationViewModel viewModel;
     private Button createButton;
     private Button backButton;
 
@@ -46,8 +47,7 @@ public class ServiceCreationData2Fragment extends Fragment {
     private ImagePreviewAdapter imagePreviewAdapter;
     private TextView imagesError;
 
-
-    private TextInputLayout reservationWindowInput, durationInput, cancellationWindowInput, priceInput, discountInput;
+    private TextInputLayout priceInput, discountInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,16 +63,13 @@ public class ServiceCreationData2Fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_service_creation_data2, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_creation_data2, container, false);
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(requireActivity(),
-                new ViewModelProvider.NewInstanceFactory()).get(ServiceCreationViewModel.class);
+                new ViewModelProvider.NewInstanceFactory()).get(ProductCreationViewModel.class);
 
         createButton = view.findViewById(R.id.next_button);
         backButton = view.findViewById(R.id.back_button);
-        reservationWindowInput = view.findViewById(R.id.reservation_window);
-        durationInput = view.findViewById(R.id.duration);
-        cancellationWindowInput = view.findViewById(R.id.cancellation_window);
         priceInput = view.findViewById(R.id.service_price);
         discountInput = view.findViewById(R.id.service_discount);
         uploadImagesButton = view.findViewById(R.id.upload_images_btn);
@@ -83,13 +80,6 @@ public class ServiceCreationData2Fragment extends Fragment {
                 .setFilters(new InputFilter[]{new MinMaxInputFilter(0.0, 10000.0)});
         Objects.requireNonNull(discountInput.getEditText())
                 .setFilters(new InputFilter[]{new MinMaxInputFilter(0.0, 100.0)});
-        Objects.requireNonNull(reservationWindowInput.getEditText())
-                .setFilters(new InputFilter[]{new MinMaxInputFilter(0, 365)});
-        Objects.requireNonNull(cancellationWindowInput.getEditText())
-                .setFilters(new InputFilter[]{new MinMaxInputFilter(0, 365)});
-        Objects.requireNonNull(durationInput.getEditText())
-                .setFilters(new InputFilter[]{new MinMaxInputFilter(0, 1440)});
-
         setFields();
 
         // Set up button actions
@@ -101,14 +91,14 @@ public class ServiceCreationData2Fragment extends Fragment {
         });
         backButton.setOnClickListener(v -> {
             patchService();
-            navController.navigate(R.id.back_to_service_creation1);
+            navController.navigate(R.id.back_to_product_creation1);
         });
 
         viewModel.getCreated().observe(getViewLifecycleOwner(), created -> {
             if (created) {
                 viewModel.setCreated(false);
-                Toast.makeText(getContext(), "Service Created!", Toast.LENGTH_SHORT).show();
-                navController.navigate(R.id.back_to_pup_services);
+                Toast.makeText(getContext(), "Product Created!", Toast.LENGTH_SHORT).show();
+                navController.navigate(R.id.back_to_pup_products);
             }
         });
 
@@ -172,26 +162,6 @@ public class ServiceCreationData2Fragment extends Fragment {
             discountInput.setError(null);
         }
 
-        if (durationInput.getEditText().getText() == null || durationInput.getEditText().getText().toString().trim().isEmpty()) {
-            durationInput.setError("Duration is required");
-            return false;
-        } else {
-            durationInput.setError(null);
-        }
-
-        if (reservationWindowInput.getEditText().getText() == null || reservationWindowInput.getEditText().getText().toString().trim().isEmpty()) {
-            reservationWindowInput.setError("Reservation window is required");
-            return false;
-        } else {
-            reservationWindowInput.setError(null);
-        }
-
-        if (cancellationWindowInput.getEditText().getText() == null || cancellationWindowInput.getEditText().getText().toString().trim().isEmpty()) {
-            cancellationWindowInput.setError("Cancellation window is required");
-            return false;
-        } else {
-            cancellationWindowInput.setError(null);
-        }
 
         if (viewModel.getUploadedImages().isEmpty()) {
             imagesError.setVisibility(View.VISIBLE);
@@ -206,33 +176,19 @@ public class ServiceCreationData2Fragment extends Fragment {
     private void patchService() {
         String price = priceInput.getEditText().getText().toString().trim();
         String discount = discountInput.getEditText().getText().toString().trim();
-        String duration = durationInput.getEditText().getText().toString().trim();
-        String reservationWindow = reservationWindowInput.getEditText().getText().toString().trim();
-        String cancellationWindow = cancellationWindowInput.getEditText().getText().toString().trim();
 
         if (!price.isEmpty()) {
-            viewModel.getService().setBasePrice(parseDouble(price));
+            viewModel.getProduct().setBasePrice(parseDouble(price));
         }
         if (!discount.isEmpty()) {
-            viewModel.getService().setDiscount(parseDouble(discount));
+            viewModel.getProduct().setDiscount(parseDouble(discount));
         }
-        if (!duration.isEmpty()) {
-            viewModel.getService().setDurationMinutes(Integer.parseInt(durationInput.getEditText().getText().toString().trim()));
-        }
-        if (!reservationWindow.isEmpty()) {
-            viewModel.getService().setReservationWindowDays(Integer.parseInt(reservationWindowInput.getEditText().getText().toString().trim()));
-        }
-        if (!cancellationWindow.isEmpty()) {
-            viewModel.getService().setCancellationWindowDays(Integer.parseInt(cancellationWindowInput.getEditText().getText().toString().trim()));
-        }
+
     }
 
     private void setFields() {
-        reservationWindowInput.getEditText().setText(String.valueOf(viewModel.getService().getReservationWindowDays()));
-        durationInput.getEditText().setText(String.valueOf(viewModel.getService().getDurationMinutes()));
-        cancellationWindowInput.getEditText().setText(String.valueOf(viewModel.getService().getCancellationWindowDays()));
-        priceInput.getEditText().setText(String.valueOf(viewModel.getService().getBasePrice()));
-        discountInput.getEditText().setText(String.valueOf(viewModel.getService().getDiscount()));
+        priceInput.getEditText().setText(String.valueOf(viewModel.getProduct().getBasePrice()));
+        discountInput.getEditText().setText(String.valueOf(viewModel.getProduct().getDiscount()));
 
         // Initialize RecyclerView
         imagePreviewAdapter= new ImagePreviewAdapter(viewModel.getUploadedImages(), this::removeImage);

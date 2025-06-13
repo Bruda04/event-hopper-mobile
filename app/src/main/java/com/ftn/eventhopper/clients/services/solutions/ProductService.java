@@ -2,8 +2,8 @@ package com.ftn.eventhopper.clients.services.solutions;
 
 import com.ftn.eventhopper.shared.dtos.comments.CreateCommentDTO;
 import com.ftn.eventhopper.shared.dtos.ratings.CreateProductRatingDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.CreateProductDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.ProductForManagementDTO;
-import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.ftn.eventhopper.shared.dtos.prices.PriceManagementDTO;
 import com.ftn.eventhopper.shared.dtos.prices.UpdatePriceDTO;
@@ -35,6 +35,14 @@ public interface ProductService {
     Call<PagedResponse<ProductForManagementDTO>> getAllForManagement(
             @QueryMap Map<String, String> queryParams
     );
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("products")
+    Call<Void> create(@Body CreateProductDTO product);
+
 
     @Headers({
             "User-Agent: Mobile-Android",

@@ -257,7 +257,7 @@
         tools:layout="@layout/fragment_pups_products" >
         <action
             android:id="@+id/action_to_create_product1"
-            app:destination="@id/service_creation1"/>
+            app:destination="@id/product_creation1"/>
         <action
             android:id="@+id/action_to_edit_product1"
             app:destination="@id/service_edit1"/>
@@ -266,6 +266,28 @@
             app:destination="@id/solution_page"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/product_creation1"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductCreationData1Fragment"
+        android:label="Product creation first window"
+        tools:layout="@layout/fragment_product_creation_data1" >
+        <action
+            android:id="@+id/action_to_create_product2"
+            app:destination="@id/product_creation2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_creation2"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductCreationData2Fragment"
+        android:label="Product creation second window"
+        tools:layout="@layout/fragment_product_creation_data2" >
+        <action
+            android:id="@+id/back_to_pup_products"
+            app:destination="@id/pup_products"/>
+        <action
+            android:id="@+id/back_to_product_creation1"
+            app:destination="@id/product_creation1"/>
+    </fragment>
 
 
 

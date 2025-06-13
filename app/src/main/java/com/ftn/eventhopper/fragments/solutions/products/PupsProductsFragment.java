@@ -145,7 +145,7 @@ public class PupsProductsFragment extends Fragment {
         createServiceButton.setOnClickListener(v -> {
             currentPage = 0;
             NavController navController = NavHostFragment.findNavController(this);
-            navController.navigate(R.id.action_to_create_service1);
+            navController.navigate(R.id.action_to_create_product1);
         });
 
         searchButton.setOnClickListener(v -> {
