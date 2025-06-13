@@ -1,5 +1,7 @@
 package com.ftn.eventhopper.fragments.events.viewmodels;
 
+import static java.security.AccessController.getContext;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,6 +20,7 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.CreateAgendaActivityDTO;
 import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -187,8 +191,8 @@ public class EventPageViewModel extends ViewModel {
 
             // Privacy
             document.add(new Paragraph("Privacy: " +
-                    (eventDetails.getPrivacy().equals("PUBLIC") ? "Public" :
-                            eventDetails.getPrivacy().equals("PRIVATE") ? "Private" : "Unknown"))
+                    (eventDetails.getPrivacy() == EventPrivacyType.PUBLIC ? "Public" :
+                            eventDetails.getPrivacy() == EventPrivacyType.PRIVATE ? "Private" : "Unknown"))
                     .setFontSize(12)
                     .setBold());
 

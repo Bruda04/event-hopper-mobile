@@ -65,7 +65,7 @@ public class EventCreationData1Fragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 viewModel.reset();
-                navController.popBackStack(R.id.event_creation_1, false);
+                navController.popBackStack(R.id.event_creation_1, true);
             }
         });
     }
@@ -102,7 +102,6 @@ public class EventCreationData1Fragment extends Fragment {
                         List<String> eventTypeNames = eventTypes.stream().map(SimpleEventTypeDTO::getName).collect(Collectors.toList());
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, eventTypeNames);
                         ((AutoCompleteTextView) eventType.getEditText()).setAdapter(adapter);
-
 
                         setFields();
                     }
@@ -174,6 +173,20 @@ public class EventCreationData1Fragment extends Fragment {
             dateInputLayout.setError(null);
         }
 
+        if (eventType.getEditText().getText().toString().trim().isEmpty()) {
+            eventType.setError("Event type is required");
+            return false;
+        } else {
+            List<String> eventTypeNames = viewModel.getEventTypes().getValue()
+                    .stream().map(SimpleEventTypeDTO::getName).collect(Collectors.toList());
+            String selected = eventType.getEditText().getText().toString().trim();
+            if (!eventTypeNames.contains(selected)) {
+                eventType.setError("Invalid event type");
+                return false;
+            }
+            eventType.setError(null);
+        }
+
         return true;
     }
 
@@ -214,10 +227,37 @@ public class EventCreationData1Fragment extends Fragment {
         if (viewModel.getEvent().getName() != null) {
             nameInput.getEditText().setText(viewModel.getEvent().getName());
         }
+
         if (viewModel.getEvent().getDescription() != null) {
             descriptionInput.getEditText().setText(viewModel.getEvent().getDescription());
         }
 
+        // Set date if already selected
+        if (viewModel.getEvent().getTime() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = viewModel.getEvent().getTime().toLocalDate().format(formatter);
+            dateInput.setText(formattedDate);
+        }
+
+        // Set radio button based on privacy
+        if (viewModel.getEvent().getEventPrivacyType() != null) {
+            if (viewModel.getEvent().getEventPrivacyType() == EventPrivacyType.PRIVATE) {
+                privateRadio.setChecked(true);
+            } else {
+                publicRadio.setChecked(true);
+            }
+        }
+
+        // Set selected event type
+        if (viewModel.getEventTypes().getValue() != null && viewModel.getEvent().getEventTypeId() != null) {
+            for (SimpleEventTypeDTO type : viewModel.getEventTypes().getValue()) {
+                if (type.getId().equals(viewModel.getEvent().getEventTypeId())) {
+                    eventType.getEditText().setText(type.getName());
+                    break;
+                }
+            }
+        }
     }
+
 
 }

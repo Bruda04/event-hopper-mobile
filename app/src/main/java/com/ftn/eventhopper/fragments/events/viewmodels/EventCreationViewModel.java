@@ -30,11 +30,9 @@ public class EventCreationViewModel extends ViewModel {
     @Getter
     private CreateEventDTO event = new CreateEventDTO();
 
-    private final MutableLiveData<ArrayList<CreateAgendaActivityDTO>> agendasLiveData = new MutableLiveData<>();
-    public LiveData<ArrayList<CreateAgendaActivityDTO>> getAgendas() {
-        return agendasLiveData;
-    }
-
+    @Setter
+    @Getter
+    private MutableLiveData<ArrayList<CreateAgendaActivityDTO>> agendas= new MutableLiveData<>();
     private final MutableLiveData<List<SimpleEventTypeDTO>> eventTypesLiveData = new MutableLiveData<>();
     public LiveData<List<SimpleEventTypeDTO>> getEventTypes() {
         return eventTypesLiveData;
@@ -56,17 +54,8 @@ public class EventCreationViewModel extends ViewModel {
     private ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedImages = new ArrayList<>();
 
 
-    public void createEvent() {
-        event.setAgendaActivities(getAgendas().getValue());
-
-
-
-        
-        callEventCreation();
-    }
-
     //images
-    private void callEventCreation() {
+    public void uploadImages() {
         event.setPicture("");
         AtomicInteger remainingUploads = new AtomicInteger(uploadedImages.size());
         AtomicBoolean hasUploadFailed = new AtomicBoolean(false);
@@ -78,14 +67,14 @@ public class EventCreationViewModel extends ViewModel {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if(response.isSuccessful()){
                         event.setPicture(response.body());
+                        Log.d("IMPORTANT IMAGE", event.getPicture());
                         if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get())  {
-                            enqueueEventCreation();
+                            return;
                         }
 
                     }else{
                         errorMessage.postValue("Failed to upload image. Code: "+ response.code());
                         hasUploadFailed.set(true);
-                        event = new CreateEventDTO();
                         uploadedImages.clear();
                     }
                 }
@@ -95,14 +84,15 @@ public class EventCreationViewModel extends ViewModel {
                     errorMessage.postValue("Failed to upload image. Error: "+ t.getMessage());
                     Log.e("Image upload failed", t.getMessage());
                     hasUploadFailed.set(true);
-                    event = new CreateEventDTO();
                     uploadedImages.clear();
                 }
             });
         }
     }
 
-    private void enqueueEventCreation() {
+    public void createEvent() {
+        event.setAgendaActivities(getAgendas().getValue());
+
         Call<Void> call = ClientUtils.eventService.create(event);
         call.enqueue(new Callback<Void>() {
             @Override

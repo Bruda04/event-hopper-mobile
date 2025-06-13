@@ -54,8 +54,7 @@ public class EventCreationData2Fragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                viewModel.reset();
-                navController.popBackStack(R.id.event_creation_2, false);
+                navController.popBackStack(R.id.event_creation_2, true);
             }
         });
     }
@@ -74,7 +73,6 @@ public class EventCreationData2Fragment extends Fragment {
         addressInput = view.findViewById(R.id.address);
 
 
-        setFields();
         uploadImagesButton = view.findViewById(R.id.upload_images_btn);
         imagesError = view.findViewById(R.id.imagesError);
         imagePreviewRecyclerView = view.findViewById(R.id.image_preview_recycler_view);
@@ -82,26 +80,27 @@ public class EventCreationData2Fragment extends Fragment {
         Objects.requireNonNull(numParticipantsInput.getEditText())
                 .setFilters(new InputFilter[]{new MinMaxInputFilter(1.0, 1000000.0)});
 
+        setFields();
+
         // Set up button actions
         createButton.setOnClickListener(v -> {
             if (validate()) {
                 patchService();
-                Log.d("IMPORTANT", String.valueOf(viewModel.getEvent()));
-                viewModel.createEvent();
+                navController.navigate(R.id.create_agenda);
             }
         });
         backButton.setOnClickListener(v -> {
             patchService();
-            navController.navigate(R.id.back_to_event_creation_1);
+            navController.popBackStack(R.id.event_creation_2, true);
         });
 
-        viewModel.getCreated().observe(getViewLifecycleOwner(), created -> {
+        /*viewModel.getCreated().observe(getViewLifecycleOwner(), created -> {
             if (created) {
                 viewModel.setCreated(false);
 
                 navController.navigate(R.id.action_to_add_agenda);
             }
-        });
+        });**/
 
 
         return view;
@@ -178,6 +177,13 @@ public class EventCreationData2Fragment extends Fragment {
             imagesError.setVisibility(View.GONE);
         }
 
+        if(viewModel.getUploadedImages().size() > 1){
+            imagesError.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            imagesError.setVisibility(View.GONE);
+        }
+
         return true;
     }
 
@@ -199,6 +205,8 @@ public class EventCreationData2Fragment extends Fragment {
                 viewModel.getEvent().setLocation(location);
             }
         }
+
+        viewModel.uploadImages();
 
     }
 

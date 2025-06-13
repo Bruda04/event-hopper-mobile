@@ -210,7 +210,7 @@
 
         <action
             android:id="@+id/back_to_event_creation_1"
-            app:destination="@id/pup_services"/>
+            app:destination="@id/event_creation_1"/>
 
     </fragment>
 
@@ -222,7 +222,7 @@
         tools:layout="@layout/fragment_agenda_creation">
 
         <action
-            android:id="@+id/back_to_my_events"
+            android:id="@+id/back_to_my_events_page"
             app:destination="@id/view_my_events"/>
     </fragment>
 
