@@ -17,6 +17,7 @@ import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -43,6 +44,12 @@ public interface ProductService {
     @POST("products")
     Call<Void> create(@Body CreateProductDTO product);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("products/{id}")
+    Call<Void> delete(@Path("id") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",

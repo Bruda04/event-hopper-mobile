@@ -113,7 +113,7 @@ public class PupsProductsAdapter extends RecyclerView.Adapter<PupsProductsAdapte
     private void setupDeleteDialog(int position) {
         MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
         confirmDialog.setTitle("Delete product");
-        confirmDialog.setMessage("Are you sure you want to delete this product?");
+        confirmDialog.setMessage("Are you sure you want to delete " + products.get(position).getName() + "?");
         confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
             fragment.deleteProduct(products.get(position).getId());
         });

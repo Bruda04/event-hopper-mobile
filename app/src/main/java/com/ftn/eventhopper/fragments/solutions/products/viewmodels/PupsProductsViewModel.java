@@ -113,7 +113,7 @@ public class PupsProductsViewModel extends ViewModel {
     }
 
     public void deleteProduct(UUID id) {
-        Call<Void> call = ClientUtils.serviceService.delete(id);
+        Call<Void> call = ClientUtils.productService.delete(id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
