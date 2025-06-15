@@ -165,7 +165,7 @@ public class ProductEditData1Fragment extends Fragment {
                 break;
             }
         }
-        if (!atLeastOneEventTypeSelected) {
+        if (!atLeastOneEventTypeSelected && eventTypes.getChildCount() != 0) {
             eventTypesError.setText("At least one event type must be selected");
             eventTypesError.setVisibility(View.VISIBLE);
             return false;
@@ -183,7 +183,6 @@ public class ProductEditData1Fragment extends Fragment {
         if (viewModel.getProductUpdateDTO().getDescription() != null) {
             descriptionInput.getEditText().setText(viewModel.getProductUpdateDTO().getDescription());
         }
-        Log.d("IMPORTANT", String.valueOf(viewModel.getProductUpdateDTO()));
         isVisibleCheckbox.setChecked(viewModel.getProductUpdateDTO().isVisible());
         isAvailableCheckbox.setChecked(viewModel.getProductUpdateDTO().isAvailable());
 
