@@ -8,6 +8,7 @@ import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 import com.ftn.eventhopper.shared.dtos.prices.PriceManagementDTO;
 import com.ftn.eventhopper.shared.dtos.prices.UpdatePriceDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SolutionDetailsDTO;
+import com.ftn.eventhopper.shared.dtos.solutions.UpdateProductDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 import java.util.ArrayList;
@@ -43,6 +44,13 @@ public interface ProductService {
     })
     @POST("products")
     Call<Void> create(@Body CreateProductDTO product);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("products/{id}")
+    Call<Void> update(@Path("id") UUID id, @Body UpdateProductDTO service);
 
     @Headers({
             "User-Agent: Mobile-Android",

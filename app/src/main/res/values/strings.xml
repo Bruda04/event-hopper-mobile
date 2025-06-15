@@ -191,4 +191,14 @@
 	<string name="create_new_event">Create new event</string>
 	<string name="max_number_of_participants">Max. number of participants</string>
 	<string name="upload_pictures_required">Upload images</string>
+	<string name="amount">Amount (€)</string>
+	<string name="buy_now">Buy now!</string>
+	<string name="loading_reports">Loading reports...</string>
+	<string name="reporter">Reporter:</string>
+	<string name="reported">"Reported: "</string>
+	<string name="reason">"Reason: "</string>
+	<string name="manage_reports">Manage reports</string>
+	<string name="troubled_user">If user want to report or block user</string>
+	<string name="block_user">Block user</string>
+	<string name="report_user">Report user</string>
 </resources>

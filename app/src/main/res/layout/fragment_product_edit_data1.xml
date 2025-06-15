@@ -3,12 +3,117 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".fragments.solutions.products.ProductEditData1Fragment">
+	tools:context=".fragments.solutions.products.ProductEditData1Fragment"
+	android:background="@color/material_dynamic_neutral95"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<!-- TODO: Update blank fragment layout -->
-	<TextView
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:text="@string/hello_blank_fragment" />
+		android:orientation="vertical"
+		android:padding="16dp"
+
+		>
+
+		<!-- Name Section -->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/product_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/name">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/DarkLargerText"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!-- Description Section -->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/product_description"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/description">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="120dp"
+				android:textAppearance="@style/DarkLargerText"
+
+				android:inputType="textMultiLine" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!-- Spacer -->
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="25dp" />
+
+		<!-- Event Types Combobox -->
+		<com.google.android.material.chip.ChipGroup
+			android:id="@+id/event_types"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			app:singleLine="false"
+			app:chipSpacing="8dp" />
+
+		<TextView
+			android:id="@+id/eventTypesError"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/md_theme_error"
+			android:visibility="gone"
+			android:textSize="12sp" />
+
+
+		<!-- Spacer -->
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="15dp" />
+
+		<!-- Checkboxes Row -->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="end">
+
+			<CheckBox
+				android:id="@+id/visibility_checkbox"
+				android:layout_width="wrap_content"
+				android:textAppearance="@style/DarkLargerText"
+
+				android:layout_height="wrap_content"
+				android:text="@string/visible" />
+
+			<CheckBox
+				android:id="@+id/availability_checkbox"
+				android:layout_width="wrap_content"
+				android:textAppearance="@style/DarkLargerText"
+				android:layout_height="wrap_content"
+				android:text="@string/available" />
+
+		</LinearLayout>
+
+		<!-- Spacer -->
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<!-- Next Button -->
+		<Button
+			android:id="@+id/next_button"
+			style="@style/DarkButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+
+
+			android:paddingHorizontal="16dp"
+			android:paddingVertical="8dp"
+			android:text="@string/next" />
+	</LinearLayout>
 
 </FrameLayout>

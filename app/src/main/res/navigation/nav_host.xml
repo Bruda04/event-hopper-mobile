@@ -260,7 +260,7 @@
             app:destination="@id/product_creation1"/>
         <action
             android:id="@+id/action_to_edit_product1"
-            app:destination="@id/service_edit1"/>
+            app:destination="@id/product_edit1"/>
         <action
             android:id="@+id/action_to_solution_page_fragment"
             app:destination="@id/solution_page"/>
@@ -289,7 +289,30 @@
             app:destination="@id/product_creation1"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/product_edit1"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductEditData1Fragment"
+        android:label="Edit Product 1"
+        tools:layout="@layout/fragment_product_edit_data1">
+        <action
+            android:id="@+id/action_to_edit_product2"
+            app:destination="@id/product_edit2"/>
+    </fragment>
 
+
+    <fragment
+        android:id="@+id/product_edit2"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductEditData2Fragment"
+        android:label="Edit Product 2"
+        tools:layout="@layout/fragment_product_edit_data2">
+        <action
+            android:id="@+id/action_to_pup_products"
+            app:destination="@id/pup_products"/>
+
+        <action
+            android:id="@+id/back_to_edit_product_1"
+            app:destination="@id/product_edit1"/>
+    </fragment>
 
 
 

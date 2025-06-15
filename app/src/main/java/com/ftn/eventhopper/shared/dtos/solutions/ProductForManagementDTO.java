@@ -21,8 +21,8 @@ public class ProductForManagementDTO {
     private String name;
     private String description;
     private List<String> pictures;
-    private boolean isAvailable;
-    private boolean isVisible;
+    private boolean available;
+    private boolean visible;
     private ProductStatus status;
     private SimplePriceDTO price;
     private SimpleCategoryDTO category;

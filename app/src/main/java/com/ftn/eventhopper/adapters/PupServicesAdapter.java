@@ -119,7 +119,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
     private void setupDeleteDialog(int position) {
         MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
         confirmDialog.setTitle("Delete service");
-        confirmDialog.setMessage("Are you sure you want to delete this service?");
+        confirmDialog.setMessage("Are you sure you want to delete " + services.get(position).getName()+"?");
         confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
             fragment.deleteService(services.get(position).getId());
         });

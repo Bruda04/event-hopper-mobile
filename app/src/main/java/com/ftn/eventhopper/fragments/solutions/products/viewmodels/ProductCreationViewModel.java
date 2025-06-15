@@ -95,6 +95,7 @@ public class ProductCreationViewModel  extends ViewModel {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if(response.isSuccessful()){
+                        if (product.getPictures() == null) product.setPictures(new ArrayList<>());
                         product.getPictures().add(response.body());
                         if (remainingUploads.decrementAndGet() == 0 && !hasUploadFailed.get())  {
                             enqueueServiceCreation();

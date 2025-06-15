@@ -2,6 +2,7 @@ package com.ftn.eventhopper.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,6 @@ public class PupsProductsAdapter extends RecyclerView.Adapter<PupsProductsAdapte
                 ));
                 bundle.putStringArrayList("pictures", new ArrayList<>(products.get(position).getPictures()));
                 bundle.putString("categoryId", products.get(position).getCategory().getId().toString());
-
 
                 navController.navigate(R.id.action_to_edit_product1, bundle);
             });

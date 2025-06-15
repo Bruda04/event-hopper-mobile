@@ -56,7 +56,7 @@ public class ProductCreationData2Fragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 viewModel.reset();
-                navController.popBackStack(R.id.pup_services, false);
+                navController.popBackStack(R.id.product_creation1, true);
             }
         });
     }
