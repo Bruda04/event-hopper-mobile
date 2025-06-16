@@ -5,6 +5,7 @@ import com.ftn.eventhopper.shared.dtos.users.serviceProvider.CreateServiceProvid
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
