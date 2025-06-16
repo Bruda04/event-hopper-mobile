@@ -120,6 +120,18 @@
             android:visibility="gone"
             />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/generate_guest_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Generate guest list"
+            app:layout_constraintTop_toBottomOf="@id/invite_people_button"
+            style="@style/DarkButton"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
 
 

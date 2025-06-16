@@ -20,8 +20,10 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.CreateAgendaActivityDTO;
 import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
 import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -36,6 +38,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -122,6 +125,125 @@ public class EventPageViewModel extends ViewModel {
 
         }
     }
+
+
+    public void generateGuestList(Context context){
+        SinglePageEventDTO currentEvent = eventLiveData.getValue();
+        Call<ArrayList<SimpleAccountDTO>> call = ClientUtils.eventService.getGuestList(currentEvent.getId());
+        call.enqueue(new Callback<ArrayList<SimpleAccountDTO>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SimpleAccountDTO>> call, Response<ArrayList<SimpleAccountDTO>> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Fetching guest list", "SUCCESS");
+                    generateGuestListPdf(response.body(), context);
+                } else {
+                    Log.d("Fetching guest list", "FAILURE");
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<SimpleAccountDTO>> call, Throwable t) {
+                Log.d("Fetching guest list", "ERROR");
+            }
+        });
+    }
+
+    private void generateGuestListPdf(ArrayList<SimpleAccountDTO> accounts, Context context) {
+        try {
+            SinglePageEventDTO eventDetails = eventLiveData.getValue();
+            String fileName = eventDetails.getName() + "_Guest_List.pdf";
+
+            Uri pdfUri = savePdfToMediaStore(fileName, context);
+            if (pdfUri == null) {
+                Log.e("PDF", "Failed to create PDF URI.");
+                return;
+            }
+
+            OutputStream outputStream = context.getContentResolver().openOutputStream(pdfUri);
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdfDocument = new PdfDocument(writer);
+            Document document = new Document(pdfDocument);
+
+            // Title
+            document.add(new Paragraph("Guest List")
+                    .setFontSize(24)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(new DeviceRgb(0, 51, 102))); // Dark Blue
+
+            document.add(new Paragraph("Event: " + eventDetails.getName())
+                    .setFontSize(16)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginBottom(10));
+
+            // Line
+            document.add(new LineSeparator(new SolidLine()).setMarginBottom(10));
+
+            // Guest Table
+            float[] columnWidths = {60f, 200f, 200f};
+            Table table = new Table(columnWidths);
+
+            Color headerColor = new DeviceRgb(229, 249, 255); // Light blue
+            Color headerTextColor = new DeviceRgb(0, 0, 0);
+
+            table.addHeaderCell(new Cell().add(new Paragraph("#"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setBold());
+
+            table.addHeaderCell(new Cell().add(new Paragraph("Name"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setBold());
+
+            table.addHeaderCell(new Cell().add(new Paragraph("Email"))
+                    .setBackgroundColor(headerColor)
+                    .setFontColor(headerTextColor)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setBold());
+
+            // Add rows
+            for (int i = 0; i < accounts.size(); i++) {
+                SimpleAccountDTO account = accounts.get(i);
+
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(i + 1)))
+                        .setTextAlignment(TextAlignment.CENTER));
+
+                String fullName = account.getPerson().getName() + " " + account.getPerson().getSurname();
+                table.addCell(new Cell().add(new Paragraph(fullName)));
+
+                table.addCell(new Cell().add(new Paragraph(account.getEmail())));
+            }
+
+            if (!accounts.isEmpty()) {
+                document.add(table);
+            } else {
+                document.add(new Paragraph("No guests added yet.")
+                        .setItalic()
+                        .setFontColor(ColorConstants.GRAY));
+            }
+
+            // Footer
+            document.add(new Paragraph("Generated by EventHopper")
+                    .setFontSize(10)
+                    .setFontColor(new DeviceRgb(150, 150, 150))
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginTop(20));
+
+            document.close();
+
+            // Open the PDF
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(pdfUri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            context.startActivity(intent);
+
+        } catch (Exception e) {
+            Log.e("PDF", "Error generating guest list PDF", e);
+        }
+    }
+
 
 
     public void exportToPDF(Context context){
