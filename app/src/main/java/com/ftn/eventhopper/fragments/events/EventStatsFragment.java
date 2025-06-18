@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.eventhopper.R;
@@ -27,6 +28,7 @@ import com.ftn.eventhopper.shared.dtos.events.RatingTimeSeriesDTO;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -56,6 +58,7 @@ public class EventStatsFragment extends Fragment {
     private BarChart barChart;
     private Button btnDownloadPdf;
     private LinearLayout statsContainer;
+    TextView pieChartNoDataText;
 
     private NavController navController;
 
@@ -88,6 +91,9 @@ public class EventStatsFragment extends Fragment {
         barChart = view.findViewById(R.id.barChart);
         btnDownloadPdf = view.findViewById(R.id.btnDownloadPdf);
         statsContainer = view.findViewById(R.id.statsContainer);
+        pieChartNoDataText = view.findViewById(R.id.pieChartNoDataText);
+
+
 
         String eventId = getArguments().getString("eventId");
         viewModel = new ViewModelProvider(this).get(EventStatsViewModel.class);
@@ -96,12 +102,36 @@ public class EventStatsFragment extends Fragment {
         viewModel.getStats().observe(getViewLifecycleOwner(), stats -> {
             if (stats != null) {
                 showLineChart(stats.getRatings());
-                showPieChart(stats);
+                boolean hasPieData = !(stats.getNumPendingInvitations() == 0
+                        && stats.getNumDeclinesInvitations() == 0
+                        && stats.getNumAcceptedInvitations() == 0);
+
+                if (hasPieData) {
+                    pieChart.setVisibility(View.VISIBLE);
+                    pieChartNoDataText.setVisibility(View.GONE);
+                    showPieChart(stats);
+                } else {
+                    pieChart.setVisibility(View.GONE);
+                    pieChartNoDataText.setVisibility(View.VISIBLE);
+                }
                 showBarChart(stats);
             }
         });
 
-        btnDownloadPdf.setOnClickListener(v -> generatePdf());
+        btnDownloadPdf.setOnClickListener(v -> {
+            GraphDataDTO stats = viewModel.getStats().getValue();
+            if (stats == null) {
+                Toast.makeText(requireContext(), "Statistics not loaded yet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Bitmap lineBitmap = lineChart.getChartBitmap();
+            Bitmap pieBitmap = pieChart.getVisibility() == View.VISIBLE ? pieChart.getChartBitmap() : null;
+            Bitmap barBitmap = barChart.getChartBitmap();
+
+            viewModel.generateStatsPdf(stats, lineBitmap, pieBitmap, barBitmap, requireContext());
+
+        });
     }
 
     private void showLineChart(List<RatingTimeSeriesDTO> ratings) {
@@ -116,7 +146,11 @@ public class EventStatsFragment extends Fragment {
 
         LineDataSet dataSet = new LineDataSet(entries, "Average Rating");
         LineData lineData = new LineData(dataSet);
+
         lineChart.setData(lineData);
+        Description desc = new Description();
+        desc.setText("");
+        lineChart.setDescription(desc);
         lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(dates));
         lineChart.invalidate();
     }
@@ -133,6 +167,10 @@ public class EventStatsFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(entries, "Invitations");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         PieData pieData = new PieData(dataSet);
+
+        Description desc = new Description();
+        desc.setText("Invitations");
+        pieChart.setDescription(desc);
         pieChart.setData(pieData);
         pieChart.invalidate();
     }
@@ -147,12 +185,12 @@ public class EventStatsFragment extends Fragment {
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
 
+        Description desc = new Description();
+        desc.setText("Maximum vs Actual attendance");
+        barChart.setDescription(desc);
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter(Arrays.asList("Max", "Accepted")));
         barChart.invalidate();
     }
 
-    private void generatePdf() {
-
-    }
 }

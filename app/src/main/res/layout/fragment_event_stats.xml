@@ -28,11 +28,21 @@
 			android:layout_width="match_parent"
 			android:layout_height="300dp" />
 
+		<TextView
+			android:id="@+id/pieChartNoDataText"
+			android:text="@string/no_invitation_data_available"
+			android:visibility="gone"
+			android:textColor="@color/darker_blue"
+			android:textAppearance="@style/DarkRegularText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp" />
+
 		<com.github.mikephil.charting.charts.PieChart
 			android:id="@+id/pieChart"
 			android:layout_width="match_parent"
-			android:layout_height="300dp"
-			android:layout_marginTop="16dp" />
+			android:layout_height="200dp"
+			android:visibility="gone" />
 
 		<com.github.mikephil.charting.charts.BarChart
 			android:id="@+id/barChart"
@@ -44,6 +54,7 @@
 			android:id="@+id/btnDownloadPdf"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			style="@style/DarkButton"
 			android:text="@string/download_pdf"
 			android:layout_marginTop="24dp" />
 
