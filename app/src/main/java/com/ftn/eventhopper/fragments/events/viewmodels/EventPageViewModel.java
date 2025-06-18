@@ -130,7 +130,6 @@ public class EventPageViewModel extends ViewModel {
         }
     }
 
-
     public void generateGuestList(Context context){
         SinglePageEventDTO currentEvent = eventLiveData.getValue();
         Call<ArrayList<SimpleAccountDTO>> call = ClientUtils.eventService.getGuestList(currentEvent.getId());
@@ -267,8 +266,6 @@ public class EventPageViewModel extends ViewModel {
             Log.e("PDF", "Error generating guest list PDF", e);
         }
     }
-
-
 
     public void exportToPDF(Context context){
         SinglePageEventDTO currentEvent = eventLiveData.getValue();

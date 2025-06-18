@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/scrollContainer"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fillViewport="true">
+
+	<LinearLayout
+		android:id="@+id/statsContainer"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:padding="16dp">
+
+		<TextView
+			android:id="@+id/title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/event_statistics"
+			android:textAppearance="@style/DarkLargerText"
+			android:textSize="24sp"
+			android:textStyle="bold"
+			android:gravity="center"
+			android:layout_marginBottom="16dp"/>
+
+		<com.github.mikephil.charting.charts.LineChart
+			android:id="@+id/lineChart"
+			android:layout_width="match_parent"
+			android:layout_height="300dp" />
+
+		<com.github.mikephil.charting.charts.PieChart
+			android:id="@+id/pieChart"
+			android:layout_width="match_parent"
+			android:layout_height="300dp"
+			android:layout_marginTop="16dp" />
+
+		<com.github.mikephil.charting.charts.BarChart
+			android:id="@+id/barChart"
+			android:layout_width="match_parent"
+			android:layout_height="300dp"
+			android:layout_marginTop="16dp" />
+
+		<Button
+			android:id="@+id/btnDownloadPdf"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/download_pdf"
+			android:layout_marginTop="24dp" />
+
+	</LinearLayout>
+</ScrollView>

@@ -201,4 +201,8 @@
 	<string name="troubled_user">If user want to report or block user</string>
 	<string name="block_user">Block user</string>
 	<string name="report_user">Report user</string>
+	<string name="event_statistics">Event Statistics</string>
+	<string name="download_pdf">Download PDF</string>
+	<string name="generate_guest_list">Generate guest list</string>
+	<string name="view_stats">View Stats</string>
 </resources>
