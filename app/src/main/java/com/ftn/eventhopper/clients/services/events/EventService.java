@@ -6,6 +6,7 @@ import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
+import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.responses.PagedResponse;
 
 
@@ -65,6 +66,13 @@ public interface EventService {
     })
     @GET("events/search")
     Call<PagedResponse<SimpleEventDTO>> getEventsPage(@QueryMap Map<String, String> queryParams);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("events/guest-list/{eventId}")
+    Call<ArrayList<SimpleAccountDTO>> getGuestList(@Path("eventId") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",

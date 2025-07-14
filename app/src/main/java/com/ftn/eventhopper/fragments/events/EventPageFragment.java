@@ -52,7 +52,7 @@ public class EventPageFragment extends Fragment {
     private TextView eventTitle, eventDescription, eventLocation, eventTime, eventPrivacy;
     private Button inviteBtn;
     private FloatingActionButton exportPdfButton;
-    private MaterialButton chatButton;
+    private MaterialButton chatButton, generateGuestListBtn;
 
     private boolean favorited;
 
@@ -98,11 +98,13 @@ public class EventPageFragment extends Fragment {
 
         exportPdfButton.setOnClickListener(v -> viewModel.exportToPDF(getContext()));
 
+        generateGuestListBtn = view.findViewById(R.id.generate_guest_list);
         inviteBtn = view.findViewById(R.id.invite_people_button);
 //        emailField = view.findViewById(R.id.invite_email_field);
 //        emailsList = view.findViewById(R.id.emails_list);
 
         inviteBtn.setOnClickListener(v -> showInviteDialog());
+
 
         viewModel.getEvent().observe(getViewLifecycleOwner(), new Observer<SinglePageEventDTO>() {
             @Override
@@ -131,7 +133,15 @@ public class EventPageFragment extends Fragment {
 
                 if(event.isEventOrganizerLoggedIn()){
                     inviteBtn.setVisibility(View.VISIBLE);
+                    if(event.getPrivacy().equals(EventPrivacyType.PRIVATE)){
+                        generateGuestListBtn.setVisibility(View.VISIBLE);
+                        generateGuestListBtn.setOnClickListener(v -> {
+                            viewModel.generateGuestList(getContext());
+                        });
+                    }
                 }
+
+
 
                 if (event.getConversationInitialization() != null) {
                     chatButton.setVisibility(View.VISIBLE);
