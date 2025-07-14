@@ -2,6 +2,7 @@ package com.ftn.eventhopper.fragments.registration;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,9 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.ImagePreviewAdapter;
@@ -42,6 +45,7 @@ public class PupImageUploadFragment extends Fragment {
 
     private PupImageUploadViewModel viewModel;
 
+    EditText endTimeInput, startTimeInput;
     @Getter
     @Setter
     private ArrayList<ImagePreviewAdapter.ImagePreviewItem> uploadedImages = new ArrayList<>();
@@ -67,6 +71,12 @@ public class PupImageUploadFragment extends Fragment {
 
         navController = NavHostFragment.findNavController(this);
 
+        startTimeInput = view.findViewById(R.id.start_time_input);
+        endTimeInput = view.findViewById(R.id.end_time_input);
+
+        startTimeInput.setOnClickListener(v -> pickTime(startTimeInput));
+        endTimeInput.setOnClickListener(v -> pickTime(endTimeInput));
+
         uploadImageButton = view.findViewById(R.id.upload_images_btn);
         uploadImageButton.setOnClickListener(v -> selectImages());
         imagePreviewAdapter= new ImagePreviewAdapter(this.uploadedImages, this::removeImage);
@@ -87,10 +97,22 @@ public class PupImageUploadFragment extends Fragment {
                 receivedBundle.putStringArrayList("companyPictures", imageFilePaths);
             }
 
+            receivedBundle.putString("workStart",  startTimeInput.getText().toString());
+            receivedBundle.putString("workEnd",  endTimeInput.getText().toString());
             navController.navigate(R.id.action_to_pup_personal_data, receivedBundle);
         });
 
         return view;
+    }
+
+    private void pickTime(EditText target) {
+        TimePickerDialog dialog = new TimePickerDialog(getContext(),
+                (view, hour, minute) -> {
+                    String time = String.format("%02d:%02d", hour, minute);
+                    target.setText(time);
+                },
+                12, 0, true);  // default: 12:00
+        dialog.show();
     }
 
 
