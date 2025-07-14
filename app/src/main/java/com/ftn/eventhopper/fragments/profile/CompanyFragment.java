@@ -130,7 +130,7 @@ public class CompanyFragment extends Fragment {
             viewModel.fetchProfile();
         }
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
-            if (changed) {
+            if (changed != null && changed) {
                 ProfileForPersonDTO profile = viewModel.getProfile();
                 companyName.setText(profile.getCompanyName());
                 companyAddress.setText(profile.getCompanyLocation() != null ? profile.getCompanyLocation().getAddress() + ", " + profile.getCompanyLocation().getCity() : "Not found");

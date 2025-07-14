@@ -1,5 +1,7 @@
 package com.ftn.eventhopper.fragments.events;
 
+import static java.security.AccessController.getContext;
+
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;

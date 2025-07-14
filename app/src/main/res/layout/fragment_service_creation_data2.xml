@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/md_theme_error"
             android:visibility="gone"
-            android:text="@string/images_are_required"
+            android:text="Upload one image to be the cover."
             android:textSize="12sp" />
 
         <!-- RecyclerView for image previews -->

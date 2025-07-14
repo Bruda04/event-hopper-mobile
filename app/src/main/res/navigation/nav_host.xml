@@ -93,12 +93,10 @@
         android:name="com.ftn.eventhopper.fragments.profile.CompanyFragment"
         android:label="Company"
         tools:layout="@layout/fragment_company">
-
-
-    <action
-        android:id="@+id/action_to_manage_company_images"
-        app:destination="@id/manage_company_pictures"
-        />
+        <action
+            android:id="@+id/action_to_manage_company_images"
+            app:destination="@id/manage_company_pictures"
+            />
     </fragment>
 
     <fragment
@@ -106,8 +104,8 @@
         android:name="com.ftn.eventhopper.fragments.profile.ManageCompanyPhotosFragment"
         android:label="Manage Company Photos"
         tools:layout="@layout/fragment_edit_company_photos">
-
     </fragment>
+
 
     <!-- Favorites Fragment -->
     <fragment
@@ -123,7 +121,6 @@
         android:id="@+id/action_to_solution_page"
         app:destination="@id/solution_page"
         />
-
     </fragment>
 
 
@@ -151,6 +148,12 @@
             app:destination="@id/manage_event_types" />
 
         <action
+            android:id="@+id/action_to_view_my_events"
+            app:destination="@id/view_my_events" />
+
+
+        <action
+
             android:id="@+id/action_to_manage_comments"
             app:destination="@id/manage_comments"
             />
@@ -171,6 +174,62 @@
             app:destination="@id/choose_role"
             />
 
+    </fragment>
+
+
+    <!-- View my Events Fragment -->
+    <fragment
+        android:id="@+id/view_my_events"
+        android:name="com.ftn.eventhopper.fragments.events.MyEventsFragment"
+        android:label="View my events"
+        tools:layout="@layout/fragment_my_events">
+
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+
+        <action
+            android:id="@+id/action_to_create_event"
+            app:destination="@id/event_creation_1"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_creation_1"
+        android:name="com.ftn.eventhopper.fragments.events.EventCreationData1Fragment"
+        android:label="Event Creation 1"
+        tools:layout="@layout/fragment_event_creation_data1">
+        <action
+            android:id="@+id/action_to_event_creation2"
+            app:destination="@id/event_creation_2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_creation_2"
+        android:name="com.ftn.eventhopper.fragments.events.EventCreationData2Fragment"
+        android:label="Event Creation 2"
+        tools:layout="@layout/fragment_event_creation_data2">
+        <action
+            android:id="@+id/action_to_add_agenda"
+            app:destination="@id/create_agenda"/>
+
+        <action
+            android:id="@+id/back_to_event_creation_1"
+            app:destination="@id/event_creation_1"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/create_agenda"
+        android:name="com.ftn.eventhopper.fragments.events.AgendaCreationFragment"
+        android:label="Agenda creation"
+        tools:layout="@layout/fragment_agenda_creation">
+
+        <action
+            android:id="@+id/back_to_my_events_page"
+            app:destination="@id/view_my_events"/>
     </fragment>
 
     <fragment
@@ -297,6 +356,15 @@
         android:name="com.ftn.eventhopper.fragments.reports.AdminsReportsManagementFragment"
         android:label="Manage Reports"
         tools:layout="@layout/fragment_admins_reports_management">
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_event_types"
+        android:name="com.ftn.eventhopper.fragments.eventTypes.AdminsEventTypeManagement"
+        android:label="Manage Event Types"
+        tools:layout="@layout/fragment_admins_event_type_management"
+        >
+
     </fragment>
 
     <fragment

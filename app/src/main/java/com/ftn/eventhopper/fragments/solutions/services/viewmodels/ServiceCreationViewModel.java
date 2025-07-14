@@ -1,7 +1,5 @@
 package com.ftn.eventhopper.fragments.solutions.services.viewmodels;
 
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -15,8 +13,7 @@ import com.ftn.eventhopper.shared.dtos.categories.CategoryDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CreateCategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.categories.CreatedCategorySuggestionDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
-import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
-import com.ftn.eventhopper.shared.responses.PagedResponse;
+
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
