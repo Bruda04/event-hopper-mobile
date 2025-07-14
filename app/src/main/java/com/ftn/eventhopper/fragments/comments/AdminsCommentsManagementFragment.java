@@ -2,8 +2,11 @@ package com.ftn.eventhopper.fragments.comments;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +32,26 @@ public class AdminsCommentsManagementFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<SimpleCommentDTO> pendingComments;
     private TextView statusMessage;
+    NavController navController;
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.manage_comments, true);
+            }
+        });
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        navController= NavHostFragment.findNavController(this);
 
         View view = inflater.inflate(R.layout.fragment_admins_comments_management, container, false);
         viewModel = new ViewModelProvider(this).get(AdminsCommentsManagementViewModel.class);

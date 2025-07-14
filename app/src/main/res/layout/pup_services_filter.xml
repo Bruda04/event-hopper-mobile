@@ -26,6 +26,8 @@
         <AutoCompleteTextView
             android:id="@+id/category_dropdown"
             android:layout_width="match_parent"
+            android:fontFamily="@font/poppins_regular"
+
             android:layout_height="wrap_content"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -52,6 +54,8 @@
             android:id="@+id/availability_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+
             android:inputType="none"
             app:simpleItems="@array/availability" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -60,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price"
+        android:fontFamily="@font/poppins_regular"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
@@ -86,6 +91,8 @@
             android:id="@+id/sort_by_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+
             android:inputType="none"
             app:simpleItems="@array/sort_pups_services_by"
             />

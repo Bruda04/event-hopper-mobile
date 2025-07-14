@@ -64,12 +64,6 @@
             app:destination="@id/event_page"
             />
 
-        <action
-            android:id="@+id/action_to_event_page"
-            app:destination="@id/event_page"
-            />
-
-
     </fragment>
 
     <!--Not logged in-->
@@ -151,6 +145,10 @@
         <action
             android:id="@+id/action_to_manage_prices"
             app:destination="@id/manage_prices" />
+
+        <action
+            android:id="@+id/action_to_manage_event_types"
+            app:destination="@id/manage_event_types" />
 
         <action
             android:id="@+id/action_to_manage_comments"
@@ -277,14 +275,6 @@
     </fragment>
 
 
-    <fragment
-        android:id="@+id/event_page"
-        android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
-        android:label="Event page"
-        tools:layout="@layout/fragment_event_page"
-        >
-
-    </fragment>
     <fragment android:id="@+id/manage_comments"
         android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
         android:label="Manage Comments"
@@ -295,12 +285,18 @@
 
 
     <fragment
+        android:id="@+id/manage_event_types"
+        android:name="com.ftn.eventhopper.fragments.eventTypes.AdminsEventTypeManagement"
+        android:label="Manage Event Types"
+        tools:layout="@layout/fragment_admins_event_type_management"
+        >
+    </fragment>
+
+    <fragment
         android:id="@+id/manage_reports"
         android:name="com.ftn.eventhopper.fragments.reports.AdminsReportsManagementFragment"
         android:label="Manage Reports"
-        tools:layout="@layout/fragment_admins_reports_management"
-        >
-
+        tools:layout="@layout/fragment_admins_reports_management">
     </fragment>
 
     <fragment
