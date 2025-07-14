@@ -3,6 +3,7 @@ package com.ftn.eventhopper.clients.services.events;
 
 import com.ftn.eventhopper.shared.dtos.events.CreateEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
+import com.ftn.eventhopper.shared.dtos.events.GraphDataDTO;
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.CreateServiceDTO;
@@ -44,6 +45,13 @@ public interface EventService {
     })
     @POST("events")
     Call<Void> create(@Body CreateEventDTO event);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET("events/{id}/graph")
+    Call<GraphDataDTO> getEventGraph(@Path("id") UUID id);
 
     @Headers({
             "User-Agent: Mobile-Android",

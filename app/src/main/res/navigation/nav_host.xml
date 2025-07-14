@@ -406,7 +406,21 @@
         <action
             android:id="@+id/action_to_chat_with_provider"
             app:destination="@id/single_chat_fragment"/>
+
+        <action
+            android:id="@+id/action_to_view_stats"
+            app:destination="@id/view_stats"/>
     </fragment>
+
+
+    <fragment android:id="@+id/view_stats"
+        android:name="com.ftn.eventhopper.fragments.events.EventStatsFragment"
+        android:label="Event Statistics"
+        tools:layout="@layout/fragment_event_stats"
+        >
+
+    </fragment>
+
 
 
     <fragment android:id="@+id/manage_comments"

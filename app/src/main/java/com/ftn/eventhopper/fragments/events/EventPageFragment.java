@@ -52,7 +52,7 @@ public class EventPageFragment extends Fragment {
     private TextView eventTitle, eventDescription, eventLocation, eventTime, eventPrivacy;
     private Button inviteBtn;
     private FloatingActionButton exportPdfButton;
-    private MaterialButton chatButton, generateGuestListBtn;
+    private MaterialButton chatButton, generateGuestListBtn, viewStatsBtn;
 
     private boolean favorited;
 
@@ -95,6 +95,7 @@ public class EventPageFragment extends Fragment {
         favoriteIcon = view.findViewById(R.id.favorite_icon);
         exportPdfButton = view.findViewById(R.id.export_pdf_button);
         chatButton = view.findViewById(R.id.chat_with_us);
+        viewStatsBtn = view.findViewById(R.id.view_stats_button);
 
         exportPdfButton.setOnClickListener(v -> viewModel.exportToPDF(getContext()));
 
@@ -141,6 +142,15 @@ public class EventPageFragment extends Fragment {
                     }
                 }
 
+                if(event.isGraphAuthorized()){
+                    viewStatsBtn.setVisibility(View.VISIBLE);
+                    viewStatsBtn.setOnClickListener(v->{
+                        Bundle bundle = new Bundle();
+                        bundle.putString("eventId", String.valueOf(event.getId()));
+                        navController.navigate(R.id.action_to_view_stats, bundle);
+
+                    });
+                }
 
 
                 if (event.getConversationInitialization() != null) {
