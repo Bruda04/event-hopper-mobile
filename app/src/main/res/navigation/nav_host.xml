@@ -136,6 +136,11 @@
             app:destination="@id/pup_services" />
 
         <action
+            android:id="@+id/action_to_pup_products"
+            app:destination="@id/pup_products" />
+
+
+        <action
             android:id="@+id/action_to_manage_categories"
             app:destination="@id/manage_categories" />
 
@@ -238,6 +243,76 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
     </fragment>
+
+
+    <fragment
+        android:id="@+id/pup_products"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.PupsProductsFragment"
+        android:label="Pup products"
+        tools:layout="@layout/fragment_pups_products" >
+        <action
+            android:id="@+id/action_to_create_product1"
+            app:destination="@id/product_creation1"/>
+        <action
+            android:id="@+id/action_to_edit_product1"
+            app:destination="@id/product_edit1"/>
+        <action
+            android:id="@+id/action_to_solution_page_fragment"
+            app:destination="@id/solution_page"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_creation1"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductCreationData1Fragment"
+        android:label="Product creation first window"
+        tools:layout="@layout/fragment_product_creation_data1" >
+        <action
+            android:id="@+id/action_to_create_product2"
+            app:destination="@id/product_creation2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_creation2"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductCreationData2Fragment"
+        android:label="Product creation second window"
+        tools:layout="@layout/fragment_product_creation_data2" >
+        <action
+            android:id="@+id/back_to_pup_products"
+            app:destination="@id/pup_products"/>
+        <action
+            android:id="@+id/back_to_product_creation1"
+            app:destination="@id/product_creation1"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_edit1"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductEditData1Fragment"
+        android:label="Edit Product 1"
+        tools:layout="@layout/fragment_product_edit_data1">
+        <action
+            android:id="@+id/action_to_edit_product2"
+            app:destination="@id/product_edit2"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/product_edit2"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductEditData2Fragment"
+        android:label="Edit Product 2"
+        tools:layout="@layout/fragment_product_edit_data2">
+        <action
+            android:id="@+id/action_to_pup_products"
+            app:destination="@id/pup_products"/>
+
+        <action
+            android:id="@+id/back_to_edit_product_1"
+            app:destination="@id/product_edit1"/>
+    </fragment>
+
+
+
+
+
 
 
     <fragment

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".fragments.solutions.services.ServiceCreationData1Fragment"
+	android:background="@color/material_dynamic_neutral95"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:padding="16dp">
+
+
+
+		<!-- Name Section -->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/service_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/name">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/DarkLargerText"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!-- Description Section -->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/service_description"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/description">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="120dp"
+				android:textAppearance="@style/DarkLargerText"
+				android:inputType="textMultiLine" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="35dp"/>
+
+		<!-- Category Combobox -->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/category_select"
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/category">
+
+			<AutoCompleteTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/DarkLargerText"
+				android:inputType="none"/>
+			/>
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<com.google.android.material.chip.ChipGroup
+			android:id="@+id/event_types"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			app:singleLine="true"
+			app:chipSpacing="8dp" />
+
+		<TextView
+			android:id="@+id/eventTypesError"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/md_theme_error"
+			android:visibility="gone"
+			android:textSize="12sp" />
+
+		<com.google.android.material.materialswitch.MaterialSwitch
+			android:id="@+id/suggest_new_category_switch"
+			android:layout_width="wrap_content"
+			android:textAppearance="@style/DarkLargerText"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/suggest_new_category"/>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/suggested_category_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/suggested_categroy_name"
+			android:visibility="gone">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="text"/>
+		</com.google.android.material.textfield.TextInputLayout>
+
+
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="35dp"/>
+
+
+		<!-- Checkboxes Row -->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="end">
+
+			<CheckBox
+				android:id="@+id/visibility_checkbox"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/DarkRegularText"
+				android:text="@string/visible" />
+
+			<CheckBox
+				android:id="@+id/availability_checkbox"
+				android:layout_width="wrap_content"
+				android:textAppearance="@style/DarkRegularText"
+				android:layout_height="wrap_content"
+				android:text="@string/available" />
+
+		</LinearLayout>
+
+		<!-- Spacer -->
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<!-- Next Button -->
+		<Button
+			android:id="@+id/next_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/next"
+			android:layout_gravity="end"
+			style="@style/DarkButton"
+
+			android:paddingHorizontal="16dp"
+			android:paddingVertical="8dp" />
+	</LinearLayout>
+
+</FrameLayout>

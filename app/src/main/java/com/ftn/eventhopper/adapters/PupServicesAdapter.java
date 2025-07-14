@@ -9,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +20,6 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.solutions.services.PupsServicesFragment;
 import com.ftn.eventhopper.fragments.solutions.services.viewmodels.PupsServicesViewModel;
 import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
-import com.ftn.eventhopper.shared.models.Service;
 import com.ftn.eventhopper.shared.models.solutions.ProductStatus;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -123,7 +119,7 @@ public class PupServicesAdapter extends RecyclerView.Adapter<PupServicesAdapter.
     private void setupDeleteDialog(int position) {
         MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
         confirmDialog.setTitle("Delete service");
-        confirmDialog.setMessage("Are you sure you want to delete this service?");
+        confirmDialog.setMessage("Are you sure you want to delete " + services.get(position).getName()+"?");
         confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
             fragment.deleteService(services.get(position).getId());
         });

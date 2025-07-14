@@ -171,13 +171,17 @@ public class SolutionPageFragment extends Fragment {
 
         StringBuilder eventTypesText = new StringBuilder();
         int eventTypeIndex = 0;
+
         for (SimpleEventTypeDTO eventType : solution.getEventTypes()) {
             eventTypesText.append(eventType.getName());
             if (eventTypeIndex++ < solution.getEventTypes().size() - 1) {
                 eventTypesText.append(", ");
             }
         }
-        eventTypes.setText(String.format("Event types: %s", eventTypesText.toString()));
+        if(!solution.getEventTypes().isEmpty()){
+            eventTypes.setText(String.format("Event types: %s", eventTypesText.toString()));
+        }
+
 
         if (solution.isService()) {
             duration.setText(String.format("Duration: %s minutes", solution.getDurationMinutes()));
