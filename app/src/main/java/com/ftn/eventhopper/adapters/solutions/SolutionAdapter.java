@@ -12,11 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-<<<<<<< HEAD
-import androidx.navigation.fragment.NavHostFragment;
 
-=======
->>>>>>> 79b4457c45054c254059bc7a6d83c3131aae81be
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
