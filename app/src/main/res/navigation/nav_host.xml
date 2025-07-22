@@ -410,6 +410,11 @@
         <action
             android:id="@+id/action_to_view_stats"
             app:destination="@id/view_stats"/>
+
+        <action
+            android:id="@+id/action_to_budgeting"
+            app:destination="@id/budgeting"/>
+
     </fragment>
 
 
@@ -447,14 +452,6 @@
         tools:layout="@layout/fragment_admins_reports_management">
     </fragment>
 
-    <fragment
-        android:id="@+id/manage_event_types"
-        android:name="com.ftn.eventhopper.fragments.eventTypes.AdminsEventTypeManagement"
-        android:label="Manage Event Types"
-        tools:layout="@layout/fragment_admins_event_type_management"
-        >
-
-    </fragment>
 
     <fragment
         android:id="@+id/solution_page"

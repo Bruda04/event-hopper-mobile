@@ -97,21 +97,43 @@
         android:layout_gravity="center"
         android:gravity="end"
         android:padding="16dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/view_stats_button"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/LightButton"
-            app:icon="@drawable/bar_chart_24px"
-            app:iconTint="@color/darker_blue"
-            app:iconGravity="textStart"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/theme_blue"
-            app:iconPadding="8dp"
-            android:text="@string/view_stats"
-            android:visibility="gone"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/view_stats_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LightButton"
+                app:icon="@drawable/bar_chart_24px"
+                app:iconTint="@color/darker_blue"
+                app:iconGravity="textStart"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/theme_blue"
+                app:iconPadding="8dp"
+                android:text="@string/view_stats"
+                android:visibility="gone"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_budget_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LightButton"
+                app:icon="@drawable/account_balance_wallet_24px"
+                app:iconTint="@color/darker_blue"
+                app:iconGravity="textStart"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/theme_blue"
+                app:iconPadding="8dp"
+                android:text="@string/edit_budget"
+                android:visibility="gone"/>
+        </LinearLayout>
 
 
         <com.google.android.material.button.MaterialButton

@@ -205,20 +205,12 @@
 	<string name="create_new_event">Create new event</string>
 	<string name="max_number_of_participants">Max. number of participants</string>
 	<string name="upload_pictures_required">Upload images</string>
-	<string name="amount">Amount (€)</string>
-	<string name="buy_now">Buy now!</string>
-	<string name="loading_reports">Loading reports...</string>
-	<string name="reporter">Reporter:</string>
-	<string name="reported">"Reported: "</string>
-	<string name="reason">"Reason: "</string>
-	<string name="manage_reports">Manage reports</string>
-	<string name="troubled_user">If user want to report or block user</string>
-	<string name="block_user">Block user</string>
-	<string name="report_user">Report user</string>
+	<string name="upload_pictures">Upload images (Optional)</string>
 	<string name="event_statistics">Event Statistics</string>
 	<string name="download_pdf">Download PDF</string>
 	<string name="generate_guest_list">Generate guest list</string>
 	<string name="view_stats">View Stats</string>
 	<string name="no_invitation_data_available">No invitation data available</string>
+	<string name="edit_budget">Edit Budget</string>
 
 </resources>
