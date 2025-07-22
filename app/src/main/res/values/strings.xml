@@ -211,5 +211,6 @@
 	<string name="generate_guest_list">Generate guest list</string>
 	<string name="view_stats">View Stats</string>
 	<string name="no_invitation_data_available">No invitation data available</string>
+	<string name="edit_budget">Edit Budget</string>
 
 </resources>
