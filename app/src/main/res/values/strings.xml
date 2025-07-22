@@ -205,5 +205,6 @@
 	<string name="create_new_event">Create new event</string>
 	<string name="max_number_of_participants">Max. number of participants</string>
 	<string name="upload_pictures_required">Upload images</string>
+	<string name="upload_pictures">Upload images (Optional)</string>
 
 </resources>
