@@ -3,6 +3,7 @@ package com.ftn.eventhopper.shared.dtos.users.serviceProvider;
 import com.ftn.eventhopper.shared.dtos.location.CreateLocationDTO;
 import com.ftn.eventhopper.shared.dtos.users.person.CreatePersonDTO;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -23,4 +24,6 @@ public class CreateServiceProviderDTO extends CreatePersonDTO {
     private String companyPhoneNumber;
     private List<String> companyPhotos;
     private CreateLocationDTO companyLocation;
+    private LocalTime workStart;
+    private LocalTime workEnd;
 }

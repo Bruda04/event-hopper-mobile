@@ -19,6 +19,7 @@ import com.ftn.eventhopper.shared.models.users.PersonType;
 
 
 import java.io.File;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,6 +74,12 @@ public class PupRegistrationViewModel extends ViewModel {
         personDTO.setCompanyEmail(bundle.getString("companyEmail"));
         personDTO.setCompanyDescription(bundle.getString("description"));
         personDTO.setCompanyPhoneNumber(bundle.getString("companyPhoneNumber"));
+
+        LocalTime startTime = LocalTime.parse(bundle.getString("workStart"));
+        LocalTime endTime = LocalTime.parse(bundle.getString("workEnd"));
+        personDTO.setWorkStart(startTime);
+        personDTO.setWorkEnd(endTime);
+
         CreateLocationDTO companyLocation = new CreateLocationDTO();
         companyLocation.setCity(bundle.getString("companyCity"));
         companyLocation.setAddress(bundle.getString("companyAddress"));

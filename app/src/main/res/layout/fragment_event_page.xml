@@ -99,6 +99,22 @@
         android:padding="16dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/view_stats_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/LightButton"
+            app:icon="@drawable/bar_chart_24px"
+            app:iconTint="@color/darker_blue"
+            app:iconGravity="textStart"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/theme_blue"
+            app:iconPadding="8dp"
+            android:text="@string/view_stats"
+            android:visibility="gone"/>
+
+
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/chat_with_us"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,6 +133,18 @@
             app:icon="@drawable/add"
             style="@style/DarkButton"
             android:text="@string/invite_people"
+            android:visibility="gone"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/generate_guest_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/generate_guest_list"
+            app:layout_constraintTop_toBottomOf="@id/invite_people_button"
+            style="@style/DarkButton"
             android:visibility="gone"
             />
 

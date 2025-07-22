@@ -206,5 +206,10 @@
 	<string name="max_number_of_participants">Max. number of participants</string>
 	<string name="upload_pictures_required">Upload images</string>
 	<string name="upload_pictures">Upload images (Optional)</string>
+	<string name="event_statistics">Event Statistics</string>
+	<string name="download_pdf">Download PDF</string>
+	<string name="generate_guest_list">Generate guest list</string>
+	<string name="view_stats">View Stats</string>
+	<string name="no_invitation_data_available">No invitation data available</string>
 
 </resources>
