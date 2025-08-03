@@ -84,6 +84,11 @@ public class ProductEditData1Fragment extends Fragment {
                         eventTypes.removeAllViews(); // Clear previous chips if any
 
                         List<String> eventTypesList = category.getEventTypes().stream()
+                                .filter(
+                                        eventType -> eventType.getName() != null
+                                                && !eventType.getName().isEmpty()
+                                                && !eventType.isDeactivated()
+                                )
                                 .map(SimpleEventTypeDTO::getName)
                                 .collect(Collectors.toList());
 
@@ -189,6 +194,11 @@ public class ProductEditData1Fragment extends Fragment {
         if (viewModel.getProductUpdateDTO() != null) {
             CategoryDTO selectedCategory = viewModel.getCategory().getValue();
             List<String> eventTypesList = selectedCategory.getEventTypes().stream()
+                    .filter(
+                            eventType -> eventType.getName() != null
+                                    && !eventType.getName().isEmpty()
+                                    && !eventType.isDeactivated()
+                    )
                     .map(SimpleEventTypeDTO::getName)
                     .collect(Collectors.toList());
 
