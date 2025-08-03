@@ -154,7 +154,7 @@ public class BudgetItemsAdapter extends RecyclerView.Adapter<BudgetItemsAdapter.
                         errors--;
                     }
                     items.get(position).setAmount(amountDouble);
-                    viewModel.updateLeftAmount(items);
+//                    viewModel.updateLeftAmount(items);
                 } else {
                     if (!errorPresent) {
                         errors++;

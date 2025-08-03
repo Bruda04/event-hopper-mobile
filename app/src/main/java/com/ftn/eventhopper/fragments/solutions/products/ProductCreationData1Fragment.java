@@ -106,6 +106,11 @@ public class ProductCreationData1Fragment extends Fragment {
                         ((AutoCompleteTextView) category.getEditText()).setOnItemClickListener((parent, view1, position, id) -> {
                             CategoryDTO selectedCategory = categories.get(position);
                             List<String> eventTypesList = selectedCategory.getEventTypes().stream()
+                                    .filter(
+                                            eventType -> eventType.getName() != null
+                                                    && !eventType.getName().isEmpty()
+                                                    && !eventType.isDeactivated()
+                                    )
                                     .map(SimpleEventTypeDTO::getName)
                                     .collect(Collectors.toList());
 
@@ -260,6 +265,11 @@ public class ProductCreationData1Fragment extends Fragment {
                 ((AutoCompleteTextView) category.getEditText()).setText(selectedCategory.getName(), false);
 
                 List<String> eventTypesList = selectedCategory.getEventTypes().stream()
+                        .filter(
+                                eventType -> eventType.getName() != null
+                                        && !eventType.getName().isEmpty()
+                                        && !eventType.isDeactivated()
+                        )
                         .map(SimpleEventTypeDTO::getName)
                         .collect(Collectors.toList());
 
