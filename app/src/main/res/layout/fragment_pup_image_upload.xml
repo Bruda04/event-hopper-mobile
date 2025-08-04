@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/theme_blue"
     android:padding="16dp">
@@ -32,6 +33,47 @@
             android:textAlignment="center"
             android:textAppearance="@style/WhiteRegularText" />
 
+        <TextView
+            android:layout_width="321dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Operating Hours"
+            android:textAlignment="center"
+            android:textAppearance="@style/WhiteRegularText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/upload_images_btn"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+
+
+            <EditText
+                android:id="@+id/start_time_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Start time"
+                android:textAppearance="@style/WhiteRegularText"
+                android:focusable="false"
+                android:clickable="true" />
+
+            <Space android:layout_width="16dp" android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/end_time_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="End time"
+                android:focusable="false"
+                android:textAppearance="@style/WhiteRegularText"
+                android:clickable="true" />
+        </LinearLayout>
+
+
         <!-- Upload images -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/upload_images_btn"
@@ -44,6 +86,15 @@
             style="@style/DarkButton"
             />
 
+        <!-- RecyclerView for image previews -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/image_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_image_preview" />
 
     </LinearLayout>
 

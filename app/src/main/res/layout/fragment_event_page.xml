@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_beige">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <!-- Event Image -->
+    <ImageView
+        android:id="@+id/event_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <!-- Title and Favorites -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textAppearance="@style/DarkHeaderText"
+            />
+
+        <ImageView
+            android:id="@+id/favorite_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+			android:src="@drawable/star"
+			app:tint="@color/theme_blue" />
+    </RelativeLayout>
+
+    <!-- Event Description -->
+    <TextView
+        android:id="@+id/event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="@style/DarkLargerText"
+         />
+
+
+    <!-- Event Location -->
+    <TextView
+        android:id="@+id/event_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="@style/DarkLargerText"
+        app:drawableStartCompat="@drawable/location"
+        />
+
+
+
+    <!-- Location and Time -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/event_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_bold"
+            android:drawablePadding="8dp"
+            android:textAppearance="@style/DarkLargerText" />
+
+        <TextView
+            android:id="@+id/event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:textAppearance="@style/DarkLargerText"
+            app:drawableStartCompat="@drawable/clock" />
+    </LinearLayout>
+
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="end"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/view_stats_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LightButton"
+                app:icon="@drawable/bar_chart_24px"
+                app:iconTint="@color/darker_blue"
+                app:iconGravity="textStart"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/theme_blue"
+                app:iconPadding="8dp"
+                android:text="@string/view_stats"
+                android:visibility="gone"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_budget_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LightButton"
+                app:icon="@drawable/account_balance_wallet_24px"
+                app:iconTint="@color/darker_blue"
+                app:iconGravity="textStart"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/theme_blue"
+                app:iconPadding="8dp"
+                android:text="@string/edit_budget"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/chat_with_us"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/chat_with_organizer"
+            app:layout_constraintTop_toBottomOf="@id/solution_availability"
+            style="@style/DarkButton"
+            android:visibility="gone"
+            />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/generate_guest_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/generate_guest_list"
+            app:layout_constraintTop_toBottomOf="@id/invite_people_button"
+            style="@style/DarkButton"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/invite_people_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/add"
+            style="@style/DarkButton"
+            android:text="@string/invite_people"
+            android:visibility="gone"
+            />
+
+
+
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/export_pdf_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/export_event_data_to_pdf"
+        android:layout_margin="18dp"
+        android:layout_gravity="bottom|end"
+        app:srcCompat="@drawable/baseline_download_24" />
+
+</FrameLayout>

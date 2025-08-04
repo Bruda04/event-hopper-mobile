@@ -1,7 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
 }
-
+def getIpAddress() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("ip_addr");
+}
 android {
     namespace 'com.ftn.eventhopper'
     compileSdk 34
@@ -12,7 +16,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "IP_ADDR", "\""+getIpAddress()+"\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,9 +30,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
 }
 
 dependencies {
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+    implementation 'androidx.core:core:1.13.0'
+
     implementation 'com.github.IslamKhSh:CardSlider:1.0.1'
     implementation 'com.google.android.material:material:1.12.0'
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.0"
@@ -38,11 +50,37 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.recyclerview
+    implementation libs.security.crypto
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation "androidx.paging:paging-runtime:3.1.1"
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+
+    implementation 'com.itextpdf:itext7-core:7.2.3'
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.6' // Replace with latest version if needed
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.6.1'
 
 }

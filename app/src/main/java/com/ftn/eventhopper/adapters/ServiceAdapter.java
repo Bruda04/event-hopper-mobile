@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
-import com.ftn.eventhopper.models.Service;
+import com.ftn.eventhopper.shared.models.Service;
 import com.github.islamkhsh.CardSliderAdapter;
 
 import java.util.ArrayList;

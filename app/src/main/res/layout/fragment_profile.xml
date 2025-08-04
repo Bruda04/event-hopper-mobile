@@ -4,208 +4,475 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment"
+    tools:context=".fragments.profile.ProfileFragment"
     android:background="@color/background_beige">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <!-- ScrollView to make the content scrollable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- ConstraintLayout for the main layout -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- LinearLayout for the main layout -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <!-- Profile Image -->
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/profile_pic_temp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginEnd="16dp"/>
-
-            <!-- Company Information -->
-            <LinearLayout
-                android:id="@+id/company_information"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="120dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/CompanyName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="JetBrains"
-                android:textAppearance="@style/DarkLargerText" />
-
-            <TextView
-                android:id="@+id/companyAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1234 Main Street"
-                android:textAppearance="@style/DarkRegularText" />
-
-            <TextView
-                android:id="@+id/companyCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cityville"
-                android:textAppearance="@style/DarkRegularText" />
-
-            <TextView
-                android:id="@+id/companyEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="johndoe@email.com"
-                android:textAppearance="@style/DarkRegularText" />
-        </LinearLayout>
-
-        <!-- User Information (Name, Address, etc.) -->
-        <LinearLayout
-            android:id="@+id/user_information"
             android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/company_information"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="John Doe"
-            android:textAppearance="@style/DarkLargerText" />
-
-        <TextView
-            android:id="@+id/userAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1234 Main Street"
-            android:textAppearance="@style/DarkRegularText" />
-
-        <TextView
-            android:id="@+id/userCity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cityville"
-            android:textAppearance="@style/DarkRegularText" />
-
-        <TextView
-            android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="johndoe@email.com"
-            android:textAppearance="@style/DarkRegularText" />
-    </LinearLayout>
-
-    <!-- Item 1: Edit Profile -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/ListItemEditProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/user_information"
-        tools:layout_editor_absoluteX="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/editProfile"
-                android:layout_width="0dp"
+
+
+        <!-- Container for Profile Image and User Information -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_information_card"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/edit_profile"
-                android:textAppearance="@style/DarkLargerText" />
+                android:layout_marginTop="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="12dp"
+                android:background="@color/white">
 
-            <ImageView
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/profile_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center_horizontal">
+
+                    <!-- Profile Image -->
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/profile_pic_temp"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <!-- User Information (Name, Address, etc.) -->
+
+                        <!-- Role Text and Edit Icon Container -->
+                        <LinearLayout
+                            android:id="@+id/user_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center_horizontal"
+                            >
+
+                            <!-- Role Text -->
+                            <TextView
+                                android:id="@+id/role"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/role"
+                                android:textStyle="bold"
+                                android:textSize="24sp"
+                                android:layout_gravity="center_horizontal"
+                                android:textAppearance="@style/DarkLargerText" />
+
+                            <!-- Edit Pencil Icon -->
+                            <ImageView
+                                android:id="@+id/editPersonIcon"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/edit"
+                                android:layout_marginStart="8dp"
+                                app:tint="@color/theme_blue" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:id="@+id/userAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:id="@+id/userEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:id="@+id/phoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/loading"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <!-- Item 2: Change password -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemChangePassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/arrow_forward"
-                app:tint="@color/darker_blue" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:layout_marginTop="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                android:backgroundTint="@color/light_blue">
 
-    <!-- Item 2: View my products -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/ListItemMyProducts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/ListItemEditProfile"
-        tools:layout_editor_absoluteX="16dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
+                    <TextView
+                        android:id="@+id/changePassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/change_password"
+                        android:textAppearance="@style/DarkLargerText"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/myProducts"
-                android:layout_width="0dp"
+            <!-- Item 3: View my products -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyProducts"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/my_products"
-                android:textAppearance="@style/DarkLargerText" />
+                android:elevation="2dp"
+                android:layout_marginTop="5dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/myProducts"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/my_products"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 4: View my services -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyServices"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/arrow_forward"
-                app:tint="@color/darker_blue" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:elevation="2dp"
+                android:layout_marginTop="5dp">
 
-    <!-- Item 3: View my services -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/ListItemMyServices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/ListItemMyProducts"
-        tools:layout_editor_absoluteX="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
+                    <TextView
+                        android:id="@+id/myServices"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/my_services"
+                        android:textAppearance="@style/DarkLargerText" />
 
-            <TextView
-                android:id="@+id/myServices"
-                android:layout_width="0dp"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 5: View my prices -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyPrices"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/my_services"
-                android:textAppearance="@style/DarkLargerText" />
+                android:elevation="2dp"
+                android:layout_marginTop="5dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/myPrices"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="My prices"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 6: Manage categories -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemCategories"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/arrow_forward"
-                app:tint="@color/darker_blue" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:elevation="2dp"
+                android:layout_marginTop="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-    </FrameLayout>
+                    <TextView
+                        android:id="@+id/categories"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/manage_categories"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 7: Manage event types -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemEventTypes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/eventTypes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/manage_event_types"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 8: Manage comments -->
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/ListItemManageComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/comments"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/manage_comments"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 9: Manage reports  -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemManageReports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/reports"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/manage_reports"
+                        android:textAppearance="@style/DarkLargerText" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_forward"
+                        app:tint="@color/darker_blue" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- Item 10: View my events -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ListItemMyEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginTop="10dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/myEvents"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/view_my_events"
+                            android:textAppearance="@style/DarkLargerText" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/arrow_forward"
+                            app:tint="@color/darker_blue" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Item 11: Upgrade profile -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/ListItemUpgradeProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="15dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/upgradeProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/upgrade_profile"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Item 12: Log out -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/ListItemLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/light_blue"
+                    app:cardCornerRadius="15dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/logout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/log_out"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Item 13: Deactivate profile -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/ListItemDeactivateProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/md_theme_errorContainer_mediumContrast"
+                    app:cardCornerRadius="15dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/deactivateProfile"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/deactivate_profile"
+                            android:textAppearance="@style/DarkLargerText"
+                            android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</FrameLayout>

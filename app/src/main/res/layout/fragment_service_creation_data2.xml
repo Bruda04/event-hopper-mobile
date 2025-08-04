@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.services.ServiceCreationData2Fragment"
+    tools:context=".fragments.solutions.services.ServiceCreationData2Fragment"
     android:background="@color/material_dynamic_neutral95">
 
     <LinearLayout
@@ -15,78 +15,86 @@
 
         <!-- Price Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/service_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/price">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/service_price"
                 android:layout_width="match_parent"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Discount Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/service_discount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/discount">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/service_discount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Spacer -->
         <Space
             android:layout_width="match_parent"
-            android:layout_height="35dp" />
+            android:layout_height="15dp" />
 
         <!-- Duration Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/duration_minutes">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
+
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Reservation Window Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reservation_window"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/reservation_window_days">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reservation_window"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Cancellation Window Section -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cancellation_window"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/cancellation_window_days">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cancellation_window"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/DarkLargerText"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Spacer -->
         <Space
             android:layout_width="match_parent"
-            android:layout_height="35dp" />
+            android:layout_height="20dp" />
 
         <!-- Upload Images -->
         <com.google.android.material.button.MaterialButton
@@ -97,8 +105,27 @@
             android:layout_gravity="center"
             android:layout_marginBottom="22dp"
             android:padding="5dp"
-            android:text="@string/upload_pictures"
+            android:text="@string/upload_pictures_required"
             />
+
+        <TextView
+            android:id="@+id/imagesError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_error"
+            android:visibility="gone"
+            android:text="Upload one image to be the cover."
+            android:textSize="12sp" />
+
+        <!-- RecyclerView for image previews -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/image_preview_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_image_preview" />
 
         <!-- Spacer -->
         <Space

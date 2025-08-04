@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/agenda_fragment_root"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="16dp"
+	android:background="@color/material_dynamic_neutral95"
+	tools:context=".fragments.events.AgendaCreationFragment">
+
+	<!-- Title -->
+	<TextView
+		android:id="@+id/agenda_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:paddingBottom="16dp"
+		android:text="Create Agenda"
+		android:textAppearance="@style/DarkLargerText"
+		/>
+
+	<!-- Add Activity Button -->
+	<Button
+		android:id="@+id/add_activity_button"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Add Activity"
+		android:textAppearance="@style/DarkRegularText"/>
+
+	<!-- RecyclerView to hold agenda cards -->
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/agenda_recycler_view"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_marginTop="16dp"
+		android:layout_weight="1"
+		android:clipToPadding="false"
+		android:scrollbars="vertical" />
+
+	<!-- Buttons Row -->
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom">
+
+
+
+		<!-- Next Button -->
+		<Button
+			style="@style/DarkButton"
+			android:id="@+id/next_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+
+			android:layout_marginStart="8dp"
+			android:paddingHorizontal="16dp"
+			android:paddingVertical="8dp"
+			android:text="@string/create"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

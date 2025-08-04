@@ -2,17 +2,20 @@ package com.ftn.eventhopper.fragments.registration;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.fragments.registration.viewmodels.OrganizerRegistrationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -25,25 +28,52 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class OrganizerPersonalData1Fragment extends Fragment {
-
+    private OrganizerRegistrationViewModel viewModel;
+    private NavController navController;
     private TextInputEditText emailField, nameField, surnameField, passwordField, passwordAgainField;
     private TextInputLayout emailLayout, nameLayout, surnameLayout, passwordLayout, passwordAgainLayout;
-
     private String email, name, surname, password, passwordAgain;
-
     private Button nextButton;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.registerFragment, false);
+            }
+        });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_personal_data1, container, false);
+        navController = NavHostFragment.findNavController(this);
+        viewModel = new ViewModelProvider(this).get(OrganizerRegistrationViewModel.class);
 
-        nextButton = view.findViewById(R.id.next_btn);
 
         retrieveFields(view);
-        nextButton.setOnClickListener(v -> {
+
+        view.findViewById(R.id.next_btn).setOnClickListener(v -> {
             retrieveData();
+            Log.d("Organizer Page 1", "Next button clicked.");
             if(!validateFields()){
-                goToPersonalData2();
+                viewModel.checkEmail(email, isTaken -> {
+                    if (isTaken) {
+                        emailLayout.setError("Email is taken.");
+                        emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("email", email);
+                        bundle.putString("name", name);
+                        bundle.putString("surname", surname);
+                        bundle.putString("password", password);
+
+                        navController.navigate(R.id.action_to_organizer_data_2, bundle);
+                    }
+                });
             }
         });
 
@@ -77,9 +107,15 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (email.isEmpty()) {
             emailLayout.setError("Email is required"); // Show error message
-            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
-        } else {
+        }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailLayout.setError("Email is in wrong format");
+            emailLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
+        }
+        else {
             emailLayout.setError(null); // Clear error
             emailLayout.setBoxStrokeColor(getResources().getColor(R.color.white)); // Reset border color
         }
@@ -87,11 +123,11 @@ public class OrganizerPersonalData1Fragment extends Fragment {
         // Check password
         if (password.isEmpty()) {
             passwordLayout.setError("Password is required. " + getString(R.string.password_rule));
-            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.red));
+            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
             hasError = true;
         }else if(!isValidPassword(password)){
             passwordLayout.setError(getString(R.string.password_rule));
-            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.red));
+            passwordLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error));
             hasError = true;
         }
         else {
@@ -101,7 +137,11 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (name.isEmpty()) {
             nameLayout.setError("Name is required"); // Show error message
-            nameLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            nameLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
+            hasError = true;
+        }else if(name.length() < 3){
+            nameLayout.setError("Name is too short"); // Show error message
+            nameLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         } else {
             nameLayout.setError(null); // Clear error
@@ -110,7 +150,7 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (surname.isEmpty()) {
             surnameLayout.setError("Surname is required"); // Show error message
-            surnameLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            surnameLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         } else {
             surnameLayout.setError(null); // Clear error
@@ -119,11 +159,11 @@ public class OrganizerPersonalData1Fragment extends Fragment {
 
         if (passwordAgain.isEmpty()) {
             passwordAgainLayout.setError("Password is required"); // Show error message
-            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         }else if(!passwordAgain.equals(password)) {
             passwordAgainLayout.setError("Password must match"); // Show error message
-            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.red)); // Highlight in red
+            passwordAgainLayout.setBoxStrokeColor(getResources().getColor(R.color.light_error)); // Highlight in red
             hasError = true;
         }
         else {
@@ -143,24 +183,4 @@ public class OrganizerPersonalData1Fragment extends Fragment {
         return matcher.matches();
     }
 
-
-
-    private void goToPersonalData2() {
-        // Pass this data to the next fragment
-        Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        bundle.putString("surname", surname);
-        bundle.putString("email", email);
-        bundle.putString("password", password);
-
-        Log.d("Registration", "User: " + bundle.toString());
-
-        // Navigate to the next fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        Fragment fragment = new OrganizerPersonalData2Fragment();
-        fragment.setArguments(bundle);
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

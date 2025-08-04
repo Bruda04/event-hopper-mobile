@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.services.ServiceEditData2Fragment"
+    tools:context=".fragments.solutions.services.ServiceEditData2Fragment"
     android:background="@color/material_dynamic_neutral95">
 
     <LinearLayout
@@ -12,77 +12,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
-
-        <!-- Price Section -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/price">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/service_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Discount Section -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/discount">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/service_discount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Spacer -->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="35dp" />
-        <!-- Cancellation Window Section -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/cancellation_window_days">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cancellation_window"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- Checkboxes Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
-
-            <CheckBox
-                android:id="@+id/visibility_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/visible" />
-
-            <CheckBox
-                android:id="@+id/availability_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/available" />
-
-            <CheckBox
-                android:id="@+id/auto_accept_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auto_accept" />
-        </LinearLayout>
-
 
         <!-- Upload Images -->
         <com.google.android.material.button.MaterialButton
@@ -93,9 +22,34 @@
             android:layout_gravity="center"
             android:layout_marginBottom="22dp"
             android:padding="5dp"
-            android:text="@string/upload_pictures"
+            android:text="@string/upload_pictures_required"
              />
 
+        <TextView
+            android:id="@+id/imagesError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_error"
+            android:visibility="gone"
+            android:text="@string/images_are_required"
+            android:textSize="12sp" />
+
+        <!-- RecyclerView for image previews -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/image_preview_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_image_preview" />
+
+
+        <!-- Spacer -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
 
         <!-- Buttons Row -->

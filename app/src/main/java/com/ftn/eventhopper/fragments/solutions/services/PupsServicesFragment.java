@@ -1,0 +1,202 @@
+package com.ftn.eventhopper.fragments.solutions.services;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.adapters.PupServicesAdapter;
+import com.ftn.eventhopper.fragments.solutions.services.viewmodels.PupsServicesViewModel;
+import com.ftn.eventhopper.shared.dtos.solutions.ServiceManagementDTO;
+import com.ftn.eventhopper.shared.responses.PagedResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.search.SearchBar;
+import com.google.android.material.search.SearchView;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
+public class PupsServicesFragment extends Fragment {
+
+    private PupsServicesViewModel viewModel;
+    private RecyclerView recyclerView;
+    private TextView statusMessage;
+    private int currentPage = 0;
+    private final int pageSize = 10;
+    private Button filterButton;
+    private Button searchButton;
+    private SearchView searchView;
+    private SearchBar searchBar;
+    private Button nextPageButton;
+    private Button previousPageButton;
+    private TextView pager;
+    private FloatingActionButton createServiceButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private NavController navController;
+
+
+    public PupsServicesFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.pup_services, true);
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_pups_services, container, false);
+        navController = NavHostFragment.findNavController(this);
+        viewModel = new ViewModelProvider(this).get(PupsServicesViewModel.class);
+
+        statusMessage = view.findViewById(R.id.status_message);
+        statusMessage.setText(R.string.loading_categories);
+        statusMessage.setVisibility(View.VISIBLE);
+
+        recyclerView = view.findViewById(R.id.recycler_view_services);
+        nextPageButton = view.findViewById(R.id.next_page_button);
+        previousPageButton = view.findViewById(R.id.previous_page_button);
+        pager = view.findViewById(R.id.pager);
+        filterButton = view.findViewById(R.id.filterButton);
+        createServiceButton = view.findViewById(R.id.floating_add_button);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
+        searchBar = view.findViewById(R.id.search_bar);
+        searchView = view.findViewById(R.id.search_view);
+        searchButton = view.findViewById(R.id.search_button);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            statusMessage.setText(R.string.loading_services);
+            statusMessage.setVisibility(View.VISIBLE);
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        currentPage = 0;
+        viewModel.fetchAllServicesPage(currentPage, pageSize);
+
+        viewModel.getServicesPage().observe(getViewLifecycleOwner(), servicePage -> {
+            if(servicePage != null){
+                statusMessage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                pager.setVisibility(View.VISIBLE);
+                this.setFields(servicePage);
+            }
+        });
+
+        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
+            if (error != null) {
+                Log.e("EventHopper", "Error fetching services: " + error);
+                statusMessage.setText(R.string.oops_something_went_wrong_please_try_again_later);
+                recyclerView.setVisibility(View.GONE);
+                pager.setVisibility(View.GONE);
+                statusMessage.setVisibility(View.VISIBLE);
+            } else {
+                statusMessage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                pager.setVisibility(View.VISIBLE);
+            }
+        });
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                BottomSheetPupServicesFilterSort bottomSheet = new BottomSheetPupServicesFilterSort(viewModel);
+                bottomSheet.show(fragmentManager, "FilterSortBottomSheet");
+            }
+        });
+
+        viewModel.getFilters().observe(getViewLifecycleOwner(), filters -> {
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+        });
+
+        createServiceButton.setOnClickListener(v -> {
+            currentPage = 0;
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_to_create_service1);
+        });
+
+        searchButton.setOnClickListener(v -> {
+            viewModel.setSearchText(searchView.getText().toString().trim());
+            searchBar.setText(viewModel.getSearchText());
+            Log.d("PupsServicesFragment", "Search text set to: " + viewModel.getSearchText());
+            searchView.hide();
+            currentPage = 0;
+            viewModel.fetchAllServicesPage(currentPage, pageSize);
+
+        });
+
+        return view;
+    }
+
+    private void setFields(PagedResponse<ServiceManagementDTO> servicePage) {
+        PupServicesAdapter adapter = new PupServicesAdapter(getContext(), new ArrayList<>(servicePage.getContent()), NavHostFragment.findNavController(this), this, viewModel);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        if (servicePage.getTotalPages() == 0) {
+            pager.setVisibility(View.GONE);
+        }
+
+        pager.setText(String.format("%d/%d", currentPage + 1, servicePage.getTotalPages()));
+
+        if (currentPage + 1 < servicePage.getTotalPages()) {
+            nextPageButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
+            nextPageButton.setOnClickListener(v -> {
+                viewModel.fetchAllServicesPage(++currentPage , pageSize);
+
+            });
+            nextPageButton.setEnabled(true);
+        } else {
+            nextPageButton.setEnabled(false);
+            nextPageButton.setBackgroundColor(getResources().getColor(R.color.grey));
+        }
+
+        if (currentPage > 0) {
+            previousPageButton.setBackgroundColor(getResources().getColor(R.color.darker_blue));
+            previousPageButton.setOnClickListener(v -> {
+                viewModel.fetchAllServicesPage(--currentPage, pageSize);
+            });
+            previousPageButton.setEnabled(true);
+        } else {
+            previousPageButton.setEnabled(false);
+            previousPageButton.setBackgroundColor(getResources().getColor(R.color.grey));
+        }
+
+    }
+
+    public void deleteService(UUID id) {
+        viewModel.deleteService(id);
+        currentPage = 0;
+        viewModel.fetchAllServicesPage(currentPage, pageSize);
+    }
+}

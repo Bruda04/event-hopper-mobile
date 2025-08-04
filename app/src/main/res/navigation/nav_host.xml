@@ -1,0 +1,572 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/home">
+
+    <!-- Notifications Fragment -->
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.ftn.eventhopper.fragments.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <!-- Invitations Fragment -->
+    <fragment
+        android:id="@+id/invitationsFragment"
+        android:name="com.ftn.eventhopper.fragments.invitations.InviteFragment"
+        android:label="Invite people"
+        tools:layout="@layout/fragment_invite"
+        />
+
+    <fragment
+        android:id="@+id/single_chat_fragment"
+        android:name="com.ftn.eventhopper.fragments.messages.SingleChatFragment"
+        android:label="Invite people"
+        tools:layout="@layout/fragment_single_chat"
+        />
+
+    <fragment
+        android:id="@+id/conversations_fragment"
+        android:name="com.ftn.eventhopper.fragments.messages.ConversationsListFragment"
+        android:label="Conversations"
+        tools:layout="@layout/fragment_conversations_list"
+        >
+
+        <action
+            android:id="@+id/action_to_single_chat"
+            app:destination="@id/single_chat_fragment"
+            />
+    </fragment>
+
+    <!-- Home Fragment -->
+    <!--    !!!!!!!!!!!!!inviting action is just to test inviting feature!!!!!!!!!!!!!!!!!!!!-->
+    <fragment
+        android:id="@+id/home"
+        android:name="com.ftn.eventhopper.fragments.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"
+        >
+        <action
+            android:id="@+id/action_to_invite"
+            app:destination="@id/invitationsFragment"
+            />
+        <action
+            android:id="@+id/action_to_conversations"
+            app:destination="@id/conversations_fragment"
+            />
+
+        <action
+            android:id="@+id/action_to_solution_page"
+            app:destination="@id/solution_page"
+            />
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+
+    </fragment>
+
+    <!--Not logged in-->
+    <fragment
+        android:id="@+id/notLoggedIn"
+        android:name="com.ftn.eventhopper.fragments.profile.NotLoggedInFragment"
+        android:label="Not logged in"
+        tools:layout="@layout/fragment_not_logged_in"
+        />
+
+
+    <!-- Calendar Fragment -->
+    <fragment
+        android:id="@+id/calendar"
+        android:name="com.ftn.eventhopper.fragments.profile.CalendarFragment"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+    </fragment>
+
+    <!-- Company Fragment -->
+    <fragment
+        android:id="@+id/company"
+        android:name="com.ftn.eventhopper.fragments.profile.CompanyFragment"
+        android:label="Company"
+        tools:layout="@layout/fragment_company">
+        <action
+            android:id="@+id/action_to_manage_company_images"
+            app:destination="@id/manage_company_pictures"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_company_pictures"
+        android:name="com.ftn.eventhopper.fragments.profile.ManageCompanyPhotosFragment"
+        android:label="Manage Company Photos"
+        tools:layout="@layout/fragment_edit_company_photos">
+    </fragment>
+
+
+    <!-- Favorites Fragment -->
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.ftn.eventhopper.fragments.profile.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites">
+    <action
+        android:id="@+id/action_to_event_page"
+        app:destination="@id/event_page"
+        />
+    <action
+        android:id="@+id/action_to_solution_page"
+        app:destination="@id/solution_page"
+        />
+    </fragment>
+
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.ftn.eventhopper.fragments.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_to_pup_services"
+            app:destination="@id/pup_services" />
+
+        <action
+            android:id="@+id/action_to_pup_products"
+            app:destination="@id/pup_products" />
+
+
+        <action
+            android:id="@+id/action_to_manage_categories"
+            app:destination="@id/manage_categories" />
+
+        <action
+            android:id="@+id/action_to_manage_prices"
+            app:destination="@id/manage_prices" />
+
+        <action
+            android:id="@+id/action_to_manage_event_types"
+            app:destination="@id/manage_event_types" />
+
+        <action
+            android:id="@+id/action_to_view_my_events"
+            app:destination="@id/view_my_events" />
+
+
+        <action
+
+            android:id="@+id/action_to_manage_comments"
+            app:destination="@id/manage_comments"
+            />
+
+        <action
+            android:id="@+id/action_to_manage_reports"
+            app:destination="@id/manage_reports"
+            />
+
+        <action
+            android:id="@+id/action_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/profile"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_to_choose_role"
+            app:destination="@id/choose_role"
+            />
+
+    </fragment>
+
+
+    <!-- View my Events Fragment -->
+    <fragment
+        android:id="@+id/view_my_events"
+        android:name="com.ftn.eventhopper.fragments.events.MyEventsFragment"
+        android:label="View my events"
+        tools:layout="@layout/fragment_my_events">
+
+        <action
+            android:id="@+id/action_to_event_page"
+            app:destination="@id/event_page"
+            />
+
+        <action
+            android:id="@+id/action_to_create_event"
+            app:destination="@id/event_creation_1"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_creation_1"
+        android:name="com.ftn.eventhopper.fragments.events.EventCreationData1Fragment"
+        android:label="Event Creation 1"
+        tools:layout="@layout/fragment_event_creation_data1">
+        <action
+            android:id="@+id/action_to_event_creation2"
+            app:destination="@id/event_creation_2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_creation_2"
+        android:name="com.ftn.eventhopper.fragments.events.EventCreationData2Fragment"
+        android:label="Event Creation 2"
+        tools:layout="@layout/fragment_event_creation_data2">
+        <action
+            android:id="@+id/action_to_add_agenda"
+            app:destination="@id/create_agenda"/>
+
+        <action
+            android:id="@+id/back_to_event_creation_1"
+            app:destination="@id/event_creation_1"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/create_agenda"
+        android:name="com.ftn.eventhopper.fragments.events.AgendaCreationFragment"
+        android:label="Agenda creation"
+        tools:layout="@layout/fragment_agenda_creation">
+
+        <action
+            android:id="@+id/back_to_my_events_page"
+            app:destination="@id/view_my_events"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.ftn.eventhopper.fragments.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/pup_products"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.PupsProductsFragment"
+        android:label="Pup products"
+        tools:layout="@layout/fragment_pups_products" >
+        <action
+            android:id="@+id/action_to_create_product1"
+            app:destination="@id/product_creation1"/>
+        <action
+            android:id="@+id/action_to_edit_product1"
+            app:destination="@id/product_edit1"/>
+        <action
+            android:id="@+id/action_to_solution_page_fragment"
+            app:destination="@id/solution_page"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_creation1"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductCreationData1Fragment"
+        android:label="Product creation first window"
+        tools:layout="@layout/fragment_product_creation_data1" >
+        <action
+            android:id="@+id/action_to_create_product2"
+            app:destination="@id/product_creation2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_creation2"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductCreationData2Fragment"
+        android:label="Product creation second window"
+        tools:layout="@layout/fragment_product_creation_data2" >
+        <action
+            android:id="@+id/back_to_pup_products"
+            app:destination="@id/pup_products"/>
+        <action
+            android:id="@+id/back_to_product_creation1"
+            app:destination="@id/product_creation1"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_edit1"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductEditData1Fragment"
+        android:label="Edit Product 1"
+        tools:layout="@layout/fragment_product_edit_data1">
+        <action
+            android:id="@+id/action_to_edit_product2"
+            app:destination="@id/product_edit2"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/product_edit2"
+        android:name="com.ftn.eventhopper.fragments.solutions.products.ProductEditData2Fragment"
+        android:label="Edit Product 2"
+        tools:layout="@layout/fragment_product_edit_data2">
+        <action
+            android:id="@+id/action_to_pup_products"
+            app:destination="@id/pup_products"/>
+
+        <action
+            android:id="@+id/back_to_edit_product_1"
+            app:destination="@id/product_edit1"/>
+    </fragment>
+
+
+
+
+
+
+
+    <fragment
+        android:id="@+id/pup_services"
+        android:name="com.ftn.eventhopper.fragments.solutions.services.PupsServicesFragment"
+        android:label="Pup services"
+        tools:layout="@layout/fragment_pups_services" >
+        <action
+            android:id="@+id/action_to_create_service1"
+            app:destination="@id/service_creation1"/>
+        <action
+            android:id="@+id/action_to_edit_service1"
+            app:destination="@id/service_edit1"/>
+        <action
+            android:id="@+id/action_to_solution_page_fragment"
+            app:destination="@id/solution_page"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/service_creation1"
+        android:name="com.ftn.eventhopper.fragments.solutions.services.ServiceCreationData1Fragment"
+        android:label="Service creation first window"
+        tools:layout="@layout/fragment_service_creation_data1" >
+        <action
+            android:id="@+id/action_to_create_service2"
+            app:destination="@id/service_creation2"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/service_creation2"
+        android:name="com.ftn.eventhopper.fragments.solutions.services.ServiceCreationData2Fragment"
+        android:label="Service creation second window"
+        tools:layout="@layout/fragment_service_creation_data2" >
+        <action
+            android:id="@+id/back_to_pup_services"
+            app:destination="@id/pup_services"/>
+        <action
+            android:id="@+id/back_to_service_creation1"
+            app:destination="@id/service_creation1"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/service_edit1"
+        android:name="com.ftn.eventhopper.fragments.solutions.services.ServiceEditData1Fragment"
+        android:label="Edit Service 1"
+        tools:layout="@layout/fragment_service_edit_data1">
+        <action
+            android:id="@+id/action_to_edit_service2"
+            app:destination="@id/service_edit2"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/service_edit2"
+        android:name="com.ftn.eventhopper.fragments.solutions.services.ServiceEditData2Fragment"
+        android:label="Edit Service 2"
+        tools:layout="@layout/fragment_service_edit_data2">
+        <action
+            android:id="@+id/action_to_pup_services"
+            app:destination="@id/pup_services"/>
+
+        <action
+            android:id="@+id/back_to_edit_service_1"
+            app:destination="@id/service_edit1"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_categories"
+        android:name="com.ftn.eventhopper.fragments.categories.AdminsCategoriesSuggestionsManagementFragment"
+        android:label="Manage Categories"
+        tools:layout="@layout/fragment_admins_categories_suggestions_management">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_prices"
+        android:name="com.ftn.eventhopper.fragments.solutions.prices.PUPPricesManagementFragment"
+        android:label="Manage Categories"
+        tools:layout="@layout/fragment_p_u_p_prices_management">
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/event_page"
+        android:name="com.ftn.eventhopper.fragments.events.EventPageFragment"
+        android:label="Event Page"
+        tools:layout="@layout/fragment_event_page">
+        <action
+            android:id="@+id/action_to_chat_with_provider"
+            app:destination="@id/single_chat_fragment"/>
+
+        <action
+            android:id="@+id/action_to_view_stats"
+            app:destination="@id/view_stats"/>
+
+        <action
+            android:id="@+id/action_to_budgeting"
+            app:destination="@id/budgeting"/>
+
+    </fragment>
+
+
+    <fragment android:id="@+id/view_stats"
+        android:name="com.ftn.eventhopper.fragments.events.EventStatsFragment"
+        android:label="Event Statistics"
+        tools:layout="@layout/fragment_event_stats"
+        >
+
+    </fragment>
+
+
+
+    <fragment android:id="@+id/manage_comments"
+        android:name="com.ftn.eventhopper.fragments.comments.AdminsCommentsManagementFragment"
+        android:label="Manage Comments"
+        tools:layout="@layout/fragment_admins_comments_management"
+        >
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/manage_event_types"
+        android:name="com.ftn.eventhopper.fragments.eventTypes.AdminsEventTypeManagement"
+        android:label="Manage Event Types"
+        tools:layout="@layout/fragment_admins_event_type_management"
+        >
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_reports"
+        android:name="com.ftn.eventhopper.fragments.reports.AdminsReportsManagementFragment"
+        android:label="Manage Reports"
+        tools:layout="@layout/fragment_admins_reports_management">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/solution_page"
+        android:name="com.ftn.eventhopper.fragments.solutions.SolutionPageFragment"
+        android:label="Solution Page"
+        tools:layout="@layout/fragment_solution_page">
+
+        <action
+            android:id="@+id/action_to_provider_page"
+            app:destination="@id/service_provider_page"/>
+
+        <action
+            android:id="@+id/action_to_chat_with_provider"
+            app:destination="@id/single_chat_fragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/service_provider_page"
+        android:name="com.ftn.eventhopper.fragments.serviceProviderPage.ServiceProviderPageFragment"
+        android:label="Service Provider Page"
+        tools:layout="@layout/fragment_service_provider_page">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/choose_role"
+        android:name="com.ftn.eventhopper.fragments.upgrades.ChooseRoleFragment"
+        android:label="Choose role to upgrade"
+        tools:layout="@layout/fragment_choose_role"
+        >
+        <action
+            android:id="@+id/action_to_success"
+            app:destination="@id/successful_upgrading"
+            app:popUpTo="@id/profile"
+            >
+        </action>
+
+        <action
+            android:id="@+id/action_to_company_data1"
+            app:destination="@id/company_information1"
+            app:popUpTo="@id/profile"
+            >
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/successful_upgrading"
+        android:name="com.ftn.eventhopper.fragments.upgrades.SuccessfulUpgradeFragment"
+        android:label="Successful upgrading"
+        tools:layout="@layout/fragment_successful_upgrade"
+        >
+        <action
+            android:id="@+id/action_successful_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/login"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/company_information1"
+        android:name="com.ftn.eventhopper.fragments.upgrades.CompanyData1Fragment"
+        android:label="Company data 1"
+        tools:layout="@layout/fragment_company_data"
+        >
+        <action
+            android:id="@+id/action_to_company_data2"
+            app:destination="@id/company_information2"
+            app:popUpTo="@id/choose_role"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/company_information2"
+        android:name="com.ftn.eventhopper.fragments.upgrades.CompanyData2Fragment"
+        android:label="Company data 2"
+        tools:layout="@layout/fragment_company_data2"
+        >
+        <action
+            android:id="@+id/action_to_success"
+            app:destination="@id/successful_upgrading"
+            app:popUpTo="@id/choose_role"
+            />
+        <action
+            android:id="@+id/action_to_image_upload"
+            app:destination="@id/pupImageUploadUpgradeFragment"
+
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pupImageUploadUpgradeFragment"
+        android:name="com.ftn.eventhopper.fragments.upgrades.PupImageUploadUpgradeFragment"
+        android:label="PupImageUploadUpgrade"
+        tools:layout="@layout/fragment_pup_image_upload_upgrade">
+
+        <action
+            android:id="@+id/action_to_success_pup"
+            app:destination="@id/successful_upgrading"
+            app:popUpTo="@id/pupImageUploadFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/budgeting"
+        android:name="com.ftn.eventhopper.fragments.budgets.BudgetingFragment"
+        android:label="Budgeting"
+        tools:layout="@layout/fragment_budgeting">
+
+        <action
+            android:id="@+id/action_to_solution_page"
+            app:destination="@id/solution_page"
+            />
+
+    </fragment>
+
+
+</navigation>

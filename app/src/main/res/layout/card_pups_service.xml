@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="194dp"
             android:contentDescription="@string/service_card_image"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,13 +25,29 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/pups_service_card_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="@color/md_theme_scrim" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/pups_service_card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/md_theme_scrim" />
+
+                <ImageView
+                    android:id="@+id/pups_service_card_title_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    app:tint="@color/md_theme_secondary"
+                    android:visibility="gone"
+                    android:src="@drawable/baseline_sync_24" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/pups_service_card_secondary"
@@ -88,7 +105,7 @@
             <!-- View More Button -->
             <com.google.android.material.button.MaterialButton
                 style="@style/DarkButton"
-                android:id="@+id/pups_service_card_button"
+                android:id="@+id/pups_service_card_view_more_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="8dp"
