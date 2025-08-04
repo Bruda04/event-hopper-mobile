@@ -1,6 +1,16 @@
 # EventHopper
 
-This project is an Android application developed in Android Studio. The app connects to a backend service that was build as a part of the "Server side engineering" course and requires proper configuration of your development environment and device to run successfully. 
+This project is an Android application developed in Android Studio. The app connects to a backend service that was built as a part of the "Server Side Engineering" course and requires proper configuration of your development environment and device to run successfully.
+
+🔗 **Backend Repository:** [https://github.com/kzi-nastava/iss-project-event-planner-siit-2024-team-17](https://github.com/kzi-nastava/iss-project-event-planner-siit-2024-team-17)
+
+---
+
+# Authors
+
+- SV1/2022 [Marija Parežanin](https://github.com/marijaparezanin) 
+- SV29/2022 [Vanja Kostić](https://github.com/vanjakostic03)
+- SV53/2022 [Luka Bradić](https://github.com/Bruda04)
 
 ---
 
