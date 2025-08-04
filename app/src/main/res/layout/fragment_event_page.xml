@@ -148,15 +148,6 @@
             android:visibility="gone"
             />
 
-        <Button
-            android:id="@+id/invite_people_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/add"
-            style="@style/DarkButton"
-            android:text="@string/invite_people"
-            android:visibility="gone"
-            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/generate_guest_list"
@@ -169,6 +160,18 @@
             style="@style/DarkButton"
             android:visibility="gone"
             />
+
+        <Button
+            android:id="@+id/invite_people_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/add"
+            style="@style/DarkButton"
+            android:text="@string/invite_people"
+            android:visibility="gone"
+            />
+
+
 
     </LinearLayout>
 
