@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
 import com.ftn.eventhopper.shared.models.Notification;
 
 import java.time.format.DateTimeFormatter;
@@ -19,11 +20,11 @@ import java.util.ArrayList;
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder>{
 
 
-    ArrayList<Notification> notifications;
+    ArrayList<NotificationDTO> notifications;
     Context context;
     private final Fragment fragment;
 
-    public NotificationsAdapter(Context context, ArrayList<Notification> notifications, Fragment fragment) {
+    public NotificationsAdapter(Context context, ArrayList<NotificationDTO> notifications, Fragment fragment) {
         this.notifications = notifications;
         this.context = context;
         this.fragment = fragment;
@@ -38,8 +39,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.NotificationViewHolder holder, int position) {
 
-        holder.notificationTitle.setText(notifications.get(position).getTitle());
-        holder.notificationText.setText(notifications.get(position).getText());
+        holder.notificationTitle.setText(notifications.get(position).getContent());
         holder.notificationTimestamp.setText(notifications.get(position).getTimestamp().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
 
 
