@@ -3,16 +3,22 @@ package com.ftn.eventhopper.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.NotificationsAdapter;
+import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
+import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
+import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.models.Notification;
 
 import java.time.LocalDateTime;
@@ -20,6 +26,11 @@ import java.util.ArrayList;
 
 public class NotificationsFragment extends Fragment {
 
+    private ProfileViewModel viewModel;
+    private RecyclerView recyclerView;
+    private TextView emptyMessage;
+    private ArrayList<NotificationDTO> notification;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -30,26 +41,66 @@ public class NotificationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         // Set up the RecyclerView with an adapter
-        RecyclerView recyclerView = view.findViewById(R.id.notification_recyclerview);
+        recyclerView = view.findViewById(R.id.notification_recyclerview);
 
-        ArrayList<Notification> notifications = new ArrayList<>();
-        notifications.add(new Notification("Welcome", "Thank you for joining us!", LocalDateTime.now().minusDays(5)));
-        notifications.add(new Notification("Update Available", "A new version of the app is ready for download.", LocalDateTime.now().minusDays(3)));
-        notifications.add(new Notification("Reminder", "Don't forget to check out our new features.", LocalDateTime.now().minusDays(2)));
-        notifications.add(new Notification("Event Today", "Join our live webinar at 3 PM.", LocalDateTime.now().minusHours(6)));
-        notifications.add(new Notification("Survey", "We value your feedback! Take our survey.", LocalDateTime.now().minusMinutes(30)));
-        notifications.add(new Notification("Maintenance", "Scheduled maintenance at midnight.", LocalDateTime.now().plusHours(5)));
+        fetchNotifications(false);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> {
+            // Prevent refresh if RecyclerView is not at the top
+            return recyclerView.canScrollVertically(-1);
+        });
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setVisibility(View.GONE);
+            fetchNotifications(true);
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+
+        return view;
+    }
+
+    private void fetchNotifications(boolean refresh){
+
+        if(refresh || viewModel.getProfile() == null){
+            viewModel.fetchProfile();
+        }
+        viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
+            ProfileForPersonDTO profile = viewModel.getProfile();
+            if (changed != null && changed && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyMessage.setVisibility(View.GONE);
+                this.setAll(new ArrayList<>(profile.getNotifications()));
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                emptyMessage.setVisibility(View.VISIBLE);
+            }
+            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 
 
 
+    private void setAll(ArrayList<NotificationDTO> notifications) {
         NotificationsAdapter adapter = new NotificationsAdapter(getContext(), notifications, this);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        return view;
     }
 }

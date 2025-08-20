@@ -2,6 +2,8 @@ package com.ftn.eventhopper.clients.services.auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 import android.util.Base64;
 import android.util.Log;
 
@@ -25,19 +27,19 @@ public class UserService {
      */
     public static void initialize(Context context) {
         try {
-//            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
 
             MasterKey masterKey = new MasterKey.Builder(context)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                     .build();
 
             sharedPreferences = EncryptedSharedPreferences.create(
-                    masterKey,
+                    context.getApplicationContext(),
                     PREFERENCES_FILE_NAME,
-                    context,
+                    masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize EncryptedSharedPreferences");
         }

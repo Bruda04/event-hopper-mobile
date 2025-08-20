@@ -50,7 +50,9 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.recyclerview
-    implementation libs.security.crypto
+    //implementation libs.security.crypto
+    implementation "androidx.security:security-crypto:1.1.0-alpha07"
+
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
@@ -83,5 +85,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.1'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.6.1'
 
-    implementation "androidx.security:security-crypto:1.0.0"
+
+
 }
