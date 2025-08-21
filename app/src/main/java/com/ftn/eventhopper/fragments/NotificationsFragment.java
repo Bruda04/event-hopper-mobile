@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,14 @@ import android.widget.TextView;
 
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.NotificationsAdapter;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.models.Notification;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,8 +34,9 @@ public class NotificationsFragment extends Fragment {
     private ProfileViewModel viewModel;
     private RecyclerView recyclerView;
     private TextView emptyMessage;
-    private ArrayList<NotificationDTO> notification;
+    private NotificationsAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Gson wsGson;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -45,62 +51,70 @@ public class NotificationsFragment extends Fragment {
 
         // Set up the RecyclerView with an adapter
         recyclerView = view.findViewById(R.id.notification_recyclerview);
-
-        fetchNotifications(false);
-
+        emptyMessage = view.findViewById(R.id.empty_message);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> {
-            // Prevent refresh if RecyclerView is not at the top
-            return recyclerView.canScrollVertically(-1);
-        });
+
+
+        adapter = new NotificationsAdapter(getContext(), new ArrayList<>(), this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            recyclerView.setVisibility(View.GONE);
-            fetchNotifications(true);
+            fetchNotifications();
             swipeRefreshLayout.setRefreshing(false);
         });
 
+        // LiveData observer
+        viewModel.getNotificationsLiveData().observe(getViewLifecycleOwner(), notifications -> {
+            adapter.notifications.clear();
+            adapter.notifications.addAll(notifications);
+            adapter.notifyDataSetChanged();
+            recyclerView.setVisibility(notifications.isEmpty() ? View.GONE : View.VISIBLE);
+            emptyMessage.setVisibility(notifications.isEmpty() ? View.VISIBLE : View.GONE);
+            if (!notifications.isEmpty()) recyclerView.scrollToPosition(0);
+        });
+
+        fetchNotifications();
+
+        wsGson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, context) -> LocalDateTime.parse(json.getAsString()))
+                .create();
+
+        // WebSocket handler za nove notifikacije
+        ClientUtils.setNotificationHandler(message -> {
+            try {
+                NotificationDTO newNotification = wsGson.fromJson(message, NotificationDTO.class);
+                requireActivity().runOnUiThread(() -> viewModel.addNotification(newNotification));
+            } catch (Exception e) {
+                Log.e("NotificationsFragment", "Failed to parse notification: " + e.getMessage());
+            }
+        });
 
         return view;
     }
 
-    private void fetchNotifications(boolean refresh){
-
-        if(refresh || viewModel.getProfile() == null){
-            viewModel.fetchProfile();
-        }
+    private void fetchNotifications() {
+        viewModel.fetchProfile();
         viewModel.getProfileChanged().observe(getViewLifecycleOwner(), changed -> {
-            ProfileForPersonDTO profile = viewModel.getProfile();
-            if (changed != null && changed && profile.getFavoriteProducts() != null && !profile.getFavoriteProducts().isEmpty()) {
-                recyclerView.setVisibility(View.VISIBLE);
-                emptyMessage.setVisibility(View.GONE);
-                this.setAll(new ArrayList<>(profile.getNotifications()));
-            } else {
-                recyclerView.setVisibility(View.GONE);
-                emptyMessage.setVisibility(View.VISIBLE);
+            if (changed != null && changed) {
+                ProfileForPersonDTO profile = viewModel.getProfile();
+                viewModel.loadProfileNotifications(profile);
             }
-            swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation
         });
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        ClientUtils.connectWebSocket();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        ClientUtils.disconnectStompClient();
     }
 
-
-
-    private void setAll(ArrayList<NotificationDTO> notifications) {
-        NotificationsAdapter adapter = new NotificationsAdapter(getContext(), notifications, this);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-    }
 }

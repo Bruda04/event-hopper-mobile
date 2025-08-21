@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder>{
 
 
-    ArrayList<NotificationDTO> notifications;
+    public ArrayList<NotificationDTO> notifications;
     Context context;
     private final Fragment fragment;
 

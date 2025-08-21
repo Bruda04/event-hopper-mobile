@@ -22,7 +22,7 @@ Before running the project, ensure you have the following:
 - **Android SDK** installed and configured
 - A **physical Android device** or emulator to run the app. (The android versions this was tested on was 13 and 15)
 - USB cable (if using a physical device)
-
+1
 ---
 
 ## 1. Configure `local.properties`

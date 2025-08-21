@@ -3,6 +3,7 @@ package com.ftn.eventhopper.fragments.profile.viewmodels;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,12 +12,16 @@ import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
 import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
+import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ChangePasswordDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdateCompanyAccountDTO;
 import com.ftn.eventhopper.shared.dtos.profile.UpdatePersonDTO;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import lombok.Getter;
 import okhttp3.MediaType;
@@ -42,11 +47,33 @@ public class ProfileViewModel extends ViewModel {
     @Getter
     private final MutableLiveData<Boolean> editCompanyProfileSuccess = new MutableLiveData<>();
 
+    private final MutableLiveData<ArrayList<NotificationDTO>> notificationsLiveData = new MutableLiveData<>(new ArrayList<>());
+
     @Getter
     private MutableLiveData<String> imageUrlLiveData = new MutableLiveData<>();
 
     @Getter
     private MutableLiveData<Boolean> deactivateAccountSuccess = new MutableLiveData<>();
+
+
+    public LiveData<ArrayList<NotificationDTO>> getNotificationsLiveData() {
+        return notificationsLiveData;
+    }
+
+    // Dodaj novu notifikaciju i osveži UI
+    public void addNotification(NotificationDTO notification) {
+        ArrayList<NotificationDTO> current = notificationsLiveData.getValue();
+        if (current == null) current = new ArrayList<>();
+        current.add(0, notification);
+        notificationsLiveData.postValue(current);
+    }
+
+    public void loadProfileNotifications(ProfileForPersonDTO profile) {
+        if (profile != null && profile.getNotifications() != null) {
+            ArrayList<NotificationDTO> sorted = new ArrayList<>(profile.getNotifications());
+            Collections.reverse(sorted);
+            notificationsLiveData.postValue(sorted);        }
+    }
 
     public void logout(){
         UserService.clearJwtToken();
