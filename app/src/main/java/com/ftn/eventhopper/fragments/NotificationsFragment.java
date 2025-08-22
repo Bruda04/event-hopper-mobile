@@ -22,6 +22,7 @@ import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
 import com.ftn.eventhopper.shared.models.Notification;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -36,6 +37,7 @@ public class NotificationsFragment extends Fragment {
     private TextView emptyMessage;
     private NotificationsAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private MaterialSwitch muteSwitch;
     private Gson wsGson;
 
     public NotificationsFragment() {
@@ -53,6 +55,7 @@ public class NotificationsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.notification_recyclerview);
         emptyMessage = view.findViewById(R.id.empty_message);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        muteSwitch = view.findViewById(R.id.mute_button);
 
 
         adapter = new NotificationsAdapter(getContext(), new ArrayList<>(), this);
@@ -91,6 +94,7 @@ public class NotificationsFragment extends Fragment {
                 Log.e("NotificationsFragment", "Failed to parse notification: " + e.getMessage());
             }
         });
+
 
         return view;
     }

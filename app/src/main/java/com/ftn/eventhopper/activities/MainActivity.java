@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.fragment.app.Fragment;
 
@@ -18,6 +19,8 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 
+import com.ftn.eventhopper.clients.services.notifications.NotificationForegroundService;
+import com.ftn.eventhopper.fragments.notifications.NotificationHelper;
 import com.ftn.eventhopper.shared.dtos.invitations.InvitationDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 
@@ -48,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Correctly referencing the FragmentContainerView ID
         handleIntent(getIntent());
+
+        NotificationHelper.createNotificationChannel(this);
+
+        Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+        serviceIntent.setAction("ACTION_START_FOREGROUND_SERVICE");
+        ContextCompat.startForegroundService(this, serviceIntent);
+
+
     }
 
 
