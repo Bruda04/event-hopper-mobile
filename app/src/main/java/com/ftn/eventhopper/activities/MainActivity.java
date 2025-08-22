@@ -5,6 +5,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
@@ -42,6 +49,20 @@ public class MainActivity extends AppCompatActivity {
         UserService.initialize(getApplicationContext());
 
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        101
+                );
+            }
+        }
+
         //UserService.initialize(getApplicationContext());
         if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
@@ -193,5 +214,19 @@ public class MainActivity extends AppCompatActivity {
             ClientUtils.connectWebSocket();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 101) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Permissions", "POST_NOTIFICATIONS granted");
+            } else {
+                Log.d("Permissions", "POST_NOTIFICATIONS denied");
+            }
+        }
+    }
+
 
 }
