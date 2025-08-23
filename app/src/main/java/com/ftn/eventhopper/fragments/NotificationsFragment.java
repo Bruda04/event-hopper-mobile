@@ -59,6 +59,8 @@ public class NotificationsFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         muteSwitch = view.findViewById(R.id.mute_button);
 
+        muteSwitch.setChecked(!androidx.core.app.NotificationManagerCompat.from(requireContext()).areNotificationsEnabled());
+
 
         adapter = new NotificationsAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -105,6 +107,18 @@ public class NotificationsFragment extends Fragment {
         });
 
 
+        muteSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            Intent intent = new Intent();
+            intent.setAction(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
+
+            startActivity(intent);
+
+        });
+
+
+
         return view;
     }
 
@@ -128,6 +142,17 @@ public class NotificationsFragment extends Fragment {
     public void onStop() {
         super.onStop();
         ClientUtils.disconnectStompClient();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        updateSwitchState();
+    }
+
+    private void updateSwitchState() {
+        boolean enabled = androidx.core.app.NotificationManagerCompat.from(requireContext()).areNotificationsEnabled();
+        muteSwitch.setChecked(!enabled);
     }
 
 }
