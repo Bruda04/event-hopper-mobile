@@ -61,8 +61,13 @@ public class NotificationForegroundService extends Service {
 
         startForeground(1, notification);
 
-        // Probna korisnička notifikacija
-        sendUserNotification("EventHopper", "Foreground service je pokrenut!");
+        if (intent != null && "SHOW_NOTIFICATION".equals(intent.getAction())) {
+            String data = intent.getStringExtra("notification_data");
+            if (data != null) {
+                // možeš parsirati DTO da dobiješ lep title i body
+                sendUserNotification("Nova notifikacija", data);
+            }
+        }
 
         return START_NOT_STICKY;
     }

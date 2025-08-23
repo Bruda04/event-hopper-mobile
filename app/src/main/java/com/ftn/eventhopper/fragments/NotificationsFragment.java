@@ -1,5 +1,6 @@
 package com.ftn.eventhopper.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.NotificationsAdapter;
 import com.ftn.eventhopper.clients.ClientUtils;
+import com.ftn.eventhopper.clients.services.notifications.NotificationForegroundService;
 import com.ftn.eventhopper.fragments.profile.viewmodels.ProfileViewModel;
 import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
 import com.ftn.eventhopper.shared.dtos.profile.ProfileForPersonDTO;
@@ -87,9 +89,16 @@ public class NotificationsFragment extends Fragment {
 
         // WebSocket handler za nove notifikacije
         ClientUtils.setNotificationHandler(message -> {
+            Log.d("notifikacija","detektovana");
             try {
                 NotificationDTO newNotification = wsGson.fromJson(message, NotificationDTO.class);
                 requireActivity().runOnUiThread(() -> viewModel.addNotification(newNotification));
+                Intent serviceIntent = new Intent(requireContext(), NotificationForegroundService.class);
+                serviceIntent.setAction("SHOW_NOTIFICATION");
+                serviceIntent.putExtra("notification_data", new Gson().toJson(newNotification));
+                requireContext().startForegroundService(serviceIntent);
+                Log.d("notifikacija","uspesno");
+
             } catch (Exception e) {
                 Log.e("NotificationsFragment", "Failed to parse notification: " + e.getMessage());
             }
