@@ -2,10 +2,13 @@ package com.ftn.eventhopper.fragments.events;
 
 import static java.security.AccessController.getContext;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.Manifest;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,17 +27,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.events.viewmodels.EventPageViewModel;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
 import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -42,7 +52,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
-public class EventPageFragment extends Fragment {
+public class EventPageFragment extends Fragment{
 
     private TextInputEditText emailField;
     private LinearLayout emailsList;
@@ -54,6 +64,7 @@ public class EventPageFragment extends Fragment {
     private FloatingActionButton exportPdfButton;
     private MaterialButton chatButton, generateGuestListBtn, viewStatsBtn, editBudgetBtn;
 
+    private MapView mapView;
     private boolean favorited;
 
 
@@ -97,6 +108,7 @@ public class EventPageFragment extends Fragment {
         chatButton = view.findViewById(R.id.chat_with_us);
         viewStatsBtn = view.findViewById(R.id.view_stats_button);
         editBudgetBtn = view.findViewById(R.id.edit_budget_btn);
+        MapView map = view.findViewById(R.id.event_map);
 
         exportPdfButton.setOnClickListener(v -> viewModel.exportToPDF(getContext()));
 
@@ -187,6 +199,30 @@ public class EventPageFragment extends Fragment {
                 }
             }
         });
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setBuiltInZoomControls(true);
+        map.setMultiTouchControls(true);
+
+        viewModel.getEvent().observe(getViewLifecycleOwner(), event -> {
+            LocationDTO locationDTO = viewModel.getEventLocation().getValue();
+            double lat = locationDTO.getLatitude();
+            double lon = locationDTO.getLongitude();
+            GeoPoint point = new GeoPoint(lat, lon);
+
+            map.getController().setZoom(15.0);
+            map.getController().setCenter(point);
+
+            Marker marker = new Marker(map);
+            marker.setPosition(point);
+            marker.setTitle(event.getName());
+            map.getOverlays().add(marker);
+            map.invalidate();
+        });
+
+
         return view;
     }
 

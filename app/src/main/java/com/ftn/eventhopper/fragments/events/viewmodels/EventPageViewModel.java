@@ -20,8 +20,10 @@ import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.shared.dtos.events.CreateAgendaActivityDTO;
 import com.ftn.eventhopper.shared.dtos.events.GetEventAgendasDTO;
 import com.ftn.eventhopper.shared.dtos.events.SinglePageEventDTO;
+import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 import com.ftn.eventhopper.shared.models.events.EventPrivacyType;
+import com.ftn.eventhopper.shared.models.locations.Location;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
@@ -59,7 +61,8 @@ import retrofit2.Response;
 public class EventPageViewModel extends ViewModel {
     @Getter
     private final MutableLiveData<SinglePageEventDTO> eventLiveData = new MutableLiveData<>();
-
+    @Getter
+    private final MutableLiveData<LocationDTO> eventLocation = new MutableLiveData<>();
     @Getter
     @Setter
     private boolean isFavorited;
@@ -265,6 +268,25 @@ public class EventPageViewModel extends ViewModel {
         } catch (Exception e) {
             Log.e("PDF", "Error generating guest list PDF", e);
         }
+    }
+
+    public void getLocationById(UUID id){
+        Call<LocationDTO> call = ClientUtils.locationService.getLocation(id);
+        call.enqueue(new Callback<LocationDTO>() {
+            @Override
+            public void onResponse(Call<LocationDTO> call, Response<LocationDTO> response){
+                if(response.isSuccessful()){
+                    eventLocation.setValue(response.body());
+                    Log.d("Fetching location", "SUCCESS");
+                }else{
+                    Log.d("Fetching location", "FAILURE");
+                }
+            }
+            @Override
+            public void onFailure(Call<LocationDTO> call, Throwable t){
+                Log.d("Fetching location", "ERROR");
+            }
+        });
     }
 
     public void exportToPDF(Context context){
