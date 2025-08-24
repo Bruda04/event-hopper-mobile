@@ -222,7 +222,6 @@ public class EventPageFragment extends Fragment{
             }
         });
 
-        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
 
 
