@@ -270,24 +270,30 @@ public class EventPageViewModel extends ViewModel {
         }
     }
 
-    public void getLocationById(UUID id){
-        Call<LocationDTO> call = ClientUtils.locationService.getLocation(id);
-        call.enqueue(new Callback<LocationDTO>() {
+    public LiveData<LocationDTO> getLocationById(UUID id) {
+        MutableLiveData<LocationDTO> data = new MutableLiveData<>();
+
+        ClientUtils.locationService.getLocation(id).enqueue(new Callback<LocationDTO>() {
             @Override
-            public void onResponse(Call<LocationDTO> call, Response<LocationDTO> response){
-                if(response.isSuccessful()){
-                    eventLocation.setValue(response.body());
+            public void onResponse(Call<LocationDTO> call, Response<LocationDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.setValue(response.body());
+                    eventLocation.setValue(response.body()); // ako ti i dalje treba globalno
                     Log.d("Fetching location", "SUCCESS");
-                }else{
+                } else {
                     Log.d("Fetching location", "FAILURE");
                 }
             }
+
             @Override
-            public void onFailure(Call<LocationDTO> call, Throwable t){
+            public void onFailure(Call<LocationDTO> call, Throwable t) {
                 Log.d("Fetching location", "ERROR");
             }
         });
+
+        return data;
     }
+
 
     public void exportToPDF(Context context){
         SinglePageEventDTO currentEvent = eventLiveData.getValue();

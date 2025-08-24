@@ -90,6 +90,8 @@ public class EventPageFragment extends Fragment{
         viewModel = new ViewModelProvider(this).get(EventPageViewModel.class);
         navController = NavHostFragment.findNavController(this);
 
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             String eventId = arguments.getString("event_id");
@@ -108,7 +110,7 @@ public class EventPageFragment extends Fragment{
         chatButton = view.findViewById(R.id.chat_with_us);
         viewStatsBtn = view.findViewById(R.id.view_stats_button);
         editBudgetBtn = view.findViewById(R.id.edit_budget_btn);
-        MapView map = view.findViewById(R.id.event_map);
+        mapView = view.findViewById(R.id.event_map);
 
         exportPdfButton.setOnClickListener(v -> viewModel.exportToPDF(getContext()));
 
@@ -143,6 +145,26 @@ public class EventPageFragment extends Fragment{
                 LocalDateTime eventTimeValue = event.getTime();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 eventTime.setText(eventTimeValue.format(formatter));
+
+                mapView.setTileSource(TileSourceFactory.MAPNIK);
+                mapView.setMultiTouchControls(true);
+
+                viewModel.getLocationById(event.getLocation().getId()).observe(getViewLifecycleOwner(), location -> {
+                    if (location != null) {
+                        GeoPoint point = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        mapView.getController().setZoom(15.0);
+                        mapView.getController().setCenter(point);
+
+                        Marker marker = new Marker(mapView);
+                        marker.setPosition(point);
+                        marker.setTitle(event.getName());
+                        mapView.getOverlays().clear();
+                        mapView.getOverlays().add(marker);
+                        mapView.invalidate();
+                    }
+                });
+
+
 
 
                 if(event.isEventOrganizerLoggedIn()){
@@ -202,25 +224,6 @@ public class EventPageFragment extends Fragment{
 
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
-        map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setBuiltInZoomControls(true);
-        map.setMultiTouchControls(true);
-
-        viewModel.getEvent().observe(getViewLifecycleOwner(), event -> {
-            LocationDTO locationDTO = viewModel.getEventLocation().getValue();
-            double lat = locationDTO.getLatitude();
-            double lon = locationDTO.getLongitude();
-            GeoPoint point = new GeoPoint(lat, lon);
-
-            map.getController().setZoom(15.0);
-            map.getController().setCenter(point);
-
-            Marker marker = new Marker(map);
-            marker.setPosition(point);
-            marker.setTitle(event.getName());
-            map.getOverlays().add(marker);
-            map.invalidate();
-        });
 
 
         return view;
