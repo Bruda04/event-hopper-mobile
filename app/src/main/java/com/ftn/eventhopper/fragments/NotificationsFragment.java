@@ -89,23 +89,6 @@ public class NotificationsFragment extends Fragment {
                 .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, context) -> LocalDateTime.parse(json.getAsString()))
                 .create();
 
-        // WebSocket handler za nove notifikacije
-        ClientUtils.setNotificationHandler(message -> {
-            Log.d("notifikacija","detektovana");
-            try {
-                NotificationDTO newNotification = wsGson.fromJson(message, NotificationDTO.class);
-                requireActivity().runOnUiThread(() -> viewModel.addNotification(newNotification));
-                Intent serviceIntent = new Intent(requireContext(), NotificationForegroundService.class);
-                serviceIntent.setAction("SHOW_NOTIFICATION");
-                serviceIntent.putExtra("notification_data", new Gson().toJson(newNotification));
-                requireContext().startForegroundService(serviceIntent);
-                Log.d("notifikacija","uspesno");
-
-            } catch (Exception e) {
-                Log.e("NotificationsFragment", "Failed to parse notification: " + e.getMessage());
-            }
-        });
-
 
         muteSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
@@ -132,17 +115,6 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        ClientUtils.connectWebSocket();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        ClientUtils.disconnectStompClient();
-    }
 
     @Override
     public void onResume(){

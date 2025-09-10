@@ -49,13 +49,9 @@ import ua.naiksoftware.stomp.dto.StompHeader;
 
 public class ClientUtils {
 
-//    public static final String SERVICE_API_PATH = "http://"+ BuildConfig.IP_ADDR +":8080/api/";
-//    public static final String SERVICE_API_IMAGE_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/images";
-//    public static final String WEBSOCKET_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/socket"; // WebSocket path
-
-    public static final String SERVICE_API_PATH = "http://10.0.2.2:8080/api/";
-    public static final String SERVICE_API_IMAGE_PATH = "http://10.0.2.2:8080/api/images";
-    public static final String WEBSOCKET_PATH = "ws://10.0.2.2:8080/api/socket";
+    public static final String SERVICE_API_PATH = "http://"+ BuildConfig.IP_ADDR +":8080/api/";
+    public static final String SERVICE_API_IMAGE_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/images";
+    public static final String WEBSOCKET_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/socket"; // WebSocket path
 
 
     private static StompClient stompClient = null;

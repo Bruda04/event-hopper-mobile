@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         //UserService.initialize(getApplicationContext());
         if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
+            Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+            startForegroundService(serviceIntent);
         }
 
         Log.d("MainActivity", "setContentView called");
@@ -205,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ClientUtils.disconnectStompClient();
+        Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+        stopService(serviceIntent);
     }
 
     @Override
@@ -212,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
+            Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+            startForegroundService(serviceIntent);
         }
     }
 

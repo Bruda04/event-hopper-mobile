@@ -12,12 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.ftn.eventhopper.R;
+import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.fragments.notifications.NotificationHelper;
+import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
+import com.google.gson.Gson;
 
 import android.app.Service;
 import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import android.content.Context;
+import android.util.Log;
 
 
 public class NotificationForegroundService extends Service {
@@ -47,6 +51,17 @@ public class NotificationForegroundService extends Service {
             manager.createNotificationChannel(serviceChannel);
             manager.createNotificationChannel(userChannel);
         }
+
+        ClientUtils.setNotificationHandler(message -> {
+            Log.d("NotificationService", "Nova notifikacija stigla sa STOMP-a");
+
+            try {
+                NotificationDTO newNotification = ClientUtils.setupGson().fromJson(message, NotificationDTO.class);
+                sendUserNotification("Nova notifikacija", newNotification.getContent());
+            } catch (Exception e) {
+                Log.e("NotificationService", "Greška u parsiranju: " + e.getMessage());
+            }
+        });
     }
 
     @Override
@@ -89,6 +104,12 @@ public class NotificationForegroundService extends Service {
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify((int) System.currentTimeMillis(), notification);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ClientUtils.setNotificationHandler(null);
     }
 
 }

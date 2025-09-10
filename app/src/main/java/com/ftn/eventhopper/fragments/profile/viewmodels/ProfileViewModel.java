@@ -1,5 +1,9 @@
 package com.ftn.eventhopper.fragments.profile.viewmodels;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -7,9 +11,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ftn.eventhopper.activities.MainActivity;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.ImageUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+import com.ftn.eventhopper.clients.services.notifications.NotificationForegroundService;
 import com.ftn.eventhopper.shared.dtos.location.LocationDTO;
 import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
 import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
@@ -75,10 +81,13 @@ public class ProfileViewModel extends ViewModel {
             notificationsLiveData.postValue(sorted);        }
     }
 
-    public void logout(){
+    public void logout(Context context){
         UserService.clearJwtToken();
         ClientUtils.disconnectStompClient();
+
         this.clearData();
+        Intent serviceIntent = new Intent(context, NotificationForegroundService.class);
+        context.stopService(serviceIntent);
     }
     public void clearData() {
         profileChanged.setValue(null);
