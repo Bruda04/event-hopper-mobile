@@ -53,6 +53,7 @@ public class ClientUtils {
     public static final String SERVICE_API_IMAGE_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/images";
     public static final String WEBSOCKET_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/socket"; // WebSocket path
 
+
     private static StompClient stompClient = null;
 
     public static void connectWebSocket() {

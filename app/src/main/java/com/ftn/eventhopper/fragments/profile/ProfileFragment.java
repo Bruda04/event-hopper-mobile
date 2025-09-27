@@ -131,7 +131,7 @@ public class ProfileFragment extends Fragment {
         });
 
         view.findViewById(R.id.ListItemLogOut).setOnClickListener(v -> {
-            viewModel.logout();
+            viewModel.logout(requireContext());
             ((MainActivity) requireActivity()).navigateToAuthGraph();
         });
         view.findViewById(R.id.ListItemUpgradeProfile).setOnClickListener(v -> {

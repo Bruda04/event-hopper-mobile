@@ -106,4 +106,5 @@
     <string name="troubled_user">If user want to report or block user</string>
     <string name="block_user">Block user</string>
     <string name="report_user">Report user</string>
+    <string name="loading_notifications">Loading notifications...</string>
 </resources>
