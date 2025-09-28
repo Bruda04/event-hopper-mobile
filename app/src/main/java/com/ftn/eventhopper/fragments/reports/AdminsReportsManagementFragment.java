@@ -2,8 +2,11 @@ package com.ftn.eventhopper.fragments.reports;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,11 +33,18 @@ public class AdminsReportsManagementFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<GetReportDTO> reports;
     private TextView statusMessage;
+    private NavController navController;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack(R.id.manage_reports, true);
+            }
+        });
     }
 
     @Override
@@ -43,6 +53,7 @@ public class AdminsReportsManagementFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_admins_reports_management, container, false);
         viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
+        navController = NavHostFragment.findNavController(this);
 
         recyclerView = view.findViewById(R.id.recycler_view_reports);
 
