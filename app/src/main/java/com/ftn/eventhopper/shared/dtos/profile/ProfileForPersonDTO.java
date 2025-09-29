@@ -3,6 +3,7 @@ package com.ftn.eventhopper.shared.dtos.profile;
 
 import com.ftn.eventhopper.shared.dtos.events.SimpleEventDTO;
 import com.ftn.eventhopper.shared.dtos.location.SimpleLocationDTO;
+import com.ftn.eventhopper.shared.dtos.notifications.NotificationDTO;
 import com.ftn.eventhopper.shared.dtos.solutions.SimpleProductDTO;
 
 import java.util.List;
@@ -40,5 +41,6 @@ public class ProfileForPersonDTO {
     private String companyDescription;
     private SimpleLocationDTO companyLocation;
     private List<String> companyPhotos;
+    private List<NotificationDTO> notifications;
 }
 

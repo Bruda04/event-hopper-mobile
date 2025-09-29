@@ -5,7 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.fragment.app.Fragment;
 
@@ -18,6 +26,8 @@ import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
 
+import com.ftn.eventhopper.clients.services.notifications.NotificationForegroundService;
+import com.ftn.eventhopper.fragments.notifications.NotificationHelper;
 import com.ftn.eventhopper.shared.dtos.invitations.InvitationDTO;
 import com.ftn.eventhopper.shared.dtos.users.account.SimpleAccountDTO;
 
@@ -36,16 +46,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         UserService.initialize(getApplicationContext());
+
+        setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        101
+                );
+            }
+        }
+
+        //UserService.initialize(getApplicationContext());
         if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
+            Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+            startForegroundService(serviceIntent);
         }
 
         Log.d("MainActivity", "setContentView called");
 
         // Correctly referencing the FragmentContainerView ID
         handleIntent(getIntent());
+
+        NotificationHelper.createNotificationChannel(this);
+
+        Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+        serviceIntent.setAction("ACTION_START_FOREGROUND_SERVICE");
+        ContextCompat.startForegroundService(this, serviceIntent);
+
+
     }
 
 
@@ -171,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ClientUtils.disconnectStompClient();
+        Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+        stopService(serviceIntent);
     }
 
     @Override
@@ -178,7 +216,23 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (UserService.isTokenValid()) {
             ClientUtils.connectWebSocket();
+            Intent serviceIntent = new Intent(this, NotificationForegroundService.class);
+            startForegroundService(serviceIntent);
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 101) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Permissions", "POST_NOTIFICATIONS granted");
+            } else {
+                Log.d("Permissions", "POST_NOTIFICATIONS denied");
+            }
+        }
+    }
+
 
 }

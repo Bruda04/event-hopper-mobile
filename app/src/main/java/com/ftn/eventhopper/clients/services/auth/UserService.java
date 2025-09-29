@@ -6,7 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
+import androidx.security.crypto.MasterKey;
 
 import com.ftn.eventhopper.shared.models.users.PersonType;
 
@@ -24,15 +24,19 @@ public class UserService {
      */
     public static void initialize(Context context) {
         try {
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+
+            MasterKey masterKey = new MasterKey.Builder(context)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
 
             sharedPreferences = EncryptedSharedPreferences.create(
+                    context.getApplicationContext(),
                     PREFERENCES_FILE_NAME,
-                    masterKeyAlias,
-                    context,
+                    masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize EncryptedSharedPreferences");
         }

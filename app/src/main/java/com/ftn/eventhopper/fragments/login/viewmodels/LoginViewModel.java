@@ -1,5 +1,7 @@
 package com.ftn.eventhopper.fragments.login.viewmodels;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -7,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.ftn.eventhopper.clients.ClientUtils;
 import com.ftn.eventhopper.clients.services.auth.UserService;
+import com.ftn.eventhopper.clients.services.notifications.NotificationForegroundService;
 import com.ftn.eventhopper.shared.dtos.login.LoginDTO;
 import com.ftn.eventhopper.shared.dtos.login.LoginResponse;
 import com.google.gson.Gson;
@@ -23,7 +26,7 @@ import retrofit2.Response;
 public class LoginViewModel extends ViewModel {
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-    public void login(String email, String password) {
+    public void login(String email, String password, Context context) {
         LoginDTO loginDTO = new LoginDTO(email, password);
         Call<LoginResponse> call = ClientUtils.loginService.loginUser(loginDTO);
         call.enqueue(new Callback<LoginResponse>() {
@@ -36,6 +39,8 @@ public class LoginViewModel extends ViewModel {
                         UserService.setJwtToken(response.getToken());
                         if (UserService.isTokenValid()) {
                             ClientUtils.connectWebSocket();
+                            Intent serviceIntent = new Intent(context, NotificationForegroundService.class);
+                            context.startForegroundService(serviceIntent);
                         }
                         Log.d("Login", "User logged in successfully");
                         errorMessage.postValue("");

@@ -5,14 +5,14 @@
 	<string name="user">User</string>
 	<string name="provider">Provider</string>
 
-  <string name="upload_profile_picture">Upload profile picture (Optional)</string>
-  <string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
-  <string name="continue_without_an_account">Continue without an account</string>
-  <string name="loading">Loading..</string>
-  <string name="edit_profile">Edit profile</string>
-  <string name="my_events">My events</string>
-  <string name="my_products">My products</string>
-  <string name="my_services">My services</string>
+	<string name="upload_profile_picture">Upload profile picture (Optional)</string>
+	<string name="upload_pictures_text">Please upload images of your company/agency/store/organization, that you would like displayed on your profile.</string>
+	<string name="continue_without_an_account">Continue without an account</string>
+	<string name="loading">Loading..</string>
+	<string name="edit_profile">Edit profile</string>
+	<string name="my_events">My events</string>
+	<string name="my_products">My products</string>
+	<string name="my_services">My services</string>
 
 
 	<string name="provide_company_info">Please provide us with information about your company/agency/store/organization.</string>
@@ -155,9 +155,8 @@
 	<string name="loading_comments">Loading comments...</string>
 
 
-
 	<string name="send">Send</string>
-<!--	<string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>-->
+	<!--	<string name="want_to_share_your_opinion_leave_a_review">Want to share your opinion? Leave a review!</string>-->
 	<string name="company">Company</string>
 	<string name="change_password">Change password</string>
 	<string name="manage_categories">Manage categories</string>
@@ -212,5 +211,6 @@
 	<string name="view_stats">View Stats</string>
 	<string name="no_invitation_data_available">No invitation data available</string>
 	<string name="edit_budget">Edit Budget</string>
+    <string name="loading_notifications">Loading notifications...</string>
 
 </resources>

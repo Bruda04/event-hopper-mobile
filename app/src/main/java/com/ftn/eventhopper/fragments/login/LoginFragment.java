@@ -54,7 +54,7 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(v -> {
             retrieveData();
             if (!validateFields()) {
-                viewModel.login(this.email, this.password);
+                viewModel.login(this.email, this.password, requireContext());
             }
         });
 

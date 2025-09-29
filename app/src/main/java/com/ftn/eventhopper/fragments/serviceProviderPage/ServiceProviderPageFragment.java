@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ftn.eventhopper.BuildConfig;
 import com.ftn.eventhopper.R;
 import com.ftn.eventhopper.adapters.CommentAdapter;
 import com.ftn.eventhopper.adapters.ImageSliderAdapter;
@@ -31,6 +32,12 @@ import com.ftn.eventhopper.clients.services.auth.UserService;
 import com.ftn.eventhopper.fragments.serviceProviderPage.viewmodels.ServiceProviderPageViewModel;
 import com.ftn.eventhopper.shared.dtos.users.serviceProvider.ServiceProviderDetailsDTO;
 import com.google.android.material.button.MaterialButton;
+
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +62,7 @@ public class ServiceProviderPageFragment extends Fragment {
     private RecyclerView companyComments;
     private TextView statusMessage;
     private NavController navController;
+    private MapView mapView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,7 @@ public class ServiceProviderPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_provider_page, container, false);
         navController = NavHostFragment.findNavController(this);
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         viewModel = new ViewModelProvider(this).get(ServiceProviderPageViewModel.class);
         statusMessage = view.findViewById(R.id.status_message);
@@ -96,7 +105,7 @@ public class ServiceProviderPageFragment extends Fragment {
             companyPhone = view.findViewById(R.id.provider_company_phone);
             companyRating = view.findViewById(R.id.provider_rating);
             companyComments = view.findViewById(R.id.provider_comments_recyclerview);
-
+            mapView = view.findViewById(R.id.company_map);
         }
 
         viewModel.getProviderDetails().observe(getViewLifecycleOwner(), provider -> {
@@ -154,6 +163,21 @@ public class ServiceProviderPageFragment extends Fragment {
 
         companyPhone.setText(String.format("Company phone: %s", provider.getCompanyPhoneNumber()));
 
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setMultiTouchControls(true);
+
+        if (provider.getCompanyLocation() != null) {
+            GeoPoint point = new GeoPoint(provider.getCompanyLocation().getLatitude(), provider.getCompanyLocation().getLongitude());
+            mapView.getController().setZoom(15.0);
+            mapView.getController().setCenter(point);
+
+            Marker marker = new Marker(mapView);
+            marker.setPosition(point);
+            marker.setTitle(provider.getCompanyName());
+            mapView.getOverlays().clear();
+            mapView.getOverlays().add(marker);
+            mapView.invalidate();
+        }
         int filledStars = (int) Math.floor(provider.getRating());
         int emptyStars = 5 - filledStars;
         StringBuilder ratingText = new StringBuilder();
